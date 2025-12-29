@@ -47,22 +47,31 @@ AGE2D is a compact, pragmatic engine intended for 2D games and rapid iteration w
 The project uses C++20 and is configured to build with Visual Studio on Windows. Steps:
 
 1. Clone
+
+```
    git clone https://github.com/Tepidangler/AGE2D.git
+   
    cd AGE2D
+```
 
 2. Create and configure a build directory (Visual Studio 2022 example)
+   
+   ```
    mkdir build
    cd build
    cmake .. -G "Visual Studio 17 2022" -A x64 -DCMAKE_BUILD_TYPE=Release
+   ```
 
    Notes:
    - The Engine CMake config references many vendor libs under Engine/libs/vendor. The default setup includes those with add_subdirectory so no extra steps are usually required.
    - If you move vendors or use system libraries, set the Engine CMake cache variables (INC_GLFW, INC_GLAD, INC_GLM, etc.) or use vcpkg and point CMAKE_TOOLCHAIN_FILE appropriately.
 
 3. Build
+   
    cmake --build . --config Release
 
 4. Artifacts
+   
    - The build produces `Engine` (static lib) and the `Editor` and `Game` targets where applicable. There are no packaged sample runtime executables by default — the Game directory is the place to add your playable demo or test runner.
 
 <a name="native-c-scripting-real-api--example"></a>
