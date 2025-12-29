@@ -1,0 +1,15 @@
+{
+  "dependencies" : [ "freetype", "libpng", "zlib", "libxml2", {
+    "name" : "rttr",
+    "version>=" : "0.9.6+20210811#1"
+  }, {
+    "name" : "libpqxx",
+    "version>=" : "7.10.1"
+  }, {
+    "name" : "openssl",
+    "version>=" : "3.5.4"
+  }, {
+    "name" : "simpleini",
+    "version>=" : "4.22"
+  } ]
+}

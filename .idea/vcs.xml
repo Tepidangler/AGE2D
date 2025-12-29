@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Engine/libs/vendor/ImGuizmo" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Engine/libs/vendor/OpenAL" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Engine/libs/vendor/box2c" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Engine/libs/vendor/entt" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Engine/libs/vendor/fastgltf" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Engine/libs/vendor/glfw" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Engine/libs/vendor/glm" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Engine/libs/vendor/imgui" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Engine/libs/vendor/imgui-node-editor" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Engine/libs/vendor/json" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Engine/libs/vendor/libpng" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Engine/libs/vendor/libxml2" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Engine/libs/vendor/minimp3" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Engine/libs/vendor/msdf-atlas-gen" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Engine/libs/vendor/msdf-atlas-gen/artery-font-format" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Engine/libs/vendor/msdf-atlas-gen/msdfgen" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Engine/libs/vendor/rapidcsv" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Engine/libs/vendor/rttr" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Engine/libs/vendor/spdlog" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Engine/libs/vendor/stb" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Engine/libs/vendor/tmx" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Engine/libs/vendor/ufbx" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Engine/libs/vendor/yaml-cpp" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Engine/libs/vendor/zlib" vcs="Git" />
+  </component>
+</project>

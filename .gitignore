@@ -1,0 +1,253 @@
+# Binaries
+**/bin/
+bin-int/
+Intermediates/
+
+# AGE files
+*.log
+AGEProfiles*.json
+
+
+# Visual Studio files and folder
+.vs/
+**.sln
+**.vcxproj
+**.vcxproj.filters
+**.vcxproj.user
+**.csproj
+
+Engine/libs/vendor/vulkan/Lib/shaderc_combinedd.lib
+Engine/libs/vendor/vulkan/Lib/shaderc_sharedd.lib
+Engine/libs/vendor/vulkan/Lib/shaderc_utild.lib
+Engine/libs/vendor/vulkan/Lib/SPIRV-Tools-optd.lib
+
+**.wav
+**.AGEproject
+**.AGEScene
+
+*.tsx
+*.tiled-project
+*.tiled-session
+*.tmx
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+#  Usually these files are written by a python script from a template
+#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Scrapy stuff:
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# pyenv
+.python-version
+
+# celery beat schedule file
+celerybeat-schedule
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+
+*.*~
+vcpkg/*
+vcpkg-*
+Engine/libs/vendor/VulkanSDK/VulkanSDK*Installer.exe### C++ template
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+### C template
+# Prerequisites
+
+# Object files
+*.ko
+*.elf
+
+# Linker output
+*.ilk
+*.map
+*.exp
+
+# Precompiled Headers
+
+# Libraries
+
+# Shared objects (inc. Windows DLLs)
+*.so.*
+
+# Executables
+*.i*86
+*.x86_64
+*.hex
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# Kernel Module Compile Results
+*.mod*
+*.cmd
+.tmp_versions/
+modules.order
+Module.symvers
+Mkfile.old
+dkms.conf
+
+### CMake template
+CMakeLists.txt.user
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+_deps
+
+!/cmake-build-debug-visual-studio/
+
+!/cmake-build-debug-visual-studio-event-trace/
+
+!/cmake-build-debug-vsclang/
+
+!/cmake-build-default/
+
+!/cmake-build-default-1/
+
+!/cmake-build-distribution-visual-studio/
+
+!/cmake-build-distribution-vsclang/
+
+!/cmake-build-release-visual-studio/
+
+!/cmake-build-release-vsclang/
+!/cmake-build-debug---vs/
+
+!/cmake-build-debug---vsclang/
+
+!/cmake-build-distribution---vs/
+
+!/cmake-build-distribution---vsclang/
+
+!/cmake-build-relwithdebinfo---vs/
+
+!/cmake-build-relwithdebinfo---vsclang/
