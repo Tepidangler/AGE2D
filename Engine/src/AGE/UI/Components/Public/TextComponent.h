@@ -7,10 +7,11 @@
 #pragma once
 #include "Core/Public/Core.h"
 #include "Render/Public/Font.h"
-#include "UI/Public/UiComponent.h"
 #include "Serializers/Public/DataWriter.h"
 #include "Serializers/Public/DataReader.h"
 #include <imgui.h>
+
+#include "UI/Public/UiComponent.h"
 
 
 namespace AGE
@@ -20,10 +21,18 @@ namespace AGE
 	public:
 		TextComponent(const std::string& Name);
 		StringProperties m_StringProperties;
-		void OnUpdate(TimeStep DeltaTime) override;
-
-		void DrawFontSelectionComboBox() override;
-		void DrawContent() override;
+		void OnUpdate(TimeStep DeltaTime);
+		void OnEvent(Event& Event) override;
+		void CallSerialize(DataWriter* Serializer)
+		{
+			Serializer->WriteObject<TextComponent>(*this);
+		}
+		void CallDeserialize(DataReader* Serializer)
+		{
+			Serializer->ReadObject<TextComponent>(*this);
+		}
+		void DrawFontSelectionComboBox();
+		void DrawContent();
 
 		static void Serialize(DataWriter* Serializer, const TextComponent& Instance)
 		{

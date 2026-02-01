@@ -487,5 +487,7 @@ namespace AGE
 			DestroyScript = [](NativeScriptComponent* NSC) {delete NSC->Instance; NSC->Instance = nullptr; };
 		}
 	};
+
+
 	
 }

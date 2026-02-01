@@ -533,6 +533,9 @@ namespace AGE
 
 			}
 
+			RenderUIEvent Data(DeltaTime);
+			App::Get().OnEvent(Data);
+
 			Renderer::EndScene();
 		}
 	}
@@ -663,8 +666,9 @@ namespace AGE
 			}
 
 		}
+		RenderUIEvent Data(DeltaTime);
+		App::Get().OnEvent(Data);
 
-		Renderer::RenderUI(DeltaTime);
 		Renderer2D::EndScene();
 		//RenderCommand::Flush();
 	}

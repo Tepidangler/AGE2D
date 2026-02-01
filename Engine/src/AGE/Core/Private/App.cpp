@@ -191,7 +191,7 @@ namespace AGE
 
 	void App::GetDirectXErrorMessages()
 	{
-		
+
 	}
 
 	void App::Run()

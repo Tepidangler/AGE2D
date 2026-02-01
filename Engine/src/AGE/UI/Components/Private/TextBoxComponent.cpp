@@ -36,6 +36,10 @@ namespace AGE
 		}
 	}
 
+	void TextBoxComponent::OnEvent(Event &Event)
+	{
+	}
+
 	void TextBoxComponent::DrawFontSelectionComboBox()
 	{
 		std::unordered_map<UUID,Ref<Font>> Fonts = AssetManager::Get().GetAssetRegistry()->GetFonts();

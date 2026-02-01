@@ -8,17 +8,17 @@
 
 namespace AGE
 {
-	void WidgetStack::PushWidgetToStack(Ref<Widget> Widget)
+	void WidgetStack::PushWidgetToStack(Ref<ScriptableWidget> Widget)
 	{
 		m_Widgets.emplace_front(Widget);
 	}
 
-	void WidgetStack::PopWidgetFromStack(Ref<Widget> Widget)
+	void WidgetStack::PopWidgetFromStack(Ref<ScriptableWidget> Widget)
 	{
 		m_Widgets.pop_front();
 	}
 
-	void WidgetStack::OnUpdate(TimeStep DeltaTime)
+	void WidgetStack::OnTopUpdate(TimeStep DeltaTime)
 	{
 		if (m_Widgets.size() > 0)
 		{

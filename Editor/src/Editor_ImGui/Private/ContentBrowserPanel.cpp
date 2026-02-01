@@ -55,8 +55,8 @@ namespace AGE
 				for (auto& DirectoryEntry : std::filesystem::directory_iterator(m_CurrentDirectory))
 				{
 					const auto& Path = DirectoryEntry.path();
-					auto RelativePath = std::filesystem::relative(Path, m_AssetDirectory);
-					std::string FileNameString = RelativePath.filename().string();
+					auto AbsolutePath = std::filesystem::absolute(Path);
+					std::string FileNameString = AbsolutePath.filename().string();
 
 					ImGui::PushID(FileNameString.c_str());
 
@@ -66,7 +66,7 @@ namespace AGE
 
 					if (ImGui::BeginDragDropSource())
 					{
-						const wchar_t* ItemPath = RelativePath.c_str();
+						const wchar_t* ItemPath = AbsolutePath.c_str();
 						ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", ItemPath, (wcslen(ItemPath) + 1) * sizeof(wchar_t));
 						ImGui::EndDragDropSource();
 					}

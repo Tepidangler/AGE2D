@@ -6,28 +6,31 @@
 #define AGE2D_MAINMENU_H
 #include <Age.h>
 
-
 namespace Proj
 {
-	class MainMenu : public AGE::Widget
+	class MainMenu : public AGE::ScriptableWidget
 	{
-		public:
+	public:
+#if 0
 		MainMenu(const std::string& Name);
 		~MainMenu();
-
+#endif
 		void OnUpdate(AGE::TimeStep DeltaTime) override;
 
-		bool ShouldBeVisible() const override {return bIsVisible;}
 		void SetVisibility(bool Visibility) override {bIsVisible = Visibility;}
 
 		void OnEvent(AGE::Event& Event) override;
 
 		bool OnSceneChanged(AGE::SceneChangedEvent& Event);
 
+	protected:
+		void OnInit() override;
+		void OnConstruct() override;
+		void OnDestroy() override;
+		void Reset() override;
 
 
 	private:
-		std::vector<AGE::Ref<AGE::UIComponent>> m_UIComponents;
 
 
 		bool OnWindowResize(AGE::WindowResizeEvent& Event);

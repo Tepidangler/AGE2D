@@ -103,6 +103,10 @@ namespace AGE
 		m_Name = Name;
 	}
 
+	void UIComponent::OnEvent(Event &Event)
+	{
+		AGE::EventDispatcher Dispatcher(Event);
+	}
 } // AGE
 
 RTTR_REGISTRATION

@@ -18,14 +18,15 @@ namespace AGE
 		WindowClose,WindowResize,WindowFocus,WindowLostFocus,WindowMoved,
 		ProjectCreated,ProjectLoaded,
 		FramebufferResize,
-		RendererChanged,
+		RendererChanged,RenderUI,
 		AppTick,AppUpdate,AppRender,
 		StringCopy,StringPaste,
 		KeyPressed,KeyReleased,KeyTyped,
 		MouseButtonPressed,MouseButtonReleased,MouseMoved,MouseScrolled,
 		AxisMoved,
 		GamepadButtonPressed,GamepadButtonReleased,
-		SceneChanged
+		SceneChanged,
+		WidgetConstructed, WidgetActivated,WidgetDeactivated
 	};
 
 	enum EventCategory  // Used to Filter events if needed
@@ -36,7 +37,8 @@ namespace AGE
 		EventCategoryKeyboard = BIT(2),
 		EventCategoryMouse = BIT(3),
 		EventCategoryMouseButton = BIT(4),
-		EventCategoryGame = BIT(5)
+		EventCategoryGame = BIT(5),
+		EventCategoryUI = BIT(6)
 
 	};
 

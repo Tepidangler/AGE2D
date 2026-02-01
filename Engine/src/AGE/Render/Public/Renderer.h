@@ -19,17 +19,12 @@ namespace AGE
 			static void EndScene();
 			static void Shutdown();
 
-			static void RenderUI(TimeStep DeltaTime);
-
 			static void Submit();
 
 			static void Flush();
 
 			static inline RendererAPI::API GetAPI() { return RendererAPI::GetAPI(); }
 			static inline void SetAPI(RendererAPI::API Renderer) { RendererAPI::SetAPI(Renderer); }
-
-		static std::vector<WidgetStack> m_WidgetStacks;
-
 		private:
 			struct SceneData
 			{

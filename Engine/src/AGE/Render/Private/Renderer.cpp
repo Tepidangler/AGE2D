@@ -7,7 +7,6 @@
 namespace AGE
 {
 	Renderer::SceneData* Renderer::m_SceneData = new SceneData;
-	std::vector<WidgetStack> Renderer::m_WidgetStacks;
 
 	void Renderer::Init()
 	{
@@ -44,17 +43,6 @@ namespace AGE
 	void Renderer::Shutdown()
 	{
 		Renderer2D::Shutdown();
-	}
-
-	void Renderer::RenderUI(TimeStep DeltaTime)
-	{
-		for (auto& WS : m_WidgetStacks)
-		{
-			for (auto& W : WS)
-			{
-				W->OnUpdate(DeltaTime);
-			}
-		}
 	}
 
 	void Renderer::Submit()

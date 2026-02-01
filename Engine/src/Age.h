@@ -30,6 +30,7 @@
 #include "AGE/Events/Public/KeyEvent.h"
 #include "AGE/Events/Public/GameEvent.h"
 #include "AGE/Events/Public/RendererEvent.h"
+#include "AGE/Events/Public/UIEvent.h"
 
 #include "AGE/Texture/Public/Texture.h"
 #include "AGE/Texture/Public/SubTexture.h"
@@ -77,6 +78,8 @@
 #include "AGE/UI/Public/WidgetStack.h"
 #include "AGE/UI/Components/Public/TextComponent.h"
 #include "AGE/UI/Components/Public/TextBoxComponent.h"
+#include "AGE/UI/Components/Public/UiImageComponent.h"
+#include "AGE/UI/Public/ScriptableWidget.h"
 
 #include "AGE/Video/Public/AGEVideo.h"
 #include "AGE/VisualScripting/Public/NodeEditorManager.h"

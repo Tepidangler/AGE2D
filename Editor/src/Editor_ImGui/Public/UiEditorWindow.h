@@ -31,9 +31,12 @@ namespace AGE
 		void DrawProperties(Ref<UIComponent> Comp);
 		void DrawContent(Ref<UIComponent> Comp);
 		void DrawMenuBar();
+		void LoadWidget(const std::filesystem::path& Path);
+		void SaveWidget(const std::filesystem::path& Path);
+
 		bool m_Opened = true;
 
-		std::vector<std::string> m_UIComponentTypes = {"TextBoxComponent", "TextComponent"};
+		//std::vector<std::string> m_UIComponentTypes = {"TextBoxComponent", "TextComponent"};
 
 		std::deque<Ref<UIComponent>> m_UIComponents;
 

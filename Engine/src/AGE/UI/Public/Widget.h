@@ -5,28 +5,35 @@
 #ifndef AGE2D_WIDGET_H
 #define AGE2D_WIDGET_H
 #include "Core/Public/Core.h"
-#include "Core/Public/DeltaTime.h"
-#include "Events/Public/Event.h"
-
-#include "Structs/Public/DataStructures.h"
-
+#include "Serializers/Public/DataReader.h"
+#include "Serializers/Public/DataWriter.h"
 namespace AGE
 {
-	class Widget
+	class ScriptableWidget;
+
+	struct Widget
 	{
-	public:
-		virtual ~Widget() = default;
+		static void Serialize(DataWriter* Serializer, const Widget& Data)
+		{
 
-		virtual void OnUpdate(TimeStep DeltaTime) = 0;
+		}
 
-		virtual void OnEvent(Event& E) = 0;
-		virtual bool ShouldBeVisible() const = 0;
-		virtual void SetVisibility(bool Visibility)  =0;
+		static void Deserialize(DataReader* Serializer, Widget& Data)
+		{
 
-		ScreenResolution m_Resolution;
-	protected:
-		std::string m_Name;
-		bool bIsVisible = true;
+		}
+
+		ScriptableWidget* Instance = nullptr;
+		ScriptableWidget* (*InstantiateScript)();
+		void (*DestroyScript)(Widget*);
+
+		template<typename T>
+		void Bind()
+		{
+			InstantiateScript = []() {return static_cast<ScriptableWidget*>(new T()); };
+			DestroyScript = [](Widget* WC) {delete WC->Instance; WC->Instance = nullptr; };
+		}
+
 	};
 } // AGE
 

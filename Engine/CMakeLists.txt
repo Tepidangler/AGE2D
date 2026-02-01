@@ -384,8 +384,7 @@ add_library(Engine STATIC
 		src/AGE/Audio/AudioEngine/Private/Soundbank.cpp
         src/AGE/UI/Private/WidgetStack.cpp
 		src/AGE/UI/Public/WidgetStack.h
-		src/AGE/UI/Private/Widget.cpp
-		src/AGE/UI/Public/Widget.h
+        src/AGE/UI/Public/Widget.h
 		src/AGE/UI/Private/UiComponent.cpp
 		src/AGE/UI/Public/UiComponent.h
 		src/AGE/UI/Components/Private/TextComponent.cpp
@@ -396,6 +395,18 @@ add_library(Engine STATIC
 		src/AGE/Serializers/Public/IniReader.h
 		src/AGE/Serializers/Private/IniWriter.cpp
 		src/AGE/Serializers/Public/IniWriter.h
+		src/AGE/UI/Public/UIStructs.h
+		src/AGE/UI/Private/ScriptableWidget.cpp
+		src/AGE/UI/Public/ScriptableWidget.h
+        src/AGE/Events/Public/UIEvent.h
+		src/AGE/UI/Components/Private/UiImageComponent.cpp
+		src/AGE/UI/Components/Public/UiImageComponent.h
+        src/AGE/UI/Components/Private/ButtonComponent.cpp
+		src/AGE/UI/Components/Public/ButtonComponent.h
+        src/AGE/UI/Components/Private/VerticalBoxComponent.cpp
+		src/AGE/UI/Components/Public/VerticalBoxComponent.h
+		src/AGE/UI/Components/Private/HorizontalBoxComponent.cpp
+		src/AGE/UI/Components/Public/HorizontalBoxComponent.h
 )
 
 target_compile_definitions(Engine PUBLIC 

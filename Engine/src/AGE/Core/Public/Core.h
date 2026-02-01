@@ -44,10 +44,10 @@
 #define BIND_ACTION_FN(x) std::bind(&x, this)
 
 #define BIT(x) (1 << x)
-
 namespace AGE
 {
 	typedef unsigned long ulong_t;
+
 	template<typename T>
 	using Scope = std::unique_ptr<T>;
 

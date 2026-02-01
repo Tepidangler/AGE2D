@@ -5,8 +5,9 @@
 #pragma once
 #ifndef AGE2D_WIDGETSTACK_H
 #define AGE2D_WIDGETSTACK_H
-#include "UI/Public/Widget.h"
+#include "UI/Public/ScriptableWidget.h"
 #include "Core/Public/Core.h"
+#include "Core/Public/DeltaTime.h"
 
 namespace AGE
 {
@@ -16,21 +17,21 @@ namespace AGE
 		WidgetStack() = default;
 		~WidgetStack() = default;
 
-		void PushWidgetToStack(Ref<Widget> Widget);
-		void PopWidgetFromStack(Ref<Widget> Widget);
+		void PushWidgetToStack(Ref<ScriptableWidget> Widget);
+		void PopWidgetFromStack(Ref<ScriptableWidget> Widget);
 
-		Ref<Widget> GetActiveWidget() {return m_Widgets.front();}
+		Ref<ScriptableWidget> GetActiveWidget() {return m_Widgets.front();}
 
-		void OnUpdate(TimeStep DeltaTime);
+		void OnTopUpdate(TimeStep DeltaTime);
 
-		std::deque<Ref<Widget>>::iterator begin() {return m_Widgets.begin();}
-		std::deque<Ref<Widget>>::iterator end() {return m_Widgets.end();}
-		std::deque<Ref<Widget>>::const_iterator begin() const {return m_Widgets.cbegin();}
-		std::deque<Ref<Widget>>::const_iterator end() const {return m_Widgets.cend();}
+		std::deque<Ref<ScriptableWidget>>::iterator begin() {return m_Widgets.begin();}
+		std::deque<Ref<ScriptableWidget>>::iterator end() {return m_Widgets.end();}
+		std::deque<Ref<ScriptableWidget>>::const_iterator begin() const {return m_Widgets.cbegin();}
+		std::deque<Ref<ScriptableWidget>>::const_iterator end() const {return m_Widgets.cend();}
 
 
 	private:
-		std::deque<Ref<Widget>> m_Widgets;
+		std::deque<Ref<ScriptableWidget>> m_Widgets;
 	};
 } // AGE
 

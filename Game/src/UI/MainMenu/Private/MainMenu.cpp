@@ -6,9 +6,9 @@
 
 namespace Proj
 {
-	MainMenu::MainMenu(const std::string& Name)
+	void MainMenu::OnInit(/*const std::string& Name*/)
 	{
-		m_Name = Name;
+		//m_Name = Name;
 		m_UIComponents.emplace_back(AGE::CreateRef<AGE::TextBoxComponent>("MainMenuTextBox"));
 		m_UIComponents.back()->As<AGE::TextBoxComponent>()->m_StringProperties.Text = "This is the Main Menu";
 		m_UIComponents.back()->As<AGE::TextBoxComponent>()->m_StringProperties.TextFont = AGE::Font::GetDefault();
@@ -18,16 +18,29 @@ namespace Proj
 		m_UIComponents.back()->As<AGE::TextBoxComponent>()->m_BoxProperties.Scale = {15.f,3.f,1.f};
 	}
 
-	MainMenu::~MainMenu()
+	void MainMenu::OnConstruct()
 	{
+		ScriptableWidget::OnConstruct();
+	}
+
+
+	void MainMenu::OnDestroy()
+	{
+		ScriptableWidget::OnDestroy();
 		for (auto& UIComponent : m_UIComponents)
 		{
 			UIComponent.reset();
 		}
 	}
 
+	void MainMenu::Reset()
+	{
+		ScriptableWidget::Reset();
+	}
+
 	void MainMenu::OnUpdate(AGE::TimeStep DeltaTime)
 	{
+		ScriptableWidget::OnUpdate(DeltaTime);
 		for (auto& UIComponent : m_UIComponents)
 		{
 			UIComponent->OnUpdate(DeltaTime);
@@ -40,6 +53,11 @@ namespace Proj
 
 		Dispatcher.Dispatch<AGE::SceneChangedEvent>(BIND_EVENT_FN(MainMenu::OnSceneChanged));
 		Dispatcher.Dispatch<AGE::WindowResizeEvent>(BIND_EVENT_FN(MainMenu::OnWindowResize));
+
+		for (auto& Comp : m_UIComponents)
+		{
+			Comp->OnEvent(Event);
+		}
 	}
 
 	bool MainMenu::OnSceneChanged(AGE::SceneChangedEvent &Event)

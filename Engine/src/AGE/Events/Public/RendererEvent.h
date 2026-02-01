@@ -27,4 +27,16 @@ namespace AGE
 	private:
 		WindowsWindow* m_Window;
 	};
+
+	class RenderUIEvent : public Event
+	{
+	public:
+		RenderUIEvent(TimeStep DeltaTime)
+			:m_DeltaTime(DeltaTime){}
+
+		inline TimeStep GetDeltaTime() const { return m_DeltaTime; }
+		TimeStep m_DeltaTime;
+		EVENT_CLASS_TYPE(RenderUI)
+		EVENT_CLASS_CATEGORY(EventCategoryApplication)
+	};
 }

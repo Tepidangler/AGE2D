@@ -5,6 +5,7 @@
 #include "../Public/UiEditorWindow.h"
 #include "Core/Public/Colors.h"
 #include "Editor_ImGui/Public/Dockspace.h"
+#include <algorithm>
 #include <rttr/type>
 
 namespace AGE
@@ -37,10 +38,20 @@ namespace AGE
 		{
 			if (ImGui::MenuItem("Open Widget"))
 			{
+				std::string FilePath = AGE::FileDialogs::OpenFile("Widget (*.AGEWidget)\0*.AGEWidget\0");
+				if (!FilePath.empty())
+				{
+					LoadWidget(FilePath);
+				}
 
 			}
 			if (ImGui::MenuItem("Save Widget"))
 			{
+				std::string FilePath = AGE::FileDialogs::SaveFile("Widget (*.AGEWidget)\0*.AGEWidget\0");
+				if (!FilePath.empty())
+				{
+					SaveWidget(FilePath);
+				}
 
 			}
 			ImGui::EndMenu();
@@ -48,6 +59,52 @@ namespace AGE
 
 
 		ImGui::EndMenuBar();
+	}
+
+	void UIEditorWindow::LoadWidget(const std::filesystem::path &Path)
+	{
+		AGE::FileStreamReader Reader(Path);
+		std::string Header{};
+		uint16_t Version{};
+		size_t NumberOfComponents{};
+		Reader.ReadString(Header); // Header
+		if (Header != "AGEWidget")
+		{
+			AGE::CoreLogger::Error("Attempted to load invalid Widget file. Canceling Load!");
+			return;
+		}
+		Reader.ReadRaw<uint16_t>(Version);
+		if (Version < 100)
+		{
+			AGE::CoreLogger::Error("Attempted to load invalid Widget file. Canceling Load!");
+			return;
+		}
+
+		Reader.ReadRaw<size_t>(NumberOfComponents);
+		m_UIComponents.resize(NumberOfComponents);
+
+		for (int i  = 0; i < NumberOfComponents; ++i)
+		{
+			UIComponentType Type{};
+			Reader.ReadObject<UIComponentType>(Type);
+			m_UIComponents[i] = UIComponent::Create("DEFAULT",Type);
+			m_UIComponents[i]->CallDeserialize(&Reader);
+		}
+
+	}
+
+	void UIEditorWindow::SaveWidget(const std::filesystem::path &Path)
+	{
+		AGE::FileStreamWriter Writer(Path);
+		Writer.WriteString("AGEWidget"); // Header
+		Writer.WriteRaw<uint16_t>(100); // Version Number (100 == 1.0.0)
+		Writer.WriteRaw<size_t>(m_UIComponents.size());
+		std::for_each(m_UIComponents.begin(), m_UIComponents.end(),[&](Ref<UIComponent> Comp)
+		{
+			Writer.WriteObject<UIComponentType>(Comp->GetType());
+			Comp->CallSerialize(&Writer);
+
+		});
 	}
 
 

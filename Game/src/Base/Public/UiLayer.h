@@ -21,10 +21,18 @@ namespace Proj
 
 
 	private:
+		AGE::EWidgetStack m_TopWidgetStack = AGE::EWidgetStack::INVALID;
 		AGE::WidgetStack m_ModalStack;
 		AGE::WidgetStack m_GameStack;
 		AGE::WidgetStack m_MenuStack;
+		AGE::WidgetStack m_SplashStack;
 		AGE::EditorCamera m_EditorCamera;
+		AGE::Ref<AGE::FrameBuffer> m_FrameBuffer;
+		AGE::StringProperties m_Props;
+		AGE::TimeStep m_DT;
+
+		bool OnWidgetConstructed(AGE::WidgetConstructedEvent& E);
+		bool OnRenderUI(AGE::RenderUIEvent& E);
 	};
 } // Proj
 
