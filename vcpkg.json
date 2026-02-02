@@ -11,5 +11,24 @@
   }, {
     "name" : "simpleini",
     "version>=" : "4.22"
-  } ]
+  }, {
+    "name" : "openal-soft",
+    "version>=" : "1.25.0"
+  }, {
+    "name" : "spdlog",
+    "version>=" : "1.17.0"
+  }, {
+    "name" : "minimp3",
+    "version>=" : "2021-11-30"
+  }, {
+    "name" : "rapidcsv",
+    "version>=" : "8.90"
+  }, {
+    "name" : "box2d",
+    "version>=" : "3.1.1"
+  }, {
+    "name" : "yaml-cpp",
+    "version>=" : "0.8.0#3"
+  } ],
+  "builtin-baseline" : "6d7bf7ef2193e2d1c5798a5ff8811d533104c861"
 }

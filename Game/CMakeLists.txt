@@ -3,18 +3,17 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 
-include_directories(BEFORE 
+include_directories(BEFORE
                     "src/"
                     "../Engine/src/AGE"
                     "src/GameFramework"
                     "../Engine/src"
-                    "${INC_GLFW}" 
-                    "${INC_GLAD}" 
-                    "${INC_ImGui}" 
-                    "${INC_GLM}" 
+                    "${INC_GLFW}"
+                    "${INC_GLAD}"
+                    "${INC_ImGui}"
+                    "${INC_GLM}"
                     "${INC_STB}"
                     "${INC_Wwise}"
-                    "${INC_DX12}"
                     "${INC_BOX2C}"
                     "${INC_BOX2D}"
                     "${INC_FILEWATCH}"

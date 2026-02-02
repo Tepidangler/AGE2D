@@ -21,7 +21,6 @@ include_directories(BEFORE
                     "${INC_GLM}" 
                     "${INC_STB}"
                     "${INC_Wwise}"
-                    "${INC_DX12}"
                     "${INC_BOX2C}"
                     "${INC_BOX2D}"
                     "${INC_FILEWATCH}"

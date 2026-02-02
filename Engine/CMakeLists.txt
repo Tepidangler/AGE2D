@@ -266,8 +266,8 @@ file(GLOB HDR_FILES "${MINIMUM_HDR}"
 					"${VISUALSCRIPTING_HDR}"
                     "${UFBX_SRC}"
 					*.h)
-                    
-file(GLOB UFBXC_SRC "${UFBX_SRC}" 
+
+file(GLOB UFBXC_SRC "${UFBX_SRC}"
                     *.c)
 
 file(GLOB CPP_FILES "${ANIMATION_SRC}"
@@ -432,6 +432,7 @@ find_package(LibXml2 REQUIRED)
 find_package(ZLIB REQUIRED)
 find_package(OpenAL REQUIRED)
 find_package(RTTR CONFIG REQUIRED Core)
+find_package(OpenAL REQUIRED)
 find_path(SIMPLEINI_INCLUDE_DIRS "ConvertUTF.c")
 target_include_directories(Engine PRIVATE ${SIMPLEINI_INCLUDE_DIRS})
 
