@@ -11,8 +11,21 @@ namespace AGE
 	class HorizontalBoxComponent : public UIComponent
 	{
 	public:
-		HorizontalBoxComponent() = default;
+		HorizontalBoxComponent(const std::string& Name);
 		void OnEvent(Event& Event) override;
+
+		void CallSerialize(DataWriter* Serializer) override
+		{
+			//Serializer->WriteObject<VerticalBoxComponent>(*this);
+		}
+		void CallDeserialize(DataReader* Serializer) override
+		{
+			//Serializer->ReadObject<VerticalBoxComponent>(*this);
+		}
+		void DrawContent() override;
+
+		RTTR_ENABLE(UIComponent)
+		RTTR_REGISTRATION_FRIEND
 
 	private:
 

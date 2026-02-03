@@ -11,8 +11,18 @@ namespace AGE
 	class VerticalBoxComponent : public UIComponent
 	{
 	public:
-		VerticalBoxComponent() = default;
+		VerticalBoxComponent(const std::string& Name);
 		void OnEvent(Event& Event) override;
+
+		void CallSerialize(DataWriter* Serializer) override
+		{
+			//Serializer->WriteObject<VerticalBoxComponent>(*this);
+		}
+		void CallDeserialize(DataReader* Serializer) override
+		{
+			//Serializer->ReadObject<VerticalBoxComponent>(*this);
+		}
+		void DrawContent() override;
 
 	private:
 

@@ -4,8 +4,13 @@
 
 #include "AGEpch.hpp"
 #include "UI/Public/UiComponent.h"
+
+#include "UI/Components/Public/ButtonComponent.h"
+#include "UI/Components/Public/HorizontalBoxComponent.h"
 #include "UI/Components/Public/TextComponent.h"
 #include "UI/Components/Public/TextBoxComponent.h"
+#include "UI/Components/Public/UiImageComponent.h"
+#include "UI/Components/Public/VerticalBoxComponent.h"
 
 namespace AGE
 {
@@ -22,6 +27,22 @@ namespace AGE
 			case UIComponentType::TextBoxComponent:
 			{
 				return CreateRef<TextBoxComponent>(Name);
+				break;
+			}
+			case UIComponentType::HorizontalBoxComponent: {
+				return CreateRef<HorizontalBoxComponent>(Name);
+				break;
+			}
+			case UIComponentType::VerticalBoxComponent: {
+				return CreateRef<VerticalBoxComponent>(Name);
+				break;
+			}
+			case UIComponentType::ButtonComponent: {
+				return CreateRef<ButtonComponent>(Name);
+				break;
+			}
+			case UIComponentType::ImageComponent: {
+				return CreateRef<UIImageComponent>(Name);
 				break;
 			}
 			default:

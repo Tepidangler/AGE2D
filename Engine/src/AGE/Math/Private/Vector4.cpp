@@ -1,6 +1,8 @@
 #include "AGEpch.hpp"
 #include "Math/Public/Vector4.h"
 
+#include <shtypes.h>
+
 namespace AGE {
 	Vector4::Vector4() {
 		x = 0;
@@ -48,6 +50,13 @@ namespace AGE {
 		tmpint = std::to_integer<int>(tmpbyte);
 
 		w = ((100.f * (float)tmpint) / 255.f) * .01f;
+	}
+
+	Vector4::Vector4(const float* color) {
+		x = color[0];
+		y = color[1];
+		z = color[2];
+		w = color[3];
 	}
 
 	//void Vector4::Serialize(DataWriter *Serializer, const Vector4 &Instance)

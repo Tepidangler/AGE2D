@@ -77,6 +77,10 @@ namespace AGE {
 			return Vector2(x / scalar, y / scalar);
 		}
 
+		Vector2 operator/(const Vector2& vec) const {
+			return Vector2(x / vec.x, y / vec.y);
+		}
+
 		void operator/=(float scalar) {
 			x /= scalar;
 			y /= scalar;

@@ -151,8 +151,9 @@ namespace AGE
 				} 
 				ImGui::End();
 				ImGui::PopStyleVar();
-
+				return;
 			}
+			ImGui::End();
 			break;
 		}
 		default:
@@ -160,6 +161,8 @@ namespace AGE
 			break;
 		}
 		}
+
+		return;
 	}
 
 	void Viewport::OnOverlayRender()

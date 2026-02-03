@@ -13,13 +13,13 @@ int main(int argc, char** argv)
 	AGE::Log::Init();
 	AGE::CoreLogger::Info("Initialized AGECORE Log");
 	AGE::GameLogger::Info("Initialized AGEGame Log"); 
-	AGE_PROFILE_BEGIN_SESSION("Startup", "C:/Program Files/Alcoy Game Studio/AGE Editor/Editor/AGEProfile-Startup.json");
+	AGE_PROFILE_BEGIN_SESSION("Startup", "./AGEProfile-Startup.json");
 	auto app = AGE::CreateApp({argc, argv});
 	AGE_PROFILE_END_SESSION();
-	AGE_PROFILE_BEGIN_SESSION("Runtime", "C:/Program Files/Alcoy Game Studio/AGE Editor/Editor/AGEProfile-Runtime.json");
+	AGE_PROFILE_BEGIN_SESSION("Runtime", "./AGEProfile-Runtime.json");
 	app->Run();
 	AGE_PROFILE_END_SESSION();
-	AGE_PROFILE_BEGIN_SESSION("Shutdown", "C:/Program Files/Alcoy Game Studio/AGE Editor/Editor/AGEProfile-Shutdown.json");
+	AGE_PROFILE_BEGIN_SESSION("Shutdown", "./AGEProfile-Shutdown.json");
 	delete app;
 	AGE_PROFILE_END_SESSION();
 }

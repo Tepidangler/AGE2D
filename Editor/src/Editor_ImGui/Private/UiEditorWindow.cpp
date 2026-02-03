@@ -120,10 +120,6 @@ namespace AGE
 		m_EditorCamera = EditorCamera(30.f,1.778f,.1f,1000.f);
 		m_EditorCamera.SetProjectionType(ProjectionType::Perspective);
 		m_EditorCamera.SetViewportSize(1280.f,720.f);
-		//UIComponent* Comp = new UIComponent("Name");
-
-		//Comp->m_Name = "Name";
-
 	}
 
 	UIEditorWindow::~UIEditorWindow()

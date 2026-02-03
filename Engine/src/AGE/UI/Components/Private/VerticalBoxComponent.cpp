@@ -4,6 +4,23 @@
 
 #include "../Public/VerticalBoxComponent.h"
 
+RTTR_REGISTRATION{
+    rttr::registration::class_<AGE::VerticalBoxComponent>("VerticalBoxComponent")
+    .constructor<const std::string&>()
+    .method("OnUpdate", &AGE::VerticalBoxComponent::OnUpdate)
+    .property("BoxProperties", &AGE::VerticalBoxComponent::m_Components)(rttr::metadata("Description", "Child components attached to this box"));
+}
+
 namespace AGE
 {
+    VerticalBoxComponent::VerticalBoxComponent(const std::string &Name) {
+        m_Name = Name;
+        m_Type = UIComponentType::VerticalBoxComponent;
+    }
+
+    void VerticalBoxComponent::OnEvent(Event &Event) {
+    }
+
+    void VerticalBoxComponent::DrawContent() {
+    }
 } // AGE

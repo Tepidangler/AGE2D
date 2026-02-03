@@ -107,7 +107,7 @@ namespace AGE
 
 	bool Database::Login(const std::string& Username, const std::string& Password, const std::string& Host, uint16_t PortNumber)
 	{
-		const std::string ConnectionString = std::vformat("user= {} password= {} host= {} port= {}", std::make_format_args<std::format_context,const std::string, const std::string,const std::string,uint16_t>(Username, Password,Host, PortNumber));
+		const std::string ConnectionString = std::vformat("user= {} password= {} host= {} port= {}", std::make_format_args(Username, Password,Host, PortNumber));
 		m_Connections.emplace("NoDB", CreateRef<pqxx::connection>(ConnectionString));
 		if (m_Connections.at("NoDB")->is_open())
 		{
@@ -123,7 +123,7 @@ namespace AGE
 	bool Database::ConnectToDatabase(const std::string &DBName, const std::string& Username, const std::string& Password, const std::string& Host, uint16_t PortNumber)
 	{
 		bool Connected = false;
-		const std::string ConnectionString = std::vformat("dbname= {} user= {} password= {} host= {} port= {}", std::make_format_args<std::format_context,const std::string,const std::string,const std::string,const std::string, uint16_t>( DBName, Username, Password, Host, PortNumber));
+		const std::string ConnectionString = std::vformat("dbname= {} user= {} password= {} host= {} port= {}", std::make_format_args( DBName, Username, Password, Host, PortNumber));
 		m_Connections.emplace(DBName, CreateRef<pqxx::connection>(ConnectionString));
 		if (m_Connections.at(DBName)->is_open())
 		{
@@ -234,7 +234,7 @@ namespace AGE
 		std::vector<GameFramework::EnemyStats> Fields;
 		pqxx::result r = txn.exec(Query);
 		size_t row = std::size(r);
-		size_t column = r.columns();
+
 		for (int i = 0; i < row; i++)
 		{
 			pqxx::row const Entry = r[i];

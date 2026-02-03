@@ -103,6 +103,8 @@ namespace AGE
 
 		Ref<Project>& GetProject() { return m_Project; }
 
+		const Vector2& GetFramebufferSize() {return m_FramebufferSize; }
+
 		void SetProject(Ref<Project> Proj) { m_Project = Proj; }
 
 		void GetDirectXErrorMessages();
@@ -139,6 +141,8 @@ namespace AGE
 		AppConfig m_AppConfig;
 
 		static App* s_Instance;
+
+		Vector2 m_FramebufferSize = {1280.f, 720.f};
 
 		float m_CurrentFrame;
 		TimeStep m_DeltaTime;

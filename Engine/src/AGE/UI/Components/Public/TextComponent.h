@@ -23,16 +23,16 @@ namespace AGE
 		StringProperties m_StringProperties;
 		void OnUpdate(TimeStep DeltaTime);
 		void OnEvent(Event& Event) override;
-		void CallSerialize(DataWriter* Serializer)
+		void CallSerialize(DataWriter* Serializer) override
 		{
 			Serializer->WriteObject<TextComponent>(*this);
 		}
-		void CallDeserialize(DataReader* Serializer)
+		void CallDeserialize(DataReader* Serializer) override
 		{
 			Serializer->ReadObject<TextComponent>(*this);
 		}
-		void DrawFontSelectionComboBox();
-		void DrawContent();
+		void DrawFontSelectionComboBox() override;
+		void DrawContent() override;
 
 		static void Serialize(DataWriter* Serializer, const TextComponent& Instance)
 		{

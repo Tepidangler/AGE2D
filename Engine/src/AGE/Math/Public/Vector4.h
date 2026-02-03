@@ -1,8 +1,5 @@
 #ifndef VECTOR_4_H
 #define VECTOR_4_H
-
-
-
 #endif // !VECTOR_4_H
 
 #pragma once
@@ -26,6 +23,7 @@ namespace AGE {
 		Vector4(glm::vec4 vec);
 		Vector4(float a, float b, float c, float d);
 		Vector4(uint8_t a, uint8_t b, uint8_t c, uint8_t d);
+		Vector4(const float* color);
 
 		//static void Serialize(DataWriter* Serializer, const Vector4& Instance);
 		//static void Deserialize(DataReader* Serializer, Vector4& Instance);
@@ -92,6 +90,14 @@ namespace AGE {
 			w = 1.f;
 		}
 
+#if 0
+		void operator=(const float* color) {
+			x = color[0];
+			y = color[1];
+			z = color[2];
+			w = color[3];
+		}
+#endif
 		Vector4 operator+(const Vector4& vec) const {
 			return Vector4(x + vec.x, y + vec.y, z + vec.z, vec.w);
 		}

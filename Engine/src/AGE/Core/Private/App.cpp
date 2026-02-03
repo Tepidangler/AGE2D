@@ -432,6 +432,7 @@ namespace AGE
 	bool App::OnFramebufferResize(FramebufferResizeEvent& E)
 	{
 		Renderer::OnFramebufferResize(E.GetWidth(), E.GetHeight());
+		m_FramebufferSize = {static_cast<float>(E.GetWidth()), static_cast<float>(E.GetHeight())};
 		return false;
 	}
 

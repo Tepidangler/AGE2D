@@ -43,6 +43,7 @@ namespace AGE
 		virtual void SetVSync(bool Enabled) = 0;
 		virtual bool IsVSync() const = 0;
 
+		virtual Vector2 GetMousePos() = 0;
 		virtual void* GetNativeWindow() const = 0;
 		inline virtual HWND GetWin32Window() = 0;
 

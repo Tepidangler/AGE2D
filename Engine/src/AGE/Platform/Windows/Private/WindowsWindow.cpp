@@ -46,6 +46,13 @@ namespace AGE
 		Shutdown();
 	}
 
+	Vector2 WindowsWindow::GetMousePos()
+	{
+		double x, y;
+		glfwGetCursorPos(m_Window,&x, &y);
+		return {static_cast<float>(x),static_cast<float>(y)};
+	}
+
 	void WindowsWindow::JoystickCallback(int jid, int event)
 	{
 

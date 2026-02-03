@@ -23,7 +23,10 @@ namespace AGE
 	{
 		enum Value : uint16_t
 		{
-			TextComponent,TextBoxComponent
+			TextComponent,TextBoxComponent,
+			HorizontalBoxComponent,VerticalBoxComponent,
+			ButtonComponent,
+			ImageComponent
 		};
 
 		UIComponentType() = default;
@@ -90,6 +93,22 @@ namespace AGE
 					return "TextBoxComponent";
 					break;
 				}
+				case HorizontalBoxComponent: {
+					return "HorizontalBoxComponent";
+					break;
+				}
+				case VerticalBoxComponent: {
+					return "VerticalBoxComponent";
+					break;
+				}
+				case ButtonComponent: {
+					return "ButtonComponent";
+					break;
+				}
+				case ImageComponent: {
+					return "ImageComponent";
+					break;
+				}
 			}
 		}
 
@@ -105,6 +124,22 @@ namespace AGE
 				case TextBoxComponent:
 				{
 					return "TextBoxComponent";
+					break;
+				}
+				case HorizontalBoxComponent: {
+					return "HorizontalBoxComponent";
+					break;
+				}
+				case VerticalBoxComponent: {
+					return "VerticalBoxComponent";
+					break;
+				}
+				case ButtonComponent: {
+					return "ButtonComponent";
+					break;
+				}
+				case ImageComponent: {
+					return "ImageComponent";
 					break;
 				}
 			}

@@ -33,6 +33,9 @@ namespace AGE
 		std::string m_CurrentTexture;
 		std::vector<std::string> m_TextureNames;
 		QuadProperties m_Properties{};
+
+		RTTR_ENABLE(UIComponent)
+		RTTR_REGISTRATION_FRIEND
 	};
 } // AGE
 

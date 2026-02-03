@@ -38,17 +38,18 @@ namespace AGE
 		bool IsVSync() const override;
 		void ProcessJoystickInput();
 
-		inline static WindowsWindow& Get() { return *s_Window; }
-		inline virtual void* GetNativeWindow() const { return m_Window; }
-		inline virtual HWND GetWin32Window() { return m_Win32Window; }
+		static WindowsWindow& Get() { return *s_Window; }
+		void* GetNativeWindow() const override { return m_Window; }
+		HWND GetWin32Window() override { return m_Win32Window; }
+		Vector2 GetMousePos() override;
 
-		virtual GraphicsContext* GetGraphicsContext() override { return m_Context.get(); }
+		GraphicsContext* GetGraphicsContext() override { return m_Context.get(); }
 
 		static void JoystickCallback(int JID, int Event);
 
-		virtual void SwitchRenderer();
+		void SwitchRenderer() override;
 
-		virtual void RebuildWindow();
+		void RebuildWindow() override;
 
 		void SetWindowIcon(const std::filesystem::path& Path) override;
 

@@ -6,11 +6,18 @@
 
 #include "Render/Public/Renderer2D.h"
 
+RTTR_REGISTRATION{
+	rttr::registration::class_<AGE::UIImageComponent>("ImageComponent")
+	.constructor<const std::string&>()
+	.method("OnUpdate", &AGE::UIImageComponent::OnUpdate)
+	.property("Image", &AGE::UIImageComponent::m_Image)(rttr::metadata("Description", "Properties related to box surrounding the text"));
+}
 namespace AGE
 {
 	UIImageComponent::UIImageComponent(const std::string &Name)
 	{
 		m_Name = Name;
+		m_Type = UIComponentType::ImageComponent;
 		std::unordered_map<UUID, Ref<Texture2D>> TextureMap = AssetManager::Get().GetAssetRegistry()->GetTextures();
 
 		std::for_each(TextureMap.begin(), TextureMap.end(),[&](const std::pair<UUID, Ref<Texture2D>>& pair)
