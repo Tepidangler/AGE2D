@@ -45,6 +45,8 @@ namespace AGE
 		virtual UUID GetID() { return m_Entity.GetUUID(); }
 		virtual bool IsVisible() {return bIsVisible;}
 		virtual void SetVisibility(bool Visibility) { bIsVisible = Visibility; }
+		RTTR_ENABLE()
+		RTTR_REGISTRATION_FRIEND
 
 	protected:
 		virtual void OnInit() {}

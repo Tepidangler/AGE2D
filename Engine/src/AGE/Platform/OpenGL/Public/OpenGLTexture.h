@@ -22,6 +22,7 @@ namespace AGE
 		virtual uint32_t GetWidth() const override { return (uint32_t)m_Width;}
 
 		virtual uint32_t GetHeight() const override { return (uint32_t)m_Height; }
+		std::pair<uint8_t*, size_t> GetTextureData() override {return m_ImageData;}
 		virtual void SetData(void* Data, uint32_t Size) override;
 
 		virtual uint32_t GetNrChannels() const { return (uint32_t)m_nrChannels; }
@@ -49,6 +50,7 @@ namespace AGE
 		uint64_t m_AssetID;
 		int m_Width,m_Height,m_nrChannels;
 		TextureSpecification m_Specification;
+		std::pair<uint8_t*,size_t> m_ImageData = {nullptr, 0};
 
 		GLenum m_InternalFormat, m_DataFormat;
 

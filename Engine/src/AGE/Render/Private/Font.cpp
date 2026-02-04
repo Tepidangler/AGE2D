@@ -7,6 +7,9 @@
 #include "msdf-atlas-gen.h"
 #include "FontGeometry.h"
 #include "GlyphGeometry.h"
+
+#include "Core/Public/Buffer.h"
+
 #include "Render/Public/MSDFData.h"
 
 namespace AGE
@@ -44,6 +47,14 @@ namespace AGE
 	Font::Font(const std::filesystem::path& FontPath)
 		:m_Data(new MSDFData())
 	{
+		std::filesystem::path Path = FontPath;
+		const std::string FontName = Utils::EngineStatics::GetFilename(Path);
+		const AppConfig& Config = App::Get().GetAppConfig();
+		if (std::filesystem::exists(Config.EditorAssetPath/std::vformat("Fonts/AGEFonts/{}.AGEfont", std::make_format_args(FontName))))
+		{
+			LoadFont(FontName);
+			return;
+		}
 		msdfgen::FreetypeHandle* FT = msdfgen::initializeFreetype();
 
 		AGE_CORE_ASSERT(FT, "Unable to Initialize FreeType!");
@@ -61,7 +72,7 @@ namespace AGE
 			uint32_t Begin, End;
 		};
 
-		static const CharsetRange CharsetRanges[] = { { 0x0020, 0x00FF } };
+		static constexpr CharsetRange CharsetRanges[] = { { 0x0020, 0x00FF } };
 
 		msdf_atlas::Charset CharSet;
 
@@ -116,18 +127,62 @@ namespace AGE
 				Glyph.edgeColoring(msdfgen::edgeColoringInkTrap, DEFAULT_ANGLE_THRESHOLD, GlyphSeed);
 			}
 		}
-		std::filesystem::path Path = FontPath;
+
 		m_AtlasTexture = CreateAndCacheAtlas<uint8_t, float, 3, msdf_atlas::msdfGenerator>(Utils::EngineStatics::GetFilename(Path), (float)EmSize, m_Data->Glyphs, m_Data->FontGeometry, width, height);
 		m_AtlasTexture->SetTextureFilePath(FontPath.string());
+		SaveFont();
 
 		msdfgen::destroyFont(Font);
 		msdfgen::deinitializeFreetype(FT);
+		m_AtlasTexture.reset();
 
 	}
 	Font::~Font()
 	{
 		delete m_Data;
 	}
+
+	void Font::SaveFont() const
+	{
+		const AppConfig& Config = App::Get().GetAppConfig();
+		const std::string& FileName = m_AtlasTexture->GetName();
+		FileStreamWriter FontData(Config.EditorAssetPath/std::vformat("Fonts/AGEFonts/{}.AGEfont", std::make_format_args(FileName)));
+
+		FontData.WriteString("AGEFont");
+		FontData.WriteRaw<uint16_t>(1);
+		TextureSpecification FontSpec = m_AtlasTexture->GetSpecification();
+		FontData.WriteObject<TextureSpecification>(FontSpec);
+		Buffer TextureBytes(m_AtlasTexture->GetTextureData().first, m_AtlasTexture->GetTextureData().second);
+		FontData.WriteBuffer(TextureBytes);
+	}
+
+	void Font::LoadFont(const std::string& FontName)
+	{
+		const AppConfig& Config = App::Get().GetAppConfig();
+		const std::string& FileName = FontName;
+		FileStreamReader FontData(Config.EditorAssetPath/std::vformat("Fonts/AGEFonts/{}.AGEfont", std::make_format_args(FileName)));
+
+		std::string Header;
+		FontData.ReadString(Header);
+		if (Header.compare("AGEFont") != 0)
+		{
+			CoreLogger::Error("Font File is corrupted");
+			return;
+		}
+		uint16_t version; //While not in this particular version, in other versions of this engine, these version numbers are subject to change, so we write them so we can easily make our files backwards compatible
+		FontData.ReadRaw<uint16_t>(version);
+		TextureSpecification FontSpec{};
+		FontData.ReadObject<TextureSpecification>(FontSpec);
+		size_t Size;
+		FontData.ReadRaw<size_t>(Size);
+		Buffer TextureBytes;
+		TextureBytes.Allocate(Size);
+		FontData.ReadBuffer((char*)TextureBytes.Data, TextureBytes.Size);
+		m_AtlasTexture = Texture2D::Create(FontSpec);
+		m_AtlasTexture->SetData(TextureBytes.Data, TextureBytes.Size);
+		CoreLogger::Info("Loaded Font {}", FontName);
+	}
+
 	Ref<Font> Font::GetDefault()
 	{
 		static Ref<Font> DefaultFont;

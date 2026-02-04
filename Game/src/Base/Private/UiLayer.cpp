@@ -18,10 +18,6 @@ namespace Proj
 
 	void UILayer::Init()
 	{
-		m_Props.Text = "Assalamu Alaykum!";
-		m_Props.TextFont = AGE::Font::GetDefault();
-		m_Props.FontSize = 5.0;
-
 	}
 
 	void UILayer::OnUpdate(AGE::TimeStep DeltaTime)
@@ -92,7 +88,6 @@ namespace Proj
 
 	bool UILayer::OnRenderUI(AGE::RenderUIEvent &E)
 	{
-		AGE::Renderer2D::DrawString(m_Props);
 		switch (m_TopWidgetStack)
 		{
 			case AGE::EWidgetStack::Menu:

@@ -251,3 +251,4 @@ _deps
 !/cmake-build-relwithdebinfo---vs/
 
 !/cmake-build-relwithdebinfo---vsclang/
+!/Editor/imgui.ini

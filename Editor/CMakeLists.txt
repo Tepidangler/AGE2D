@@ -114,6 +114,8 @@ add_executable(Editor ${CPP_FILES} ${HDR_FILES}
         src/Editor_Core/Public/NewProjectLayer.h
         src/Editor_ImGui/Private/UiEditorWindow.cpp
         src/Editor_ImGui/Public/UiEditorWindow.h
+        src/Editor_Core/Private/CodeGen.cpp
+        src/Editor_Core/Public/CodeGen.h
 )
 
 target_compile_definitions(Editor PUBLIC 

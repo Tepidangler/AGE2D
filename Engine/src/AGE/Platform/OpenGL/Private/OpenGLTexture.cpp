@@ -130,6 +130,7 @@ namespace AGE
 			Data = stbi_load(Path.c_str(), &m_Width, &m_Height, &m_nrChannels, 0);
 		}
 		AGE_CORE_ASSERT(Data, "Unable to Load Image");
+		m_ImageData = {Data, ((m_Width * m_Height) * m_nrChannels)};
 
 		GLenum InternalFormat = 0, DataFormat = 0;
 		if (m_nrChannels == 4)
@@ -314,6 +315,12 @@ namespace AGE
 		uint32_t bpc = m_DataFormat == GL_RGBA ? 4 : 3; //bytes per channel
 		AGE_CORE_ASSERT(Size == m_Width * m_Height * bpc, "Size Data must be entire texture!");
 		glTextureSubImage2D(m_TextureID, 0, 0, 0, m_Width, m_Height, m_DataFormat, GL_UNSIGNED_BYTE, Data);
+		if (!m_ImageData.first)
+		{
+			m_ImageData.first = new uint8_t[Size];
+			memcpy_s(m_ImageData.first,Size, Data, Size);
+			m_ImageData.second = Size;
+		}
 	}
 
 }

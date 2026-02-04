@@ -119,7 +119,6 @@ namespace AGE
 
 		void LoadScenes();
 		void LoadShaders();
-		void LoadFonts();
 		void LoadTextures();
 		void LoadSoundBanks();
 		void LoadAsepriteFiles();

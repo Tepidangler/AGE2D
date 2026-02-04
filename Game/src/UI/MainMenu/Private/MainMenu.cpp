@@ -4,6 +4,11 @@
 
 #include "../Public/MainMenu.h"
 
+RTTR_REGISTRATION{
+	rttr::registration::class_<Proj::MainMenu>("MainMenu")
+	.property("Components", &Proj::MainMenu::m_UIComponents)(rttr::metadata("Description", "Components that live inside of this widget"));
+}
+
 namespace Proj
 {
 	void MainMenu::OnInit(/*const std::string& Name*/)

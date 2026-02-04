@@ -4,11 +4,11 @@
 #include "Core/Public/UUID.h"
 #include "Camera/Public/EditorCamera.h"
 #include "TileMap/Public/TileMapImporter.h"
-#include "Serializers/Public/DataWriter.h"
-#include "Serializers/Public/DataReader.h"
 
 namespace AGE
 {
+	class DataReader;
+	class DataWriter;
 	class Entity;
 	class ScriptableEntity;
 	class World;
@@ -20,19 +20,9 @@ namespace AGE
 		std::string Flags = "";
 		const char* AssetMap;
 
-		static void Serialize(DataWriter* Serializer, const SceneInfo& Data)
-		{
-			Serializer->WriteRaw<size_t>(sizeof(*Data.AssetMap));
-			Serializer->WriteString(Data.Flags);
-			Serializer->WriteRaw<const char*>(Data.AssetMap);
-		}
+		static void Serialize(DataWriter* Serializer, const SceneInfo& Data);
 
-		static void Deserialize(DataReader* Deserializer, SceneInfo& Data)
-		{
-			Deserializer->ReadRaw<size_t>(Data.Size);
-			Deserializer->ReadString(Data.Flags);
-			Deserializer->ReadRaw<const char*>(Data.AssetMap);
-		}
+		static void Deserialize(DataReader* Deserializer, SceneInfo& Data);
 	};
 
 
@@ -122,22 +112,9 @@ namespace AGE
 
 	public:
 
-		static void Serialize(DataWriter* Serializer, const Scene& Data)
-		{
-			Serializer->WriteRaw<size_t>(Data.m_Name.size());
-			Serializer->WriteString(Data.m_Name);
-			Serializer->WriteRaw<uint32_t>(Data.m_ViewportWidth);
-			Serializer->WriteRaw<uint32_t>(Data.m_ViewportHeight);
-			Serializer->WriteObject<SceneInfo>(Data.m_SceneInfo);
-		}
+		static void Serialize(DataWriter* Serializer, const Scene& Data);
 
-		static void Deserialize(DataReader* Deserializer, Scene& Data)
-		{
-			Deserializer->ReadString(Data.m_Name);
-			Deserializer->ReadRaw<uint32_t>(Data.m_ViewportWidth);
-			Deserializer->ReadRaw<uint32_t>(Data.m_ViewportHeight);
-			Deserializer->ReadObject<SceneInfo>(Data.m_SceneInfo);
-		}
+		static void Deserialize(DataReader* Deserializer, Scene& Data);
 
 	};
 

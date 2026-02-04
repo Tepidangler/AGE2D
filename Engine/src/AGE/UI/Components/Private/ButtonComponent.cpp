@@ -35,10 +35,13 @@ namespace AGE
 	void ButtonComponent::OnUpdate(TimeStep DeltaTime) {
 		UIComponent::OnUpdate(DeltaTime);
 
-		QuadProperties QuadProps;
-		QuadProps.Transform = Math::MakeTransform(m_BoxProperties.Position,m_BoxProperties.Rotation,m_BoxProperties.Scale);
-		QuadProps.Color = m_BoxProperties.TintColor;
-		Renderer2D::DrawQuad(QuadProps);
+		if (m_CompProperties.Visible)
+		{
+			QuadProperties QuadProps;
+			QuadProps.Transform = Math::MakeTransform(m_BoxProperties.Position,m_BoxProperties.Rotation,m_BoxProperties.Scale);
+			QuadProps.Color = m_BoxProperties.TintColor;
+			Renderer2D::DrawQuad(QuadProps);
+		}
 	}
 
 	void ButtonComponent::OnEvent(Event &Event)

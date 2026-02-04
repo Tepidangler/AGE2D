@@ -146,6 +146,10 @@ RTTR_REGISTRATION
 	rttr::registration::enumeration<AGE::UIComponentType::Value>("UIComponentType")
 	(
 		rttr::value("TextComponent", AGE::UIComponentType::Value::TextComponent),
-		rttr::value("TextBoxComponent", AGE::UIComponentType::Value::TextBoxComponent)
+		rttr::value("TextBoxComponent", AGE::UIComponentType::Value::TextBoxComponent),
+		rttr::value("HorizontalBoxComponent", AGE::UIComponentType::Value::HorizontalBoxComponent),
+		rttr::value("VerticalBoxComponent", AGE::UIComponentType::Value::VerticalBoxComponent),
+		rttr::value("ButtonComponent", AGE::UIComponentType::Value::ButtonComponent),
+		rttr::value("ImageComponent", AGE::UIComponentType::Value::ImageComponent)
 	);
 }

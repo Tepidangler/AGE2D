@@ -12,6 +12,7 @@ namespace AGE
 	{
 	public:
 		VerticalBoxComponent(const std::string& Name);
+		void OnUpdate(TimeStep DeltaTime) override;
 		void OnEvent(Event& Event) override;
 
 		void CallSerialize(DataWriter* Serializer) override
@@ -23,6 +24,8 @@ namespace AGE
 			//Serializer->ReadObject<VerticalBoxComponent>(*this);
 		}
 		void DrawContent() override;
+		RTTR_ENABLE(UIComponent)
+		RTTR_REGISTRATION_FRIEND
 
 	private:
 

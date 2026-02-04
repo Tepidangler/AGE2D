@@ -11,10 +11,6 @@ namespace Proj
 	class MainMenu : public AGE::ScriptableWidget
 	{
 	public:
-#if 0
-		MainMenu(const std::string& Name);
-		~MainMenu();
-#endif
 		void OnUpdate(AGE::TimeStep DeltaTime) override;
 
 		void SetVisibility(bool Visibility) override {bIsVisible = Visibility;}
@@ -22,6 +18,8 @@ namespace Proj
 		void OnEvent(AGE::Event& Event) override;
 
 		bool OnSceneChanged(AGE::SceneChangedEvent& Event);
+		RTTR_ENABLE(AGE::ScriptableWidget)
+		RTTR_REGISTRATION_FRIEND
 
 	protected:
 		void OnInit() override;
@@ -29,10 +27,7 @@ namespace Proj
 		void OnDestroy() override;
 		void Reset() override;
 
-
 	private:
-
-
 		bool OnWindowResize(AGE::WindowResizeEvent& Event);
 	};
 } // Proj

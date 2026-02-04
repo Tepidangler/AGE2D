@@ -112,4 +112,22 @@ namespace AGE
 		AGE_CORE_ASSERT(false, "As() Failed!");
 		return nullptr;
 	}
+
+	void TextureSpecification::Serialize(DataWriter* Serializer, const TextureSpecification& Instance)
+	{
+		Serializer->WriteRaw<uint32_t>(Instance.Width);
+		Serializer->WriteRaw<uint32_t>(Instance.Height);
+		Serializer->WriteRaw<uint8_t>((uint8_t)Instance.Format);
+		Serializer->WriteRaw<bool>(Instance.GenerateMips);
+	}
+
+	void TextureSpecification::Deserialize(DataReader* Serializer, TextureSpecification& Instance)
+	{
+		Serializer->ReadRaw<uint32_t>(Instance.Width);
+		Serializer->ReadRaw<uint32_t>(Instance.Height);
+		uint8_t format;
+		Serializer->ReadRaw<uint8_t>(format);
+		Instance.Format = (ImageFormat)format;
+		Serializer->ReadRaw<bool>(Instance.GenerateMips);
+	}
 }

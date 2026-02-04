@@ -6,8 +6,8 @@
 RTTR_REGISTRATION{
     rttr::registration::class_<AGE::HorizontalBoxComponent>("HorizontalBoxComponent")
     .constructor<const std::string&>()
-    .method("OnUpdate", &AGE::HorizontalBoxComponent::OnUpdate)
-    .property("Children", &AGE::HorizontalBoxComponent::m_Components)(rttr::metadata("Description", "Child components attached to this box"));
+    .method("OnUpdate", &AGE::HorizontalBoxComponent::OnUpdate);
+    //.property("Children", &AGE::HorizontalBoxComponent::m_Components)(rttr::metadata("Description", "Child components attached to this box"));
 }
 namespace AGE
 {
@@ -15,6 +15,11 @@ namespace AGE
     {
         m_Name = Name;
         m_Type = UIComponentType::HorizontalBoxComponent;
+    }
+
+    void HorizontalBoxComponent::OnUpdate(TimeStep DeltaTime)
+    {
+        UIComponent::OnUpdate(DeltaTime);
     }
 
     void HorizontalBoxComponent::OnEvent(Event &Event) {

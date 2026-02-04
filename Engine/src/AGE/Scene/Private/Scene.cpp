@@ -834,4 +834,35 @@ namespace AGE
 	{
 
 	}
+
+	void Scene::Serialize(DataWriter* Serializer, const Scene& Data)
+	{
+		Serializer->WriteRaw<size_t>(Data.m_Name.size());
+		Serializer->WriteString(Data.m_Name);
+		Serializer->WriteRaw<uint32_t>(Data.m_ViewportWidth);
+		Serializer->WriteRaw<uint32_t>(Data.m_ViewportHeight);
+		Serializer->WriteObject<SceneInfo>(Data.m_SceneInfo);
+	}
+
+	void Scene::Deserialize(DataReader* Deserializer, Scene& Data)
+	{
+		Deserializer->ReadString(Data.m_Name);
+		Deserializer->ReadRaw<uint32_t>(Data.m_ViewportWidth);
+		Deserializer->ReadRaw<uint32_t>(Data.m_ViewportHeight);
+		Deserializer->ReadObject<SceneInfo>(Data.m_SceneInfo);
+	}
+
+	void SceneInfo::Serialize(DataWriter* Serializer, const SceneInfo& Data)
+	{
+		Serializer->WriteRaw<size_t>(sizeof(*Data.AssetMap));
+		Serializer->WriteString(Data.Flags);
+		Serializer->WriteRaw<const char*>(Data.AssetMap);
+	}
+
+	void SceneInfo::Deserialize(DataReader* Deserializer, SceneInfo& Data)
+	{
+		Deserializer->ReadRaw<size_t>(Data.Size);
+		Deserializer->ReadString(Data.Flags);
+		Deserializer->ReadRaw<const char*>(Data.AssetMap);
+	}
 }

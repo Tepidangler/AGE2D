@@ -110,7 +110,6 @@ namespace AGE
 		{
 			Th.detach();
 		}
-		LoadFonts();
 		LoadTextures();
 		LoadShaders();
 	}
@@ -284,25 +283,6 @@ namespace AGE
 			AGE_CORE_ASSERT(false, "Renderer is not currently Implemented!")
 		}
 		}
-	}
-	void App::LoadFonts()
-	{
-		std::lock_guard<std::mutex> Lock(Mutex);
-		for (auto& F : std::filesystem::recursive_directory_iterator(m_AppConfig.EditorAssetPath.string() + "/Fonts"))
-		{
-			if (!F.is_directory() && F.path().extension().string() == ".ttf")
-			{
-				if (bProgramRunning.load())
-				{
-					AssetManager::Get().LoadFont(F);
-				}
-				else
-				{
-					break;
-				}
-			}
-		}
-		bLoadingFonts.store(false);
 	}
 	void App::LoadTextures()
 	{

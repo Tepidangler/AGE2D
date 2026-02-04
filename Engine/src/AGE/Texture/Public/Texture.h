@@ -5,7 +5,10 @@
 
 namespace AGE
 {
-	enum class ImageFormat
+	class DataReader;
+	class DataWriter;
+
+	enum class ImageFormat : uint8_t
 	{
 		None = 0,
 		R8,
@@ -25,7 +28,8 @@ namespace AGE
 		ImageFormat Format = ImageFormat::RGBA8;
 		bool GenerateMips = true;
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> SRV;
-
+		static void Serialize(DataWriter* Serializer, const TextureSpecification& Instance);
+		static void Deserialize(DataReader* Serializer, TextureSpecification& Instance);
 	public:
 		//Getters
 		ID3D11ShaderResourceView* GetSRV() const { return SRV.Get(); }
@@ -56,6 +60,7 @@ namespace AGE
 		virtual void SetName(const std::string& Name) = 0;
 		virtual std::string GetTextureFilePath() const = 0;
 		virtual void SetTextureFilePath(const std::string& Path) = 0;
+		virtual std::pair<uint8_t*, size_t> GetTextureData() = 0;
 		virtual void SetData(void* Data, uint32_t Size) = 0;
 
 

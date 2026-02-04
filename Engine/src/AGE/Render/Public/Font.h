@@ -15,6 +15,9 @@ namespace AGE
 		const MSDFData* GetMSDFData() const { return m_Data; }
 		Ref<Texture2D> GetAtlasTexture() const { return m_AtlasTexture; }
 
+		void SaveFont() const;
+		void LoadFont(const std::string& FontName);
+
 		static Ref<Font> GetDefault();
 
 	private:

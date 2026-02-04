@@ -12,6 +12,7 @@ namespace AGE
 	{
 	public:
 		HorizontalBoxComponent(const std::string& Name);
+		void OnUpdate(TimeStep DeltaTime) override;
 		void OnEvent(Event& Event) override;
 
 		void CallSerialize(DataWriter* Serializer) override
