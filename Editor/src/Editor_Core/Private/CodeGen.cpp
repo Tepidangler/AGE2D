@@ -56,8 +56,8 @@ namespace AGE
 	)";
 			std::string CN = Project::GetActive()->GetConfig().CopyrightNotice;
 			HDR = std::vformat(HDR, std::make_format_args(FileName,CN));
-			std::filesystem::path SrcPath = App::Get().GetAppConfig().GameContentPath;
-			SrcPath  = SrcPath / std::vformat("Public/{}.h", std::make_format_args(FileName));
+			std::filesystem::path SrcPath = App::Get().GetAppConfig().GameSourcePath;
+			SrcPath  = SrcPath / std::vformat("UI/Public/{}.h", std::make_format_args(FileName));
 
 			std::ofstream File(SrcPath,std::ios::trunc);
 			File << HDR;
@@ -99,8 +99,8 @@ namespace {1}
 )";
 		const std::string CN = Project::GetActive()->GetConfig().CopyrightNotice;
 		std::string buffer = std::vformat(HDR, std::make_format_args(FileName, Namespace,CN));
-		std::filesystem::path SrcPath = App::Get().GetAppConfig().GameContentPath;
-		SrcPath = SrcPath/ std::vformat("Public/{}.h", std::make_format_args(FileName));
+		std::filesystem::path SrcPath = App::Get().GetAppConfig().GameSourcePath;
+		SrcPath = SrcPath/ std::vformat("UI/Public/{}.h", std::make_format_args(FileName));
 
 		std::ofstream File(SrcPath,std::ios::trunc);
 		File << buffer;
@@ -193,8 +193,8 @@ RTTR_REGISTRATION{{
 
 		std::string CN = Project::GetActive()->GetConfig().CopyrightNotice;
 		SRC = std::vformat(SRC, std::make_format_args(FileName, CN));
-		std::filesystem::path SrcPath = App::Get().GetAppConfig().GameContentPath;
-		SrcPath = SrcPath / std::vformat("Private/{}.cpp", std::make_format_args(FileName));
+		std::filesystem::path SrcPath = App::Get().GetAppConfig().GameSourcePath;
+		SrcPath = SrcPath / std::vformat("UI/Private/{}.cpp", std::make_format_args(FileName));
 
 		std::ofstream File(SrcPath,std::ios::trunc);
 		File << SRC;
@@ -289,8 +289,8 @@ namespace {1}
 		std::string CN = Project::GetActive()->GetConfig().CopyrightNotice;
 		std::string buffer;
 		buffer = std::vformat(SRC, std::make_format_args(FileName,Namespace,CN));
-		std::filesystem::path SrcPath = App::Get().GetAppConfig().GameContentPath;
-		SrcPath = SrcPath / std::vformat("Private/{}.cpp", std::make_format_args(FileName));
+		std::filesystem::path SrcPath = App::Get().GetAppConfig().GameSourcePath;
+		SrcPath = SrcPath / std::vformat("UI/Private/{}.cpp", std::make_format_args(FileName));
 
 		std::ofstream File(SrcPath,std::ios::trunc);
 		File << buffer;

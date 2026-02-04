@@ -13,6 +13,18 @@ namespace AGE
 	{
 		INVALID,
 		Widget,
+		Actor,
+		AIController,
+		AudioController,
+		CameraController,
+		PlayerController,
+		InputComponent,
+		GameState,
+		Interactable,
+		Armor,
+		Item,
+		Weapon
+
 	};
 
 	class CodeGen

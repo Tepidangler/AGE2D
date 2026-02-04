@@ -7,13 +7,16 @@
 
 namespace AGE
 {
-	std::array<std::string, 9> Project::m_DirectoryNames = { "/Assets", "/Assets/Quests", "/Assets/InventoryDatabase", "/Assets/VisualScripting", "/Scenes", "/Shaders", "/Saves", "/src","/Config"};
+	std::array<std::string, 14> Project::m_DirectoryNames = { "/Assets", "/Assets/Quests", "/Assets/InventoryDatabase", "/Assets/VisualScripting", "/Scenes", "/Shaders", "/Saves","/Config", "/src","/src/Base","/src/Base/Private","/src/Base/Public","/src/UI/Private","/src/UI/Public"};
 	std::array<std::string, 5> Project::m_GameContDirNames = { "/Textures", "Sounds/Banks", "/Aesprite", "/Shaders", "/UI"};
 
 	void Project::WriteProjectConfig(const std::filesystem::path& Path, const std::string& ProjectName)
 	{
 		IniWriter Writer(Path.string() + "/ProjectConfig.ini");
 		Writer.Write("Paths", "GameContentPath", std::vformat("/{}/GameContent/Assets/", std::make_format_args(ProjectName)));
+		Writer.Write("Paths", "GameSourcePath", std::vformat("/{}/src/", std::make_format_args(ProjectName)));
+		Writer.Write("Paths", "GameShadersPath", std::vformat("/{}/Shaders/", std::make_format_args(ProjectName)));
+		Writer.Write("Paths", "GameScenesPath", std::vformat("/{}/Scenes/", std::make_format_args(ProjectName)));
 		Writer.SaveFile();
 
 	}
@@ -42,6 +45,36 @@ namespace AGE
 		{
 			Config.GameContentPath = std::filesystem::path(Result);
 		}
+		HasMulti = false;
+		Result = Reader.Read("Paths", "GameSourcePath", HasMulti);
+		if (HasMulti)
+		{
+			std::vector<std::string> Values = Reader.ReadAll("Paths", "GameSourcePath");
+		}
+		else
+		{
+			Config.GameSourcePath = Config.ProjectBasePath.string() + Result;
+		}
+		HasMulti = false;
+		Result = Reader.Read("Paths", "GameShadersPath", HasMulti);
+		if (HasMulti)
+		{
+			std::vector<std::string> Values = Reader.ReadAll("Paths", "GameShadersPath");
+		}
+		else
+		{
+			Config.GameShadersPath = Config.ProjectBasePath.string() + Result;
+		}
+		HasMulti = false;
+		Result = Reader.Read("Paths", "GameScenesPath", HasMulti);
+		if (HasMulti)
+		{
+			std::vector<std::string> Values = Reader.ReadAll("Paths", "GameScenesPath");
+		}
+		else
+		{
+			Config.GameScenesPath = Config.ProjectBasePath.string() + Result;
+		}
 
 	}
 
@@ -57,7 +90,7 @@ namespace AGE
 		}
 		else
 		{
-			Config.LogPath = std::filesystem::path(Result);
+			Config.LogPath = Config.ProjectBasePath.string() + Result;
 		}
 		Result.clear();
 

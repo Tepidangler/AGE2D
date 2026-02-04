@@ -58,6 +58,9 @@ namespace AGE
 		std::filesystem::path EditorAssetPath;
 		std::filesystem::path LogPath;
 		std::filesystem::path GameContentPath;
+		std::filesystem::path GameSourcePath;
+		std::filesystem::path GameShadersPath;
+		std::filesystem::path GameScenesPath;
 		std::filesystem::path DefaultFontPath;
 
 	};

@@ -32,6 +32,7 @@ namespace AGE
 
 	private:
 		std::deque<Ref<ScriptableWidget>> m_Widgets;
+		Entity m_Entity;
 	};
 } // AGE
 

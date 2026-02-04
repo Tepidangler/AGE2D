@@ -104,7 +104,7 @@ namespace AGE
 		ProjectConfig m_Config;
 		ProjectInfo m_Info;
 		std::filesystem::path m_ProjectDirectory;
-		static std::array<std::string, 9> m_DirectoryNames;
+		static std::array<std::string, 14> m_DirectoryNames;
 		static std::array<std::string, 5> m_GameContDirNames;
 		inline static Ref<Project> s_ActiveProject;
 
