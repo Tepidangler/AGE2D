@@ -18,12 +18,10 @@ namespace AGE
 	class CodeGen
 	{
 	public:
-		CodeGen() = default;
 		virtual ~CodeGen() = default;
 
-		bool CreateFile(const std::string& FileName, AssetType Type);
+		static bool CreateAsset(const std::string& FileName, AssetType Type);
 	protected:
-		virtual bool CreateFileNS(const std::string& FileName) = 0;
 		virtual bool CreateHeader(const std::string& FileName) = 0;
 		virtual bool CreateHeaderNS(const std::string& FileName, const std::string& Namespace) = 0;
 		virtual bool CreateSource(const std::string& FileName) = 0;
@@ -34,12 +32,12 @@ namespace AGE
 	{
 		public:
 		WidgetCodeGen() = default;
-		virtual ~WidgetCodeGen() = default;
+		~WidgetCodeGen() = default;
 	protected:
 		bool CreateHeader(const std::string& FileName) override;
-		virtual bool CreateHeaderNS(const std::string& FileName, const std::string& Namespace) = 0;
+		bool CreateHeaderNS(const std::string& FileName, const std::string& Namespace) override;
 		bool CreateSource(const std::string& FileName) override;
-		virtual bool CreateSourceNS(const std::string& FileName, const std::string& Namespace) = 0;
+		bool CreateSourceNS(const std::string& FileName, const std::string& Namespace) override;
 	};
 
 } // AGE

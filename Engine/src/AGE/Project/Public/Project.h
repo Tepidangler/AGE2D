@@ -6,8 +6,9 @@ namespace AGE
 	{
 		std::string Name = "Untitled";
 		std::filesystem::path StartScene;
-		
 		std::filesystem::path AssetDirectory;
+		std::string CppNameSpace = "";
+		std::string CopyrightNotice = "ADD YOUR COPYRIGHT NOTICE IN THE EDITOR WINDOW VIA PROJECT SETTINGS";
 
 	};
 

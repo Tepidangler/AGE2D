@@ -873,6 +873,8 @@ namespace AGE
 				Out << YAML::Key << "Name" << YAML::Value << Config.Name;
 				Out << YAML::Key << "StartScene" << YAML::Value << Config.StartScene.string();
 				Out << YAML::Key << "AssetDirectory" << YAML::Value << Config.AssetDirectory.string();
+				Out << YAML::Key << "CodeNamespace" << YAML::Value << Config.CppNameSpace;
+				Out << YAML::Key << "CopyrightNotice" << YAML::Value << Config.CopyrightNotice;
 				Out << YAML::Key << "AudioEngine" << YAML::Value << Info.AudioEngine;
 				Out << YAML::Key << "Renderer" << YAML::Value << Info.Renderer;
 				Out << YAML::Key << "QuestPath" << YAML::Value << Info.QuestFilepath.string();
@@ -974,6 +976,8 @@ namespace AGE
 		Config.Name = ProjectNode["Name"].as<std::string>();
 		Config.StartScene = ProjectNode["StartScene"].as<std::string>();
 		Config.AssetDirectory = ProjectNode["AssetDirectory"].as<std::string>();
+		Config.CppNameSpace = ProjectNode["CodeNamespace"].as<std::string>();
+		Config.CopyrightNotice = ProjectNode["CopyrightNotice"].as<std::string>();
 		Info.AudioEngine = ProjectNode["AudioEngine"].as<uint16_t>();
 		Info.Renderer = ProjectNode["Renderer"].as<int>();
 		Info.QuestFilepath = ProjectNode["QuestPath"].as<std::string>();

@@ -8,6 +8,8 @@
 #include "Parser/Public/FbxParser.h"
 #include <misc/cpp/imgui_stdlib.h>
 
+#include "Editor_Core/Public/CodeGen.h"
+
 namespace AGE
 {
 	namespace Utils
@@ -383,6 +385,9 @@ namespace AGE
 				//	
 				//}
 
+				if (ImGui::MenuItem("Create Widget")) {
+					CodeGen::CreateAsset("Test",AssetType::Widget);
+				}
 				if (ImGui::MenuItem("Build All Scenes"))
 				{
 					Scene::BuildAllScenes();
@@ -568,9 +573,14 @@ namespace AGE
 			bActionBindingsSynced = false;
 			if (ImGui::CollapsingHeader("Project Data"))
 			{
-				ImGui::InputText("ProjectName", &Project::GetActive()->GetConfig().Name);
+				ImGui::Text("Project Name"); ImGui::SameLine();
+				ImGui::InputText("##ProjectName", &Project::GetActive()->GetConfig().Name);
 				ImGui::Text("Audio Engine: %s", Utils::ConvertToAudioEngineName(Project::GetActive()->GetInfo().AudioEngine).c_str());
 				ImGui::Text("Graphics Renderer: %s", Utils::ConvertToRendererName(Project::GetActive()->GetInfo().Renderer).c_str());
+				ImGui::Text("Game Code C++ Namespace"); ImGui::SameLine();
+				ImGui::InputText("##GCCN", &Project::GetActive()->GetConfig().CppNameSpace);
+				ImGui::Text("Copyright Notice"); ImGui::SameLine();
+				ImGui::InputText("##CN", &Project::GetActive()->GetConfig().CopyrightNotice);
 				std::string CurrentSceneSelection;
 				if (m_SceneNames.empty())
 				{
