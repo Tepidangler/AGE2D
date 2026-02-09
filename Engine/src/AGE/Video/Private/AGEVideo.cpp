@@ -25,7 +25,7 @@ namespace AGE
         {
         case 0:
         {
-            AGE_CORE_ASSERT(false, "Headless is currently unsupported!")
+            CoreLogger::Assert(false, "Headless is currently unsupported!");
             break;
         }
         case 1:
@@ -56,10 +56,10 @@ namespace AGE
 
     void AGEVideo::PlayVideoOpenGL(const Ref<VideoSource>& Source, EditorCamera& Camera)
     {
-        AGE_CORE_ASSERT(false, "OpenGL Not Implemented!")
+        CoreLogger::Assert(false, "OpenGL Not Implemented!");
     }
     void AGEVideo::PlayVideoDX(const Ref<VideoSource>& Source)
     {
-        AGE_CORE_ASSERT(false, "Direct X Not Implemented!")
+        CoreLogger::Assert(false, "Direct X Not Implemented!");
     }
 }

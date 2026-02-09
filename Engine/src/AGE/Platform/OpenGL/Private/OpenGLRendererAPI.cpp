@@ -2,7 +2,7 @@
 #include "Platform/OpenGL/Public/OpenGLRendererAPI.h"
 
 #include <glad/glad.h>
-
+#include "Debug/Public/Instrumentor.h"
 namespace AGE
 {
 	void OpenGLRendererAPI::Init()

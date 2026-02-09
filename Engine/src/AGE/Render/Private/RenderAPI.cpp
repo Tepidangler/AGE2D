@@ -11,18 +11,18 @@ namespace AGE
 		switch ((int)s_API)
 		{
 		case 0:
-			AGE_CORE_ASSERT(false, "RendererAPI::API::None is currently not supported!");
+			CoreLogger::Assert(false, "RendererAPI::API::None is currently not supported!");
 			return nullptr;
 			break;
 		case 1:
 			return CreateScope<OpenGLRendererAPI>();
 			break;
 		default:
-			AGE_CORE_ASSERT(false, "Unknown Renderer API!");
+			CoreLogger::Assert(false, "Unknown Renderer API!");
 			return nullptr;
 			break;
 		}
-		AGE_CORE_ASSERT(false, "Unknown Renderer API!");
+		CoreLogger::Assert(false, "Unknown Renderer API!");
 		return nullptr;
 	}
 }

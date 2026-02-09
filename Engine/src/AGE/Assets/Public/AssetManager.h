@@ -292,7 +292,7 @@ namespace AGE
 			{
 			case AudioEngineType::WWiseEngine:
 			{
-				AGE_CORE_ASSERT(false, "Checking for loaded soundbanks with Wwise is not Implemented yet!")
+				CoreLogger::Assert(false, "Checking for loaded soundbanks with Wwise is not Implemented yet!");
 				return false;
 				break;
 			}

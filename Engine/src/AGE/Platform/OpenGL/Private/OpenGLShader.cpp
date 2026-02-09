@@ -2,6 +2,7 @@
 #include "Platform/OpenGL/Public/OpenGLShader.h"
 #include "glm/gtc/type_ptr.hpp"
 #include <glad/glad.h>
+#include "Debug/Public/Instrumentor.h"
 //#include <GLFW/glfw3.h>
 
 namespace AGE
@@ -203,10 +204,10 @@ namespace AGE
 		while (Pos != std::string::npos)
 		{
 			size_t EOL = Source.find_first_of("\r\n", Pos);
-			AGE_CORE_ASSERT(EOL != std::string::npos, "Syntax Error");
+			CoreLogger::Assert(EOL != std::string::npos, "Syntax Error");
 			size_t begin = Pos + TypeTokenLength + 1;
 			std::string Type = Source.substr(begin, EOL - begin);
-			AGE_CORE_ASSERT(ShaderTypeFromString(Type) , "Invalid Shader Type Specifier");
+			CoreLogger::Assert(ShaderTypeFromString(Type) , "Invalid Shader Type Specifier");
 
 			size_t NextLinePos = Source.find_first_not_of("\r\n", EOL);
 			Pos = Source.find(TypeToken, NextLinePos);
@@ -220,7 +221,7 @@ namespace AGE
 	{
 		AGE_PROFILE_FUNCTION();
 		GLuint program = glCreateProgram();
-		AGE_CORE_ASSERT(ShaderSources.size() <= 4, "Using Too Many Shaders! Only 4 Shaders Supported");
+		CoreLogger::Assert(ShaderSources.size() <= 4, "Using Too Many Shaders! Only 4 Shaders Supported");
 		std::array<GLenum,4> GLShaderIDs;
 
 		int GlShaderIDIndex = 0;
@@ -251,7 +252,7 @@ namespace AGE
 
 
 				CoreLogger::Error("Shader Error: {0}", infoLog.data());
-				AGE_CORE_ASSERT(false, "Shader Compilation Failure!");
+				CoreLogger::Assert(false, "Shader Compilation Failure!");
 
 				break;
 			}
@@ -292,7 +293,7 @@ namespace AGE
 
 					CoreLogger::Error("Shader Link Error: {0}", infoLog.data());
 
-					AGE_CORE_ASSERT(false, "Shader Link Failure!");
+					CoreLogger::Assert(false, "Shader Link Failure!");
 
 				}
 			}

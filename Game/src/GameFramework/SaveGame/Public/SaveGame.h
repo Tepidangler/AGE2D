@@ -33,7 +33,7 @@ namespace GameFramework
 		void SetGameData(const T& Data)
 		{
 			m_Data->Allocate(sizeof(T));
-			m_Data->Write((uint8_t)Data);
+			m_Data->Write((uint8_t)Data, sizeof(T));
 
 		}
 

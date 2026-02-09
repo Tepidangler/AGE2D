@@ -1,4 +1,4 @@
-#include <Core/Public/AGEpch.hpp>
+//#include <Core/Public/AGEpch.hpp>
 #include "GameState/Public/GameState.h"
 #include "GameStatics/Public/GameStatics.h"
 
@@ -9,7 +9,7 @@ namespace GameFramework
 	GameState::GameState()
 	{
 		s_GameState = this;
-		AGE_CORE_ASSERT(s_GameState, "GameState Already Exists!");
+		AGE::GameLogger::Assert(s_GameState, "GameState Already Exists!");
 
 		m_QuestManager = AGE::CreateRef<QuestManager>();
 		m_PlayerParty = Party::Create(PartyType::Player);

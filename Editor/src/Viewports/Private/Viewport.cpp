@@ -53,7 +53,7 @@ namespace AGE
 		switch ((int)Renderer::GetAPI())
 		{
 		case 0:
-			AGE_CORE_ASSERT(false, "None Renderer is not supported!")
+			CoreLogger::Assert(false, "None Renderer is not supported!");
 				break;
 		case 1:
 		{

@@ -12,9 +12,6 @@
     "name" : "simpleini",
     "version>=" : "4.22"
   }, {
-    "name" : "openal-soft",
-    "version>=" : "1.25.0"
-  }, {
     "name" : "spdlog",
     "version>=" : "1.17.0"
   }, {
@@ -29,6 +26,18 @@
   }, {
     "name" : "yaml-cpp",
     "version>=" : "0.8.0#3"
+  }, {
+    "name" : "msdfgen",
+    "version>=" : "1.13"
+  }, {
+    "name" : "entt",
+    "version>=" : "3.16.0"
+  }, {
+    "name" : "stb",
+    "version>=" : "2024-07-29#1"
+  }, {
+    "name" : "thomasmonkman-filewatch",
+    "version>=" : "2023-01-16#2"
   } ],
   "builtin-baseline" : "6d7bf7ef2193e2d1c5798a5ff8811d533104c861"
 }

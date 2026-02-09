@@ -32,7 +32,7 @@ namespace AGE
 		{
 			UUID uuid = src.get<IDComponent>(E).ID;
 
-			AGE_CORE_ASSERT(enttMap.find(uuid) != enttMap.end(), "UUID not found!");
+			CoreLogger::Assert(enttMap.find(uuid) != enttMap.end(), "UUID not found!");
 			entt::entity dstEnttID = enttMap.at(uuid);
 
 

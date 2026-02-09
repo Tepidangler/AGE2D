@@ -3,6 +3,7 @@
 //
 
 #include "AGEpch.hpp"
+#include "Core/Public/Log.h"
 #include "UI/Public/UiComponent.h"
 
 #include "UI/Components/Public/ButtonComponent.h"
@@ -47,7 +48,7 @@ namespace AGE
 			}
 			default:
 			{
-				AGE_CORE_ASSERT(false, "Unsupported UIComponent Type");
+				CoreLogger::Assert(false, "Unsupported UIComponent Type");
 				return nullptr;
 			}
 		}

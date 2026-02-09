@@ -2,7 +2,7 @@
 #include "Platform/OpenGL/Public/OpenGLVertexArray.h"
 
 #include <glad/glad.h>
-
+#include "Debug/Public/Instrumentor.h"
 namespace AGE
 {
 
@@ -47,7 +47,7 @@ namespace AGE
 			break;
 		}
 
-		AGE_CORE_ASSERT(false, "Unknown ShaderDataType!");
+		CoreLogger::Assert(false, "Unknown ShaderDataType!");
 		return 0;
 	}
 
@@ -76,7 +76,7 @@ namespace AGE
 	void OpenGLVertexArray::AddVertexBuffer(Ref<VertexBuffer>& VertexBuffer)
 	{
 		AGE_PROFILE_FUNCTION();
-		AGE_CORE_ASSERT(VertexBuffer->GetLayout().GetElements().size(), "Vertex Buffer has no layout!");
+		CoreLogger::Assert(VertexBuffer->GetLayout().GetElements().size(), "Vertex Buffer has no layout!");
 
 		glBindVertexArray(m_ArrayID);
 
@@ -143,7 +143,7 @@ namespace AGE
 			}
 			default:
 			{
-				AGE_CORE_ASSERT(false, "Unknown Data Type");
+				CoreLogger::Assert(false, "Unknown Data Type");
 				break;
 			}
 			}
@@ -176,7 +176,7 @@ namespace AGE
 			return;
 		}
 
-		AGE_CORE_ASSERT(false, "MakeVertexAttribPtr Failed: Must be GL_FLOAT or GL_INT");
+		CoreLogger::Assert(false, "MakeVertexAttribPtr Failed: Must be GL_FLOAT or GL_INT");
 	
 	}
 

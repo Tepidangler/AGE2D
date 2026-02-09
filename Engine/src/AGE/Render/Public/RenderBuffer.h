@@ -1,6 +1,7 @@
 #pragma once
 #include "Structs/Public/DataStructures.h"
 #include "Math/Public/UtilityFunctions.h"
+#include "Core/Public/Log.h"
 
 struct Matrix3D;
 
@@ -64,7 +65,7 @@ namespace AGE
 			break;
 		}
 
-		AGE_CORE_ASSERT(false, "Unknown ShaderDataType!");
+		CoreLogger::Assert(false, "Unknown ShaderDataType!");
 		return 0;
 	}
 
@@ -133,7 +134,7 @@ namespace AGE
 				break;
 			
 			}
-			AGE_CORE_ASSERT(false, "Unknown ShaderDataType!");
+			CoreLogger::Assert(false, "Unknown ShaderDataType!");
 			return 0;
 		}
 

@@ -18,11 +18,14 @@ namespace AGE
 		~WidgetStack() = default;
 
 		void PushWidgetToStack(Ref<ScriptableWidget> Widget);
-		void PopWidgetFromStack(Ref<ScriptableWidget> Widget);
+		void PopWidgetFromStack();
 
 		Ref<ScriptableWidget> GetActiveWidget() {return m_Widgets.front();}
 
 		void OnTopUpdate(TimeStep DeltaTime);
+
+		void ActivateWidget();
+		void DeactivateWidget();
 
 		std::deque<Ref<ScriptableWidget>>::iterator begin() {return m_Widgets.begin();}
 		std::deque<Ref<ScriptableWidget>>::iterator end() {return m_Widgets.end();}

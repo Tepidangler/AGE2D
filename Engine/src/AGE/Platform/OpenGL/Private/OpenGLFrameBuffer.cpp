@@ -96,7 +96,7 @@ namespace AGE
 
 			default:
 			{
-				AGE_CORE_ASSERT(false, "Invalid Format");
+				CoreLogger::Assert(false, "Invalid Format");
 				return 0;	
 			}
 			}
@@ -187,7 +187,7 @@ namespace AGE
 			
 			if (m_ColorAttachments.size() > 1)
 			{
-				AGE_CORE_ASSERT(m_ColorAttachments.size() <= 4, "Color Attachments is not less than or equal to 4");
+				CoreLogger::Assert(m_ColorAttachments.size() <= 4, "Color Attachments is not less than or equal to 4");
 				GLenum Buffers[4] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3 };
 				glDrawBuffers(m_ColorAttachments.size(), Buffers);
 			}
@@ -199,7 +199,7 @@ namespace AGE
 
 			CoreLogger::Error("OpenGL Error: {0}", glGetError());
 	
-			AGE_CORE_ASSERT(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE, "Framebuffer is incomplete");
+			CoreLogger::Assert(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE, "Framebuffer is incomplete");
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		}
 		void OpenGLFrameBuffer::Resize(const uint32_t Width, const uint32_t Height)
@@ -229,7 +229,7 @@ namespace AGE
 
 		int OpenGLFrameBuffer::ReadPixel(uint32_t AttachmentIndex, int x, int y)
 		{
-			AGE_CORE_ASSERT(AttachmentIndex < m_ColorAttachments.size(), "Attachment Index is larger than number of Elements in Color Attachments array!");
+			CoreLogger::Assert(AttachmentIndex < m_ColorAttachments.size(), "Attachment Index is larger than number of Elements in Color Attachments array!");
 
 			glReadBuffer(GL_COLOR_ATTACHMENT0 + AttachmentIndex);
 			int PixelData;
@@ -241,7 +241,7 @@ namespace AGE
 		void OpenGLFrameBuffer::ClearAttachment(uint32_t Index , int Value)
 		{
 
-			AGE_CORE_ASSERT(Index < m_ColorAttachments.size(), "Index is greater that number of color attachments!");
+			CoreLogger::Assert(Index < m_ColorAttachments.size(), "Index is greater that number of color attachments!");
 
 			auto& Spec = m_ColorAttachmentSpecifications[Index];
 			glClearTexImage(m_ColorAttachments[Index], 0, Utils::AGETextureFormatToGL(Spec.TextureFormat), GL_INT, &Value);

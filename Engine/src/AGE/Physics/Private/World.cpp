@@ -23,7 +23,7 @@ namespace AGE
     template<typename T>
     T* World::As()
     {
-        AGE_CORE_ASSERT(false, "As() Failed!");
+        CoreLogger::Assert(false, "As() Failed!");
         return nullptr;
     }
 }

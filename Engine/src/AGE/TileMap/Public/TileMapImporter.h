@@ -1,5 +1,6 @@
 #pragma once
 #include <src/tmx.h>
+#include "Core/Public/Core.h"
 
 
 namespace AGE

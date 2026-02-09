@@ -1,5 +1,6 @@
 #pragma once
 #include "Core/Public/Core.h"
+#include "Core/Public/Log.h"
 
 namespace AGE
 {
@@ -26,7 +27,7 @@ namespace AGE
 		void ReadRaw(T& Type)
 		{
 			bool Success = ReadData((char*)&Type, sizeof(T));
-			AGE_GAME_ASSERT(Success, "Failed to Read Data");
+			GameLogger::Assert(Success, "Failed to Read Data");
 
 		}
 

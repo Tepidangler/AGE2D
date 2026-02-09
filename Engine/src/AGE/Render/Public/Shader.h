@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Core/Public/Core.h"
 #include <string>
 #include <glm/glm.hpp>
 #include "Math/Public/MathStructures.h"

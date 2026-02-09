@@ -138,7 +138,7 @@ namespace GameFramework
 	}
 	void Character::SetupInput(AGE::Ref<InputComponent>& PlayerInputComponent)
 	{
-		AGE_CORE_ASSERT(&PlayerInputComponent, "Invalid Input Component");
+		AGE::GameLogger::Assert(!PlayerInputComponent, "Invalid Input Component");
 		PlayerInputComponent->BindAxis<Character>("MoveForward", this, BIND_AXIS_FN(Character::MoveForward));
 		PlayerInputComponent->BindAxis<Character>("MoveRight", this, BIND_AXIS_FN(Character::MoveRight));
 		PlayerInputComponent->BindAction<Character>("Cancel", KeyStatus::Pressed, this, BIND_ACTION_FN(Character::CancelAction));

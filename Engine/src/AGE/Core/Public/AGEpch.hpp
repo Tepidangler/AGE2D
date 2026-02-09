@@ -28,14 +28,6 @@
 #include <ppltasks.h>
 #endif
 
-
-#include "Log.h"
-#include "Core.h"
-#include "Debug/Public/Instrumentor.h"
-
-//#include <src/tmx.h>
-
-
 #ifdef AG_PLATFORM_WINDOWS
 	#include <Windows.h>
 	#include <commdlg.h>

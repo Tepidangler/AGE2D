@@ -356,7 +356,7 @@ namespace AGE
 		}
 		}
 
-		AGE_CORE_ASSERT(false, "Unknown Body Type");
+		CoreLogger::Assert(false, "Unknown Body Type");
 		return {};
 	}
 
@@ -375,7 +375,7 @@ namespace AGE
 			return BodyType::Kinematic;
 		}
 
-		AGE_CORE_ASSERT(false, "Unknown Body Type");
+		CoreLogger::Assert(false, "Unknown Body Type");
 		
 		return BodyType::Static;
 
@@ -388,7 +388,7 @@ namespace AGE
 
 	static void SerializeEntity(YAML::Emitter& Out, Entity E)
 	{
-		AGE_CORE_ASSERT(E.HasComponent<IDComponent>(), "No ID Component present!");
+		CoreLogger::Assert(E.HasComponent<IDComponent>(), "No ID Component present!");
 		Out << YAML::BeginMap;
 		Out << YAML::Key << "Entity";
 		Out << YAML::Value << (uint64_t)E.GetUUID();

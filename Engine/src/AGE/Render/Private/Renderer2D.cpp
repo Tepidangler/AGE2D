@@ -432,7 +432,7 @@ namespace AGE
 			}
 			else if (layer->type == L_OBJGR)
 			{
-				AGE_CORE_ASSERT(false, "Not Implemented!");
+				CoreLogger::Assert(false, "Not Implemented!");
 			}
 			else if (layer->type == L_IMAGE)
 			{

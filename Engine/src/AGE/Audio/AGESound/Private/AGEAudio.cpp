@@ -3,12 +3,15 @@
 #include "Statics/Public/Statics.h"
 #include "Audio/AGESound/Public/AGEAudio.h"
 #include "Audio/AGESound/Public/Sound.h"
-#include "device.h"
 #include "core/device.h"
+#include "alc/device.h"
+#include "common/intrusive_ptr.h"
+#include "Core/Public/Log.h"
 
 #define MINIMP3_IMPLEMENTATION
-#include "minimp3.h"
-#include "minimp3_ex.h"
+
+#include "minimp3/minimp3.h"
+#include "minimp3/minimp3_ex.h"
 
 namespace AGE
 {
@@ -16,7 +19,6 @@ namespace AGE
 	static uint8_t* s_AudioScratchBuffer;
 	static uint32_t s_AudioScratchBufferSize = 10 * 1024 * 1024;
 	static al::intrusive_ptr<al::Device> s_Device = nullptr;
-
 	enum class AudioFileFormat
 	{
 		None = 0,
@@ -78,7 +80,7 @@ namespace AGE
 	{
 		if (s_Device = al::Device::Create(DeviceType::Playback)) //DeviceType::Playback
 		{
-			AGE_CORE_ASSERT(false, "Error Creating Initializing Audio Device!");
+			CoreLogger::Assert(false, "Error Creating Initializing Audio Device!");
 			return;
 		}
 
@@ -250,20 +252,20 @@ namespace AGE
 			case AL_OUT_OF_MEMORY:
 			{
 				CoreLogger::Error("File: {0}, Line: {1}, The requested operation resulted in OpenAL running out of memory", FN, line);
-				AGE_CORE_ASSERT(false, "Out Of Memory!");
+				CoreLogger::Assert(false, "Out Of Memory!");
 				break;
 			}
 			case AL_INVALID_VALUE:
 			{
 				CoreLogger::Error("File: {0}, Line: {1}, An invalid value was passed to an OpenAL function", FN, line);
-				AGE_CORE_ASSERT(false, "Invalid Value!");
+				CoreLogger::Assert(false, "Invalid Value!");
 				break;
 			}
 
 			case AL_ILLEGAL_COMMAND:
 			{
 				CoreLogger::Error("File: {0}, Line: {1}, The requested operation is not valid", FN, line);
-				AGE_CORE_ASSERT(false, "Illegal Command|Operation");
+				CoreLogger::Assert(false, "Illegal Command|Operation");
 				break;
 			}
 
@@ -271,14 +273,14 @@ namespace AGE
 			{
 
 				CoreLogger::Error("File: {0}, Line: {1}, An invalid enum value was passed to an OpenAL function", FN, line);
-				AGE_CORE_ASSERT(false, "Invalid Enum");
+				CoreLogger::Assert(false, "Invalid Enum");
 				break;
 			}
 
 			case AL_INVALID_NAME:
 			{
 				CoreLogger::Error("File: {0}, Line: {1}, A bad name (ID) was passed to an OpenAL function", FN, line);
-				AGE_CORE_ASSERT(false, "Invalid Name");
+				CoreLogger::Assert(false, "Invalid Name");
 				break;
 			}
 
@@ -370,7 +372,7 @@ namespace AGE
 
 		if (alGetError() != AL_NO_ERROR)
 		{
-			AGE_CORE_ASSERT(false, "Failed to Setup Sound Source");
+			CoreLogger::Assert(false, "Failed to Setup Sound Source");
 		}
 		return Audio;
 	}

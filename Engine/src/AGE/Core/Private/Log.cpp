@@ -1,6 +1,8 @@
 #include "AGEpch.hpp"
 #include "Log.h"
 
+#include "fmt/chrono.h"
+
 namespace AGE
 {
 	Ref<spdlog::logger> Log::s_AGECoreLogger;
@@ -18,5 +20,6 @@ namespace AGE
 		s_AGEGameLogger = spdlog::stdout_color_mt("AGEGAME");
 		s_AGEGameLogger->set_level(spdlog::level::trace);
 		s_Offsets.push_back(0);
+
 	}
 }

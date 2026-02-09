@@ -25,7 +25,7 @@ namespace AGE
 	template<typename T>
 	T* Pipeline::As()
 	{
-		AGE_CORE_ASSERT(false, "As() Failed!");
+		CoreLogger::Assert(false, "As() Failed!");
 		return nullptr;
 	}
 }

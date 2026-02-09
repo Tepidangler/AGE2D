@@ -4,6 +4,7 @@
 
 #include "Core/Public/AGEpch.hpp"
 #include "../Public/IniWriter.h"
+#include "Core/Public/Log.h"
 
 
 namespace AGE

@@ -3,7 +3,7 @@
 #include "Render/Public/RenderCommand.h"
 #include "Assets/Public/AssetManager.h"
 #include <glm/glm.hpp>
-
+#include "Debug/Public/Instrumentor.h"
 namespace AGE
 {
 	extern std::filesystem::path g_EditorAssetPath;

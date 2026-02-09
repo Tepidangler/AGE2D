@@ -2,7 +2,7 @@
 // Created by gdmgp on 12/3/2025.
 //
 
-#include "AGEpch.hpp"
+//#include "AGEpch.hpp"
 #include "../Public/WidgetStack.h"
 
 
@@ -13,7 +13,7 @@ namespace AGE
 		m_Widgets.emplace_front(Widget);
 	}
 
-	void WidgetStack::PopWidgetFromStack(Ref<ScriptableWidget> Widget)
+	void WidgetStack::PopWidgetFromStack()
 	{
 		m_Widgets.pop_front();
 	}
@@ -24,5 +24,13 @@ namespace AGE
 		{
 			m_Widgets.front()->OnUpdate(DeltaTime);
 		}
+	}
+
+	void WidgetStack::ActivateWidget() {
+		m_Widgets.front()->SetVisibility(true);
+	}
+
+	void WidgetStack::DeactivateWidget() {
+		m_Widgets.front()->SetVisibility(false);
 	}
 } // AGE

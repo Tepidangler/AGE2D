@@ -4,9 +4,9 @@
 #include "Core/Public/App.h"
 
 #undef INFINITE
-#include "msdf-atlas-gen.h"
-#include "FontGeometry.h"
-#include "GlyphGeometry.h"
+#include "msdf-atlas-gen/msdf-atlas-gen.h"
+#include "msdf-atlas-gen/FontGeometry.h"
+#include "msdf-atlas-gen/GlyphGeometry.h"
 
 #include "Core/Public/Buffer.h"
 
@@ -57,7 +57,7 @@ namespace AGE
 		}
 		msdfgen::FreetypeHandle* FT = msdfgen::initializeFreetype();
 
-		AGE_CORE_ASSERT(FT, "Unable to Initialize FreeType!");
+		CoreLogger::Assert(FT, "Unable to Initialize FreeType!");
 
 		std::string FileString = FontPath.string();
 		msdfgen::FontHandle* Font = msdfgen::loadFont(FT, FileString.c_str());
@@ -96,7 +96,7 @@ namespace AGE
 		//AtlasPacker.setPadding(0); // Find Alternative
 		AtlasPacker.setScale(EmSize);
 		int Remaining = AtlasPacker.pack(m_Data->Glyphs.data(), (int)m_Data->Glyphs.size());
-		AGE_CORE_ASSERT(Remaining == 0, "{} Glyphs remaining", Remaining);
+		CoreLogger::Assert(Remaining == 0, "{} Glyphs remaining", Remaining);
 		int width, height;
 		AtlasPacker.getDimensions(width, height);
 		EmSize = AtlasPacker.getScale();

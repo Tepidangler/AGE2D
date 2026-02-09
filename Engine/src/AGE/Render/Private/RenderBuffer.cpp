@@ -10,18 +10,18 @@ namespace AGE
 		switch (Renderer::GetAPI())
 		{
 		case 0:
-			AGE_CORE_ASSERT(false, "RendererAPI::API::None is currently not supported!");
+			CoreLogger::Assert(false, "RendererAPI::API::None is currently not supported!");
 			return nullptr;
 			break;
 		case 1:
 			return CreateRef<OpenGLVertexBuffer>(Vertices, Size);
 			break;
 		default:
-			AGE_CORE_ASSERT(false, "Unknown Renderer API!");
+			CoreLogger::Assert(false, "Unknown Renderer API!");
 			return nullptr;
 			break;
 		}
-		AGE_CORE_ASSERT(false, "Unknown Renderer API!");
+		CoreLogger::Assert(false, "Unknown Renderer API!");
 		return nullptr;
 	}
 
@@ -30,18 +30,18 @@ namespace AGE
 		switch (Renderer::GetAPI())
 		{
 		case 0:
-			AGE_CORE_ASSERT(false, "RendererAPI::API::None is currently not supported!");
+			CoreLogger::Assert(false, "RendererAPI::API::None is currently not supported!");
 			return nullptr;
 			break;
 		case 1:
 			return CreateRef<OpenGLVertexBuffer>(Size);
 			break;
 		default:
-			AGE_CORE_ASSERT(false, "Unknown Renderer API!");
+			CoreLogger::Assert(false, "Unknown Renderer API!");
 			return nullptr;
 			break;
 		}
-		AGE_CORE_ASSERT(false, "Unknown Renderer API!");
+		CoreLogger::Assert(false, "Unknown Renderer API!");
 		return nullptr;
 	}
 
@@ -50,18 +50,18 @@ namespace AGE
 		switch (Renderer::GetAPI())
 		{
 		case 0:
-			AGE_CORE_ASSERT(false, "Renderer None is currently not supported!");
+			CoreLogger::Assert(false, "Renderer None is currently not supported!");
 			return nullptr;
 			break;
 		case 1:
 			return CreateRef<OpenGLVertexBuffer>(Vertices, Size);
 			break;
 		default:
-			AGE_CORE_ASSERT(false, "Unknown Renderer API!");
+			CoreLogger::Assert(false, "Unknown Renderer API!");
 			return nullptr;
 			break;
 		}
-		AGE_CORE_ASSERT(false, "Unknown Renderer API!");
+		CoreLogger::Assert(false, "Unknown Renderer API!");
 		return nullptr;
 	}
 
@@ -71,18 +71,18 @@ namespace AGE
 		switch (Renderer::GetAPI())
 		{
 		case 0:
-			AGE_CORE_ASSERT(false, "RendererAPI::API::None is currently not supported!");
+			CoreLogger::Assert(false, "RendererAPI::API::None is currently not supported!");
 			return nullptr;
 			break;
 		case 1:
 			return CreateRef<OpenGLIndexBuffer>(Indices, Count);
 			break;
 		default:
-			AGE_CORE_ASSERT(false, "Unknown Renderer API!");
+			CoreLogger::Assert(false, "Unknown Renderer API!");
 			return nullptr;
 			break;
 		}
-		AGE_CORE_ASSERT(false, "Unknown Renderer API!");
+		CoreLogger::Assert(false, "Unknown Renderer API!");
 		return nullptr;
 	}
 	BufferLayout::BufferLayout()
@@ -93,33 +93,33 @@ namespace AGE
 		switch (Renderer::GetAPI())
 		{
 		case 0:
-			AGE_CORE_ASSERT(false, "RendererAPI::API::None is currently not supported!");
+			CoreLogger::Assert(false, "RendererAPI::API::None is currently not supported!");
 			return nullptr;
 			break;
 		case 1:
 			return CreateRef<OpenGLUniformBuffer>(Size, Binding);
 			break;
 		}
-		AGE_CORE_ASSERT(false, "Unknown Renderer API!");
+		CoreLogger::Assert(false, "Unknown Renderer API!");
 		return nullptr;
 	}
 
 	template<typename T>
 	T* VertexBuffer::As()
 	{
-		AGE_CORE_ASSERT(false, "As() Failed!");
+		CoreLogger::Assert(false, "As() Failed!");
 		return nullptr;
 	}
 	template<typename T>
 	T* IndexBuffer::As()
 	{
-		AGE_CORE_ASSERT(false, "As() Failed!");
+		CoreLogger::Assert(false, "As() Failed!");
 		return nullptr;
 	}
 	template<typename T>
 	T* UniformBuffer::As()
 	{
-		AGE_CORE_ASSERT(false, "As() Failed!");
+		CoreLogger::Assert(false, "As() Failed!");
 		return nullptr;
 	}
 }

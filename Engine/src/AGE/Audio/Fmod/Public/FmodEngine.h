@@ -40,7 +40,7 @@ namespace AGE
 		std::map<std::string, FMOD::Sound*>& GetSounds() { return m_Sounds; }
 
 	private:
-		void CreateEvent(const std::string& EventString);
+		void CreateFmodEvent(const std::string& EventString);
 
 	private:
 		FMOD::Studio::System* m_System = nullptr;

@@ -1,6 +1,7 @@
 #include "AGEpch.hpp"
 #include "Audio/Fmod/Public/FmodEngine.h"
 #include "Audio/AGESound/Public/Sound.h"
+#include "Core/Public/Log.h"
 
 namespace AGE
 {
@@ -127,7 +128,7 @@ namespace AGE
 		{
 			if (S.starts_with("event:/"))
 			{
-				CreateEvent(S);
+				CreateFmodEvent(S);
 			}
 		}
 	}
@@ -183,10 +184,10 @@ namespace AGE
 
 	void FmodEngine::LoadBankFromMemory(const char* Data)
 	{
-		AGE_CORE_ASSERT(false, "Not Implemented!");
+		CoreLogger::Assert(false, "Not Implemented!");
 	}
 
-	void FmodEngine::CreateEvent(const std::string &EventString)
+	void FmodEngine::CreateFmodEvent(const std::string &EventString)
 	{
 		FMOD::Studio::EventDescription* Desc;
 		GetSystem()->getEvent(EventString.c_str(), &Desc);

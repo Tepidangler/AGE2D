@@ -3,7 +3,7 @@
 #include "Core/Public/GamepadCodes.h"
 #include "Events/Public/GameEvent.h"
 #include "Core/Public/JoyStickCodes.h"
-
+#include "Core/Public/Log.h"
 namespace AGE
 {
 	XInput::XInput()

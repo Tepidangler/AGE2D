@@ -17,7 +17,7 @@ namespace AGE
 		template<typename T, typename ... Args>
 		T& AddComponent(Args&& ... args)
 		{
-			AGE_CORE_ASSERT(!HasComponent<T>(), "Entity already has component!");
+			CoreLogger::Assert(!HasComponent<T>(), "Entity already has component!");
 			T& Component = m_Scene->m_Registry.emplace<T>(m_EntityHandle, std::forward<Args>(args)...);
 			m_Scene->OnComponentAdded<T>(*this, Component);
 			return Component;
@@ -48,14 +48,14 @@ namespace AGE
 		template<typename T>
 		T& GetComponent()
 		{
-			AGE_CORE_ASSERT(HasComponent<T>(), "Entity does not have component!");
+			CoreLogger::Assert(HasComponent<T>(), "Entity does not have component!");
 				return m_Scene->m_Registry.get<T>(m_EntityHandle);
 		}
 
 		template<typename T>
 		T& GetComponent() const
 		{
-			AGE_CORE_ASSERT(HasComponent<T>(), "Entity does not have component!");
+			CoreLogger::Assert(HasComponent<T>(), "Entity does not have component!");
 			return m_Scene->m_Registry.get<T>(m_EntityHandle);
 		}
 

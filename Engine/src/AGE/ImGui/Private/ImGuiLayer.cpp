@@ -82,7 +82,7 @@ namespace AGE
             }
             default:
             {
-                AGE_CORE_ASSERT(false, "Invalid Render API Selected!");
+                CoreLogger::Assert(false, "Invalid Render API Selected!");
                 break;
             }
         }
@@ -106,7 +106,7 @@ namespace AGE
             }
             default:
             {
-                AGE_CORE_ASSERT(false, "Invalid Render API Selected!");
+                CoreLogger::Assert(false, "Invalid Render API Selected!");
                 break;
             }
 
@@ -134,7 +134,7 @@ namespace AGE
             }
             default:
             {
-                AGE_CORE_ASSERT(false, "Invalid Render API Selected!");
+                CoreLogger::Assert(false, "Invalid Render API Selected!");
                 break;
             }
         }
@@ -210,7 +210,7 @@ namespace AGE
             }
             default:
             {
-                AGE_CORE_ASSERT(false, "Invalid Render API Selected!");
+                CoreLogger::Assert(false, "Invalid Render API Selected!");
                 break;
             }
         }

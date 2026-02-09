@@ -15,6 +15,7 @@
 #include "AGE/Core/Public/DeltaTime.h"
 #include "AGE/Core/Public/Input.h"
 #include "AGE/Core/Public/Keycodes.h"
+#include "AGE/Core/Public/Pointers.h"
 #include "AGE/Core/Public/MouseButtonCodes.h"
 #include "AGE/Core/Public/GamepadCodes.h"
 #include "AGE/Core/Public/JoyStickCodes.h"

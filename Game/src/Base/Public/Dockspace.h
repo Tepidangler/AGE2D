@@ -9,6 +9,6 @@ namespace Proj
 		Dockspace() = default;
 		virtual ~Dockspace() = default;
 
-		virtual void OnImGuiRender(AGE::TimeStep DeltaTime) override;
+		void OnImGuiRender(AGE::TimeStep DeltaTime) override;
 	};
 }

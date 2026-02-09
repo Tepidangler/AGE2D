@@ -1,6 +1,6 @@
 #pragma once
 #include "Render/Public/FrameBuffer.h"
-
+#include "Core/Public/Log.h"
 
 
 namespace AGE
@@ -23,7 +23,7 @@ namespace AGE
 
 		virtual const Vector2 GetWidthHeight() const override { return Vector2((float)m_Specification.Width, (float)m_Specification.Height); }
 
-		virtual uint32_t GetColorAttachmentRendererID(uint32_t Index = 0) const override { AGE_CORE_ASSERT(Index < m_ColorAttachments.size(), "Index is greater than number of available color attachments!"); return m_ColorAttachments[Index]; }
+		virtual uint32_t GetColorAttachmentRendererID(uint32_t Index = 0) const override { CoreLogger::Assert(Index < m_ColorAttachments.size(), "Index is greater than number of available color attachments!"); return m_ColorAttachments[Index]; }
 		virtual uint32_t GetDepthAttachmentRendererID() const override {return m_DepthAttachment;}
 
 		virtual void ClearAttachment(uint32_t Index, int Value) override;

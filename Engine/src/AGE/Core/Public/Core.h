@@ -3,6 +3,7 @@
 #include <string>
 #include <filesystem>
 #include <any>
+#include "Core/Public/Log.h"
 
 #ifdef AG_PLATFORM_WINDOWS
 #if AG_DYNAMIC_LINK
@@ -25,15 +26,6 @@
 	#pragma enable_d3d11_debug_symbols
 #endif
 
-
-#ifdef AGE_ENABLE_ASSERTS
-	#define AGE_GAME_ASSERT(x, ...) {if(!(x)) {AGE::GameLogger::Error("Assertion Failed: {0}", __VA_ARGS__); __debugbreak();}}
-	#define AGE_CORE_ASSERT(x, ...) {if(!(x)) {AGE::CoreLogger::Error("Assertion Failed: {0}", __VA_ARGS__); __debugbreak();}}
-#else
-	#define AGE_GAME_ASSERT(x, ...)
-	#define AGE_CORE_ASSERT(x, ...)
-#endif
-
 #if AG_DIST
 	#define AK_OPTIMIZED
 #endif
@@ -48,45 +40,7 @@ namespace AGE
 {
 	typedef unsigned long ulong_t;
 
-	template<typename T>
-	using Scope = std::unique_ptr<T>;
 
-	template<typename T, typename ... Args>
-	constexpr Scope<T> CreateScope(Args&& ... args)
-	{
-		return std::make_unique<T>(std::forward<Args>(args)...);
-	}
-	template<typename T>
-	using Ref = std::shared_ptr<T>;
-
-	template<typename T, typename ... Args>
-	constexpr Ref<T> CreateRef(Args&& ... args)
-	{
-		return std::make_shared<T>(std::forward<Args>(args)...);
-	};
-
-	template<typename To, typename From, typename Deleter>
-	std::unique_ptr<To, Deleter> dynamic_unique_cast(std::unique_ptr<From, Deleter>&& p)
-	{
-		if (To* cast = dynamic_cast<To*>(p.get()))
-		{
-			std::unique_ptr<To, Deleter> result(cast, std::move(p.get_deleter()));
-			p.release();
-			return result;
-		}
-		//CoreLogger::Error("Cast Failed!");
-		return std::unique_ptr<To, Deleter>(nullptr);
-	}
-
-	template<typename T>
-	inline void SafeRelease(T& ptr)
-	{
-		if (ptr != NULL)
-		{
-			ptr->Release();
-			ptr = nullptr;
-		}
-	}
 
 	template<typename T>
 	class Reverse

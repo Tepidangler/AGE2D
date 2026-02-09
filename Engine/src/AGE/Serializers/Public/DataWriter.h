@@ -1,6 +1,6 @@
 #pragma once
 #include "Core/Public/Core.h"
-
+#include "Core/Public/Log.h"
 
 namespace AGE
 {
@@ -28,7 +28,7 @@ namespace AGE
 		void WriteRaw(const T& Type)
 		{
 			bool Success = WriteData((char*)&Type, sizeof(T));
-			AGE_GAME_ASSERT(Success, "Failed to Write Data");
+			GameLogger::Assert(Success, "Failed to Write Data");
 		}
 
 		template<typename T>

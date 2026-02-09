@@ -1,6 +1,7 @@
 #pragma once
 #include "Core/Public/Core.h"
 #include "Structs/Public/DataStructures.h"
+#include "Core/Public/Log.h"
 #include <vector>
 #include <type_traits>
 

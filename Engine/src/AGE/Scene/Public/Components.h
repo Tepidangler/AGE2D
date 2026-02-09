@@ -22,6 +22,8 @@
 #include <box2d/types.h>
 #include <src/tmx.h>
 
+#include "Debug/Public/Instrumentor.h"
+
 namespace GameFramework
 {
 	class Character;

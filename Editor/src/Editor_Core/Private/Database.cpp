@@ -289,5 +289,3 @@ namespace AGE
 		CoreLogger::Trace("Row Successfully added!");
 	}
 }
-
-#include "spdlog/fmt/bundled/compile.h"

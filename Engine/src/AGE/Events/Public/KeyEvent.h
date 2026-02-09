@@ -55,7 +55,7 @@ namespace AGE
 			return ss.str();
 		}
 
-		EVENT_CLASS_TYPE(KeyReleased)
+			EVENT_CLASS_TYPE(KeyReleased)
 	};
 
 	class AGE_API KeyTypedEvent : public KeyEvent

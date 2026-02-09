@@ -4,14 +4,14 @@
 
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
-
+#include "Debug/Public/Instrumentor.h"
 namespace AGE
 {
 	OpenGLContext::OpenGLContext(GLFWwindow* WindowHandle)
 		: m_WindowHandle(WindowHandle)
 	{
 
-		AGE_CORE_ASSERT(WindowHandle, "Window handle is null");
+		CoreLogger::Assert(WindowHandle, "Window handle is null");
 	}
 
 	OpenGLContext::~OpenGLContext()
@@ -24,7 +24,7 @@ namespace AGE
 		AGE_PROFILE_FUNCTION();
 		glfwMakeContextCurrent(m_WindowHandle);
 		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-		AGE_CORE_ASSERT(status, "Failed to initialize GLAD");
+		CoreLogger::Assert(status, "Failed to initialize GLAD");
 
 		CoreLogger::Info("OpenGL Info: ");
 		

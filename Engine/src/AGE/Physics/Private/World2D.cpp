@@ -31,7 +31,7 @@ namespace AGE
 		}
 		}
 
-		AGE_CORE_ASSERT(false, "Unknown Body Type");
+		CoreLogger::Assert(false, "Unknown Body Type");
 		return b2_staticBody;
 	}
 
@@ -74,7 +74,7 @@ namespace AGE
 		b2Transform Trans;
 		Trans.p = { Params.Location.x,Params.Location.y };
 		Trans.q = b2MakeRot(Params.Rotation.z);
-		b2World_OverlapPolygon(m_World, &Params.Box2D, Trans, GetQueryFilter(), Params.OverlapFunc2D, Params.Context);
+		//b2World_OverlapPolygon(m_World, &Params.Box2D, Trans, GetQueryFilter(), Params.OverlapFunc2D, Params.Context);
 	}
 
 	void World2D::QueryCapsuleOverlap(const QueryParams& Params)
@@ -83,7 +83,7 @@ namespace AGE
 		b2Transform Trans;
 		Trans.p = { Params.Location.x,Params.Location.y };
 		Trans.q = b2MakeRot(Params.Rotation.z);
-		b2World_OverlapCapsule(m_World, &Params.Capsule2D, Trans, GetQueryFilter(), Params.OverlapFunc2D, Params.Context);
+		//b2World_OverlapCapsule(m_World, &Params.Capsule2D, Trans, GetQueryFilter(), Params.OverlapFunc2D, Params.Context);
 	}
 
 	void World2D::QuerySegmentOverlap(const QueryParams& Params)
@@ -127,8 +127,8 @@ namespace AGE
 		b2ShapeDef Fixture = b2DefaultShapeDef();
 		Fixture.userData = UserData;
 		Fixture.density = Density;
-		Fixture.friction = Friction;
-		Fixture.restitution = Restitution;
+		//Fixture.friction = Friction;
+		//Fixture.restitution = Restitution;
 		Fixture.enableContactEvents = ShouldGenerateEvents;
 		Fixture.enableHitEvents = ShouldGenerateEvents;
 

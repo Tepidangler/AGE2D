@@ -12,31 +12,32 @@ include_directories(BEFORE
                     "${INC_GLAD}"
                     "${INC_ImGui}"
                     "${INC_GLM}"
-                    "${INC_STB}"
+                  #  "${INC_STB}"
                     "${INC_Wwise}"
                     "${INC_BOX2C}"
                     "${INC_BOX2D}"
-                    "${INC_FILEWATCH}"
-                    "${INC_ENTT}"
-                    "${INC_IMGUIZMO}"
-                    "${INC_MSDFGEN}"
-                    "${INC_MSDFATLASGEN}"
+                 #   "${INC_FILEWATCH}"
+                    "${OPENAL_INC_DIRS}"
+                  #  "${INC_ENTT}"
+                   # "${INC_IMGUIZMO}"
+                 #   "${INC_MSDFGEN}"
+                #    "${INC_MSDFATLASGEN}"
                     "${INC_YAMLCPP}"
-                    "${INC_SPDLOG}"
-                    "${INC_OPENAL}"
-                    "${INC_OPENALAL}"
-                    "${INC_OPENALALC}"
-                    "${INC_OPENALCommon}"
+                   # "${INC_SPDLOG}"
+                  #  "${INC_OPENAL}"
+                  #  "${INC_OPENALAL}"
+                  #  "${INC_OPENALALC}"
+                  #  "${INC_OPENALCommon}"
                     "${INC_LIBXML2}"
                     "${INC_LIBTMX}"
-                    "${INC_MINIMP3}"
+                #    "${INC_MINIMP3}"
                     "${INC_RAPIDCSV}"
                     "${INC_JSON}"
                     "${INC_FMODCORE}"
                     "${INC_FMODSTUDIO}"
                     "${INC_ZLIB}"
                     "${INC_INE}"
-                    "${INC_RTTR}"
+                    #"${INC_RTTR}"
                     "${INC_FASTGLTF}"
                     "${INC_UFBX}"
 )
@@ -135,7 +136,8 @@ add_library(Game
         src/UI/MainMenu/Private/MainMenu.cpp
         src/UI/MainMenu/Public/MainMenu.h
 )
-
+set_property(TARGET Game PROPERTY
+        MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 target_compile_definitions(Game PUBLIC
                             $<$<CONFIG:Debug>:AG_DEBUG=1>
                             $<$<CONFIG:Debug>:AG_RELEASE=0>
@@ -148,9 +150,11 @@ target_compile_definitions(Game PUBLIC
                             $<$<CONFIG:Dist>:AG_RELEASE=0>
 )
 find_package(Freetype REQUIRED)
+#find_package(RTTR CONFIG REQUIRED Core)
 target_link_libraries(Game PRIVATE
                         Engine
                         freetype
+                        RTTR::Core_Lib
                         )
 
 configure_file(CMake/Versioning.h.in Versioning.h)

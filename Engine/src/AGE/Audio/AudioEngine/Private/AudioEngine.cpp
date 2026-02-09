@@ -3,6 +3,7 @@
 #include "Audio/AGESound/Public/AGEAudio.h"
 #include "Audio/Fmod/Public/FmodEngine.h"
 #include "Audio/Wwise/Public/WWiseEngine.h"
+#include "Core/Public/Log.h"
 
 namespace AGE
 {
@@ -35,7 +36,7 @@ namespace AGE
     template<typename T>
     T* AudioEngine::As()
     {
-        AGE_CORE_ASSERT(false, "As() Failed");
+        CoreLogger::Assert(false, "As() Failed");
     }
 
 

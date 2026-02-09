@@ -76,7 +76,7 @@ namespace AGE
 
 		char* ReadBytes(uint64_t size, uint64_t offset) const
 		{
-			AGE_CORE_ASSERT(offset + size <= Size, "Buffer Overflow!");
+			CoreLogger::Assert(offset + size <= Size, "Buffer Overflow!");
 			char* buf = new char [size];
 			memcpy(buf, (char*)Data + offset, size);
 			return buf;
@@ -84,7 +84,7 @@ namespace AGE
 
 		void Write(const void* data, uint64_t size, uint64_t offset = 0)
 		{
-			AGE_CORE_ASSERT(offset + size <= Size, "Buffer Overflow!");
+			CoreLogger::Assert(offset + size <= Size, "Buffer Overflow!");
 			memcpy((char*)Data + offset, data, size);
 		}
 

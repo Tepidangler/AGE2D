@@ -2,6 +2,7 @@
 #include "App.h"
 #include "Render/Public/Renderer.h"
 #include "Video/Public/AGEVideo.h"
+#include "Debug/Public/Instrumentor.h"
 #include "Input.h"
 #include "Core/Public/ScriptableComponentStack.h"
 #include "Audio/Fmod/Public/FmodEngine.h"
@@ -25,7 +26,7 @@ namespace AGE
 	{
 		AGE_PROFILE_FUNCTION();
 
-		AGE_CORE_ASSERT(!s_Instance, "Application already exists!")
+		CoreLogger::Assert(!s_Instance, "Application already exists!");
 		s_Instance = this;
 		m_CommandLineArgs = Args;
 		m_AppConfig.ProjectBasePath = std::string(getenv("USERPROFILE")) + "/OneDrive/Documents/AGEProjects";
@@ -197,7 +198,7 @@ namespace AGE
 	{
 		Init();
 		Layer* NewProjLayer = m_LayerStack.GetLayerByName("NewProjectLayer");
-		AGE_PROFILE_FUNCTION("RunLoop");
+		AGE_PROFILE_FUNCTION();
 		{
 			while (m_Running)
 			{
@@ -280,7 +281,7 @@ namespace AGE
 		}
 		default:
 		{
-			AGE_CORE_ASSERT(false, "Renderer is not currently Implemented!")
+			CoreLogger::Assert(false, "Renderer is not currently Implemented!");
 		}
 		}
 	}

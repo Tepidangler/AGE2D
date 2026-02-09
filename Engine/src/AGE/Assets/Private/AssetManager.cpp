@@ -11,14 +11,14 @@ namespace AGE
 		:m_GameContentPath(GameContentPath)
 	{
 		m_Registry = CreateRef<AssetRegistry>(&App::Get().GetDeviceManager().GetAudioManager());
-		AGE_CORE_ASSERT(!s_Instance, "Asset Manager Already Exists");
+		CoreLogger::Assert(!s_Instance, "Asset Manager Already Exists");
 		s_Instance = this;
 	}
 	AssetManager::AssetManager(void* AddrToPakFile, size_t SizeOfPakFile)
 	{
 		m_PakPair.first = (AssetPak*)AddrToPakFile;
 		m_PakPair.second = SizeOfPakFile;
-		AGE_CORE_ASSERT(!s_Instance, "Asset Manager Already Exists");
+		CoreLogger::Assert(!s_Instance, "Asset Manager Already Exists");
 		s_Instance = this;
 	}
 	bool AssetManager::LoadPakFile(void* AddrToPakFile, size_t SizeOfPakFile)

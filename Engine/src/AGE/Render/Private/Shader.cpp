@@ -14,7 +14,7 @@ namespace AGE
 		{
 			case 0:
 			{
-				AGE_CORE_ASSERT(false, "RendererAPI::API::None is currently not supported!");
+				CoreLogger::Assert(false, "RendererAPI::API::None is currently not supported!");
 				return nullptr;
 				break;
 			}
@@ -25,12 +25,12 @@ namespace AGE
 			}
 			default:
 			{
-				AGE_CORE_ASSERT(false, "Unknown Renderer API!");
+				CoreLogger::Assert(false, "Unknown Renderer API!");
 				return nullptr;
 				break;
 			}
 		}
-		AGE_CORE_ASSERT(false, "Unknown Renderer API!");
+		CoreLogger::Assert(false, "Unknown Renderer API!");
 		return nullptr;
 	}
 
@@ -40,7 +40,7 @@ namespace AGE
 		{
 		case 0:
 		{
-			AGE_CORE_ASSERT(false, "RendererAPI::API::None is currently not supported!");
+			CoreLogger::Assert(false, "RendererAPI::API::None is currently not supported!");
 			return nullptr;
 			break;
 		}
@@ -51,12 +51,12 @@ namespace AGE
 		}
 		default:
 		{
-			AGE_CORE_ASSERT(false, "Unknown Renderer API!");
+			CoreLogger::Assert(false, "Unknown Renderer API!");
 			return nullptr;
 			break;
 		}
 		}
-		AGE_CORE_ASSERT(false, "Unknown Renderer API!");
+		CoreLogger::Assert(false, "Unknown Renderer API!");
 		return nullptr;
 	}
 
@@ -66,7 +66,7 @@ namespace AGE
 		{
 		case 0:
 		{
-			AGE_CORE_ASSERT(false, "RendererAPI::API::None is currently not supported!");
+			CoreLogger::Assert(false, "RendererAPI::API::None is currently not supported!");
 			return nullptr;
 			break;
 		}
@@ -77,12 +77,12 @@ namespace AGE
 		}
 		default:
 		{
-			AGE_CORE_ASSERT(false, "Unknown Renderer API!");
+			CoreLogger::Assert(false, "Unknown Renderer API!");
 			return nullptr;
 			break;
 		}
 		}
-		AGE_CORE_ASSERT(false, "Unknown Renderer API!");
+		CoreLogger::Assert(false, "Unknown Renderer API!");
 		return nullptr;
 	}
 
@@ -134,7 +134,7 @@ namespace AGE
 
 	Ref<Shader> ShaderLibrary::Get(const std::string& Name)
 	{
-		AGE_CORE_ASSERT(Exists(Name), "Shader Not Found!");
+		CoreLogger::Assert(Exists(Name), "Shader Not Found!");
 		return m_Shaders[Name];
 	}
 

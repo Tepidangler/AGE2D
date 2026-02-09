@@ -16,6 +16,8 @@ namespace AGE
 {
 	class TextBoxComponent : public UIComponent
 	{
+		RTTR_ENABLE(UIComponent)
+		RTTR_REGISTRATION_FRIEND
 	public:
 		TextBoxComponent(const std::string& Name);
 		StringProperties m_StringProperties;
@@ -73,8 +75,7 @@ namespace AGE
 			Serializer->ReadRaw<float>(Instance.m_StringProperties.Rotation.y);
 			Serializer->ReadRaw<float>(Instance.m_StringProperties.Rotation.z);
 		}
-		RTTR_ENABLE(UIComponent)
-		RTTR_REGISTRATION_FRIEND
+
 	};
 } // AGE
 

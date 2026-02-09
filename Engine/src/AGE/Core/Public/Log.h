@@ -1,6 +1,7 @@
 #pragma once
 #include "AGEpch.hpp"
-#include "Core.h"
+#include "Core/Public/Core.h"
+#include "Core/Public/Pointers.h"
 
 #pragma warning(push, 0)
 #include "spdlog/spdlog.h"
@@ -10,9 +11,6 @@
 #include <string_view>
 #include <format>
 #include <debugapi.h>
-
-
-
 
 
 namespace AGE 
@@ -26,7 +24,7 @@ namespace AGE
 		Critical = 4
 
 	};
-	class AGE_API Log
+	class Log
 	{
 	public:
 
@@ -145,6 +143,32 @@ namespace AGE
 			OutputDebugString(wLine.c_str());
 
 		}
+#ifdef AGE_ENABLE_ASSERTS
+		template<typename ... Args> // CoreLogger->Assert(true ==  false, "True does not equal false")
+		void Assert(bool Condition, std::string_view fmt, Args&& ... args)
+		{
+			if (!(Condition)) {
+				std::string Line = "[AGECOREASSERT] " + std::vformat(fmt, std::make_format_args(args...)) + "\n";
+				size_t Size = Line.size();
+				Log::GetCoreLogger()->critical(Line);
+				for (auto& c : Line)
+				{
+					Log::GetLogs().push_back(c);
+
+
+				}
+				Log::GetOffsets().push_back(Log::GetOffsets().back() + Size);
+				Log::GetTypes().push_back(LogType::Critical);
+				std::wstring wLine(Line.begin(), Line.end());
+
+				OutputDebugString(wLine.c_str());
+				__debugbreak();
+			}
+		}
+#else// Just Do Nothing
+		template<typename ... Args>
+void Assert(bool Condition, std::string_view fmt, Args&& ... args){}
+#endif
 
 	}
 
@@ -246,6 +270,32 @@ namespace AGE
 			OutputDebugString(wLine.c_str());
 
 		}
+#ifdef AGE_ENABLE_ASSERTS
+		template<typename ... Args>
+		void Assert(bool Condition, std::string_view fmt, Args&& ... args)
+		{
+			if (!(Condition)) {
+				std::string Line = "[AGEGAMEASSERT] " + std::vformat(fmt, std::make_format_args(args...)) + "\n";
+				size_t Size = Line.size();
+				Log::GetCoreLogger()->critical(Line);
+				for (auto& c : Line)
+				{
+					Log::GetLogs().push_back(c);
+
+
+				}
+				Log::GetOffsets().push_back(Log::GetOffsets().back() + Size);
+				Log::GetTypes().push_back(LogType::Critical);
+				std::wstring wLine(Line.begin(), Line.end());
+
+				OutputDebugString(wLine.c_str());
+				__debugbreak();
+			}
+		}
+#else //Just Do Nothing
+		template<typename ... Args>
+void Assert(bool Condition, std::string_view fmt, Args&& ... args){}
+#endif
 	}
 
 }

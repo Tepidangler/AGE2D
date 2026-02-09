@@ -26,7 +26,7 @@ namespace AGE
 			}
 			}
 
-			AGE_CORE_ASSERT(false, "Data Format not supported by AGE!");
+			CoreLogger::Assert(false, "Data Format not supported by AGE!");
 			return 0;
 		}
 
@@ -44,7 +44,7 @@ namespace AGE
 			}
 			}
 
-			AGE_CORE_ASSERT(false, "Internal Format not supported by AGE!");
+			CoreLogger::Assert(false, "Internal Format not supported by AGE!");
 			return 0;
 		}
 
@@ -94,7 +94,7 @@ namespace AGE
 		m_InternalFormat = InternalFormat;
 		m_DataFormat = DataFormat;
 
-		AGE_CORE_ASSERT(InternalFormat & DataFormat, "Format not supported!");
+		CoreLogger::Assert(InternalFormat & DataFormat, "Format not supported!");
 		glCreateTextures(GL_TEXTURE_2D,1, &m_TextureID);
 
 		glTextureStorage2D(m_TextureID, 1, InternalFormat, m_Width, m_Height);
@@ -129,7 +129,7 @@ namespace AGE
 			AGE_PROFILE_SCOPE("stbi_load -> OpenGLTexture2D::OpenGLTexture2D(const std::string& Path)");
 			Data = stbi_load(Path.c_str(), &m_Width, &m_Height, &m_nrChannels, 0);
 		}
-		AGE_CORE_ASSERT(Data, "Unable to Load Image");
+		CoreLogger::Assert(Data, "Unable to Load Image");
 		m_ImageData = {Data, ((m_Width * m_Height) * m_nrChannels)};
 
 		GLenum InternalFormat = 0, DataFormat = 0;
@@ -156,7 +156,7 @@ namespace AGE
 		m_InternalFormat = InternalFormat;
 		m_DataFormat = DataFormat;
 
-		AGE_CORE_ASSERT(InternalFormat & DataFormat, "Format not supported!");
+		CoreLogger::Assert(InternalFormat & DataFormat, "Format not supported!");
 		glCreateTextures(GL_TEXTURE_2D, 1, &m_TextureID);
 
 		glTextureStorage2D(m_TextureID, 1, InternalFormat, m_Width, m_Height);
@@ -218,7 +218,7 @@ namespace AGE
 		//m_InternalFormat = InternalFormat;
 		//m_DataFormat = DataFormat;
 		//
-		//AGE_CORE_ASSERT(InternalFormat & DataFormat, "Format not supported!")
+		//CoreLogger::Assert(InternalFormat & DataFormat, "Format not supported!")
 		//	glCreateTextures(GL_TEXTURE_2D, 1, &m_TextureID);
 		//
 		//glTextureStorage2D(m_TextureID, 1, InternalFormat, m_Width, m_Height);
@@ -251,7 +251,7 @@ namespace AGE
 				Data = stbi_load(Paths[i].c_str(), &m_Width, &m_Height, &m_nrChannels, 0);
 
 			}
-			AGE_CORE_ASSERT(Data, "Unable to Load Image");
+			CoreLogger::Assert(Data, "Unable to Load Image");
 
 			GLenum InternalFormat = 0, DataFormat = 0;
 			if (m_nrChannels == 4)
@@ -268,7 +268,7 @@ namespace AGE
 			m_InternalFormat = InternalFormat;
 			m_DataFormat = DataFormat;
 
-			AGE_CORE_ASSERT(InternalFormat & DataFormat, "Format not supported!")
+			CoreLogger::Assert(InternalFormat & DataFormat, "Format not supported!");
 				glCreateTextures(GL_TEXTURE_2D, 1, &m_TextureID);
 
 			glTextureStorage2D(m_TextureID, 1, InternalFormat, m_Width, m_Height);
@@ -313,7 +313,7 @@ namespace AGE
 	{
 		AGE_PROFILE_FUNCTION();
 		uint32_t bpc = m_DataFormat == GL_RGBA ? 4 : 3; //bytes per channel
-		AGE_CORE_ASSERT(Size == m_Width * m_Height * bpc, "Size Data must be entire texture!");
+		CoreLogger::Assert(Size == m_Width * m_Height * bpc, "Size Data must be entire texture!");
 		glTextureSubImage2D(m_TextureID, 0, 0, 0, m_Width, m_Height, m_DataFormat, GL_UNSIGNED_BYTE, Data);
 		if (!m_ImageData.first)
 		{

@@ -5,7 +5,7 @@
 #include "AGEpch.hpp"
 #include "../Public/TextBoxComponent.h"
 #include "Render/Public/Renderer2D.h"
-#include <rttr/registration>
+#include "rttr/registration"
 #include <misc/cpp/imgui_stdlib.h>
 
 RTTR_REGISTRATION{
