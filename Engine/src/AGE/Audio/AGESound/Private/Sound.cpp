@@ -3,9 +3,9 @@
 #include "Audio/AGESound/Public/AGEAudio.h"
 #include "Audio/Fmod/Public/FmodEngine.h"
 #include "Statics/Public/Statics.h"
-//#include "AL/al.h"
-//#include "AL/alext.h"
-//#include "alcmain.h"
+#include "AL/al.h"
+#include "AL/alext.h"
+//#include "alc/alcmain.h"
 //#include "alhelpers.h"
 
 

@@ -10,7 +10,6 @@
 **/
 #pragma once
 
-#include "Core.h"
 #include "Actors/Public/Actor.h"
 #include "Serializers/Public/DataReader.h"
 #include "Serializers/Public/DataWriter.h"

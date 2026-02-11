@@ -1,4 +1,5 @@
 #include "AGEpch.hpp"
+#if WITH_FMOD
 #include "Audio/Fmod/Public/FmodEngine.h"
 #include "Audio/AGESound/Public/Sound.h"
 #include "Core/Public/Log.h"
@@ -210,3 +211,4 @@ namespace AGE
 		return (FmodEngine*)this;
 	}
 }
+#endif //WITH_FMOD

@@ -1,8 +1,5 @@
 {
   "dependencies" : [ "freetype", "libpng", "zlib", "libxml2", {
-    "name" : "rttr",
-    "version>=" : "0.9.6+20210811#1"
-  }, {
     "name" : "libpqxx",
     "version>=" : "7.10.1"
   }, {
@@ -38,6 +35,21 @@
   }, {
     "name" : "thomasmonkman-filewatch",
     "version>=" : "2023-01-16#2"
+  }, {
+    "name" : "nlohmann-json",
+    "version>=" : "3.12.0#1"
+  }, {
+    "name" : "fastgltf",
+    "version>=" : "0.9.0"
+  }, {
+    "name" : "glad",
+    "version>=" : "0.1.36"
+  }, {
+    "name" : "glm",
+    "version>=" : "1.0.2"
+  }, {
+    "name" : "tmx",
+    "version>=" : "1.10.0"
   } ],
   "builtin-baseline" : "6d7bf7ef2193e2d1c5798a5ff8811d533104c861"
 }

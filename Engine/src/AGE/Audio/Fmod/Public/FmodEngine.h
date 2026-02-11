@@ -1,4 +1,5 @@
 #pragma once
+#if WITH_FMOD
 #include "Core/Public/Core.h"
 #include "Audio/AudioEngine/Public/AudioEngine.h"
 #include "fmod_studio.hpp"
@@ -55,3 +56,4 @@ namespace AGE
 
 	};
 }
+#endif //WITH_FMOD

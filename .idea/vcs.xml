@@ -26,5 +26,10 @@
     <mapping directory="$PROJECT_DIR$/Engine/libs/vendor/ufbx" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/Engine/libs/vendor/yaml-cpp" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/Engine/libs/vendor/zlib" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/cmake-build-distribution---vsclang/_deps/glfw-src" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/cmake-build-distribution---vsclang/_deps/msdf-atlas-gen-src" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/cmake-build-distribution---vsclang/_deps/msdf-atlas-gen-src/artery-font-format" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/cmake-build-distribution---vsclang/_deps/msdf-atlas-gen-src/msdfgen" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/cmake-build-distribution---vsclang/_deps/openal-soft-src" vcs="Git" />
   </component>
 </project>

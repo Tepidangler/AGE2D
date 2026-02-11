@@ -1,5 +1,5 @@
 #pragma once
-#include <src/tmx.h>
+#include <tmx.h>
 #include "Sprite/Public/Image.h"
 
 

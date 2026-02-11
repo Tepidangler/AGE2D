@@ -1,5 +1,4 @@
 #pragma once
-#include "Core.h"
 #include "Texture/Public/Texture.h"
 #include "Serializers/Public/DataReader.h"
 #include "Serializers/Public/DataWriter.h"

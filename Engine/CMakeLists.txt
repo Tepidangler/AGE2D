@@ -2,123 +2,42 @@ cmake_minimum_required(VERSION 4.1)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-set(INC_GLFW ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/glfw/include CACHE PATH "Path to GLFW")
-set(INC_GLAD ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/glad/include CACHE PATH "Path to GLAD")
-set(INC_ImGui ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/imgui CACHE PATH "Path to ImGui")
-set(INC_GLM ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/glm CACHE PATH "Path to GLM")
-#set(INC_STB ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/stb CACHE PATH "Path to stb")
 set(INC_Wwise ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/Wwise/include CACHE PATH "Path to Wwise")
-set(INC_BOX2C ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/box2c/include/box2d CACHE PATH "Path to box2c")
-set(INC_BOX2D ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/box2c/src CACHE PATH "Path to box2d") 
-set(INC_FILEWATCH ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/filewatch CACHE PATH "Path to filewatch")
-set(INC_FASTGLTF ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/fastgltf/include CACHE PATH "Path to fastgltf")
-set(INC_UFBX ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/ufbx CACHE PATH "Path to ufbx")
-#set(INC_IMGUIZMO ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/ImGuizmo CACHE PATH "Path to ImGuizmo")
-#set(INC_SPDLOG ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/spdlog/include CACHE PATH "Path to spdlog")
-set(INC_YAMLCPP ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/yaml-cpp/include  CACHE PATH "Path to yaml-cpp")
-#set(INC_OPENAL ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/OpenAL/include CACHE PATH "Path to OpenAL")
-#set(INC_OPENALGSL ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/OpenAL/gsl/include CACHE PATH "Path to OpenAL/gsl")
-#set(INC_OPENALROOT ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/OpenAL CACHE PATH "Path to OpenAL Root")
-#set(INC_OPENALAL ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/OpenAL/al CACHE PATH "Path to OpenAL/al")
-#set(INC_OPENALALC ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/OpenAL/alc CACHE PATH "Path to OpenAL/alc")
-#set(INC_OPENALCommon ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/OpenAL/common CACHE PATH "Path to OpenAL/common")
-#set(INC_OPENALExamples ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/OpenAL/examples/common CACHE PATH "Path to OpenAL/common")
-#set(INC_OPENALFmt ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/OpenAL/fmt-11.1.4/include CACHE PATH "Path to OpenAL/fmt")
-set(INC_LIBXML2 ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/libxml2/include CACHE PATH "Path to libxml2")
-set(INC_LIBTMX ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/tmx/ CACHE PATH "Path to tmx")
-set(INC_RAPIDCSV ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/rapidcsv CACHE PATH "Path to rapidcsv")
-set(INC_JSON ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/json/single_include CACHE PATH "Path to json")
 set(INC_FMODCORE ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/fmod/api/core/inc CACHE PATH "Path to fmod")
 set(INC_FMODSTUDIO ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/fmod/api/studio/inc CACHE PATH "Path to fmodstudio")
-set(INC_FMT ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/fmt/include CACHE PATH "Path to fmt")
-#set(INC_RTTR ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/rttr/src CACHE PATH "Path to Run Time Type Reflection")
-set(INC_ZLIB ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/zlib/include CACHE PATH "Path to zlib")
-set(INC_INE ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/imgui-node-editor CACHE PATH "Path to imgui-node-editor")
 
 set(MINIMUM_HDR ${CMAKE_SOURCE_DIR}/Engine/src/*)
 
-add_subdirectory(${CMAKE_SOURCE_DIR}/Engine/libs/vendor/fastgltf)
-add_subdirectory(${CMAKE_SOURCE_DIR}/Engine/libs/vendor/glad)
-add_subdirectory(${CMAKE_SOURCE_DIR}/Engine/libs/vendor/glm)
-add_subdirectory(${CMAKE_SOURCE_DIR}/Engine/libs/vendor/glfw)
-add_subdirectory(${CMAKE_SOURCE_DIR}/Engine/libs/vendor/zlib)
-#add_subdirectory(${CMAKE_SOURCE_DIR}/Engine/libs/vendor/spdlog)
-add_subdirectory(${CMAKE_SOURCE_DIR}/Engine/libs/vendor/tmx)
-#add_subdirectory(${CMAKE_SOURCE_DIR}/Engine/libs/vendor/imgui)
-#set(LIBTYPE STATIC) #OpenAL requires this to be set so that you can utilize it's new Device class as ALCdevice is now deprecated (and yes; they didn't document this anywhere)
-#add_subdirectory(${CMAKE_SOURCE_DIR}/Engine/libs/vendor/OpenAL)
-#set(OPENAL_LIBRARY "${OpenAL_BINARY_DIR}/Debug/OpenAL32.lib" CACHE FILEPATH "OpenAL library")
-#set(OPENAL_INCLUDE_DIR "${OpenAL_SOURCE_DIR}/include" CACHE PATH "OpenAL include directory")
-add_subdirectory(${CMAKE_SOURCE_DIR}/Engine/libs/vendor/yaml-cpp)
-add_subdirectory(${CMAKE_SOURCE_DIR}/Engine/libs/vendor/box2c)
-message(STATUS "CMAKE BUILD DIR include dir: ${OpenAL_BINARY_DIR}")
-
-#configure_file(${INC_RTTR}/rttr/detail/base/version.h.in ${INC_RTTR}/rttr/detail/base/version.h)
 
 include_directories(BEFORE 
                     "src/AGE/Core/Public" 
                     "../Game/src/GameFramework"
                     "src/AGE/"
                     "src/"
-                    "${INC_GLFW}" 
-                    "${INC_GLAD}" 
-                    "${INC_ImGui}" 
-                    "${INC_GLM}" 
-#                    "${INC_STB}"
+                    "${GLFW_SOURCE_DIR}/include"
+					"${ImGUI_SOURCE_DIR}"
+					 ${INE_INC_DIRS}
+					 ${STB_INC_DIRS}
+                     ${JSON_INC_DIRS}
+					 ${UFBX_INC_DIR}
+					"${ImGuizmo_SOURCE_DIR}"
                     "${INC_Wwise}"
-       #             "${INC_BOX2C}"
-       #             "${INC_BOX2D}"
-        #            "${INC_FILEWATCH}"
-                    #"${INC_IMGUIZMO}"
-         #           "${INC_YAMLCPP}"
-           #         "${INC_SPDLOG}"
-                #    "${INC_OPENAL}"
-                #    "${INC_OPENALROOT}"
-                #    "${OpenAL_BINARY_DIR}"
-                #    "${INC_OPENALGSL}"
-                #    "${INC_OPENALAL}"
-                #    "${INC_OPENALALC}"
-                #    "${INC_OPENALExamples}"
-                #    "${INC_OPENALFmt}"
-                #    "${INC_OPENALCommon}"
-                    "${INC_LIBXML2}"
-                    "${INC_LIBTMX}"
-                    "${INC_RAPIDCSV}"
-                    "${INC_JSON}"
+					 ${RCSV_INC_DIRS}
                     "${INC_FMODCORE}"
                     "${INC_FMODSTUDIO}"
-					"${ImGuizmo_SOURCE_DIR}"
-                #    "${INC_FMT}"
-                    "${INC_ZLIB}"
-                    "${INC_INE}"
-                    #"${INC_RTTR}"
-                    "${INC_FASTGLTF}"
-                    "${INC_UFBX}"
 )
 
 link_directories(BEFORE
-
-    ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/glfw/lib-vc2019
-    ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/glad/lib
-   # ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/spdlog/lib
-    ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/libxml2/lib
-    ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/tmx/lib
-    ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/glm/lib
     ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/Wwise/x64_vc170/Debug\(StaticCRT\)/lib
     ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/Wwise/x64_vc170/Release\(StaticCRT\)/lib
-    ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/box2c/lib
-    ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/libxml2/lib
-    ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/tmx/lib
     ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/fmod/api/core/lib/x64
     ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/fmod/api/studio/lib/x64
-    ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/zlib/lib
     $ENV{VULKAN_SDK}/Lib
 )
 if(WIN32)
     add_compile_definitions(AG_PLATFORM_WINDOWS
                             GLFW_INCLUDE_NONE
                             AK_OPTIMIZED
-                            AK_WIN
                             AL_LIBTYPE_STATIC
                             IMGUI_DEFINE_MATH_OPERATORS
                             _CRT_SECRURE_NO_WARNINGS
@@ -159,78 +78,64 @@ elseif(${CMAKE_HOST_SYSTEM_PROCESSOR} STREQUAL "IA64")
     add_compile_definitions(_IA64_)
 endif()
 
-file(GLOB UFBXC_SRC "${UFBX_SRC}"
-                    *.c)
 
-#file(GLOB INC_INE_INL ${INC_INE}/*
-#
-#                      *.inl)
-#file(GLOB INC_INE_HDR ${INC_INE}/*
-#                      ${INC_INE}/utilities/*
-#                      ${INC_INE}/external/DXSDK/include/*
-#                      ${INC_INE}/external/ScopeGuard/*
-#
-#                      *.h)
 
-#file(GLOB INC_INE_SRC ${INC_INE}/*
-#                      ${INC_INE}/utilities/*
-#                      ${INC_INE}/external/DXSDK/src/*
-#
-#                      *.cpp)
+if(${BUILD_WITH_WWISE})
+	file(GLOB INC_WWISE_HDR ${INC_Wwise}/AK/*
+			${INC_Wwise}/AK/Comm/*
+			${INC_Wwise}/AK/DSP/*
+			${INC_Wwise}/AK/DSP/Generic/*
+			${INC_Wwise}/AK/MusicEngine/Common/*
+			${INC_Wwise}/AK/Plugin/*
+			${INC_Wwise}/AK/Plugin/PluginServices/*
+			${INC_Wwise}/AK/SoundEngine/Common/*
+			${INC_Wwise}/AK/SoundEngine/Platforms/*
+			${INC_Wwise}/AK/SoundEngine/Platforms/arm_neon/*
+			${INC_Wwise}/AK/SoundEngine/Platforms/Generic/*
+			${INC_Wwise}/AK/SoundEngine/Platforms/Linux/*
+			${INC_Wwise}/AK/SoundEngine/Platforms/POSIX/*
+			${INC_Wwise}/AK/SoundEngine/Platforms/Windows/*
+			${INC_Wwise}/AK/SpatialAudio/Common/*
+			${INC_Wwise}/AK/Tools/Common/*
+			${INC_Wwise}/AK/Tools/POSIX/*
+			${INC_Wwise}/AK/Tools/Win32/*
+			${INC_Wwise}/AK/Wwise/SourceControl/*
+			${INC_Wwise}/AK/Wwise/*
+			${INC_Wwise}/AK/Wwise/Plugin/*
+			${INC_Wwise}/AK/Wwise/Plugin/V1/*
+			${INC_Wwise}/AK/WwiseAuthoringAPI/*
+			${INC_Wwise}/AK/WwiseAuthoringAPI/AkAuthbahn/*
 
-file(GLOB INC_WWISE_HDR ${INC_Wwise}/AK/*
-                      ${INC_Wwise}/AK/Comm/*
-                      ${INC_Wwise}/AK/DSP/*
-                      ${INC_Wwise}/AK/DSP/Generic/*
-                      ${INC_Wwise}/AK/MusicEngine/Common/*
-                      ${INC_Wwise}/AK/Plugin/*
-                      ${INC_Wwise}/AK/Plugin/PluginServices/*
-                      ${INC_Wwise}/AK/SoundEngine/Common/*
-                      ${INC_Wwise}/AK/SoundEngine/Platforms/*
-                      ${INC_Wwise}/AK/SoundEngine/Platforms/arm_neon/*
-                      ${INC_Wwise}/AK/SoundEngine/Platforms/Generic/*
-                      ${INC_Wwise}/AK/SoundEngine/Platforms/Linux/*
-                      ${INC_Wwise}/AK/SoundEngine/Platforms/POSIX/*
-                      ${INC_Wwise}/AK/SoundEngine/Platforms/Windows/*
-                      ${INC_Wwise}/AK/SpatialAudio/Common/*
-                      ${INC_Wwise}/AK/Tools/Common/*
-                      ${INC_Wwise}/AK/Tools/POSIX/*
-                      ${INC_Wwise}/AK/Tools/Win32/*
-                      ${INC_Wwise}/AK/Wwise/SourceControl/*
-                      ${INC_Wwise}/AK/Wwise/*
-                      ${INC_Wwise}/AK/Wwise/Plugin/*
-                      ${INC_Wwise}/AK/Wwise/Plugin/V1/*
-                      ${INC_Wwise}/AK/WwiseAuthoringAPI/*
-                      ${INC_Wwise}/AK/WwiseAuthoringAPI/AkAuthbahn/*
+			*.h)
 
-                      *.h)
+	file(GLOB INC_WWISE_SRC ${INC_Wwise}/SoundEngine/Common/*
 
-file(GLOB INC_WWISE_SRC ${INC_Wwise}/SoundEngine/Common/*
+			*.cpp)
 
-                      *.cpp)
+	target_compile_definitions(Engine PUBLIC
+			WITH_WWISE=${BUILD_WITH_WWISE}
+	)
 
-file(GLOB INC_FMOD_HDR ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/fmod/api/core/inc/*
-                       ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/fmod/api/fsbank/inc/*
-                       ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/fmod/api/studio/inc/*
-                      *.h)
-list(APPEND INC_FMOD_HDR ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/fmod/api/core/inc/fmod.hpp ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/fmod/api/studio/inc/fmod_studio.hpp)
+endif()
 
-#source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" PREFIX "Header Files" FILES ${HDR_FILES})
-#source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" PREFIX "Source Files" FILES ${CPP_FILES})
+
+if(${BUILD_WITH_FMOD})
+	file(GLOB INC_FMOD_HDR ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/fmod/api/core/inc/*
+			${CMAKE_SOURCE_DIR}/Engine/libs/vendor/fmod/api/fsbank/inc/*
+			${CMAKE_SOURCE_DIR}/Engine/libs/vendor/fmod/api/studio/inc/*
+			*.h)
+	list(APPEND INC_FMOD_HDR ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/fmod/api/core/inc/fmod.hpp ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/fmod/api/studio/inc/fmod_studio.hpp)
+
+	target_compile_definitions(Engine PUBLIC
+			WITH_FMOD=${BUILD_WITH_FMOD}
+	)
+endif()
 
 add_library(Engine STATIC
-                  #${INC_INE_INL}
-                  #${INC_INE_HDR}
-                  #${INC_INE_SRC}
-                  #${INC_ImGui}/misc/cpp/imgui_stdlib.cpp
-                  #${INC_ImGui}/backends/imgui_impl_glfw.cpp
-                  #${INC_ImGui}/backends/imgui_impl_opengl3.cpp
                   ${INC_WWISE_HDR}
                   ${INC_WWISE_SRC}
-                  #${STB_INC_DIRS}/stb_image.cpp
                   ${STB_INC_DIRS}/stb_image.h
                   ${INC_FMOD_HDR}
-                  ${UFBXC_SRC}
 		src/AGE/Core/Private/AGEpch.cpp
 		src/AGE/Core/Public/AGEpch.hpp
 		src/AGE/Audio/AudioEngine/Public/Soundbank.h
@@ -385,6 +290,7 @@ add_library(Engine STATIC
 		src/AGE/Render/Private/Pipeline.cpp
 		src/AGE/Render/Public/Pipeline.h
 		src/AGE/Render/Public/MSDFData.h
+		src/AGE/Render/Private/stb_image.cpp
 		src/AGE/RNG/Private/RNG.cpp
 		src/AGE/RNG/Public/RNG.h
 		src/AGE/Scene/Private/Scene.cpp
@@ -438,13 +344,33 @@ target_compile_definitions(Engine PUBLIC
                             $<$<CONFIG:Debug>:AG_DEBUG=1>
                             $<$<CONFIG:Debug>:AG_RELEASE=0>
                             $<$<CONFIG:Debug>:AG_DIST=0>
-                            $<$<CONFIG:Release>:AG_RELEASE=1>
-                            $<$<CONFIG:Release>:AG_DEBUG=0>
-                            $<$<CONFIG:Release>:AG_DIST=0>
-                            $<$<CONFIG:Dist>:AG_DIST=1>
-                            $<$<CONFIG:Dist>:AG_DEBUG=0>
-                            $<$<CONFIG:Dist>:AG_RELEASE=0>
+                            $<$<CONFIG:RelWithDebInfo>:AG_RELEASE=1>
+                            $<$<CONFIG:RelWithDebInfo>:AG_DEBUG=0>
+                            $<$<CONFIG:RelWithDebInfo>:AG_DIST=0>
+                            $<$<CONFIG:MinSizeRel>:AG_DIST=1>
+                            $<$<CONFIG:MinSizeRel>:AG_DEBUG=0>
+                            $<$<CONFIG:MinSizeRel>:AG_RELEASE=0>
 )
+if(WIN32)
+	target_compile_options(Engine PUBLIC
+			$<$<CONFIG:Debug>:/WX /Od>
+			$<$<CONFIG:RelWithDebInfo>:/WX /fsanitize=address /O2>
+			$<$<CONFIG:MinSizeRel>:/WX /fsanitize=address /Os /Oy>
+	)
+elseif(UNIX)
+	target_compile_options(Engine PUBLIC
+			$<$<CONFIG:Debug:-fsanitize=address -fsanitize=undefined -Wall -Wconversion -O0>
+			$<$<CONFIG:RelWithDebInfo>:-fsanitize=address -fsanitize=undefined -Wall -Wconversion -O3>
+			$<$<CONFIG:MinSizeRel>:-fsanitize=address -fsanitize=undefined -Wall -Wconversion -Os>
+	)
+elseif(APPLE)
+	target_compile_options(Engine PUBLIC
+			$<$<CONFIG:Debug:-fsanitize=address -fsanitize=undefined -Wall -Wconversion -O0>
+			$<$<CONFIG:RelWithDebInfo>:-fsanitize=address -fsanitize=undefined -Wall -Wconversion -O3>
+			$<$<CONFIG:MinSizeRel>:-fsanitize=address -fsanitize=undefined -Wall -Wconversion -Os>
+	)
+endif()
+
 
 #target_precompile_headers(Engine PUBLIC
 #		${CMAKE_SOURCE_DIR}/Engine/src/AGE/Core/Public/AGEpch.hpp
@@ -457,8 +383,13 @@ find_package(ZLIB REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
 find_package(Freetype CONFIG REQUIRED)
 find_package(EnTT REQUIRED)
-#find_package(RTTR CONFIG REQUIRED Core)
+#find_package(simdjson CONFIG REQUIRED)
+find_package(fastgltf CONFIG REQUIRED)
+find_package(nlohmann_json 3.12.0 REQUIRED)
+find_package(glm REQUIRED)
+find_package(glad REQUIRED)
 find_package(box2d CONFIG REQUIRED)
+find_package(tmx CONFIG REQUIRED)
 find_package(fmt CONFIG REQUIRED)
 find_package(yaml-cpp REQUIRED)
 
@@ -468,38 +399,46 @@ target_include_directories(Engine PRIVATE
 		"${OPENAL_INC_DIRS}"
 		${STB_INC_DIRS}
 		${FILEWATCH_INC_DIRS}
+		${INE_INC_DIRS}
+		${JSON_INC_DIRS}
+		${RCSV_INC_DIRS}
 )
 target_link_libraries(Engine PUBLIC
-                        glfw 
-                        glad
-                        ImGUI
-                        glm
+                        glad::glad
+						imgui-node-editor
+                        glm::glm
                         spdlog::spdlog
 						fmt::fmt
+						fastgltf::fastgltf
+						nlohmann_json::nlohmann_json
+						EnTT::EnTT
+						msdfgen::msdfgen-core
+						msdfgen::msdfgen-ext
+						msdf-atlas-gen::msdf-atlas-gen
+						Freetype::Freetype
+						yaml-cpp::yaml-cpp
+						LibXml2::LibXml2
+						OpenAL::OpenAL
+						RTTR::Core_Lib_STL
+						box2d::box2d
+						ZLIB::ZLIB
                      	opengl32.lib
+						Ws2_32
+						Winmm
+						BCrypt
+						xinput
+						tmx
+                        ImGUI
+                        glfw
+						ufbx
 		                "${CMAKE_SOURCE_DIR}/Engine/libs/vendor/Wwise/x64_vc170/Debug\(StaticCRT\)/lib/AkSoundEngine.lib"
 		                "${CMAKE_SOURCE_DIR}/Engine/libs/vendor/Wwise/x64_vc170/Debug\(StaticCRT\)/lib/AkMemoryMgr.lib"
 		                "${CMAKE_SOURCE_DIR}/Engine/libs/vendor/Wwise/x64_vc170/Debug\(StaticCRT\)/lib/AkStreamMgr.lib"
                         "${CMAKE_SOURCE_DIR}/Engine/libs/vendor/Wwise/x64_vc170/Debug\(StaticCRT\)/lib/AkMusicEngine.lib"
                         "${CMAKE_SOURCE_DIR}/Engine/libs/vendor/Wwise/x64_vc170/Debug\(StaticCRT\)/lib/AkSpatialAudio.lib"                
 		                "${CMAKE_SOURCE_DIR}/Engine/libs/vendor/Wwise/x64_vc170/Debug\(StaticCRT\)/lib/CommunicationCentral.lib"
-		                Ws2_32
-		                Winmm
-		                BCrypt
-                        xinput
-                        tmx
-                        EnTT::EnTT
-                        msdfgen::msdfgen-core
-                        msdfgen::msdfgen-ext
-                        msdf-atlas-gen::msdf-atlas-gen
-                        Freetype::Freetype
-                        yaml-cpp::yaml-cpp 
-                        LibXml2::LibXml2
-						RTTR::Core_Lib
                         "${CMAKE_SOURCE_DIR}/Engine/libs/vendor/fmod/api/core/lib/x64/fmod_vc.lib"
                         "${CMAKE_SOURCE_DIR}/Engine/libs/vendor/fmod/api/studio/lib/x64/fmodstudio_vc.lib"
-                        box2d::box2d
-                        ZLIB::ZLIB
                         )
 
 configure_file(CMake/Versioning.h.in Versioning.h)

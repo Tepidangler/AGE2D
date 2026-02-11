@@ -20,7 +20,7 @@
 #include <glm/gtx/quaternion.hpp>
 #include <box2d/id.h>
 #include <box2d/types.h>
-#include <src/tmx.h>
+#include <tmx.h>
 
 #include "Debug/Public/Instrumentor.h"
 

@@ -1,5 +1,4 @@
 #pragma once
-#include "Core.h"
 #include "Items/Public/Item.h"
 #include "Items/Public/Weapon.h"
 #include "Items/Public/Armor.h"

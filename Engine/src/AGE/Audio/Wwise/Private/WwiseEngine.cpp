@@ -1,5 +1,6 @@
 #include "AGEpch.hpp"
 
+#ifdef WITH_WWISE
 #include "Audio/Wwise/Public/WWiseEngine.h"
 #include "Core/Public/Log.h"
 
@@ -564,3 +565,4 @@ namespace AGE
 		return (Wwise*)this;
 	}
 }
+#endif //WITH_WWISE
