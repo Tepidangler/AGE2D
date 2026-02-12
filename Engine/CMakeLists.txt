@@ -27,13 +27,6 @@ include_directories(BEFORE
                     "${INC_FMODSTUDIO}"
 )
 
-link_directories(BEFORE
-    ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/Wwise/x64_vc170/Debug\(StaticCRT\)/lib
-    ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/Wwise/x64_vc170/Release\(StaticCRT\)/lib
-    ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/fmod/api/core/lib/x64
-    ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/fmod/api/studio/lib/x64
-    $ENV{VULKAN_SDK}/Lib
-)
 if(WIN32)
     add_compile_definitions(AG_PLATFORM_WINDOWS
                             GLFW_INCLUDE_NONE
@@ -78,64 +71,9 @@ elseif(${CMAKE_HOST_SYSTEM_PROCESSOR} STREQUAL "IA64")
     add_compile_definitions(_IA64_)
 endif()
 
-
-
-if(${BUILD_WITH_WWISE})
-	file(GLOB INC_WWISE_HDR ${INC_Wwise}/AK/*
-			${INC_Wwise}/AK/Comm/*
-			${INC_Wwise}/AK/DSP/*
-			${INC_Wwise}/AK/DSP/Generic/*
-			${INC_Wwise}/AK/MusicEngine/Common/*
-			${INC_Wwise}/AK/Plugin/*
-			${INC_Wwise}/AK/Plugin/PluginServices/*
-			${INC_Wwise}/AK/SoundEngine/Common/*
-			${INC_Wwise}/AK/SoundEngine/Platforms/*
-			${INC_Wwise}/AK/SoundEngine/Platforms/arm_neon/*
-			${INC_Wwise}/AK/SoundEngine/Platforms/Generic/*
-			${INC_Wwise}/AK/SoundEngine/Platforms/Linux/*
-			${INC_Wwise}/AK/SoundEngine/Platforms/POSIX/*
-			${INC_Wwise}/AK/SoundEngine/Platforms/Windows/*
-			${INC_Wwise}/AK/SpatialAudio/Common/*
-			${INC_Wwise}/AK/Tools/Common/*
-			${INC_Wwise}/AK/Tools/POSIX/*
-			${INC_Wwise}/AK/Tools/Win32/*
-			${INC_Wwise}/AK/Wwise/SourceControl/*
-			${INC_Wwise}/AK/Wwise/*
-			${INC_Wwise}/AK/Wwise/Plugin/*
-			${INC_Wwise}/AK/Wwise/Plugin/V1/*
-			${INC_Wwise}/AK/WwiseAuthoringAPI/*
-			${INC_Wwise}/AK/WwiseAuthoringAPI/AkAuthbahn/*
-
-			*.h)
-
-	file(GLOB INC_WWISE_SRC ${INC_Wwise}/SoundEngine/Common/*
-
-			*.cpp)
-
-	target_compile_definitions(Engine PUBLIC
-			WITH_WWISE=${BUILD_WITH_WWISE}
-	)
-
-endif()
-
-
-if(${BUILD_WITH_FMOD})
-	file(GLOB INC_FMOD_HDR ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/fmod/api/core/inc/*
-			${CMAKE_SOURCE_DIR}/Engine/libs/vendor/fmod/api/fsbank/inc/*
-			${CMAKE_SOURCE_DIR}/Engine/libs/vendor/fmod/api/studio/inc/*
-			*.h)
-	list(APPEND INC_FMOD_HDR ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/fmod/api/core/inc/fmod.hpp ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/fmod/api/studio/inc/fmod_studio.hpp)
-
-	target_compile_definitions(Engine PUBLIC
-			WITH_FMOD=${BUILD_WITH_FMOD}
-	)
-endif()
-
 add_library(Engine STATIC
-                  ${INC_WWISE_HDR}
-                  ${INC_WWISE_SRC}
+
                   ${STB_INC_DIRS}/stb_image.h
-                  ${INC_FMOD_HDR}
 		src/AGE/Core/Private/AGEpch.cpp
 		src/AGE/Core/Public/AGEpch.hpp
 		src/AGE/Audio/AudioEngine/Public/Soundbank.h
@@ -359,7 +297,7 @@ if(WIN32)
 	)
 elseif(UNIX)
 	target_compile_options(Engine PUBLIC
-			$<$<CONFIG:Debug:-fsanitize=address -fsanitize=undefined -Wall -Wconversion -O0>
+			$<$<CONFIG:Debug>:-fsanitize=address -fsanitize=undefined -Wall -Wconversion -O0>
 			$<$<CONFIG:RelWithDebInfo>:-fsanitize=address -fsanitize=undefined -Wall -Wconversion -O3>
 			$<$<CONFIG:MinSizeRel>:-fsanitize=address -fsanitize=undefined -Wall -Wconversion -Os>
 	)
@@ -370,6 +308,11 @@ elseif(APPLE)
 			$<$<CONFIG:MinSizeRel>:-fsanitize=address -fsanitize=undefined -Wall -Wconversion -Os>
 	)
 endif()
+
+
+
+
+
 
 
 #target_precompile_headers(Engine PUBLIC
@@ -431,14 +374,66 @@ target_link_libraries(Engine PUBLIC
                         ImGUI
                         glfw
 						ufbx
-		                "${CMAKE_SOURCE_DIR}/Engine/libs/vendor/Wwise/x64_vc170/Debug\(StaticCRT\)/lib/AkSoundEngine.lib"
-		                "${CMAKE_SOURCE_DIR}/Engine/libs/vendor/Wwise/x64_vc170/Debug\(StaticCRT\)/lib/AkMemoryMgr.lib"
-		                "${CMAKE_SOURCE_DIR}/Engine/libs/vendor/Wwise/x64_vc170/Debug\(StaticCRT\)/lib/AkStreamMgr.lib"
-                        "${CMAKE_SOURCE_DIR}/Engine/libs/vendor/Wwise/x64_vc170/Debug\(StaticCRT\)/lib/AkMusicEngine.lib"
-                        "${CMAKE_SOURCE_DIR}/Engine/libs/vendor/Wwise/x64_vc170/Debug\(StaticCRT\)/lib/AkSpatialAudio.lib"                
-		                "${CMAKE_SOURCE_DIR}/Engine/libs/vendor/Wwise/x64_vc170/Debug\(StaticCRT\)/lib/CommunicationCentral.lib"
-                        "${CMAKE_SOURCE_DIR}/Engine/libs/vendor/fmod/api/core/lib/x64/fmod_vc.lib"
-                        "${CMAKE_SOURCE_DIR}/Engine/libs/vendor/fmod/api/studio/lib/x64/fmodstudio_vc.lib"
                         )
+if(${BUILD_WITH_WWISE})
+	if(${WWISE_INSTALL_PATH})
+		#		file(GLOB INC_WWISE_HDR ${INC_Wwise}/AK/*
+		#				${INC_Wwise}/AK/Comm/*
+		#				${INC_Wwise}/AK/DSP/*
+		#				${INC_Wwise}/AK/DSP/Generic/*
+		#				${INC_Wwise}/AK/MusicEngine/Common/*
+		#				${INC_Wwise}/AK/Plugin/*
+		#				${INC_Wwise}/AK/Plugin/PluginServices/*
+		#				${INC_Wwise}/AK/SoundEngine/Common/*
+		#				${INC_Wwise}/AK/SoundEngine/Platforms/*
+		#				${INC_Wwise}/AK/SoundEngine/Platforms/arm_neon/*
+		#				${INC_Wwise}/AK/SoundEngine/Platforms/Generic/*
+		#				${INC_Wwise}/AK/SoundEngine/Platforms/Linux/*
+		#				${INC_Wwise}/AK/SoundEngine/Platforms/POSIX/*
+		#				${INC_Wwise}/AK/SoundEngine/Platforms/Windows/*
+		#				${INC_Wwise}/AK/SpatialAudio/Common/*
+		#				${INC_Wwise}/AK/Tools/Common/*
+		#				${INC_Wwise}/AK/Tools/POSIX/*
+		#				${INC_Wwise}/AK/Tools/Win32/*
+		#				${INC_Wwise}/AK/Wwise/SourceControl/*
+		#				${INC_Wwise}/AK/Wwise/*
+		#				${INC_Wwise}/AK/Wwise/Plugin/*
+		#				${INC_Wwise}/AK/Wwise/Plugin/V1/*
+		#				${INC_Wwise}/AK/WwiseAuthoringAPI/*
+		#				${INC_Wwise}/AK/WwiseAuthoringAPI/AkAuthbahn/*
+		#
+		#				*.h)
+		#
+		#		file(GLOB INC_WWISE_SRC ${INC_Wwise}/SoundEngine/Common/*
+		#
+		#				*.cpp)
+		#		add_subdirectory()
+		target_link_libraries(Engine PUBLIC
+				Wwise
+		)
+		target_compile_definitions(Engine PUBLIC
+				WITH_WWISE=${BUILD_WITH_WWISE}
+		)
+	endif()
+
+endif()
+
+if(${BUILD_WITH_FMOD})
+	if(${FMOD_INSTALL_PATH})
+		#		file(GLOB INC_FMOD_HDR ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/fmod/api/core/inc/*
+		#				${CMAKE_SOURCE_DIR}/Engine/libs/vendor/fmod/api/fsbank/inc/*
+		#				${CMAKE_SOURCE_DIR}/Engine/libs/vendor/fmod/api/studio/inc/*
+		#				*.h)
+		#		list(APPEND INC_FMOD_HDR ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/fmod/api/core/inc/fmod.hpp ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/fmod/api/studio/inc/fmod_studio.hpp)
+		#		add_subdirectory()
+
+		target_link_libraries(Engine PUBLIC
+				FMOD
+		)
+		target_compile_definitions(Engine PUBLIC
+				WITH_FMOD=${BUILD_WITH_FMOD}
+		)
+	endif()
+endif()
 
 configure_file(CMake/Versioning.h.in Versioning.h)

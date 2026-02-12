@@ -74,3 +74,23 @@ FetchContent_Declare(ufbx
         GIT_TAG master)
 
 FetchContent_MakeAvailable(ufbx)
+
+if(${BUILD_WITH_FMOD})
+    if(${FMOD_INSTALL_PATH})
+        FetchContent_Declare(Fmod
+                GIT_REPOSITORY https://github.com/Tepidangler/FModCmake.git
+                GIT_TAB master
+        )
+        FetchContent_MakeAvailable(Fmod)
+    endif()
+endif()
+
+if(${BUILD_WITH_WWISE})
+    if(${WWISE_INSTALL_PATH})
+        FetchContent_Declare(Wwise
+                GIT_REPOSITORY https://github.com/Tepidangler/WwiseCmake.git
+                GIT_TAB master
+        )
+        FetchContent_MakeAvailable(Wwise)
+    endif()
+endif()
