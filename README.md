@@ -83,6 +83,7 @@ The project uses C++20 and is configured to build with Visual Studio on Windows.
 # Linux
 
 1. Installing Dependencies 
+
    2. Debian
        ```
        sudo apt-get update
