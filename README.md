@@ -88,6 +88,7 @@ The project uses C++20 and is configured to build with Visual Studio on Windows.
        sudo apt-get update
        sudo apt-get install -y libgl1-mesa-dev libfreetype6-dev libxml2-dev zlib1g-dev libx11-dev libxcursor-dev libxrandr-dev libxi-dev libxinerama-dev libxext-dev libtinyxml2-dev libspdlog-dev libyaml-cpp-dev libpqxx-dev libglm-dev libglfw3-dev libboost-all-dev ninja-build
        ```
+      
    3. Fedora (untested)
       ```
        sudo dnf update
