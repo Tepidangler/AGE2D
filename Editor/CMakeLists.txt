@@ -11,16 +11,37 @@ include_directories(BEFORE
                     "${ImGUI_SOURCE_DIR}/misc"
                      ${INE_INC_DIRS}
                     ${STB_INC_DIRS}
-                    "${INC_Wwise}"
                     "${OPENAL_INC_DIRS}"
                     "${ImGuizmo_SOURCE_DIR}"
                      ${RCSV_INC_DIRS}
                      ${JSON_INC_DIRS}
-                    "${INC_FMODCORE}"
-                    "${INC_FMODSTUDIO}"
+                     ${UFBX_INC_DIR}
                     "${GAME_PATH}"
                     "${GAMEFRAMEWORK_PATH}"
 )
+
+if(UNIX)
+    include_directories(BEFORE
+            ${SIMPLEINI_INCLUDE_DIRS}
+    )
+
+endif()
+if(${BUILD_WITH_WWISE})
+    if(NOT "${WWISE_INSTALL_PATH}" STREQUAL "")
+        include_directories(BEFORE
+                ${WWISE_INSTALL_PATH}/include
+        )
+    endif()
+endif()
+
+if(${BUILD_WITH_FMOD})
+    if(NOT "${FMOD_INSTALL_PATH}" STREQUAL "")
+        include_directories(BEFORE
+                ${FMOD_INSTALL_PATH}/api/core/inc
+                ${FMOD_INSTALL_PATH}/api/studio/inc
+        )
+    endif()
+endif()
 
 
 if(WIN32)
@@ -30,6 +51,7 @@ if(WIN32)
                             AL_LIBTYPE_STATIC
                             _SILENCE_STDEXT_ARR_ITERS_DEPRECATION_WARNINGS
                             ZLIB_WINAPI
+                            _DISABLE_STL_ANNOTATION
                             LIBXML_STATIC
                             UNICODE
                             NOMINMAX
@@ -50,9 +72,6 @@ elseif(UNIX)
                             )
 endif()
 
-link_directories( 
-    $ENV{VULKAN_SDK}/Lib
-)
 set(PROJECT_SOURCE_DIR ${CMAKE_SOURCE_DIR}/Editor/src)
 project(Editor VERSION 0.1.0)
 
@@ -61,6 +80,15 @@ if(${CMAKE_HOST_SYSTEM_PROCESSOR} STREQUAL "x86_64" OR ${CMAKE_HOST_SYSTEM_PROCE
     add_compile_definitions(_AMD64_)
 elseif(${CMAKE_HOST_SYSTEM_PROCESSOR} STREQUAL "IA64") 
     add_compile_definitions(_IA64_)
+endif()
+
+if(${BUILD_WITH_FMOD})
+    if(NOT "${FMOD_INSTALL_PATH}" STREQUAL "")
+        link_directories(BEFORE
+                ${FMOD_INSTALL_PATH}/api/core/lib/x64
+                ${FMOD_INSTALL_PATH}/api/studio/lib/x64
+        )
+    endif()
 endif()
 
 add_executable(Editor
@@ -118,35 +146,41 @@ target_compile_definitions(Editor PUBLIC
 if(WIN32)
     target_compile_options(Editor PUBLIC
             $<$<CONFIG:Debug>:/WX /Od>
-            $<$<CONFIG:RelWithDebInfo>:/WX /fsanitize=address /O2>
-            $<$<CONFIG:MinSizeRel>:/WX /fsanitize=address /Os /Oy>
+            $<$<CONFIG:RelWithDebInfo>:/WX /O2>
+            $<$<CONFIG:MinSizeRel>:/WX /Os /Oy>
     )
 elseif(UNIX)
     target_compile_options(Editor PUBLIC
-            $<$<CONFIG:Debug:-fsanitize=address -fsanitize=undefined -Wall -Wconversion -O0>
-            $<$<CONFIG:RelWithDebInfo>:-fsanitize=address -fsanitize=undefined -Wall -Wconversion -O3>
-            $<$<CONFIG:MinSizeRel>:-fsanitize=address -fsanitize=undefined -Wall -Wconversion -Os>
+            $<$<CONFIG:Debug>:-fsanitize=address -fsanitize=undefined -MT -Wall -Wconversion -O0>
+            $<$<CONFIG:RelWithDebInfo>:-fsanitize=address -fsanitize=undefined -MT -Wall -Wconversion -O3>
+            $<$<CONFIG:MinSizeRel>:-fsanitize=address -fsanitize=undefined -MT -Wall -Wconversion -Os>
     )
 elseif(APPLE)
     target_compile_options(Editor PUBLIC
-            $<$<CONFIG:Debug:-fsanitize=address -fsanitize=undefined -Wall -Wconversion -O0>
-            $<$<CONFIG:RelWithDebInfo>:-fsanitize=address -fsanitize=undefined -Wall -Wconversion -O3>
-            $<$<CONFIG:MinSizeRel>:-fsanitize=address -fsanitize=undefined -Wall -Wconversion -Os>
+            $<$<CONFIG:Debug>:-Wall -MT -Wconversion -O0>
+            $<$<CONFIG:RelWithDebInfo> -Wall -MT -Wconversion -O3>
+            $<$<CONFIG:MinSizeRel>:-Wall -MT -Wconversion -Os>
     )
 endif()
 
 find_package(Freetype REQUIRED)
-find_package(libpqxx CONFIG REQUIRED)
+if(UNIX)
+find_package(PkgConfig REQUIRED)
+    pkg_check_modules(PQXX REQUIRED libpqxx)
+else()
+find_package(libpqxx REQUIRED)
+endif()
+
 find_package(OpenSSL REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
+if(WIN32)
 find_package(nlohmann_json 3.12.0 REQUIRED)
+endif()
 find_package(fmt CONFIG REQUIRED)
 target_link_libraries(Editor PRIVATE 
                         Engine #-WHOLEARCHIVE:$<TARGET_FILE:Engine>
                         Game
                         Freetype::Freetype
-                        vulkan-1
-                        libpqxx::pqxx
                         OpenSSL::Crypto
                         OpenSSL::SSL
                         spdlog::spdlog
@@ -156,5 +190,15 @@ target_link_libraries(Editor PRIVATE
                         ImGuizmo
                         ImGUI
                         )
+
+if(UNIX)
+    target_link_libraries(Editor PRIVATE
+            ${PQXX_LIBRARIES}
+    )
+else()
+    target_link_libraries(Editor PRIVATE
+        libpqxx::pqxx
+    )
+endif()
 
 configure_file(CMake/Versioning.h.in Versioning.h)

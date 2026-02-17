@@ -9,15 +9,34 @@ include_directories(BEFORE
                     "../Engine/src"
                     "${GLFW_SOURCE_DIR}/include"
                     "${ImGUI_SOURCE_DIR}"
-                    "${INC_Wwise}"
                      ${INE_INC_DIRS}
                     "${OPENAL_INC_DIRS}"
                      ${RCSV_INC_DIRS}
                      ${JSON_INC_DIRS}
-                    "${INC_FMODCORE}"
-                    "${INC_FMODSTUDIO}"
 )
+if(UNIX)
+    include_directories(BEFORE
+            ${SIMPLEINI_INCLUDE_DIRS}
+    )
 
+endif()
+
+if(${BUILD_WITH_WWISE})
+    if(NOT "${WWISE_INSTALL_PATH}" STREQUAL "")
+        include_directories(BEFORE
+                ${WWISE_INSTALL_PATH}/include
+        )
+    endif()
+endif()
+
+if(${BUILD_WITH_FMOD})
+    if(NOT "${FMOD_INSTALL_PATH}" STREQUAL "")
+        include_directories(BEFORE
+                ${FMOD_INSTALL_PATH}/api/core/inc
+                ${FMOD_INSTALL_PATH}/api/studio/inc
+        )
+    endif()
+endif()
 
 if(WIN32)
     add_compile_definitions(AG_PLATFORM_WINDOWS
@@ -25,6 +44,7 @@ if(WIN32)
                             IMGUI_DEFINE_MATH_OPERATORS
                             _SILENCE_STDEXT_ARR_ITERS_DEPRECATION_WARNINGS
                             ZLIB_WINAPI
+                            _DISABLE_STL_ANNOTATION
                             LIBXML_STATIC
                             UNICODE
                             NOMINMAX
@@ -58,7 +78,17 @@ elseif(${CMAKE_HOST_SYSTEM_PROCESSOR} STREQUAL "IA64")
     add_compile_definitions(_IA64_)
 endif()
 
-add_library(Game
+if(${BUILD_WITH_FMOD})
+    if(NOT "${FMOD_INSTALL_PATH}" STREQUAL "")
+        link_directories(BEFORE
+                ${FMOD_INSTALL_PATH}/api/core/lib/x64
+                ${FMOD_INSTALL_PATH}/api/studio/lib/x64
+        )
+    endif()
+endif()
+
+#if($<NOT:$<CONFIG:MinSizeRel>>)
+add_library(Game STATIC
         src/Base/Public/Dockspace.h
         src/Base/Public/GameLayer.h
         src/Base/Public/GameViewport.h
@@ -110,6 +140,61 @@ add_library(Game
         src/UI/MainMenu/Private/MainMenu.cpp
         src/UI/MainMenu/Public/MainMenu.h
 )
+
+#else()
+#    add_executable(Game
+#            src/Base/Public/Dockspace.h
+#            src/Base/Public/GameLayer.h
+#            src/Base/Public/GameViewport.h
+#            src/Base/Private/Dockspace.cpp
+#            src/Base/Private/Game.cpp
+#            src/Base/Private/GameLayer.cpp
+#            src/Base/Private/GameViewport.cpp
+#            src/GameFramework/Actors/Public/Actor.h
+#            src/GameFramework/Actors/Private/Actor.cpp
+#            src/GameFramework/Characters/Public/Character.h
+#            src/GameFramework/Characters/Private/Character.cpp
+#            src/GameFramework/Controllers/Public/AIController.h
+#            src/GameFramework/Controllers/Public/AudioController.h
+#            src/GameFramework/Controllers/Public/CameraController.h
+#            src/GameFramework/Controllers/Public/PlayerController.h
+#            src/GameFramework/Controllers/Private/AIController.cpp
+#            src/GameFramework/Controllers/Private/AudioController.cpp
+#            src/GameFramework/Controllers/Private/CameraController.cpp
+#            src/GameFramework/Controllers/Private/PlayerController.cpp
+#            src/GameFramework/GameState/Public/GameState.h
+#            src/GameFramework/GameState/Private/GameState.cpp
+#            src/GameFramework/GameStatics/Public/GameStatics.h
+#            src/GameFramework/GameStatics/Private/GameStatics.cpp
+#            src/GameFramework/GameStructs/Public/GameStructs.h
+#            src/GameFramework/Input/Public/InputComponent.h
+#            src/GameFramework/Input/Private/InputComponent.cpp
+#            src/GameFramework/Interactables/Public/Interactables.h
+#            src/GameFramework/Interactables/Private/Interactables.cpp
+#            src/GameFramework/Items/Public/Item.h
+#            src/GameFramework/Items/Public/Armor.h
+#            src/GameFramework/Items/Public/Weapon.h
+#            src/GameFramework/Items/Private/Item.cpp
+#            src/GameFramework/Items/Private/Armor.cpp
+#            src/GameFramework/Items/Private/Weapon.cpp
+#            src/GameFramework/Inventory/Public/Inventory.h
+#            src/GameFramework/Inventory/Private/Inventory.cpp
+#            src/GameFramework/Party/Public/Party.h
+#            src/GameFramework/Party/Private/Party.cpp
+#            src/GameFramework/Party/Private/PlayerParty.cpp
+#            src/GameFramework/Party/Private/EnemyParty.cpp
+#            src/GameFramework/Quests/Public/QuestComponent.h
+#            src/GameFramework/Quests/Public/QuestManager.h
+#            src/GameFramework/Quests/Private/QuestComponent.cpp
+#            src/GameFramework/Quests/Private/QuestManager.cpp
+#            src/GameFramework/SaveGame/Public/SaveGame.h
+#            src/GameFramework/SaveGame/Private/SaveGame.cpp
+#            src/Base/Private/UiLayer.cpp
+#            src/Base/Public/UiLayer.h
+#            src/UI/MainMenu/Private/MainMenu.cpp
+#            src/UI/MainMenu/Public/MainMenu.h
+#    )
+#endif()
 set_property(TARGET Game PROPERTY
         MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
@@ -128,25 +213,28 @@ target_compile_definitions(Game PUBLIC
 if(WIN32)
     target_compile_options(Game PUBLIC
             $<$<CONFIG:Debug>:/WX /Od>
-            $<$<CONFIG:RelWithDebInfo>:/WX /fsanitize=address /O2>
-            $<$<CONFIG:MinSizeRel>:/WX /fsanitize=address /Os /Oy>
+            $<$<CONFIG:RelWithDebInfo>:/WX /O2>
+            $<$<CONFIG:MinSizeRel>:/WX /Os /Oy>
     )
 elseif(UNIX)
     target_compile_options(Game PUBLIC
-            $<$<CONFIG:Debug:-fsanitize=address -fsanitize=undefined -Wall -Wconversion -O0>
-            $<$<CONFIG:RelWithDebInfo>:-fsanitize=address -fsanitize=undefined -Wall -Wconversion -O3>
-            $<$<CONFIG:MinSizeRel>:-fsanitize=address -fsanitize=undefined -Wall -Wconversion -Os>
+            $<$<CONFIG:Debug>:-fsanitize=address -fsanitize=undefined -MT -Wall -Wconversion -O0>
+            $<$<CONFIG:RelWithDebInfo>:-Wall -MT -Wconversion -O3>
+            $<$<CONFIG:MinSizeRel>:-Wall -MT -Wconversion -Os>
     )
 elseif(APPLE)
     target_compile_options(Game PUBLIC
-            $<$<CONFIG:Debug:-fsanitize=address -fsanitize=undefined -Wall -Wconversion -O0>
-            $<$<CONFIG:RelWithDebInfo>:-fsanitize=address -fsanitize=undefined -Wall -Wconversion -O3>
-            $<$<CONFIG:MinSizeRel>:-fsanitize=address -fsanitize=undefined -Wall -Wconversion -Os>
+            $<$<CONFIG:Debug>:-Wall -MT -Wconversion -O0>
+            $<$<CONFIG:RelWithDebInfo> -Wall -MT -Wconversion -O3>
+            $<$<CONFIG:MinSizeRel>:-Wall -MT -Wconversion -Os>
     )
 endif()
 
 find_package(Freetype REQUIRED)
+if(WIN32)
 find_package(nlohmann_json 3.12.0 REQUIRED)
+endif()
+
 target_link_libraries(Game PRIVATE
                         Engine
                         freetype

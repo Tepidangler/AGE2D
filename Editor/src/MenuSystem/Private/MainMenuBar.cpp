@@ -1,13 +1,12 @@
 #if !AG_DIST
-#include <Core/Public/Core.h>
-#include <Assets/Public/AssetManager.h>
+#include <Age.h>
 #include "MenuSystem/Public/MainMenuBar.h"
 #include "Editor_ImGui/Public/SceneHierarchyPanel.h"
 #include "Editor_Core/Public/EditorLayer.h"
 #include "Render/Public/Renderer2D.h"
 #include "Parser/Public/FbxParser.h"
 #include <misc/cpp/imgui_stdlib.h>
-
+#include <cstdlib>
 #include "Editor_Core/Public/CodeGen.h"
 
 namespace AGE
@@ -857,8 +856,13 @@ namespace AGE
 			LoadProjectIniFile();
 		}
 
+#ifdef AG_PLATFORM_WINDOWS
 		std::wstring ProjName = m_ProjectFilePath.filename();
 		SetEnvironmentVariable(L"AGEPROJECTNAME", ProjName.c_str());
+#else
+		std::string ProjName = m_ProjectFilePath.filename();
+		setenv("AGEPROJECTNAME", ProjName.c_str(), 1);
+#endif
 
 		std::string ScenesDirectory = m_ProjectFilePath.string();
 		ScenesDirectory.append("/Scenes");

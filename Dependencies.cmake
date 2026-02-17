@@ -1,9 +1,11 @@
+if(WIN32)
 find_path(STB_INC_DIRS "stb_image.h")
 find_path(FILEWATCH_INC_DIRS "thomasmonkman-filewatch/FileWatch.hpp")
 find_path(SIMPLEINI_INCLUDE_DIRS "ConvertUTF.c")
 find_path(MINIMP3_INCLUDE_DIRS "minimp3/minimp3.h")
 find_path(JSON_INC_DIRS "nlohmann/json.hpp")
 find_path(RCSV_INC_DIRS "rapidcsv.h")
+endif()
 
 include(FetchContent)
 
@@ -22,6 +24,13 @@ set(MSDFGEN_DISABLE_SVG OFF)
 set(BUILD_SHARED_LIBS OFF)
 
 FetchContent_MakeAvailable(msdf-atlas-gen)
+
+FetchContent_Declare(GLAD
+        GIT_REPOSITORY https://github.com/Tepidangler/glad.git
+        GIT_TAG main)
+
+FetchContent_MakeAvailable(GLAD)
+
 
 FetchContent_Declare(GLFW
         GIT_REPOSITORY https://github.com/Tepidangler/glfw.git
@@ -56,11 +65,12 @@ GIT_TAG master
 
 FetchContent_MakeAvailable(ImGuizmo)
 
+if(WIN32)
 FetchContent_Declare(Imgui-Node-Editor
 GIT_REPOSITORY https://github.com/Tepidangler/imgui-node-editor.git
 GIT_TAG master)
-
 FetchContent_MakeAvailable(Imgui-Node-Editor)
+endif()
 
 FetchContent_Declare(rttr
 GIT_REPOSITORY https://github.com/Tepidangler/rttr.git
@@ -76,21 +86,95 @@ FetchContent_Declare(ufbx
 FetchContent_MakeAvailable(ufbx)
 
 if(${BUILD_WITH_FMOD})
-    if(${FMOD_INSTALL_PATH})
+    if(NOT "${FMOD_INSTALL_PATH}" STREQUAL "")
         FetchContent_Declare(Fmod
                 GIT_REPOSITORY https://github.com/Tepidangler/FModCmake.git
-                GIT_TAB master
+                GIT_TAG "origin/main"
         )
         FetchContent_MakeAvailable(Fmod)
     endif()
 endif()
 
 if(${BUILD_WITH_WWISE})
-    if(${WWISE_INSTALL_PATH})
+    if(NOT "${WWISE_INSTALL_PATH}" STREQUAL "")
         FetchContent_Declare(Wwise
                 GIT_REPOSITORY https://github.com/Tepidangler/WwiseCmake.git
-                GIT_TAB master
+                GIT_TAG "origin/main"
         )
         FetchContent_MakeAvailable(Wwise)
     endif()
+endif()
+
+if(UNIX)
+    #entt
+    FetchContent_Declare(entt
+            GIT_REPOSITORY https://github.com/Tepidangler/entt.git
+            GIT_TAG master
+    )
+    FetchContent_MakeAvailable(entt)
+    #fastgltf
+    FetchContent_Declare(fastgltf
+            GIT_REPOSITORY https://github.com/Tepidangler/fastgltf.git
+            GIT_TAG main
+    )
+    FetchContent_MakeAvailable(fastgltf)
+    #minimp3
+    FetchContent_Declare(minimp3
+            GIT_REPOSITORY https://github.com/Tepidangler/minimp3.git
+            GIT_TAG master
+    )
+    FetchContent_MakeAvailable(minimp3)
+    #nlohmann-json
+    FetchContent_Declare(nlohmann_json
+            GIT_REPOSITORY https://github.com/Tepidangler/json.git
+            GIT_TAG develop
+    )
+    FetchContent_MakeAvailable(nlohmann_json)
+    #stb
+    FetchContent_Declare(stb
+            GIT_REPOSITORY https://github.com/Tepidangler/stb.git
+            GIT_TAG master
+    )
+    FetchContent_MakeAvailable(stb)
+    #filwatch
+    FetchContent_Declare(filewatch
+            GIT_REPOSITORY https://github.com/Tepidangler/filewatch.git
+            GIT_TAG master
+    )
+    FetchContent_MakeAvailable(filewatch)
+    #simpleini
+    FetchContent_Declare(simpleini
+            GIT_REPOSITORY https://github.com/Tepidangler/simpleini.git
+            GIT_TAG master
+    )
+    FetchContent_MakeAvailable(simpleini)
+    #rapidcsv
+    FetchContent_Declare(rapidcsv
+            GIT_REPOSITORY https://github.com/Tepidangler/rapidcsv.git
+            GIT_TAG master
+    )
+    FetchContent_MakeAvailable(rapidcsv)
+    #libtmx
+    FetchContent_Declare(libtmx
+            GIT_REPOSITORY https://github.com/Tepidangler/tmx.git
+            GIT_TAG master
+    )
+    FetchContent_MakeAvailable(libtmx)
+    #box2d
+    FetchContent_Declare(box2d
+            DOWNLOAD_EXTRACT_TIMESTAMP OFF
+            URL https://github.com/erincatto/box2d/archive/refs/tags/v3.1.1.zip
+    )
+    FetchContent_MakeAvailable(box2d)
+    #x11-compat INE
+    FetchContent_Declare(Imgui-Node-Editor
+            GIT_REPOSITORY https://github.com/Tepidangler/imgui-node-editor.git
+            GIT_TAG x11-compat)
+
+    find_path(STB_INC_DIRS "stb_image.h" ${stb_SOURCE_DIR})
+    find_path(FILEWATCH_INC_DIRS "FileWatch.hpp" ${filewatch_SOURCE_DIR})
+    find_path(SIMPLEINI_INCLUDE_DIRS "ConvertUTF.c" ${simpleini_SOURCE_DIR})
+    find_path(MINIMP3_INCLUDE_DIRS "minimp3.h" ${minimp3_SOURCE_DIR})
+    find_path(JSON_INC_DIRS "single_include/nlohmann/json.hpp" ${nlohmann_json_SOURCE_DIR})
+    find_path(RCSV_INC_DIRS "src/rapidcsv.h" ${rapidcsv_SOURCE_DIR})
 endif()

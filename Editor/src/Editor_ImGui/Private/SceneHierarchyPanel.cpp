@@ -29,7 +29,7 @@ namespace AGE
 			ImGui::Separator();
 			float LineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.f;
 			ImVec2 ButtonSize = { LineHeight,LineHeight};
-			bool open = ImGui::TreeNodeEx((void*)typeid(T).hash_code(), TNF, Name.c_str());
+			bool open = ImGui::TreeNodeEx((void*)typeid(T).hash_code(), TNF, "%s",Name.c_str());
 
 			ImGui::SameLine(CRA.x - LineHeight * .5f);
 			if (ImGui::Button("+", ButtonSize))
@@ -167,7 +167,7 @@ namespace AGE
 		auto& Tag = E.GetComponent<TagComponent>().Tag;
 
 		ImGuiTreeNodeFlags flags = ((m_SelectionContext == E) ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth;
-		bool Opened = ImGui::TreeNodeEx((void*)(uint64_t)(uint32_t)E, flags, Tag.c_str());
+		bool Opened = ImGui::TreeNodeEx((void*)(uint64_t)(uint32_t)E, flags, "%s",Tag.c_str());
 		if (ImGui::IsItemClicked() || ImGui::IsItemFocused())
 		{
 			m_SelectionContext = E;
@@ -190,7 +190,7 @@ namespace AGE
 
 		if (Opened)
 		{
-			bool Opened = ImGui::TreeNodeEx((void*)9817239, flags, Tag.c_str());
+			bool Opened = ImGui::TreeNodeEx((void*)9817239, flags, "%s",Tag.c_str());
 			if (Opened)
 			{
 				ImGui::TreePop();
@@ -246,7 +246,7 @@ namespace AGE
 
 		ImGui::Columns(2);
 		ImGui::SetColumnWidth(0, ColumnWidth);
-		ImGui::Text(Label.c_str());
+		ImGui::Text("%s",Label.c_str());
 		ImGui::NextColumn();
 
 		ImGui::PushMultiItemsWidths(3, ImGui::CalcItemWidth());
@@ -308,8 +308,27 @@ namespace AGE
 		DrawComponent<TagComponent>("Tag", m_SelectionContext, [&](auto& Component)
 			{
 				char Buffer[256];
-				memset(Buffer, 0, sizeof(Buffer));
-				strcpy_s(Buffer, sizeof(Buffer), Component.Tag.c_str());
+				memset(Buffer, 0, 256);
+#ifdef AG_PLATFORM_WINDOWS
+			if ((strlen(Component.Tag.c_str()) * sizeof(char)) > 255)
+			{
+				CoreLogger::Assert(false, "Buffer Overflow Detected in Tag Component");
+			}
+			else
+			{
+				strcpy_s(Buffer, strlen(Buffer) * sizeof(char), Component.Tag.c_str());
+			}
+#else
+			if ((strlen(Component.Tag.c_str()) * sizeof(char)) > 255)
+			{
+				CoreLogger::Assert(false, "Buffer Overflow Detected in Tag Component");
+			}
+			else
+			{
+				strcpy(Buffer, Component.Tag.c_str());
+			}
+
+#endif
 				if (ImGui::InputText("##Tag", Buffer, sizeof(Buffer)))
 				{
 					Component.Tag = std::string(Buffer);
@@ -556,17 +575,17 @@ namespace AGE
 				for (auto& S : Component.AnimTextures)
 				{
 						std::string IndexString = std::to_string(Index);
-						ImGui::Text("Animation Name"); ImGui::SameLine();
+						ImGui::Text("%s","Animation Name"); ImGui::SameLine();
 						std::string NameLbl = "##AnimationNameText" + IndexString;
 						ImGui::InputText(NameLbl.c_str(), &S.Name);
-						ImGui::Text("Number Of Frames"); ImGui::SameLine();
+						ImGui::Text("%s","Number Of Frames"); ImGui::SameLine();
 						std::string FramesLbl = "##Frames" + IndexString;
 						ImGui::InputInt(FramesLbl.c_str(), &S.NumberOfFrames, 1, 5);
 						ImGui::Text("Texture ID: "); ImGui::SameLine();
 						ImGui::Text("%d", S.Texture->GetTextureID());
 						ImGui::Text("Animation Type "); ImGui::SameLine();
 						const char* AnimationTypeString[7] = { "Idle", "Walking", "Running", "BattleIdle", "BattleAttack",  "BattleCast", "Undefined"};
-						const char* CurrentAnimationTypeString = AnimationTypeString[(int)S.Status];
+						const char* CurrentAnimationTypeString = AnimationTypeString[(int)S.MovementStatus];
 						std::string ComboLbl = "##AnimationType" + IndexString;
 						if (ImGui::BeginCombo(ComboLbl.c_str(), CurrentAnimationTypeString))
 						{
@@ -577,7 +596,7 @@ namespace AGE
 								if (ImGui::Selectable(AnimationTypeString[i], IsSelected))
 								{
 									CurrentAnimationTypeString = AnimationTypeString[i];
-									S.Status = ((CharMovementStatus)i);
+									S.MovementStatus = ((CharMovementStatus)i);
 								}
 
 								if (IsSelected)
@@ -609,7 +628,7 @@ namespace AGE
 															  		
 				if (!Component.AsepriteFile.empty())		  
 				{
-					ImGui::Text(Component.AsepriteFile.string().c_str());
+					ImGui::Text("%s",Component.AsepriteFile.string().c_str());
 				}
 
 			});
@@ -760,21 +779,24 @@ namespace AGE
 				}
 				case 2:
 				{
+#if WITH_FMOD
 					if (ImGui::Button("Load SoundBanks"))
 					{
-						Component.GetAudioEngine()->As<FmodEngine>()->LoadBankFromFile(SelectSoundBank().string());
+
+						Component.GetAudioEngine()->template As<FmodEngine>()->LoadBankFromFile(SelectSoundBank().string());
 					}
-					ImGui::Text("LoadedBanks");
+					ImGui::Text("%s","LoadedBanks");
 					ImGui::Separator();
 					if (ImGui::BeginTable("Banks", 1))
 					{
-						for (const auto& [K, V]: Component.GetAudioEngine()->As<FmodEngine>()->GetBanks())
+						for (const auto& [K, V]: Component.GetAudioEngine()->template As<FmodEngine>()->GetBanks())
 						{
 							ImGui::TableNextColumn();
-							ImGui::Text(K.c_str());
+							ImGui::Text("%s",K.c_str());
 						}
 						ImGui::EndTable();
 					}
+#endif
 					break;
 				}
 				default:

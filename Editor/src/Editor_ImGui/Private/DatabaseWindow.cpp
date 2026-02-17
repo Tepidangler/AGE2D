@@ -6,7 +6,7 @@
 #include "Editor_ImGui/Public/DatabaseWindow.h"
 #include <misc/cpp/imgui_stdlib.h>
 #include <openssl/evp.h>
-#include <AGE.h>
+#include <Age.h>
 
 namespace AGE
 {
@@ -639,7 +639,7 @@ namespace AGE
 				std::string PrimaryKey = m_Database->GetPrimaryKey(m_CurrentDatabaseString, TableName);
 				std::string ColumnValue = "";
 				int i = 0;
-				for (i ; i < Columns.size(); ++i)
+				for (; i < Columns.size(); ++i)
 				{
 					if (i == Columns.size() - 1)
 					{
@@ -651,6 +651,13 @@ namespace AGE
 
 				UpdateStatement += ColumnValue;
 				UpdateStatement += std::format("\nWHERE \"{}\"=${}", PrimaryKey, std::to_string(i+1));
+				return UpdateStatement;
+				break;
+			}
+			case StatementType::CREATETABLE:
+			{
+				//TODO: Implement Create Table statement
+				CoreLogger::Critical("Create Table currently not implemented!");
 				return UpdateStatement;
 				break;
 			}

@@ -29,7 +29,9 @@ namespace Proj
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0,0 });
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.f);
 
-		if (ImGui::Begin("Viewport"), true, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoResize)
+		//TODO: Make this a member variable
+		bool bOpened = true;
+		if (ImGui::Begin("Viewport", &bOpened, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoResize))
 		{
 			auto ViewportMinRegion = ImGui::GetWindowContentRegionMin();
 			auto ViewportMaxRegion = ImGui::GetWindowContentRegionMax();
@@ -51,7 +53,8 @@ namespace Proj
 				GameLayer::Get().SetViewportSize(AGE::Vector2(View[0], View[1]));
 				SpecView = View;
 			}
-			ImGui::Image((ImTextureID)m_Framebuffer->GetColorAttachmentRendererID(0), ImVec2(SpecView[0], SpecView[1]), ImVec2(0, 1), ImVec2(1, 0));
+			uint32_t TextureID = m_Framebuffer->GetColorAttachmentRendererID(0);
+			ImGui::Image((ImTextureID)&TextureID, ImVec2(SpecView[0], SpecView[1]), ImVec2(0, 1), ImVec2(1, 0));
 			ImGui::End();
 			ImGui::PopStyleVar(3);
 		}

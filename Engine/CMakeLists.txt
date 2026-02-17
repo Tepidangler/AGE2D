@@ -2,10 +2,6 @@ cmake_minimum_required(VERSION 4.1)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-set(INC_Wwise ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/Wwise/include CACHE PATH "Path to Wwise")
-set(INC_FMODCORE ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/fmod/api/core/inc CACHE PATH "Path to fmod")
-set(INC_FMODSTUDIO ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/fmod/api/studio/inc CACHE PATH "Path to fmodstudio")
-
 set(MINIMUM_HDR ${CMAKE_SOURCE_DIR}/Engine/src/*)
 
 
@@ -21,21 +17,35 @@ include_directories(BEFORE
                      ${JSON_INC_DIRS}
 					 ${UFBX_INC_DIR}
 					"${ImGuizmo_SOURCE_DIR}"
-                    "${INC_Wwise}"
 					 ${RCSV_INC_DIRS}
-                    "${INC_FMODCORE}"
-                    "${INC_FMODSTUDIO}"
 )
+
+if(${BUILD_WITH_WWISE})
+	if(NOT "${WWISE_INSTALL_PATH}" STREQUAL "")
+		include_directories(BEFORE
+				${WWISE_INSTALL_PATH}/include
+		)
+	endif()
+endif()
+
+if(${BUILD_WITH_FMOD})
+	if(NOT "${FMOD_INSTALL_PATH}" STREQUAL "")
+		include_directories(BEFORE
+				${FMOD_INSTALL_PATH}/api/core/inc
+				${FMOD_INSTALL_PATH}/api/studio/inc
+		)
+	endif()
+endif()
 
 if(WIN32)
     add_compile_definitions(AG_PLATFORM_WINDOWS
                             GLFW_INCLUDE_NONE
-                            AK_OPTIMIZED
                             AL_LIBTYPE_STATIC
                             IMGUI_DEFINE_MATH_OPERATORS
                             _CRT_SECRURE_NO_WARNINGS
+							_DISABLE_STL_ANNOTATION
                             _SILENCE_STDEXT_ARR_ITERS_DEPRECATION_WARNINGS
-                            NOMINMAX
+							NOMINMAX
                             UNICODE
                             ZLIB_WINAPI
                             )
@@ -71,9 +81,20 @@ elseif(${CMAKE_HOST_SYSTEM_PROCESSOR} STREQUAL "IA64")
     add_compile_definitions(_IA64_)
 endif()
 
+if(${BUILD_WITH_FMOD})
+	if(NOT "${FMOD_INSTALL_PATH}" STREQUAL "")
+		link_directories(BEFORE
+				${FMOD_INSTALL_PATH}/api/core/lib/x64
+				${FMOD_INSTALL_PATH}/api/studio/lib/x64
+		)
+	endif()
+endif()
+
+
+
 add_library(Engine STATIC
 
-                  ${STB_INC_DIRS}/stb_image.h
+		${STB_INC_DIRS}/stb_image.h
 		src/AGE/Core/Private/AGEpch.cpp
 		src/AGE/Core/Public/AGEpch.hpp
 		src/AGE/Audio/AudioEngine/Public/Soundbank.h
@@ -292,28 +313,22 @@ target_compile_definitions(Engine PUBLIC
 if(WIN32)
 	target_compile_options(Engine PUBLIC
 			$<$<CONFIG:Debug>:/WX /Od>
-			$<$<CONFIG:RelWithDebInfo>:/WX /fsanitize=address /O2>
-			$<$<CONFIG:MinSizeRel>:/WX /fsanitize=address /Os /Oy>
+			$<$<CONFIG:RelWithDebInfo>:/WX /O2>
+			$<$<CONFIG:MinSizeRel>:/WX /Os /Oy>
 	)
 elseif(UNIX)
 	target_compile_options(Engine PUBLIC
-			$<$<CONFIG:Debug>:-fsanitize=address -fsanitize=undefined -Wall -Wconversion -O0>
-			$<$<CONFIG:RelWithDebInfo>:-fsanitize=address -fsanitize=undefined -Wall -Wconversion -O3>
-			$<$<CONFIG:MinSizeRel>:-fsanitize=address -fsanitize=undefined -Wall -Wconversion -Os>
+			$<$<CONFIG:Debug>:-fsanitize=address -fsanitize=undefined -MT -Wall -Wconversion -O0>
+			$<$<CONFIG:RelWithDebInfo>:-Wall -Wconversion -MT -O3>
+			$<$<CONFIG:MinSizeRel>:-Wall -Wconversion -MT -Os>
 	)
 elseif(APPLE)
 	target_compile_options(Engine PUBLIC
-			$<$<CONFIG:Debug:-fsanitize=address -fsanitize=undefined -Wall -Wconversion -O0>
-			$<$<CONFIG:RelWithDebInfo>:-fsanitize=address -fsanitize=undefined -Wall -Wconversion -O3>
-			$<$<CONFIG:MinSizeRel>:-fsanitize=address -fsanitize=undefined -Wall -Wconversion -Os>
+			$<$<CONFIG:Debug>:-Wall -Wconversion -MT -O0>
+			$<$<CONFIG:RelWithDebInfo> -Wall -Wconversion -MT -O3>
+			$<$<CONFIG:MinSizeRel>:-Wall -Wconversion -MT -Os>
 	)
 endif()
-
-
-
-
-
-
 
 #target_precompile_headers(Engine PUBLIC
 #		${CMAKE_SOURCE_DIR}/Engine/src/AGE/Core/Public/AGEpch.hpp
@@ -324,15 +339,15 @@ find_library(AkSoundEngine AkSoundEngine.lib PATHS ${CMAKE_SOURCE_DIR}/Engine/li
 find_package(LibXml2 REQUIRED)
 find_package(ZLIB REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
-find_package(Freetype CONFIG REQUIRED)
+find_package(Freetype REQUIRED)
+if(WIN32)
 find_package(EnTT REQUIRED)
-#find_package(simdjson CONFIG REQUIRED)
 find_package(fastgltf CONFIG REQUIRED)
 find_package(nlohmann_json 3.12.0 REQUIRED)
-find_package(glm REQUIRED)
-find_package(glad REQUIRED)
-find_package(box2d CONFIG REQUIRED)
 find_package(tmx CONFIG REQUIRED)
+endif()
+find_package(glm REQUIRED)
+find_package(box2d CONFIG REQUIRED)
 find_package(fmt CONFIG REQUIRED)
 find_package(yaml-cpp REQUIRED)
 
@@ -346,8 +361,11 @@ target_include_directories(Engine PRIVATE
 		${JSON_INC_DIRS}
 		${RCSV_INC_DIRS}
 )
+link_directories(
+		${imgui-node-editor_BINARY_DIR}
+)
 target_link_libraries(Engine PUBLIC
-                        glad::glad
+                        glad
 						imgui-node-editor
                         glm::glm
                         spdlog::spdlog
@@ -365,75 +383,62 @@ target_link_libraries(Engine PUBLIC
 						RTTR::Core_Lib_STL
 						box2d::box2d
 						ZLIB::ZLIB
-                     	opengl32.lib
-						Ws2_32
-						Winmm
-						BCrypt
-						xinput
+                     	opengl32
 						tmx
                         ImGUI
                         glfw
 						ufbx
                         )
+
+if(WIN32)
+	target_link_libraries(Engine PUBLIC
+			Ws2_32
+			Winmm
+			BCrypt
+			xinput
+	)
+endif()
 if(${BUILD_WITH_WWISE})
-	if(${WWISE_INSTALL_PATH})
-		#		file(GLOB INC_WWISE_HDR ${INC_Wwise}/AK/*
-		#				${INC_Wwise}/AK/Comm/*
-		#				${INC_Wwise}/AK/DSP/*
-		#				${INC_Wwise}/AK/DSP/Generic/*
-		#				${INC_Wwise}/AK/MusicEngine/Common/*
-		#				${INC_Wwise}/AK/Plugin/*
-		#				${INC_Wwise}/AK/Plugin/PluginServices/*
-		#				${INC_Wwise}/AK/SoundEngine/Common/*
-		#				${INC_Wwise}/AK/SoundEngine/Platforms/*
-		#				${INC_Wwise}/AK/SoundEngine/Platforms/arm_neon/*
-		#				${INC_Wwise}/AK/SoundEngine/Platforms/Generic/*
-		#				${INC_Wwise}/AK/SoundEngine/Platforms/Linux/*
-		#				${INC_Wwise}/AK/SoundEngine/Platforms/POSIX/*
-		#				${INC_Wwise}/AK/SoundEngine/Platforms/Windows/*
-		#				${INC_Wwise}/AK/SpatialAudio/Common/*
-		#				${INC_Wwise}/AK/Tools/Common/*
-		#				${INC_Wwise}/AK/Tools/POSIX/*
-		#				${INC_Wwise}/AK/Tools/Win32/*
-		#				${INC_Wwise}/AK/Wwise/SourceControl/*
-		#				${INC_Wwise}/AK/Wwise/*
-		#				${INC_Wwise}/AK/Wwise/Plugin/*
-		#				${INC_Wwise}/AK/Wwise/Plugin/V1/*
-		#				${INC_Wwise}/AK/WwiseAuthoringAPI/*
-		#				${INC_Wwise}/AK/WwiseAuthoringAPI/AkAuthbahn/*
-		#
-		#				*.h)
-		#
-		#		file(GLOB INC_WWISE_SRC ${INC_Wwise}/SoundEngine/Common/*
-		#
-		#				*.cpp)
-		#		add_subdirectory()
+	if(NOT "${WWISE_INSTALL_PATH}" STREQUAL "")
 		target_link_libraries(Engine PUBLIC
 				Wwise
 		)
 		target_compile_definitions(Engine PUBLIC
-				WITH_WWISE=${BUILD_WITH_WWISE}
+				WITH_WWISE=1
+		)
+	else()
+		target_compile_definitions(Engine PUBLIC
+				WITH_WWISE=0
 		)
 	endif()
-
+else()
+	target_compile_definitions(Engine PUBLIC
+			WITH_WWISE=0
+	)
 endif()
 
 if(${BUILD_WITH_FMOD})
-	if(${FMOD_INSTALL_PATH})
-		#		file(GLOB INC_FMOD_HDR ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/fmod/api/core/inc/*
-		#				${CMAKE_SOURCE_DIR}/Engine/libs/vendor/fmod/api/fsbank/inc/*
-		#				${CMAKE_SOURCE_DIR}/Engine/libs/vendor/fmod/api/studio/inc/*
-		#				*.h)
-		#		list(APPEND INC_FMOD_HDR ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/fmod/api/core/inc/fmod.hpp ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/fmod/api/studio/inc/fmod_studio.hpp)
-		#		add_subdirectory()
-
+	if(NOT "${FMOD_INSTALL_PATH}" STREQUAL "")
+		message(STATUS "Building with FMOD")
 		target_link_libraries(Engine PUBLIC
-				FMOD
+				fmod_vc
+				fmodstudio_vc
+		)
+		target_sources(Engine PUBLIC
+				${FMOD_HDRS}
 		)
 		target_compile_definitions(Engine PUBLIC
-				WITH_FMOD=${BUILD_WITH_FMOD}
+				WITH_FMOD=1
+		)
+	else()
+		target_compile_definitions(Engine PUBLIC
+				WITH_FMOD=0
 		)
 	endif()
+else()
+	target_compile_definitions(Engine PUBLIC
+			WITH_FMOD=0
+	)
 endif()
 
 configure_file(CMake/Versioning.h.in Versioning.h)
