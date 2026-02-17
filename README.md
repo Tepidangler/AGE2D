@@ -47,7 +47,7 @@ AGE2D is a compact, pragmatic engine intended for 2D games and rapid iteration w
 ## Build Instructions
 
 <a name="windows-build-visual-studio--cmake"></a>
-# Windows build (Visual Studio + CMake)
+### Windows build (Visual Studio + CMake)
 
 The project uses C++20 and is configured to build with Visual Studio on Windows. Steps:
 
@@ -80,7 +80,7 @@ The project uses C++20 and is configured to build with Visual Studio on Windows.
    - The build produces `Engine` (static lib) and the `Editor` and `Game` targets where applicable. There are no packaged sample runtime executables by default — the Game directory is the place to add your playable demo or test runner.
 
 <a name="linux"></a>
-# Linux
+### Linux
 
 1. Installing Dependencies 
 
