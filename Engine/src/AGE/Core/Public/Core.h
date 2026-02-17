@@ -17,13 +17,29 @@
 	#define AGE_API
 	#undef AKSOUNDENGINE_DLL
 #endif
+#endif
+
+#ifdef AG_PLATFORM_LINUX
+#if AG_DYNAMIC_LINK
+
+	#ifdef AG_BUILD_DLL
+		#define AGE_API __declspec(dllexport)
+	#else
+		#define AGE_API __declspec(dllimport)
+	#endif
 #else
-	#error AGE only supports Windows!
-#endif 
+	#define AGE_API
+	#undef AKSOUNDENGINE_DLL
+#endif
+#endif
+
+#if !defined(AG_PLATFORM_LINUX) && !defined(AG_PLATFORM_WINDOWS)
+#error AGE only supports Windows and Linux!
+#endif
 
 #if AG_DEBUG
 	#define AGE_ENABLE_ASSERTS
-	#pragma enable_d3d11_debug_symbols
+//	#pragma enable_d3d11_debug_symbols
 #endif
 
 #if AG_DIST

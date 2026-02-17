@@ -1,4 +1,0 @@
-LaunchVSCMD.bat
-
-
-PAUSE

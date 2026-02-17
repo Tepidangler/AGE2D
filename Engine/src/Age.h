@@ -53,6 +53,7 @@
 #include "AGE/Render/Public/GraphicsContext.h"
 #include "AGE/Render/Public/Pipeline.h"
 #include "AGE/Render/Public/Renderer.h"
+#include "AGE/Render/Public/RenderCommand.h"
 #include "AGE/Render/Public/Shader.h"
 #include "AGE/Render/Public/VertexArray.h"
 
@@ -63,6 +64,8 @@
 
 #include "AGE/Serializers/Public/DataReader.h"
 #include "AGE/Serializers/Public/DataWriter.h"
+#include "AGE/Serializers/Public/IniWriter.h"
+#include "AGE/Serializers/Public/IniReader.h"
 
 #include "AGE/Statics/Public/Statics.h"
 

@@ -80,12 +80,12 @@ namespace GameFramework
 
 		void MakeQuestAvailable()
 		{
-			Status = QuestCompletionStatus::Available;		
+			QuestStatus = QuestCompletionStatus::Available;
 		}
 
 		void StartQuest()
 		{
-			Status = QuestCompletionStatus::Active;
+			QuestStatus = QuestCompletionStatus::Active;
 		}
 
 		//If this returns false then the quest is complete
@@ -94,7 +94,7 @@ namespace GameFramework
 			Checkpoints[CurrentCheckpoint] = true;
 			if (CurrentCheckpoint == Checkpoints.size() - 1)
 			{
-				Status = QuestCompletionStatus::Completed;
+				QuestStatus = QuestCompletionStatus::Completed;
 				CurrentCheckpointText = std::string();
 				return false;
 			}
@@ -110,12 +110,12 @@ namespace GameFramework
 		bool IsActive()
 		{
 
-			return Status == QuestCompletionStatus::Active;
+			return QuestStatus == QuestCompletionStatus::Active;
 		}
 		
 		bool IsCompleted()
 		{
-			return Status == QuestCompletionStatus::Completed;
+			return QuestStatus == QuestCompletionStatus::Completed;
 		}
 
 
@@ -141,7 +141,7 @@ namespace GameFramework
 
 		std::map<int, bool> Checkpoints;
 		std::vector<std::string> CheckpointTexts;
-		QuestCompletionStatus Status = QuestCompletionStatus::Unavailable;
+		QuestCompletionStatus QuestStatus = QuestCompletionStatus::Unavailable;
 		QuestType Type = QuestType::Main;
 
 		friend class QuestManager;

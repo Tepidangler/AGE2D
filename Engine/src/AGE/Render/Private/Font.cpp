@@ -4,7 +4,23 @@
 #include "Core/Public/App.h"
 
 #undef INFINITE
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 #include "msdf-atlas-gen/msdf-atlas-gen.h"
+#pragma clang diagnostic pop
+#elif defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#include "msdf-atlas-gen/msdf-atlas-gen.h"
+#pragma GCC diagnostic pop
+#elif defined(_MSC_VER)
+#pragma warning(push, 0)
+#include "msdf-atlas-gen/msdf-atlas-gen.h"
+#pragma warning(pop)
+#else
+#error "Compiler is not supported with AGE yet"
+#endif
 #include "msdf-atlas-gen/FontGeometry.h"
 #include "msdf-atlas-gen/GlyphGeometry.h"
 
@@ -44,7 +60,7 @@ namespace AGE
 
 
 
-	Font::Font(const std::filesystem::path& FontPath)
+	AGEFont::AGEFont(const std::filesystem::path& FontPath)
 		:m_Data(new MSDFData())
 	{
 		std::filesystem::path Path = FontPath;
@@ -137,12 +153,12 @@ namespace AGE
 		m_AtlasTexture.reset();
 
 	}
-	Font::~Font()
+	AGEFont::~AGEFont()
 	{
 		delete m_Data;
 	}
 
-	void Font::SaveFont() const
+	void AGEFont::SaveFont() const
 	{
 		const AppConfig& Config = App::Get().GetAppConfig();
 		const std::string& FileName = m_AtlasTexture->GetName();
@@ -156,7 +172,7 @@ namespace AGE
 		FontData.WriteBuffer(TextureBytes);
 	}
 
-	void Font::LoadFont(const std::string& FontName)
+	void AGEFont::LoadFont(const std::string& FontName)
 	{
 		const AppConfig& Config = App::Get().GetAppConfig();
 		const std::string& FileName = FontName;
@@ -183,14 +199,14 @@ namespace AGE
 		CoreLogger::Info("Loaded Font {}", FontName);
 	}
 
-	Ref<Font> Font::GetDefault()
+	Ref<AGEFont> AGEFont::GetDefault()
 	{
-		static Ref<Font> DefaultFont;
+		static Ref<AGEFont> DefaultFont;
 
 		if (!DefaultFont)
 		{
 			AppConfig Config = App::Get().GetAppConfig();
-			DefaultFont = CreateRef<Font>(Config.DefaultFontPath.string());
+			DefaultFont = CreateRef<AGEFont>(Config.DefaultFontPath.string());
 			//DefaultFont = CreateRef<Font>(g_EditorAssetPath.string() +"/Fonts/Open_Sans/static/OpenSans-Regular.ttf");
 
 			return DefaultFont;

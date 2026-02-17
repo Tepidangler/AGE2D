@@ -2,6 +2,7 @@
 #include "Render/Public/Renderer.h"
 #include "Render/Public/Renderer2D.h"
 #include "Core/Public/App.h"
+#include "Render/Public/RenderCommand.h"
 
 
 namespace AGE

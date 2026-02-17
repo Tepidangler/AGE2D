@@ -2,7 +2,11 @@
 #include "Sprite/Public/Aseprite.h"
 #include "Statics/Public/Statics.h"
 #include "Texture/Public/Texture.h"
+#ifdef AG_PLATFORM_WINDOWS
 #include <intrin.h>
+#else
+#include <x86intrin.h>
+#endif
 
 namespace AGE
 {

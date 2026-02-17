@@ -24,6 +24,10 @@ namespace AGE
 			{
 				return GL_RGBA;
 			}
+			default:
+			{
+				break;
+			}
 			}
 
 			CoreLogger::Assert(false, "Data Format not supported by AGE!");
@@ -41,6 +45,10 @@ namespace AGE
 			case ImageFormat::RGBA8:
 			{
 				return GL_RGBA8;
+			}
+			default:
+			{
+				break;
 			}
 			}
 
@@ -318,7 +326,11 @@ namespace AGE
 		if (!m_ImageData.first)
 		{
 			m_ImageData.first = new uint8_t[Size];
+#ifdef AG_PLATFORM_WINDOWS
 			memcpy_s(m_ImageData.first,Size, Data, Size);
+#else
+			memcpy(m_ImageData.first, Data, Size);
+#endif
 			m_ImageData.second = Size;
 		}
 	}

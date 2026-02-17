@@ -10,9 +10,13 @@
 
 #define MINIMP3_IMPLEMENTATION
 
+#ifdef AG_PLATFORM_WINDOWS
 #include "minimp3/minimp3.h"
 #include "minimp3/minimp3_ex.h"
-
+#else
+#include "minimp3.h"
+#include "minimp3_ex.h"
+#endif
 namespace AGE
 {
 	static mp3dec_t s_Mp3d;
@@ -78,7 +82,8 @@ namespace AGE
 
 	void AGESound::Init()
 	{
-		if (s_Device = al::Device::Create(DeviceType::Playback)) //DeviceType::Playback
+		s_Device = al::Device::Create(DeviceType::Playback);
+		if (!s_Device) //DeviceType::Playback
 		{
 			CoreLogger::Assert(false, "Error Creating Initializing Audio Device!");
 			return;
@@ -289,7 +294,6 @@ namespace AGE
 
 				return false;
 			}
-			return false;
 			}
 		}
 		return true;
@@ -301,17 +305,23 @@ namespace AGE
 
 		switch (Format)
 		{
-		case AudioFileFormat::Wav:
-		{
-			return LoadWav(FileName);
-		}
-		case AudioFileFormat::Mp3:
-		{
-			return LoadAudioSourceMP3(FileName);
-		}
+			case AudioFileFormat::Wav:
+			{
+				return LoadWav(FileName);
+			}
+			case AudioFileFormat::Mp3:
+			{
+				return LoadAudioSourceMP3(FileName);
+			}
+			default:
+			{
+				CoreLogger::Error("Audio File Format not supported! AudioSource Object will not be valid and should not be used!");
+				return AudioSource();
+			}
 		}
 		return AudioSource();
 	}
+
 	void AGESound::Play(const Ref<AudioSource>& Source)
 	{
 		alSourcePlay(Source->m_SourceHandle);

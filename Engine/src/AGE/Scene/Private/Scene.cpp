@@ -175,7 +175,7 @@ namespace AGE
 
 		m_Physics->CreateNewPhysicsWorld(shared_from_this());
 		{
-			m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& NSC)
+			m_Registry.view<NativeScriptComponent>().each([&](auto entity, auto& NSC)
 				{
 					if (!NSC.Instance)
 					{
@@ -452,7 +452,7 @@ namespace AGE
 
 				}
 				{
-					m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& NSC)
+					m_Registry.view<NativeScriptComponent>().each([&](auto entity, auto& NSC)
 						{
 							if (!NSC.Instance)
 							{
@@ -546,7 +546,7 @@ namespace AGE
 		Renderer2D::BeginScene(Camera);
 
 		{
-			m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& NSC)
+			m_Registry.view<NativeScriptComponent>().each([&](auto entity, auto& NSC)
 				{
 					if (!NSC.Instance)
 					{

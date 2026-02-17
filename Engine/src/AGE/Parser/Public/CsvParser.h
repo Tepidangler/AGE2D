@@ -1,6 +1,9 @@
 #pragma once
+#ifdef AG_PLATFORM_WINDOWS
 #include "rapidcsv.h"
-
+#else
+#include "src/rapidcsv.h"
+#endif
 namespace AGE
 {
 	class CSVParser

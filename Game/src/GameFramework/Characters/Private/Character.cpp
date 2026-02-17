@@ -20,9 +20,9 @@ RTTR_REGISTRATION{
 namespace GameFramework
 {
 	template<>
-	InputActionBinding& InputComponent::BindAction<Character>(const std::string& Action, KeyStatus Status, Character* Instigator, InputActionBinding::ActionCallbackFn Func)
+	InputActionBinding& InputComponent::BindAction<Character>(const std::string& Action, KeyState State, Character* Instigator, InputActionBinding::ActionCallbackFn Func)
 	{
-		InputActionBinding Binding(Action, Status);
+		InputActionBinding Binding(Action, State);
 		Binding.BindedFunction = Func;
 		return AddActionBinding(Binding);
 	}
@@ -141,7 +141,7 @@ namespace GameFramework
 		AGE::GameLogger::Assert(!PlayerInputComponent, "Invalid Input Component");
 		PlayerInputComponent->BindAxis<Character>("MoveForward", this, BIND_AXIS_FN(Character::MoveForward));
 		PlayerInputComponent->BindAxis<Character>("MoveRight", this, BIND_AXIS_FN(Character::MoveRight));
-		PlayerInputComponent->BindAction<Character>("Cancel", KeyStatus::Pressed, this, BIND_ACTION_FN(Character::CancelAction));
+		PlayerInputComponent->BindAction<Character>("Cancel", KeyState::Pressed, this, BIND_ACTION_FN(Character::CancelAction));
 	}
 	void Character::MoveForward(float AxisValue)
 	{

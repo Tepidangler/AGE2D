@@ -77,7 +77,7 @@ namespace AGE
 			SaveProject();
 #ifdef AG_PLATFORM_WINDOWS
 	#if AG_RELEASE
-			std::filesystem::copy(g_EditorAssetPath.string() + "/../Game", m_ProjectFilePath.parent_path().string() + "/" + Project::GetActive()->GetConfig().Name, std::filesystem::copy_options::recursive);
+			//std::filesystem::copy(g_EditorAssetPath.string() + "/../Game", m_ProjectFilePath.parent_path().string() + "/" + Project::GetActive()->GetConfig().Name, std::filesystem::copy_options::recursive);
 			CoreLogger::Warn("In order to generate a Visual Studio, go to your projects directory and run Setup.bat");
 	#endif
 	#if AG_DEBUG

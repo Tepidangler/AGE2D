@@ -30,24 +30,26 @@ namespace AGE
 
 		virtual ~DeviceManager() = default;
 
-		inline Window& GetWindow() { return *m_Window; }
+		inline AGEWindow& GetWindow() { return *m_Window; }
 		inline AudioManager& GetAudioManager() { return *m_AudioManager; }
+#ifdef AG_PLATFORM_WINDOWS
 		inline XInput& GetXInput() { return *m_XInput; }
-
+#endif
 		inline void UpdateWindow() { m_Window->OnUpdate(); }
-
+#ifdef AG_PLATFORM_WINDOWS
 		inline void PollInput() { m_XInput->PollControllers(); }
-
+#endif
 		static Scope<DeviceManager> Create(AudioEngineType AudioEngine = AudioEngineType::AGESoundEngine, bool UseXInput = false);
 
 	private:
 		DeviceManager(AudioEngineType AudioEngine, bool UseXInput = false);
 
 	private:
-		Scope<Window> m_Window;
+		Scope<AGEWindow> m_Window;
 		Scope<AudioManager> m_AudioManager;
+#ifdef AG_PLATFORM_WINDOWS
 		Scope<XInput> m_XInput;
-
+#endif
 		friend class App;
 	};
 

@@ -131,7 +131,7 @@ namespace AGE
 		m_Data.TileShader->SetInt("u_Textures", 0, Samplers, m_Data.MaxTextureSlots);
 
 		m_Data.TextureSlots[0] = m_Data.WhiteTexture;
-		m_Data.FontAtlasTextures[0] = Font::GetDefault()->GetAtlasTexture();
+		m_Data.FontAtlasTextures[0] = AGEFont::GetDefault()->GetAtlasTexture();
 
 
 		m_Data.QuadVertexPositions[0] = { .5f, .5f, 0.f, 1.f };

@@ -42,7 +42,8 @@ namespace AGE
 		//Combo Box
 
 		//Button with drag and drop ability
-		ImGui::ImageButton("##Image", (ImTextureID)m_Image->GetTextureID(), ImVec2(32.f,32.f));
+		uint32_t TextureID = m_Image->GetTextureID();
+		ImGui::ImageButton("##Image", (ImTextureID)&TextureID, ImVec2(32.f,32.f));
 		if (ImGui::BeginDragDropTarget())
 		{
 			if (const ImGuiPayload* Payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))

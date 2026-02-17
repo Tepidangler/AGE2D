@@ -26,8 +26,8 @@ namespace AGE
 		template<typename T>
 		void ReadRaw(T& Type)
 		{
-			bool Success = ReadData((char*)&Type, sizeof(T));
-			GameLogger::Assert(Success, "Failed to Read Data");
+			bool success = ReadData((char*)&Type, sizeof(T));
+			GameLogger::Assert(success, "Failed to Read Data");
 
 		}
 

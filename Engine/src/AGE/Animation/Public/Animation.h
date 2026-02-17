@@ -15,7 +15,7 @@ namespace AGE
 		std::string Name = "";
 		int NumberOfFrames = 0;
 		float Width, Height;
-		CharMovementStatus Status = CharMovementStatus::UNDEFINED;
+		CharMovementStatus MovementStatus = CharMovementStatus::UNDEFINED;
 		Ref<Texture2D> Texture;
 
 		bool bIsReadyToLoad = false;
@@ -38,7 +38,7 @@ namespace AGE
 				bIsReadyToLoad = false;
 				return false;
 			}
-			if (Status == CharMovementStatus::UNDEFINED)
+			if (MovementStatus == CharMovementStatus::UNDEFINED)
 			{
 				CoreLogger::Error("Animation must correlate to a movement status");
 				bIsReadyToLoad = false;
@@ -81,7 +81,7 @@ namespace AGE
 		Ref<SubTexture2D> GetCurrentTexture() { return m_CurrentTexture; }
 		void LoadAnimation(const AnimationSpecification Anim);
 		void LoadAnimations(const std::vector<AnimationSpecification>& Anims);
-		void SetCurrentTexture(CharMovementStatus Status);
+		void SetCurrentTexture(CharMovementStatus status);
 
 	private:
 

@@ -38,13 +38,13 @@ namespace AGE
 					if (ImGui::TreeNode(P.get_name().to_string().c_str()))
 					{
 						ImGui::Text("Description:");
-						ImGui::TextWrapped(P.get_metadata("Description").to_string().c_str());
+						ImGui::TextWrapped("%s", P.get_metadata("Description").to_string().c_str());
 						if (P.get_name().to_string() == "Name")
 						{
 							auto Name = P.get_value(Instance).to_string();
 							ImGui::Text("Name:"); ImGui::SameLine();
 							ImGui::InputText("##Name: ", &Name);
-							P.set_value(Instance, Name);
+							std::ignore = P.set_value(Instance, Name);
 						}
 
 						if (P.get_name().to_string() == "Quest Component")
@@ -61,7 +61,7 @@ namespace AGE
 								auto& CheckpointNumber = DerivedTarget->GetQuestComponent()->GetCheckpointNumber();
 
 								ImGui::Text("QuestID: "); ImGui::SameLine();
-								ImGui::Text(std::to_string(DerivedTarget->GetQuestComponent()->GetID()).c_str());
+								ImGui::Text("%s", std::to_string(DerivedTarget->GetQuestComponent()->GetID()).c_str());
 
 								ImGui::InputInt("Checkpoint Number", &CheckpointNumber);
 
@@ -113,7 +113,7 @@ namespace AGE
 
 		}
 	}
-	Ref<Font> NodeEditorWindow::s_Font = nullptr;
+	Ref<AGEFont> NodeEditorWindow::s_Font = nullptr;
 	static void DrawVec2Control(const std::string Label, Vector2& Values, float ResetValue = 0.f)
 	{
 		ImGuiIO& io = ImGui::GetIO();
@@ -292,7 +292,7 @@ namespace AGE
 		AppConfig Config = App::Get().GetAppConfig();
 		ScriptableEntity* Entt = reinterpret_cast<ScriptableEntity*>(Target);
 		m_Target = Ref<ScriptableEntity>(Entt);
-		s_Font = Font::GetDefault();
+		s_Font = AGEFont::GetDefault();
 		if (LoadingExisting)
 		{
 			std::string Path = Config.GameContentPath.string() + "VisualScripting/" + WindowName + ".AGEasset";
@@ -368,7 +368,8 @@ namespace AGE
 			ax::NodeEditor::Begin(m_Name.c_str());
 
 			auto cursorTopLeft = ImGui::GetCursorScreenPos();
-			INEUtils::BlueprintNodeBuilder Builder((ImTextureID)m_HeaderBg->GetTextureID(), m_HeaderBg->GetWidth(), m_HeaderBg->GetHeight());
+			uint32_t HeaderBGTexID = m_HeaderBg->GetTextureID();
+			INEUtils::BlueprintNodeBuilder Builder((ImTextureID)&HeaderBGTexID, m_HeaderBg->GetWidth(), m_HeaderBg->GetHeight());
 
 			for (auto& N : m_Nodes)
 			{
@@ -712,7 +713,7 @@ namespace AGE
 		{
 		default:
 		case AGEPinType::Flow:     return ImColor(C::White[0], C::White[1], C::White[2]);
-		case AGEPinType::Bool:     return ImColor(C::Red[0], C::Red[1], C::Red[2]);
+		case AGEPinType::Boolean:     return ImColor(C::Red[0], C::Red[1], C::Red[2]);
 		case AGEPinType::Int:      return ImColor(C::Blue[0], C::Blue[1], C::Blue[2]);
 		case AGEPinType::Int16:	   return ImColor(C::Indigo[0], C::Indigo[1], C::Indigo[2]);
 		case AGEPinType::Int64:	   return ImColor(C::Navy[0], C::Navy[1], C::Navy[2]);
@@ -817,7 +818,7 @@ namespace AGE
 		auto paneWidth = ImGui::GetContentRegionAvail().x;
 		//Draw Stats for Entity
 		ImGui::Text("Entity Type:"); ImGui::SameLine();
-		ImGui::Text(TargetType.get_name().to_string().c_str());
+		ImGui::Text("%s", TargetType.get_name().to_string().c_str());
 		if (TargetType.get_name().to_string() == "Character")
 		{
 			DrawProperties<GameFramework::Character>(TargetType,Instance,m_Target);
@@ -950,17 +951,19 @@ namespace AGE
 				if (ImGui::InvisibleButton("save", ImVec2((float)saveIconWidth, (float)saveIconHeight)))
 					node->SavedState = node->State;
 
+				uint32_t SaveIconTexID = m_SaveIcon->GetTextureID();
 				if (ImGui::IsItemActive())
-					drawList->AddImage((ImTextureID)m_SaveIcon->GetTextureID(), ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), ImVec2(0, 0), ImVec2(1, 1), IM_COL32(255, 255, 255, 96));
+					drawList->AddImage((ImTextureID)&SaveIconTexID, ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), ImVec2(0, 0), ImVec2(1, 1), IM_COL32(255, 255, 255, 96));
 				else if (ImGui::IsItemHovered())
-					drawList->AddImage((ImTextureID)m_SaveIcon->GetTextureID(), ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), ImVec2(0, 0), ImVec2(1, 1), IM_COL32(255, 255, 255, 255));
+					drawList->AddImage((ImTextureID)&SaveIconTexID, ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), ImVec2(0, 0), ImVec2(1, 1), IM_COL32(255, 255, 255, 255));
 				else
-					drawList->AddImage((ImTextureID)m_SaveIcon->GetTextureID(), ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), ImVec2(0, 0), ImVec2(1, 1), IM_COL32(255, 255, 255, 160));
+					drawList->AddImage((ImTextureID)&SaveIconTexID, ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), ImVec2(0, 0), ImVec2(1, 1), IM_COL32(255, 255, 255, 160));
 			}
 			else
 			{
+				uint32_t SaveIconTexID = m_SaveIcon->GetTextureID();
 				ImGui::Dummy(ImVec2((float)saveIconWidth, (float)saveIconHeight));
-				drawList->AddImage((ImTextureID)m_SaveIcon->GetTextureID(), ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), ImVec2(0, 0), ImVec2(1, 1), IM_COL32(255, 255, 255, 32));
+				drawList->AddImage((ImTextureID)&SaveIconTexID, ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), ImVec2(0, 0), ImVec2(1, 1), IM_COL32(255, 255, 255, 32));
 			}
 
 			ImGui::SameLine(0, ImGui::GetStyle().ItemInnerSpacing.x);
@@ -977,18 +980,19 @@ namespace AGE
 					ax::NodeEditor::RestoreNodeState(node->ID);
 					node->SavedState.clear();
 				}
-
+				uint32_t RestoreIconTexID = m_RestoreIcon->GetTextureID();
 				if (ImGui::IsItemActive())
-					drawList->AddImage((ImTextureID)m_RestoreIcon->GetTextureID(), ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), ImVec2(0, 0), ImVec2(1, 1), IM_COL32(255, 255, 255, 96));
+					drawList->AddImage((ImTextureID)&RestoreIconTexID, ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), ImVec2(0, 0), ImVec2(1, 1), IM_COL32(255, 255, 255, 96));
 				else if (ImGui::IsItemHovered())
-					drawList->AddImage((ImTextureID)m_RestoreIcon->GetTextureID(), ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), ImVec2(0, 0), ImVec2(1, 1), IM_COL32(255, 255, 255, 255));
+					drawList->AddImage((ImTextureID)&RestoreIconTexID, ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), ImVec2(0, 0), ImVec2(1, 1), IM_COL32(255, 255, 255, 255));
 				else
-					drawList->AddImage((ImTextureID)m_RestoreIcon->GetTextureID(), ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), ImVec2(0, 0), ImVec2(1, 1), IM_COL32(255, 255, 255, 160));
+					drawList->AddImage((ImTextureID)&RestoreIconTexID, ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), ImVec2(0, 0), ImVec2(1, 1), IM_COL32(255, 255, 255, 160));
 			}
 			else
 			{
+				uint32_t RestoreIconTexID = m_RestoreIcon->GetTextureID();
 				ImGui::Dummy(ImVec2((float)restoreIconWidth, (float)restoreIconHeight));
-				drawList->AddImage((ImTextureID)m_RestoreIcon->GetTextureID(), ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), ImVec2(0, 0), ImVec2(1, 1), IM_COL32(255, 255, 255, 32));
+				drawList->AddImage((ImTextureID)&RestoreIconTexID, ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), ImVec2(0, 0), ImVec2(1, 1), IM_COL32(255, 255, 255, 32));
 			}
 
 			ImGui::SameLine(0, 0);
@@ -1040,7 +1044,7 @@ namespace AGE
 		switch (Pin->Type)
 		{
 		case AGEPinType::Flow:     iconType = ax::Widgets::IconType::Flow;   break;
-		case AGEPinType::Bool:     iconType = ax::Widgets::IconType::Circle; break;
+		case AGEPinType::Boolean:     iconType = ax::Widgets::IconType::Circle; break;
 		case AGEPinType::Int:      iconType = ax::Widgets::IconType::Circle; break;
 		case AGEPinType::Int16:    iconType = ax::Widgets::IconType::Circle; break;
 		case AGEPinType::Int64:    iconType = ax::Widgets::IconType::Circle; break;
@@ -1185,7 +1189,7 @@ namespace AGE
 				ImGui::TextUnformatted(I->Name.c_str());
 				ImGui::Spring(0);
 			}
-			if (I->Type == AGEPinType::Bool)
+			if (I->Type == AGEPinType::Boolean)
 			{
 				ImGui::Checkbox("##bool",&I->Boolean);
 				ImGui::Spring(0);
@@ -1507,7 +1511,7 @@ namespace AGE
 								StartPin->NextNodeID = EndPin->Node->ID;
 								break;
 							}
-							case AGEPinType::Bool:     
+							case AGEPinType::Boolean:
 							{
 								EndPin->Boolean = StartPin->Boolean;
 								break;
@@ -1704,7 +1708,7 @@ namespace AGE
 	{
 		m_Nodes.emplace_back(CreateRef<AGENode>(GetNextID(), "Output Action"));
 		m_Nodes.back()->Inputs.emplace_back(CreateRef<AGEPin>(GetNextID(), "Sample", AGEPinType::Float));
-		m_Nodes.back()->Outputs.emplace_back(CreateRef<AGEPin>(GetNextID(), "Condition", AGEPinType::Bool));
+		m_Nodes.back()->Outputs.emplace_back(CreateRef<AGEPin>(GetNextID(), "Condition", AGEPinType::Boolean));
 		m_Nodes.back()->Outputs.emplace_back(CreateRef<AGEPin>(GetNextID(), "Event", AGEPinType::Callback));
 
 		BuildNode(m_Nodes.back());
@@ -1715,7 +1719,7 @@ namespace AGE
 		m_Nodes.emplace_back(CreateRef<AGENode>(GetNextID(), "Print String"));
 		m_Nodes.back()->Inputs.emplace_back(CreateRef<AGEPin>(GetNextID(), "", AGEPinType::Flow));
 		m_Nodes.back()->Inputs.emplace_back(CreateRef<AGEPin>(GetNextID(), "In String", AGEPinType::String));
-		m_Nodes.back()->Inputs.emplace_back(CreateRef<AGEPin>(GetNextID(), "Condition", AGEPinType::Bool));
+		m_Nodes.back()->Inputs.emplace_back(CreateRef<AGEPin>(GetNextID(), "Condition", AGEPinType::Boolean));
 		m_Nodes.back()->Outputs.emplace_back(CreateRef<AGEPin>(GetNextID(), "", AGEPinType::Flow));
 
 		m_Nodes.back()->Func.Reference = m_Nodes.back();
@@ -1741,7 +1745,7 @@ namespace AGE
 		m_Nodes.back()->Type = AGENodeType::Simple;
 		m_Nodes.back()->Inputs.emplace_back(CreateRef<AGEPin>(GetNextID(), "", AGEPinType::Float));
 		m_Nodes.back()->Inputs.emplace_back(CreateRef<AGEPin>(GetNextID(), "", AGEPinType::Float));
-		m_Nodes.back()->Outputs.emplace_back(CreateRef<AGEPin>(GetNextID(), "", AGEPinType::Bool));
+		m_Nodes.back()->Outputs.emplace_back(CreateRef<AGEPin>(GetNextID(), "", AGEPinType::Boolean));
 
 		m_Nodes.back()->Func.Reference = m_Nodes.back();
 		m_Nodes.back()->Func.RefID = (uint64_t)m_Nodes.back()->ID;
@@ -1759,7 +1763,7 @@ namespace AGE
 		m_Nodes.back()->Type = AGENodeType::Simple;
 		m_Nodes.back()->Inputs.emplace_back(CreateRef<AGEPin>(GetNextID(), "", AGEPinType::Float));
 		m_Nodes.back()->Inputs.emplace_back(CreateRef<AGEPin>(GetNextID(), "", AGEPinType::Float));
-		m_Nodes.back()->Outputs.emplace_back(CreateRef<AGEPin>(GetNextID(), "", AGEPinType::Bool));
+		m_Nodes.back()->Outputs.emplace_back(CreateRef<AGEPin>(GetNextID(), "", AGEPinType::Boolean));
 
 		m_Nodes.back()->Func.Reference = m_Nodes.back();
 		m_Nodes.back()->Func.RefID = (uint64_t)m_Nodes.back()->ID;
@@ -1777,7 +1781,7 @@ namespace AGE
 		m_Nodes.back()->Type = AGENodeType::Simple;
 		m_Nodes.back()->Inputs.emplace_back(CreateRef<AGEPin>(GetNextID(), "", AGEPinType::Float));
 		m_Nodes.back()->Inputs.emplace_back(CreateRef<AGEPin>(GetNextID(), "", AGEPinType::Float));
-		m_Nodes.back()->Outputs.emplace_back(CreateRef<AGEPin>(GetNextID(), "", AGEPinType::Bool));
+		m_Nodes.back()->Outputs.emplace_back(CreateRef<AGEPin>(GetNextID(), "", AGEPinType::Boolean));
 
 		m_Nodes.back()->Func.Reference = m_Nodes.back();
 		m_Nodes.back()->Func.RefID = (uint64_t)m_Nodes.back()->ID;
@@ -1795,7 +1799,7 @@ namespace AGE
 		m_Nodes.back()->Type = AGENodeType::Simple;
 		m_Nodes.back()->Inputs.emplace_back(CreateRef<AGEPin>(GetNextID(), "", AGEPinType::Float));
 		m_Nodes.back()->Inputs.emplace_back(CreateRef<AGEPin>(GetNextID(), "", AGEPinType::Float));
-		m_Nodes.back()->Outputs.emplace_back(CreateRef<AGEPin>(GetNextID(), "", AGEPinType::Bool));
+		m_Nodes.back()->Outputs.emplace_back(CreateRef<AGEPin>(GetNextID(), "", AGEPinType::Boolean));
 
 		m_Nodes.back()->Func.Reference = m_Nodes.back();
 		m_Nodes.back()->Func.RefID = (uint64_t)m_Nodes.back()->ID;
@@ -1813,7 +1817,7 @@ namespace AGE
 		m_Nodes.back()->Type = AGENodeType::Simple;
 		m_Nodes.back()->Inputs.emplace_back(CreateRef<AGEPin>(GetNextID(), "", AGEPinType::Float));
 		m_Nodes.back()->Inputs.emplace_back(CreateRef<AGEPin>(GetNextID(), "", AGEPinType::Float));
-		m_Nodes.back()->Outputs.emplace_back(CreateRef<AGEPin>(GetNextID(), "", AGEPinType::Bool));
+		m_Nodes.back()->Outputs.emplace_back(CreateRef<AGEPin>(GetNextID(), "", AGEPinType::Boolean));
 		m_Nodes.back()->Func.Reference = m_Nodes.back();
 		m_Nodes.back()->Func.RefID = (uint64_t)m_Nodes.back()->ID;
 		m_Nodes.back()->Func.Val = "Less Than or Equal To";
@@ -2271,7 +2275,7 @@ namespace AGE
 
 			switch (EndPin->Type)
 			{
-			case AGEPinType::Bool:      EndPin->Boolean = StartPin->Boolean; break;
+			case AGEPinType::Boolean:      EndPin->Boolean = StartPin->Boolean; break;
 			case AGEPinType::Int:       EndPin->Integer = StartPin->Integer; break;
 			case AGEPinType::Int16:     EndPin->Integer16 =  StartPin->Integer16; break;
 			case AGEPinType::Int64:     EndPin->Integer64 =  StartPin->Integer64; break;
@@ -2286,6 +2290,7 @@ namespace AGE
 			case AGEPinType::Object:    EndPin->ObjPtr = StartPin->ObjPtr; break;
 			//case AGEPinType::Function:  EndPin-> = StartPin->Boolean; break;
 			//case AGEPinType::Callback:  EndPin-> = StartPin->Boolean; break;
+			default:break;
 			}
 			
 		}

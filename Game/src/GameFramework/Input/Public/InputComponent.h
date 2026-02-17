@@ -8,10 +8,11 @@
 #include "Math/Public/MathStructures.h"
 #include "Actors/Public/Actor.h"
 #include <functional>
+#include <cinttypes>
 
 namespace GameFramework
 {
-	enum class KeyStatus : uint8_t { Pressed = 0, Released = 1 };
+	enum class KeyState : uint8_t { Pressed = 0, Released = 1 };
 
 	struct InputActionBinding
 	{
@@ -20,20 +21,20 @@ namespace GameFramework
 		uint8_t bExecuteWhenPaused = 1;
 		uint8_t bPaired = 1;
 		std::string Name;
-		int32_t Handle;
+		int Handle;
 
 	public:
-		KeyStatus Status;
+		KeyState State;
 		using ActionCallbackFn = std::function<void()>;
 
 		ActionCallbackFn BindedFunction;
 
 	public:
 		InputActionBinding()
-			:bPaired(false), Name(std::string()), Status(KeyStatus::Pressed), Handle(-1), bConsumeInput(true), bExecuteWhenPaused(false) {}
+			:bPaired(false), Name(std::string()), State(KeyState::Pressed), Handle(-1), bConsumeInput(true), bExecuteWhenPaused(false) {}
 
-		InputActionBinding(const std::string& ActionName, const KeyStatus EventStatus)
-			: bPaired(false), Name(ActionName), Status(EventStatus), Handle(-1), bConsumeInput(true), bExecuteWhenPaused(false) {}
+		InputActionBinding(const std::string& ActionName, const KeyState EventStatus)
+			: bPaired(false), Name(ActionName), State(EventStatus), Handle(-1), bConsumeInput(true), bExecuteWhenPaused(false) {}
 
 		InputActionBinding(const InputActionBinding&) = default;
 		//InputActionBinding(const AGE::Ref<InputActionBinding>&) = default;
@@ -59,7 +60,7 @@ namespace GameFramework
 
 		void Execute()
 		{
-			BindedFunction;
+			(void)BindedFunction();
 		}
 
 		friend class InputComponent;
@@ -100,13 +101,13 @@ namespace GameFramework
 	{
 	public:
 
-		virtual void OnCreate() override;
+		void OnCreate() override;
 
-		virtual void OnUpdate(AGE::TimeStep DeltaTime) override;
+		void OnUpdate(AGE::TimeStep DeltaTime) override;
 
-		virtual void OnEvent(AGE::Event& E) override;
+		void OnEvent(AGE::Event& E) override;
 
-		virtual std::string GetScriptableEntityType() override { return m_Name; }
+		std::string GetScriptableEntityType() override { return m_Name; }
 
 		bool OnAxisMoved(AGE::AxisEvent& E);
 		bool OnButtonPressed(AGE::GamepadButtonPressedEvent& E);
@@ -129,9 +130,9 @@ namespace GameFramework
 
 
 		template<typename T>
-		InputActionBinding& BindAction(const std::string& Action, KeyStatus Status, T* Instigator, InputActionBinding::ActionCallbackFn Func)
+		InputActionBinding& BindAction(const std::string& Action, KeyState State, T* Instigator, InputActionBinding::ActionCallbackFn Func)
 		{
-			InputActionBinding Binding(Action, Status);
+			InputActionBinding Binding(Action, State);
 
 			return AddActionBinding(Binding);
 		}
@@ -151,9 +152,9 @@ namespace GameFramework
 			InputActionBinding& BindRef = *m_ActionBindings.back().get();
 			//BindRef.GenerateNewHandle();
 
-			if (BindRef.Status == KeyStatus::Pressed || BindRef.Status == KeyStatus::Released)
+			if (BindRef.State == KeyState::Pressed || BindRef.State == KeyState::Released)
 			{
-				const KeyStatus PairedEvent = Binding.Status == KeyStatus::Pressed ? KeyStatus::Released : KeyStatus::Pressed;
+				const KeyState PairedEvent = Binding.State == KeyState::Pressed ? KeyState::Released : KeyState::Pressed;
 
 				for (int i = (int)(m_ActionBindings.size() - 2); i >= 0; i--)
 				{
@@ -165,7 +166,7 @@ namespace GameFramework
 							BindRef.bPaired = true;
 							break;
 						}
-						else if (Ref.Status == PairedEvent)
+						else if (Ref.State == PairedEvent)
 						{
 							Ref.bPaired = true;
 							BindRef.bPaired = true;

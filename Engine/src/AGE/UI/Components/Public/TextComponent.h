@@ -21,7 +21,7 @@ namespace AGE
 	public:
 		TextComponent(const std::string& Name);
 		StringProperties m_StringProperties;
-		void OnUpdate(TimeStep DeltaTime);
+		void OnUpdate(TimeStep DeltaTime) override;
 		void OnEvent(Event& Event) override;
 		void CallSerialize(DataWriter* Serializer) override
 		{

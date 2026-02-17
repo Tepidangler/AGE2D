@@ -101,7 +101,7 @@ namespace AGE
 					ShaderDataTypeToOpenGLBaseType(E.DataType),
 					E.Normalized ? GL_TRUE : GL_FALSE,
 					Layout.GetStride(),
-					(const void*)E.Offset);
+					(const void*)&E.Offset);
 				index++;
 				break;
 			}
@@ -129,7 +129,7 @@ namespace AGE
 			case ShaderDataType::Int2:
 			case ShaderDataType::Int3:
 			case ShaderDataType::Int4:
-			case ShaderDataType::Bool:
+			case ShaderDataType::Boolean:
 			{
 				EnableVertexAttribArray(index);
 
@@ -137,7 +137,7 @@ namespace AGE
 					E.GetComponentCount(),
 					ShaderDataTypeToOpenGLBaseType(E.DataType),
 					Layout.GetStride(),
-					(const void*)E.Offset);
+					(const void*)&E.Offset);
 				index++;
 				break;
 			}

@@ -61,14 +61,14 @@ namespace AGE
         ImVec4 col = { C::LightGreen[0], C::LightGreen[1], C::LightGreen[2], C::LightGreen[3] };
         char buf[256];
         snprintf(buf, sizeof buf, "QuestID: %I64u", (uintptr_t)m_QuestManager->GetQuest(CurrentQuestName)->ID);
-        ImGui::TextColored(col, buf);
+        ImGui::TextColored(col, "%s",buf);
         ImGui::SameLine();
         std::string NameString = "Quest Name: " + CurrentQuestName;
-        ImGui::Text(NameString.c_str());
+        ImGui::Text("%s",NameString.c_str());
         //Add Dependent Quest ID's and ability to set a dependent quest here
         ImGui::Text("Quest Description");
         ImGui::Separator();
-        ImGui::Text(m_QuestManager->GetQuest(CurrentQuestName)->QuestDescription.c_str());
+        ImGui::Text("%s", m_QuestManager->GetQuest(CurrentQuestName)->QuestDescription.c_str());
 
         ImGui::Separator();
         int Reward = m_QuestManager->GetQuest(CurrentQuestName)->XPReward;
@@ -79,7 +79,7 @@ namespace AGE
         for (int i = 0; i < m_QuestManager->GetQuest(CurrentQuestName)->ItemRewards.size(); i++)
         {
             std::string Item = m_QuestManager->GetQuest(CurrentQuestName)->ItemRewards[i];
-            ImGui::Text(Item.c_str());
+            ImGui::Text("%s",Item.c_str());
             ImGui::SameLine();
         }
         ImGui::Dummy({1.f,1.f});
@@ -95,16 +95,16 @@ namespace AGE
             }
         }
         ImGui::Text("Quest Type: "); ImGui::SameLine();
-        ImGui::Text(ConvertQuestTypeToString(m_QuestManager->GetQuest(CurrentQuestName)->GetQuestType()).c_str());
+        ImGui::Text("%s", ConvertQuestTypeToString(m_QuestManager->GetQuest(CurrentQuestName)->GetQuestType()).c_str());
         ImGui::Separator();
 
         int Index = 0;
         for (auto& C : m_QuestManager->GetQuest(CurrentQuestName)->GetCheckpoints())
         {
             ImGui::Text("Checkpoint ID: "); ImGui::SameLine();
-            ImGui::Text(std::to_string(C.first).c_str());
+            ImGui::Text("%s",std::to_string(C.first).c_str());
             ImGui::Text("Checkpoint Text: "); ImGui::SameLine();
-            ImGui::Text(m_QuestManager->GetQuest(CurrentQuestName)->GetCheckpointTexts()[Index].c_str());
+            ImGui::Text("%s", m_QuestManager->GetQuest(CurrentQuestName)->GetCheckpointTexts()[Index].c_str());
             ImGui::Separator();
             Index++;
         }
@@ -153,7 +153,7 @@ namespace AGE
             for (auto& C : m_SelectionContext.GetCheckpoints())
             {
                 ImGui::Text("Checkpoint ID: "); ImGui::SameLine();
-                ImGui::Text(std::to_string(C.first).c_str());
+                ImGui::Text("%s", std::to_string(C.first).c_str());
                 std::string lbl = "##CheckpointText" +std::to_string(Index);
                 ImGui::InputText(lbl.c_str(), &m_SelectionContext.GetCheckpointTexts()[Index]);
                 Index++;
@@ -165,7 +165,7 @@ namespace AGE
             for (int i = 0; i < m_SelectionContext.ItemRewards.size(); i++)
             {
                 std::string Item = m_SelectionContext.ItemRewards[i];
-                ImGui::Text(Item.c_str());
+                ImGui::Text("%s",Item.c_str());
                 ImGui::SameLine();
             }
             ImGui::Dummy({ 1.f,1.f });
@@ -226,7 +226,7 @@ namespace AGE
                 if (!m_bAddingNewQuest)
                 {
                     std::string CurrentQuestName = m_CurrentQuestName;
-                    ImGui::Text("Current Quest: ");
+                    ImGui::Text("%s","Current Quest: ");
                     if (ImGui::BeginCombo("##CurrentQuest", CurrentQuestName.c_str()))
                     {
                         for (int i = 0; i < m_QuestNameStrings.size(); i++)

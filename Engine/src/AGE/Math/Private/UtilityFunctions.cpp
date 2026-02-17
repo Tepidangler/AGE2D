@@ -2,6 +2,7 @@
 #include "Math/Public/UtilityFunctions.h"
 
 namespace AGE {
+#ifdef AG_PLATFORM_WINDOWS
 	 DirectX::XMFLOAT2 Convert::ToXMFloat2(Vector2 vec)
 	{
 		return DirectX::XMFLOAT2(vec.x, vec.y);
@@ -34,7 +35,7 @@ namespace AGE {
 		DirectX::XMVECTOR DXXMVec = DirectX::XMVectorSet(vec.x, vec.y, vec.z, vec.w);
 		return DXXMVec;
 	}
-
+#endif
 	 glm::vec3 Convert::ToGLM(Vector3 vec) {
 		return glm::vec3(vec.x, vec.y, vec.z);
 	}

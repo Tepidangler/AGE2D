@@ -75,6 +75,10 @@ namespace AGE
 			{
 				return true;
 			}
+			default:
+			{
+				break;
+			}
 			}
 
 			return false;
@@ -167,11 +171,15 @@ namespace AGE
 						Utils::AttachColorTexture(m_ColorAttachments[i], m_Specification.Samples, GL_R32I, GL_RED_INTEGER, m_Specification.Width, m_Specification.Height, i);
 						break;
 					}
+					default:
+					{
+						break;
+					}
 					}
 				}
 			}
 	
-			if (m_DepthAttachmentSpecification.TextureFormat != FramebufferTextureFormat::None)
+			if (m_DepthAttachmentSpecification.TextureFormat != FramebufferTextureFormat::INVALIDFORMAT)
 			{
 				Utils::CreateTextures(Multisample, &m_DepthAttachment, 1);
 				Utils::BindTexture(Multisample, m_DepthAttachment);
@@ -180,6 +188,10 @@ namespace AGE
 				case FramebufferTextureFormat::DEPTH24STENCIL8:
 				{
 					Utils::AttachDepthTexture(m_DepthAttachment, m_Specification.Samples, GL_DEPTH24_STENCIL8, GL_DEPTH_STENCIL_ATTACHMENT, m_Specification.Width, m_Specification.Height);
+					break;
+				}
+				default:
+				{
 					break;
 				}
 				}

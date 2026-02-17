@@ -1,6 +1,6 @@
 #include "AGEpch.hpp"
 
-#ifdef WITH_WWISE
+#if WITH_WWISE
 #include "Audio/Wwise/Public/WWiseEngine.h"
 #include "Core/Public/Log.h"
 

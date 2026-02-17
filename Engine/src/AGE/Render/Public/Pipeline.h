@@ -19,7 +19,7 @@ namespace AGE
 		Ref<VertexArray> QuadVertexArray;
 		Ref<Shader> QuadShader;
 		Ref<Texture2D> WhiteTexture;
-		ShaderLibrary ShaderLibrary;
+		ShaderLibrary Library;
 
 		uint32_t QuadIndexCount = 0;
 		Vertex* QuadVertexBufferBase = nullptr;
@@ -96,6 +96,8 @@ namespace AGE
 	class Pipeline
 	{
 	public:
+
+		virtual ~Pipeline() = default;
 
 		virtual void Init() = 0;
 		virtual void StartBatch2D() = 0;

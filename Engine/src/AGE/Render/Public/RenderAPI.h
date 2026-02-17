@@ -12,11 +12,12 @@ namespace AGE
 
 		enum API //: uint8_t
 		{
-			None = 0,
+			Headless = 0,
 			OpenGL = 1,
 		};
 	public: //functions
 
+		virtual ~RendererAPI() =default;
 		static Scope<RendererAPI> Create();
 		virtual void Init() = 0;
 		virtual void SetViewport(uint32_t x, uint32_t y, uint32_t Width, uint32_t Height) = 0;
@@ -49,41 +50,25 @@ namespace AGE
 	{
 		static std::string ConvertAPIToString()
 		{
-			switch (RendererAPI::GetAPI())
+			switch ((int)RendererAPI::GetAPI())
 			{
 			case 0:
 			{
-				return std::string("Headless");
+				return {"Headless"};
 				break;
 			}
 			case 1:
 			{
-				return std::string("OpenGL");
+				return {"OpenGL"};
 				break;
 			}
-			case 2:
+				default:
 			{
-				return std::string("DirectX 11");
-				break;
-			}
-			case 3:
-			{
-				return std::string("DirectX 12");
-				break;
-			}
-			case 4:
-			{
-				return std::string("Vulkan");
-				break;
-			}
-			case 5:
-			{
-				return std::string("Playstation 5 Graphics API");
-				break;
+				return {"UNDEFINED"};
 			}
 			}
 
-			return std::string("UNDEFINED");
+			return {"UNDEFINED"};
 		}
 	}
 }

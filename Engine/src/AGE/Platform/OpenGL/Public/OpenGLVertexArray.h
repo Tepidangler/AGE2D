@@ -10,31 +10,31 @@ namespace AGE
 
 		OpenGLVertexArray();
 
-		virtual ~OpenGLVertexArray() override;
+		~OpenGLVertexArray() override;
 
-		virtual void Bind() const override;
+		void Bind() const override;
 
-		virtual void Unbind() const override;
+		void Unbind() const override;
 
-		virtual void AddVertexBuffer(Ref<VertexBuffer>& VertexBuffer) override;
+		void AddVertexBuffer(Ref<VertexBuffer>& VertexBuffer) override;
 
-		virtual void SetIndexBuffer(Ref<IndexBuffer>& IndexBuffer) override;
+		void SetIndexBuffer(Ref<IndexBuffer>& IndexBuffer) override;
 
-		virtual const std::vector<Ref<VertexBuffer>>& GetVertexBuffers() const { return m_VertexBuffers; }
+		const std::vector<Ref<VertexBuffer>>& GetVertexBuffers() const override { return m_VertexBuffers; }
 
-		virtual const Ref<IndexBuffer>& GetIndexBuffer() const { return m_IndexBuffer; }
+		const Ref<IndexBuffer>& GetIndexBuffer() const override { return m_IndexBuffer; }
 		
-		virtual void EnableVertexAttribArray(int ArrayID) const override;
+		void EnableVertexAttribArray(int ArrayID) const override;
 
-		virtual void MakeVertexAttribPtr(GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const void* pointer) const override;
+		void MakeVertexAttribPtr(GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const void* pointer) const override;
 
-		std::vector<Ref<VertexBuffer>>::iterator begin() { return m_VertexBuffers.begin(); }
+		std::vector<Ref<VertexBuffer>>::iterator begin() override { return m_VertexBuffers.begin(); }
 
-		std::vector<Ref<VertexBuffer>>::iterator end() { return m_VertexBuffers.end(); }
+		std::vector<Ref<VertexBuffer>>::iterator end() override { return m_VertexBuffers.end(); }
 
-		std::vector<Ref<VertexBuffer>>::const_iterator begin() const { return m_VertexBuffers.begin(); }
+		std::vector<Ref<VertexBuffer>>::const_iterator begin() const override { return m_VertexBuffers.begin(); }
 
-		std::vector<Ref<VertexBuffer>>::const_iterator end() const { return m_VertexBuffers.end(); }
+		std::vector<Ref<VertexBuffer>>::const_iterator end() const override { return m_VertexBuffers.end(); }
 
 
 	private:

@@ -1,4 +1,5 @@
 #pragma once
+#ifdef AG_PLATFORM_WINDOWS
 #include "Core/Public/Core.h"
 #include "Structs/Public/DataStructures.h"
 #include <Xinput.h>
@@ -66,3 +67,4 @@ namespace AGE
 
 	};
 }
+#endif

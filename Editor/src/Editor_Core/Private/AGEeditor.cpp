@@ -38,7 +38,7 @@ namespace AGE
 
 
 
-	AGE::App* AGE::CreateApp(ApplicationCommandLineArgs args)
+	App* CreateApp(ApplicationCommandLineArgs args)
 	{
 		return new Editor(args);
 	}

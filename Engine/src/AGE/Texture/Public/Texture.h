@@ -10,7 +10,7 @@ namespace AGE
 
 	enum class ImageFormat : uint8_t
 	{
-		None = 0,
+		INVALIDIMAGEFORMAT = 0,
 		R8,
 		RGB8,
 		RGBA8,
@@ -27,17 +27,8 @@ namespace AGE
 		uint32_t Height = 1;
 		ImageFormat Format = ImageFormat::RGBA8;
 		bool GenerateMips = true;
-		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> SRV;
 		static void Serialize(DataWriter* Serializer, const TextureSpecification& Instance);
 		static void Deserialize(DataReader* Serializer, TextureSpecification& Instance);
-	public:
-		//Getters
-		ID3D11ShaderResourceView* GetSRV() const { return SRV.Get(); }
-
-
-		//Setters
-
-		void SetSRV(Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> View) { View.As(&SRV); }
 	};
 
 	class Texture

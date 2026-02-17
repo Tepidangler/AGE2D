@@ -1,10 +1,13 @@
 #pragma once
 
 #include "AGEpch.hpp"
-
 #include "Core.h"
 #include "Events/Public/Event.h"
 #include "Render/Public/GraphicsContext.h"
+#ifdef AG_PLATFORM_LINUX
+#include <X11/Xlib.h>
+#elifdef AG_PLATFORM_MACOS
+#endif
 
 namespace AGE
 {
@@ -24,13 +27,13 @@ namespace AGE
 
 	//Represents a desktop system based Window
 
-	class AGE_API Window
+	class AGE_API AGEWindow
 	{
 	public:
 		
 		using EventCallbackFn = std::function<void(Event&)>;
 
-		virtual ~Window() {}
+		virtual ~AGEWindow() {}
 
 		virtual void OnUpdate() = 0;
 
@@ -45,7 +48,13 @@ namespace AGE
 
 		virtual Vector2 GetMousePos() = 0;
 		virtual void* GetNativeWindow() const = 0;
-		inline virtual HWND GetWin32Window() = 0;
+#ifdef AG_PLATFORM_WINDOWS
+		inline virtual HWND GetPlatformWindow() = 0;
+#elifdef AG_PLATFORM_LINUX
+		inline virtual Window GetPlatformWindow() = 0;
+#elifdef AG_PLATFORM_MACOS
+		inline virtual HWND GetPlatformWindow() = 0;
+#endif
 
 		virtual GraphicsContext* GetGraphicsContext() = 0;
 
@@ -54,6 +63,6 @@ namespace AGE
 
 		virtual void SetWindowIcon(const std::filesystem::path& Path) =0;
 
-		static Scope<Window> Create(const WindowProps& props = WindowProps());
+		static Scope<AGEWindow> Create(const WindowProps& props = WindowProps());
 	};
 }

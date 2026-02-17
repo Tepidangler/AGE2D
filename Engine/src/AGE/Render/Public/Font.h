@@ -6,11 +6,11 @@ namespace AGE
 {
 	struct MSDFData;
 
-	class Font
+	class AGEFont
 	{
 	public:
-		Font(const std::filesystem::path& Font);
-		~Font();
+		AGEFont(const std::filesystem::path& Font);
+		~AGEFont();
 
 		const MSDFData* GetMSDFData() const { return m_Data; }
 		Ref<Texture2D> GetAtlasTexture() const { return m_AtlasTexture; }
@@ -18,7 +18,7 @@ namespace AGE
 		void SaveFont() const;
 		void LoadFont(const std::string& FontName);
 
-		static Ref<Font> GetDefault();
+		static Ref<AGEFont> GetDefault();
 
 	private:
 		MSDFData* m_Data;

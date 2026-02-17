@@ -65,7 +65,7 @@ namespace AGE
 
 		ImGui::Columns(2);
 		ImGui::SetColumnWidth(0, ColumnWidth);
-		ImGui::Text(Label.c_str());
+		ImGui::Text("%s", Label.c_str());
 		ImGui::NextColumn();
 
 		ImGui::PushMultiItemsWidths(3, ImGui::CalcItemWidth());

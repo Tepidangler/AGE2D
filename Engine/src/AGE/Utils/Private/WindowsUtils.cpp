@@ -3,11 +3,20 @@
 #include "Utils/Public/WindowsUtils.h"
 #include "Assets/Public/AssetManager.h"
 #include <GLFW/glfw3.h>
+#ifdef AG_PLATFORM_WINDOWS
 #define GLFW_EXPOSE_NATIVE_WIN32
 #include <GLFW/glfw3native.h>
+#elifdef AG_PLATFORM_LINUX
+#define GLFW_EXPOSE_NATIVE_X11
+#include <GLFW/glfw3native.h>
+#elifdef AG_PLATFORM_MACOS
+#define GLFW_EXPOSE_NATIVE_COCOA
+#include <GLFW/glfw3native.h>
+#endif
 
 namespace AGE
 {
+#ifdef AG_PLATFORM_WINDOWS
 	bool WindowsUtils::FindFileFromDirectory(const char* FileName, std::filesystem::path Path, std::string& OutPath)
 	{
 		std::filesystem::path CurrentPath;
@@ -89,4 +98,30 @@ namespace AGE
 		}
 		return std::string();
 	}
+#endif
+
+#ifdef AG_PLATFORM_LINUX
+//TODO: Implement this
+	std::string FileDialogs::OpenFile(const char* Filter)
+	{
+		return {};
+	}
+
+	std::string FileDialogs::SaveFile(const char* Filter)
+	{
+		return {};
+	}
+#endif
+
+#ifdef AG_PLATFORM_MACOS
+	std::string FileDialogs::OpenFile(const char* Filter)
+	{
+		return {};
+	}
+
+	std::string FileDialogs::SaveFile(const char* Filter)
+	{
+		return {};
+	}
+#endif
 }

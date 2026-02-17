@@ -92,7 +92,7 @@ namespace GameFramework
 
 		bool AddXP(int XP) override {return false;};
 
-		AGE::Ref<Inventory>& GetInventory() { return m_Inventory; }
+		AGE::Ref<Inventory>& GetInventory() override { return m_Inventory; }
 
 	private:
 

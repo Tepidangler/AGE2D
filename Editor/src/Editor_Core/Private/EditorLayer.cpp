@@ -5,12 +5,12 @@
 #include "Physics/Public/Physics2D.h"
 #include "Render/Public/Renderer2D.h"
 #include "Editor_Core/Public/EditorLayer.h"
-#include "SimpleIni.h"
+
 
 namespace AGE
 {
 	extern std::filesystem::path g_AssetPath;
-	static Ref<Font> s_Font;
+	static Ref<AGEFont> s_Font;
 
 	EditorLayer* EditorLayer::s_Instance = nullptr;
 
@@ -30,7 +30,7 @@ namespace AGE
 
 	void EditorLayer::Init()
 	{
-		s_Font = Font::GetDefault();
+		s_Font = AGEFont::GetDefault();
 		std::filesystem::path WindowIcon = App::Get().GetAppConfig().EditorAssetPath.string() + "/IconTexture/AGEIconbase.png";
 		App::Get().GetDeviceManager().GetWindow().SetWindowIcon(WindowIcon);
 	}

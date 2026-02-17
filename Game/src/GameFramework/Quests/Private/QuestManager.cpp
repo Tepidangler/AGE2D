@@ -68,7 +68,7 @@ namespace GameFramework
 	{
 		m_Quests[QuestID]->StartQuest();
 
-		return m_Quests[QuestID]->Status == QuestCompletionStatus::Active;
+		return m_Quests[QuestID]->QuestStatus == QuestCompletionStatus::Active;
 	}
 
 	//If this returns false then the quest is complete
@@ -84,7 +84,7 @@ namespace GameFramework
 			GameStatics::GetGameState()->GetInventory()->AddReward(m_Quests[QuestID]->ItemRewards);
 			if (m_Quests[QuestID]->HasDependentQuest())
 			{
-				m_Quests[m_Quests[QuestID]->DependentQuestID]->Status = QuestCompletionStatus::Available;
+				m_Quests[m_Quests[QuestID]->DependentQuestID]->QuestStatus = QuestCompletionStatus::Available;
 				return true;
 			}
 

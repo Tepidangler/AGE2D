@@ -111,15 +111,15 @@ namespace AGE
 	{
 		return m_Registry->IsTextureLoaded(Filepath);
 	}
-	Ref<Font> AssetManager::LoadFont(const std::filesystem::path& Filepath)
+	Ref<AGEFont> AssetManager::LoadFont(const std::filesystem::path& Filepath)
 	{		
 		return m_Registry->LoadFont(Filepath);
 	}
-	Ref<Font> AssetManager::GetFont(const UUID& ID)
+	Ref<AGEFont> AssetManager::GetFont(const UUID& ID)
 	{
 		return m_Registry->GetFont(ID);
 	}
-	Ref<Font> AssetManager::GetFont(const std::string& Name)
+	Ref<AGEFont> AssetManager::GetFont(const std::string& Name)
 	{
 		return m_Registry->GetFont(Name);
 	}

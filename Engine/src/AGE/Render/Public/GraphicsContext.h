@@ -1,7 +1,8 @@
 #pragma once
+#ifdef AG_PLATFORM_WINDOWS
 #include "d3d11_4.h"
+#endif
 #include "Structs/Public/DataStructures.h"
-#include "Math/Public/UtilityFunctions.h"
 
 namespace AGE
 {

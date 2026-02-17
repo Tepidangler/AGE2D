@@ -21,7 +21,7 @@ namespace AGE
 
     void AGEVideo::Play(const Ref<VideoSource>& Source, EditorCamera& Camera)
     {
-        switch (RendererAPI::GetAPI())
+        switch ((int)RendererAPI::GetAPI())
         {
         case 0:
         {

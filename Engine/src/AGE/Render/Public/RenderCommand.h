@@ -20,7 +20,7 @@ namespace AGE
 		static void ResetStats();
 		static RendererAPI::API& GetCurrentRendererAPI() { return s_CurrentAPI; }
 
-		static void ChangeRendererAPI(const RendererAPI::API Renderer) { s_RendererAPI.reset();  s_RendererAPI = RendererAPI::Create(); }
+		//static void ChangeRendererAPI(const RendererAPI::API Renderer) { s_RendererAPI.reset();  s_RendererAPI = RendererAPI::Create(); }
 
 		inline static void DrawIndexed(uint32_t IndexCount, uint32_t IndexStart, int VertexStart)
 		{

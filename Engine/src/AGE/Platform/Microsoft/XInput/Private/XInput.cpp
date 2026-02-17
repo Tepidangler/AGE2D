@@ -1,3 +1,4 @@
+#ifdef AG_PLATFORM_WINDOWS
 #include "AGEpch.hpp"
 #include "Platform/Microsoft/XInput/Public/XInput.h"
 #include "Core/Public/GamepadCodes.h"
@@ -679,4 +680,4 @@ namespace AGE
 		}
 	}
 }
-
+#endif

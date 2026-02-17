@@ -17,9 +17,8 @@ namespace AGE
 			{
 				return CreateScope<OpenGLPipeline>();
 			}
-
-				return nullptr;
 		}
+		return nullptr;
 	}
 
 	template<typename T>

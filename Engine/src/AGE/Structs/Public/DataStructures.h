@@ -1,5 +1,6 @@
 #pragma once
 
+
 #include "Core/Public/AGEpch.hpp"
 #include "Core/Public/Core.h"
 #include "Math/Public/MathStructures.h"
@@ -9,14 +10,17 @@
 #include <box2d/box2d.h>
 #include <glm/glm.hpp>
 #include <zlib.h>
-#include "DirectXMath.h"
-#include "d3d11_4.h"
+#include <xmmintrin.h>
+#include <smmintrin.h>
+#include <immintrin.h>
+//#include "DirectXMath.h"
+//#include "d3d11_4.h"
 
 
 
 namespace AGE
 {
-
+#ifdef AG_PLATFORM_WINDOWS
 	struct XInputControllerSettings
 	{
 	public:
@@ -62,7 +66,7 @@ namespace AGE
 
 		uint16_t ButtonState = 0;
 	};
-
+#endif
 	class VertexBuffer;
 	class ConstantBuffer;
 
@@ -111,7 +115,7 @@ namespace AGE
 
 		operator Bytef*()
 		{
-			return (Bytef*)RGBAc[0];
+			return (Bytef*)RGBAc;
 		}
 
 		operator uint32_t()
@@ -137,8 +141,11 @@ namespace AGE
 			__m128i tmp1i = _mm_cvtps_epi32(tmp1);
 			
 			_mm_store_si128((__m128i*)out, tmp1i);
-
-			return out;
+			U32RBGA[0] = out[0];
+			U32RBGA[1] = out[1];
+			U32RBGA[2] = out[2];
+			U32RBGA[3] = out[3];
+			return U32RBGA;
 		}
 #pragma warning(pop)
 	};
@@ -266,10 +273,10 @@ namespace AGE
 
 	};
 
-	class Font; // Font Forward Declaration
+	class AGEFont; // Font Forward Declaration
 	struct StringProperties
 	{
-		Ref<Font> TextFont;
+		Ref<AGEFont> TextFont;
 		std::string Text;
 		std::string FontName;
 		Vector4 Color = {0.f,0.f,0.f,1.f};
@@ -533,7 +540,7 @@ namespace AGE
 		AsepritePropertyData PropData;
 
 
-		std::map<uint32_t, uint8_t[]> NestedPropsMap;
+		std::map<uint32_t, uint8_t*> NestedPropsMap;
 		uint8_t UUID[16];
 
 

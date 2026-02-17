@@ -1,4 +1,5 @@
 #pragma once
+#if AG_DIST
 #include <Age.h>
 
 namespace Proj
@@ -12,3 +13,4 @@ namespace Proj
 		void OnImGuiRender(AGE::TimeStep DeltaTime) override;
 	};
 }
+#endif

@@ -28,7 +28,7 @@ namespace AGE
 		CoreLogger::Error("GLFW Error ({0}): {1}", Error, Description);
 	}
 
-	Scope<Window> Window::Create(const WindowProps& Props)
+	Scope<AGEWindow> AGEWindow::Create(const WindowProps& Props)
 	{
 		return CreateScope<WindowsWindow>(Props);
 	}
@@ -128,8 +128,14 @@ namespace AGE
 		m_Window = glfwCreateWindow((int)Props.Width, (int)Props.Height, m_Data.Title.c_str(), nullptr, nullptr);
 		m_Context = GraphicsContext::Create(m_Window);
 		m_Context->Init();
+#ifdef AG_PLATFORM_WINDOWS
 		m_Win32Window = glfwGetWin32Window(m_Window);
-			
+#elifdef AG_PLATFORM_LINUX
+		m_X11Window = glfwGetX11Window(m_Window);
+#elifdef AG_PLATFORM_MACOS
+		m_CocoaWindow = glfwGetCocoaWindow(m_Window);
+#endif
+
 		glfwSetWindowUserPointer(m_Window, &m_Data);
 			
 			//SetVSync(true);

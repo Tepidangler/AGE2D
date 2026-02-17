@@ -11,8 +11,25 @@
 #include "Utils/Public/WindowsUtils.h"
 #include "Sprite/Public/SpriteAPI.h"
 #include <glm/gtc/matrix_transform.hpp>
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wconversion"
+#pragma clang diagnostic ignored "-Wmicrosoft-unqualified-friend"
 #include <rttr/registration>
-
+#pragma clang diagnostic pop
+#elif defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wmicrosoft-unqualified-friend"
+#include <rttr/registration>
+#pragma GCC diagnostic pop
+#elif defined(_MSC_VER)
+#pragma warning(push, 0)
+#include <rttr/registration>
+#pragma warning(pop)
+#else
+#error "Compiler is not supported with AGE yet"
+#endif
 RTTR_REGISTRATION
 {
 	rttr::registration::method("Draw String", &AGE::Renderer2D::DrawString);

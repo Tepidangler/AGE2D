@@ -5,7 +5,7 @@
     @details   This class provides an interface for the Box2D API allowing for ENGINE PROGRAMMERS to something or other
     @author    De'Lano Wilcox
     @date      30.05.2025
-    @copyright © Alcoy Game Studios, 2025. All right reserved.
+    @copyright ï¿½ Alcoy Game Studios, 2025. All right reserved.
 
 **/
 #pragma once
@@ -90,7 +90,12 @@ namespace AGE
 				return b2Shape_GetSegment(ID);
 				break;
 			}
+			default:
+			{
+				break;
 			}
+			}
+			return b2Shape_GetPolygon(ID);
 		}
 	private:
 

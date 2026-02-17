@@ -70,8 +70,7 @@ namespace AGE {
 //
 			//_mm_store_si128((__m128i*)out, tmp1i);
 //
-			uint32_t out[4] = {0,0,0,0};
-			return out;
+			return new uint32_t;
 		}
 #pragma warning(pop)
 

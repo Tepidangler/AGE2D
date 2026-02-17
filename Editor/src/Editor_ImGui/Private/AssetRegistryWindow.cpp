@@ -13,9 +13,9 @@ namespace AGE
 
 		for (auto& S : Scenes)
 		{
-			ImGui::Text(std::to_string(S.first).c_str());
+			ImGui::Text( "%s", std::to_string(S.first).c_str());
 			ImGui::TableNextColumn();
-			ImGui::Text(S.second->GetName().c_str());
+			ImGui::Text( "%s", S.second->GetName().c_str());
 			ImGui::TableNextColumn();
 		}
 		ImGui::EndTable();
@@ -31,11 +31,11 @@ namespace AGE
 
 		for (auto& T : Textures)
 		{
-			ImGui::Text(std::to_string(T.first).c_str());
+			ImGui::Text( "%s",std::to_string(T.first).c_str());
 			ImGui::TableNextColumn();
-			ImGui::Text(T.second->GetName().c_str());
+			ImGui::Text( "%s",T.second->GetName().c_str());
 			ImGui::TableNextColumn();
-			ImGui::Text(T.second->GetTextureFilePath().c_str());
+			ImGui::Text( "%s",T.second->GetTextureFilePath().c_str());
 			ImGui::TableNextColumn();
 
 		}
@@ -43,7 +43,7 @@ namespace AGE
 		ImGui::EndTable();
 	}
 
-	static void DrawFontsTable(std::unordered_map<UUID, Ref<Font>>& Fonts)
+	static void DrawFontsTable(std::unordered_map<UUID, Ref<AGEFont>>& Fonts)
 	{
 		ImGui::TableSetupColumn("ID Number");
 		ImGui::TableSetupColumn("Asset Name");
@@ -53,11 +53,11 @@ namespace AGE
 
 		for (auto& F : Fonts)
 		{
-			ImGui::Text(std::to_string(F.first).c_str());
+			ImGui::Text( "%s",std::to_string(F.first).c_str());
 			ImGui::TableNextColumn();
-			ImGui::Text(F.second->GetAtlasTexture()->GetName().c_str());
+			ImGui::Text( "%s",F.second->GetAtlasTexture()->GetName().c_str());
 			ImGui::TableNextColumn();
-			ImGui::Text(F.second->GetAtlasTexture()->GetTextureFilePath().c_str());
+			ImGui::Text( "%s",F.second->GetAtlasTexture()->GetTextureFilePath().c_str());
 			ImGui::TableNextColumn();
 		}
 
@@ -74,11 +74,11 @@ namespace AGE
 
 		for (auto& S : Sounds)
 		{
-			ImGui::Text(std::to_string(S.first).c_str());
+			ImGui::Text( "%s",std::to_string(S.first).c_str());
 			ImGui::TableNextColumn();
-			ImGui::Text(S.second->GetName().c_str());
+			ImGui::Text( "%s",S.second->GetName().c_str());
 			ImGui::TableNextColumn();
-			ImGui::Text(S.second->GetFilePath().c_str());
+			ImGui::Text( "%s",S.second->GetFilePath().c_str());
 			ImGui::TableNextColumn();
 		}
 
@@ -95,11 +95,11 @@ namespace AGE
 
 		for (auto& S : Sounds)
 		{
-			ImGui::Text(std::to_string(S.first).c_str());
+			ImGui::Text( "%s",std::to_string(S.first).c_str());
 			ImGui::TableNextColumn();
-			ImGui::Text(S.second->GetBankName().c_str());
+			ImGui::Text( "%s",S.second->GetBankName().c_str());
 			ImGui::TableNextColumn();
-			ImGui::Text(S.second->GetFilePath().generic_string().c_str());
+			ImGui::Text( "%s",S.second->GetFilePath().generic_string().c_str());
 			ImGui::TableNextColumn();
 		}
 
@@ -115,9 +115,9 @@ namespace AGE
 
 		for (auto& S : Shaders->GetLibrary())
 		{
-			ImGui::Text(S.first.c_str());
+			ImGui::Text( "%s",S.first.c_str());
 			ImGui::TableNextColumn();
-			ImGui::Text("NULL");
+			ImGui::Text( "%s","NULL");
 			ImGui::TableNextColumn();
 		}
 
@@ -136,9 +136,9 @@ namespace AGE
 		{
 			ImVec2 Spacer = { 0.f,10.f };
 			Ref<AssetRegistry> Registry = AssetManager::Get().GetAssetRegistry();
-			ImGui::Text("Asset Registry");
+			ImGui::Text( "%s","Asset Registry");
 			ImGui::Dummy(Spacer);
-			ImGui::Text("Scenes");
+			ImGui::Text( "%s","Scenes");
 			if (!ImGui::BeginTable("##Scenes", 2))
 			{
 				ImGui::EndTable();
@@ -149,7 +149,7 @@ namespace AGE
 			std::unordered_map<UUID, Ref<Scene>> Scenes = Registry->GetScenes();
 			DrawScenesTable(Scenes);
 			ImGui::Dummy(Spacer);
-			ImGui::Text("Textures");
+			ImGui::Text( "%s","Textures");
 			if (!ImGui::BeginTable("##Textures", 3))
 			{
 				ImGui::EndTable();
@@ -161,18 +161,18 @@ namespace AGE
 			DrawTexturesTable(TextureAssets);
 			ImGui::Dummy(Spacer);
 
-			ImGui::Text("Fonts");
+			ImGui::Text( "%s","Fonts");
 			if (!ImGui::BeginTable("Fonts", 3))
 			{
 				ImGui::EndTable();
 				ImGui::End();
 				return;
 			}
-			std::unordered_map<UUID, Ref<Font>> Fonts = Registry->GetFonts();
+			std::unordered_map<UUID, Ref<AGEFont>> Fonts = Registry->GetFonts();
 			DrawFontsTable(Fonts);
 			ImGui::Dummy(Spacer);
 
-			ImGui::Text("Sounds");
+			ImGui::Text( "%s","Sounds");
 			if (!ImGui::BeginTable("Sounds", 3))
 			{
 				ImGui::EndTable();
@@ -183,7 +183,7 @@ namespace AGE
 			DrawSoundsTable(Sounds);
 			ImGui::Dummy(Spacer);
 
-			ImGui::Text("Soundbanks");
+			ImGui::Text( "%s","Soundbanks");
 			if (!ImGui::BeginTable("Banks", 3))
 			{
 				ImGui::EndTable();
@@ -194,7 +194,7 @@ namespace AGE
 			DrawSoundbankTable(Banks);
 			ImGui::Dummy(Spacer);
 
-			ImGui::Text("Shaders");
+			ImGui::Text( "%s","Shaders");
 			if (!ImGui::BeginTable("Shaders", 2))
 			{
 				ImGui::EndTable();

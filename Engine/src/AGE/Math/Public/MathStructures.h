@@ -1,8 +1,10 @@
 #pragma once
 
 #include <glm/glm.hpp>
+#ifdef AG_PLATFORM_WINDOWS
 #include "DirectXMath.h"
 #include "d3d11_4.h"
+#endif
 #include "Math/Public/Vector2.h"
 #include "Math/Public/Vector3.h"
 #include "Math/Public/Vector4.h"
@@ -191,7 +193,7 @@ namespace AGE
 			n[2][0] = M[2][0]; n[2][1] = M[2][1]; n[2][2] = M[2][2]; n[2][3] = M[2][3];
 			n[3][0] = M[3][0]; n[3][1] = M[3][1]; n[3][2] = M[3][2]; n[3][3] = M[3][3];
 		}
-
+#ifdef AG_PLATFORM_WINDOWS
 		Matrix4D(DirectX::XMMATRIX M)
 		{
 			DirectX::XMVECTOR a, b, c, p;
@@ -213,7 +215,7 @@ namespace AGE
 			n[2][0] = DirectX::XMVectorGetX(c); n[2][1] = DirectX::XMVectorGetY(c); n[2][2] = DirectX::XMVectorGetZ(c); n[2][3] = DirectX::XMVectorGetW(c);
 			n[3][0] = DirectX::XMVectorGetX(p); n[3][1] = DirectX::XMVectorGetY(p); n[3][2] = DirectX::XMVectorGetZ(p); n[3][3] = DirectX::XMVectorGetW(p);
 		}
-
+#endif
 		Matrix4D(const Vector4& a, const Vector4& b, const Vector4& c, const Vector4& d)
 		{
 			n[0][0] = a.x; n[0][1] = a.y; n[0][2] = a.z; n[0][3] = a.w;
@@ -253,7 +255,7 @@ namespace AGE
 		{
 			return (*reinterpret_cast<const Vector4*>(n[j]));
 		}
-
+#ifdef AG_PLATFORM_WINDOWS
 		/// | a[0], a[1], a[2], p[0] |
 		/// | b[0], b[1], b[2]  p[1] |
 		/// | c[0], c[1], c[2]  p[2] |
@@ -274,7 +276,7 @@ namespace AGE
 				n[2][0], n[2][1], n[2][2], n[2][3],
 				n[3][0], n[3][1], n[3][2], n[3][3]);
 		};
-
+#endif
 		inline glm::mat4 ToGLM()
 		{
 			return glm::mat4(

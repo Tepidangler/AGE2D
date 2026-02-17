@@ -228,7 +228,7 @@ namespace YAML
 			Node node;
 			node.push_back(rhs.Name);
 			node.push_back(rhs.NumberOfFrames);
-			node.push_back((int)rhs.Status);
+			node.push_back((int)rhs.MovementStatus);
 			node.push_back(rhs.Width);
 			node.push_back(rhs.Height);
 			node.push_back(rhs.Texture->GetTextureFilePath());
@@ -246,7 +246,7 @@ namespace YAML
 
 			rhs.Name = node[0].as<std::string>();
 			rhs.NumberOfFrames = node[1].as<int>();
-			rhs.Status = (AGE::CharMovementStatus)node[2].as<int>();
+			rhs.MovementStatus = (AGE::CharMovementStatus)node[2].as<int>();
 			rhs.Width = node[3].as<float>();
 			rhs.Height = node[4].as<float>();
 			rhs.Texture = AGE::Texture2D::Create(node[5].as<std::string>());
@@ -326,7 +326,7 @@ namespace AGE
 		Out << YAML::BeginSeq;
 		Out << Anim.Name;
 		Out << Anim.NumberOfFrames;
-		Out << (int)Anim.Status;
+		Out << (int)Anim.MovementStatus;
 		Out << Anim.Width;
 		Out << Anim.Height;
 		Out << Anim.Texture->GetTextureFilePath();
@@ -898,7 +898,12 @@ namespace AGE
 	{
 		AppConfig Config = App::Get().GetAppConfig();
 		std::time_t t = std::time(nullptr);
-		std::tm tm =*std::localtime(&t);
+		std::tm tm;
+#ifdef AG_PLATFORM_WINDOWS
+		localtime_s(&tm, &t);
+#else
+		localtime_r(&t, &tm);
+#endif
 		std::ostringstream out;
 		out << std::put_time(&tm, "%y%d%m%H%M%S");
 		std::map<uint64_t, Scene> SceneMap;
@@ -919,7 +924,11 @@ namespace AGE
 		for (const auto& Scene : std::filesystem::directory_iterator(Config.CurrentProjectPath.string() + "/" + m_Project->GetConfig().Name + "/BuiltScenes/"))
 		{
 			std::string Result;
-			std::ifstream In(Scene.path().string(), std::ios::in, std::ios::binary);
+#ifdef AG_PLATFORM_WINDOWS
+			std::ifstream In(Scene.path().string(), std::ios::in,std::ios::binary);
+#else
+			std::ifstream In(Scene.path().string(), std::ios::in | std::ios::binary);
+#endif
 			if (In)
 			{
 				std::string base = Scene.path().string().substr(Scene.path().string().find_last_of("/\\") + 1);
@@ -938,7 +947,11 @@ namespace AGE
 		for (const auto& Scene : std::filesystem::directory_iterator(Config.CurrentProjectPath.string()+"/"+m_Project->GetConfig().Name + "/BuiltScenes/"))
 		{
 			std::string Result;
-			std::ifstream In(Scene.path().string(), std::ios::in, std::ios::binary);
+#ifdef AG_PLATFORM_WINDOWS
+			std::ifstream In(Scene.path().string(), std::ios::in,std::ios::binary);
+#else
+			std::ifstream In(Scene.path().string(), std::ios::in | std::ios::binary);
+#endif
 			if (In)
 			{
 				In.seekg(0, std::ios::end);

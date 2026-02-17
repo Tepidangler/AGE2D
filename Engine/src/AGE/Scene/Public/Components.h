@@ -134,7 +134,7 @@ namespace AGE
 
 			for (auto& A : AnimTextures)
 			{
-				if (A.Status == MovementStatus)
+				if (A.MovementStatus == MovementStatus)
 				{
 					if (A.IsReadyToLoad())
 					{
@@ -486,10 +486,32 @@ namespace AGE
 		void Bind()
 		{
 			InstantiateScript = []() {return static_cast<ScriptableEntity*>(new T()); };
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdelete-incomplete"
 			DestroyScript = [](NativeScriptComponent* NSC) {delete NSC->Instance; NSC->Instance = nullptr; };
+#pragma clang diagnostic pop
+#elif defined(__GNUC__)
+#elif defined(_MSC_VER)
+#pragma warning(push, 0)
+			DestroyScript = [](NativeScriptComponent* NSC) {delete NSC->Instance; NSC->Instance = nullptr; };
+#pragma warning(pop)
+#else
+#error "Compiler is not supported with AGE yet"
+#endif
 		}
 	};
 
-
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wconversion"
+#pragma clang diagnostic pop
+#elif defined(__GNUC__)
+#elif defined(_MSC_VER)
+#pragma warning(push, 0)
+#pragma warning(pop)
+#else
+#error "Compiler is not supported with AGE yet"
+#endif
 	
 }

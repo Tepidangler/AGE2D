@@ -39,7 +39,8 @@ namespace AGE
 				float Size = ImGui::GetWindowHeight() + 4.f;
 				Ref<Texture2D> Icon = m_SceneState == SceneState::Edit ? m_PlayIcon : m_StopIcon;
 				//ImGui::SetCursorPosX((ImGui::GetWindowContentRegionMax().x * 5.f) - (Size * .5f));
-				if (ImGui::ImageButton((ImTextureID)Icon->GetTextureID(), { 100.f, 100.f }))
+				uint32_t TextureID = Icon->GetTextureID();
+				if (ImGui::ImageButton((ImTextureID)&TextureID, { 100.f, 100.f }))
 				{
 					if (m_SceneState == SceneState::Edit)
 					{

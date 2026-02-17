@@ -6,14 +6,15 @@ namespace AGE
 {
 	DeviceManager::DeviceManager(AudioEngineType AudioEngine, bool UseXInput)
 	{
-		m_Window = Scope<Window>(Window::Create());
+		m_Window = Scope<AGEWindow>(AGEWindow::Create());
 		m_AudioManager = CreateScope<AudioManager>(AudioEngine);
+#ifdef AG_PLATFORM_WINDOWS
 		if (UseXInput)
 		{
 			m_XInput = CreateScope<XInput>();
 		}
 		m_XInput = nullptr;
-
+#endif
 		CoreLogger::Info("Device Manager Initialized!");
 	}
 

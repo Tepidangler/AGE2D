@@ -27,8 +27,8 @@ namespace AGE
 		template<typename T>
 		void WriteRaw(const T& Type)
 		{
-			bool Success = WriteData((char*)&Type, sizeof(T));
-			GameLogger::Assert(Success, "Failed to Write Data");
+			bool success = WriteData((char*)&Type, sizeof(T));
+			GameLogger::Assert(success, "Failed to Write Data");
 		}
 
 		template<typename T>

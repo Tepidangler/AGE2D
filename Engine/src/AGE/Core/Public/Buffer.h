@@ -100,7 +100,7 @@ namespace AGE
 
 		static void Serialize(DataWriter* Serializer, const Buffer& Instance)
 		{
-			Serializer->WriteRaw<uint8_t>(*(uint8_t*)Instance.Data);
+			Serializer->WriteRaw<uint8_t>(*(uint8_t*)&Instance.Data);
 			Serializer->WriteRaw<uint64_t>(Instance.Size);
 		}
 
@@ -111,7 +111,7 @@ namespace AGE
 			Deserializer->ReadRaw<uint64_t>(Instance.Size);
 
 			Instance.Allocate(Instance.Size);
-			Instance.Write((void*)Bytes, Instance.Size, 0);
+			Instance.Write((void*)&Bytes, Instance.Size, 0);
 		}
 
 	};

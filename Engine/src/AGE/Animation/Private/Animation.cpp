@@ -66,17 +66,17 @@ namespace AGE
 	}
 	void Animation::LoadAnimation(const AnimationSpecification Anim)
 	{
-		m_AnimationTextures.emplace(std::make_pair(Anim.Status, Anim));
+		m_AnimationTextures.emplace(std::make_pair(Anim.MovementStatus, Anim));
 	}
 	void Animation::LoadAnimations(const std::vector<AnimationSpecification>& Anims)
 	{
 		for (auto S : Anims)
 		{
-			m_AnimationTextures.emplace(std::make_pair(S.Status,  S));
+			m_AnimationTextures.emplace(std::make_pair(S.MovementStatus,  S));
 		}
 	}
-	void Animation::SetCurrentTexture(CharMovementStatus Status)
+	void Animation::SetCurrentTexture(CharMovementStatus status)
 	{
-		m_CurrentTexture = AGE::SubTexture2D::CreateFromCoords(m_AnimationTextures[Status].Texture, AGE::Vector2((float)m_CurrentFrame, 0.f), AGE::Vector2(m_AnimationTextures[Status].Width / m_AnimationTextures[Status].NumberOfFrames, m_AnimationTextures[Status].Height));
+		m_CurrentTexture = AGE::SubTexture2D::CreateFromCoords(m_AnimationTextures[status].Texture, AGE::Vector2((float)m_CurrentFrame, 0.f), AGE::Vector2(m_AnimationTextures[status].Width / m_AnimationTextures[status].NumberOfFrames, m_AnimationTextures[status].Height));
 	}
 }

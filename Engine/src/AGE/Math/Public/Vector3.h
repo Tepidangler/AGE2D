@@ -6,7 +6,6 @@
 #include <cmath>
 #include <glm/glm.hpp>
 #include <sstream>
-#include <rttr/type>
 
 namespace AGE {
 

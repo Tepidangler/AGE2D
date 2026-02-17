@@ -18,7 +18,7 @@ namespace AGE
 		std::string ToString() const override
 		{
 			std::stringstream ss;
-			ss << "Renderer Changed: " << AGE::Utils::ConvertAPIToString();
+			ss << "Renderer Changed: " << Utils::ConvertAPIToString();
 			return ss.str();
 		}
 

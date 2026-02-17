@@ -19,7 +19,7 @@ namespace AGE
 	{
 	public:
 		Aseprite() = default;
-		Aseprite(const Aseprite&) = default; // Despite not wanting a bunch of objects floating around we might still need to copy the data from place to place idk yet though.
+		Aseprite(const Aseprite&) = delete; // Despite not wanting a bunch of objects floating around we might still need to copy the data from place to place idk yet though.
 		Aseprite(const Aseprite&&) = delete;
 
 		void ReadData(const std::filesystem::path& Filepath);
@@ -53,6 +53,11 @@ namespace AGE
 
 		AsepritePropertyTypes ConvertToType(uint16_t T);
 		void ProcessElement(MemoryStreamReader* Stream, AsepritePropertyTypes T, AsepriteUserProps& Data);
+
+		void operator=(const Aseprite& Other)
+		{
+
+		}
 
 	private:
 

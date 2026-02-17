@@ -9,11 +9,33 @@
 #include "Math/Public/Math.h"
 #include "Core/Public/DeltaTime.h"
 #include "Scene/Public/Components.h"
-#include <rttr/registration>
 #include <imgui.h>
 #include "UI/Public/UIStructs.h"
 #include <imgui_internal.h>
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wconversion"
+#pragma clang diagnostic ignored "-Wmicrosoft-unqualified-friend"
+#include <rttr/registration>
 #include "rttr/registration_friend.h"
+#pragma clang diagnostic pop
+#elif defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#ifdef AG_PLATFORM_WINDOWS
+#pragma GCC diagnostic ignored "-Wmicrosoft-unqualified-friend"
+#endif
+#include <rttr/registration>
+#include "rttr/registration_friend.h"
+#pragma GCC diagnostic pop
+#elif defined(_MSC_VER)
+#pragma warning(push, 0)
+#include <rttr/registration>
+#include "rttr/registration_friend.h"
+#pragma warning(pop)
+#else
+#error "Compiler is not supported with AGE yet"
+#endif
 
 
 namespace AGE

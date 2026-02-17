@@ -25,32 +25,32 @@ namespace GameFramework
 	{
 	public:
 
-		virtual void OnCreate() override;
+		void OnCreate() override;
 
-		virtual void OnDestroy() override;
+		void OnDestroy() override;
 
-		virtual void OnUpdate(AGE::TimeStep DeltaTime) override;
+		void OnUpdate(AGE::TimeStep DeltaTime) override;
 
-		virtual AGE::Vector3 GetLocation() override { return GetActorLocation(); };
-		virtual AGE::Vector3& GetActorLocation();
+		AGE::Vector3 GetLocation() override { return GetActorLocation(); };
+		AGE::Vector3& GetActorLocation() override;
 
-		virtual void SetLocation(const AGE::Vector3& Location)  override { SetActorLocation(Location); }
-		virtual void SetActorLocation(const AGE::Vector3& Location);
+		void SetLocation(const AGE::Vector3& Location)  override { SetActorLocation(Location); }
+		void SetActorLocation(const AGE::Vector3& Location) override;
 
-		virtual std::string GetScriptableEntityType() override { return m_EntityType; }
-		virtual std::string GetName() override { return m_Name; }
+		std::string GetScriptableEntityType() override { return m_EntityType; }
+		std::string GetName() override { return m_Name; }
 
-		virtual void AddBeginPlayFunctions(AGE::AGEFunction<AGE::AGENode, AGE::ScriptableEntity> Func) override;
-		virtual void AddTickFunctions(AGE::AGEFunction<AGE::AGENode, AGE::ScriptableEntity> Func) override;
+		void AddBeginPlayFunctions(AGE::AGEFunction<AGE::AGENode, AGE::ScriptableEntity> Func) override;
+		void AddTickFunctions(AGE::AGEFunction<AGE::AGENode, AGE::ScriptableEntity> Func) override;
 
-		virtual void OnOverlapStart() override;
-		virtual void OnOverlapStop() override;
-		virtual void OnHit() override;
+		void OnOverlapStart() override;
+		void OnOverlapStop() override;
+		void OnHit() override;
 
 	protected:
 
-		virtual void OnBeginPlay() override;
-		virtual void Reset() override;
+		void OnBeginPlay() override;
+		void Reset() override;
 
 	protected:
 		AGE::Vector3 m_StartLocation = AGE::Vector3(0.f);

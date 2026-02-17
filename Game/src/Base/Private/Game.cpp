@@ -1,6 +1,6 @@
 #if AG_DIST
-#include <AGE.h>
-#include <Core/Public/Entrypoint.h>
+#include <Age.h>
+#include <Core/Public/EntryPoint.h>
 
 #include "Base/Public/GameLayer.h"
 #include "Base/Public/GameViewport.h"
@@ -8,10 +8,10 @@
 
 namespace AGE
 {
-	class Game : public AGE::App
+	class GameApp : public AGE::App
 	{
 	public:
-		Game(ApplicationCommandLineArgs args)
+		GameApp(ApplicationCommandLineArgs args)
 			:App("Test Project", args)
 		{
 			PushLayer(new Proj::GameLayer());
@@ -20,7 +20,7 @@ namespace AGE
 
 		}
 
-		~Game()
+		~GameApp()
 		{
 
 
@@ -31,9 +31,9 @@ namespace AGE
 
 
 
-	AGE::App* AGE::CreateApp(ApplicationCommandLineArgs args)
+	AGE::App* CreateApp(ApplicationCommandLineArgs args)
 	{
-		return new Game(args);
+		return new GameApp(args);
 	}
 }
 #endif // AG_DIST

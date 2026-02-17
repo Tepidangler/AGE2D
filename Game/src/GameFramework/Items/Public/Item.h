@@ -9,7 +9,7 @@ namespace GameFramework
 	struct ItemInfo;
 	enum class ItemBuffType
 	{
-		None = 0,
+		NoBuff = 0,
 		HP = 1,
 		MP = 2,
 		Strength = 3,
@@ -21,7 +21,7 @@ namespace GameFramework
 
 	enum class ItemType
 	{
-		None = 0,
+		NoType = 0,
 		Buff = 1,
 		Debuff = 2
 
@@ -124,9 +124,9 @@ namespace GameFramework
 
 		AGE::UUID m_ID;
 
-		ItemType m_Type = ItemType::None;
+		ItemType m_Type = ItemType::NoType;
 
-		ItemBuffType m_BuffType = ItemBuffType::None;
+		ItemBuffType m_BuffType = ItemBuffType::NoBuff;
 
 	};
 }

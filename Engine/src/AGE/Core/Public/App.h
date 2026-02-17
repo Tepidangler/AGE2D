@@ -151,7 +151,7 @@ namespace AGE
 		float m_LastFrame = 0.f;
 
 		bool m_PlayedTheme = false;
-		bool bShowNewProjectMenu = false;
+		bool bShowNewProjectMenu = true;
 		bool bBlockThisFrame = false;
 		const uint64_t MAIN_MENU_GAME_OBJECT = 100;
 

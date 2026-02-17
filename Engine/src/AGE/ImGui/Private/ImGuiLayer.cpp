@@ -129,7 +129,9 @@ namespace AGE
                 ImGui_ImplOpenGL3_NewFrame();
                 ImGui_ImplGlfw_NewFrame();
                 ImGui::NewFrame();
+#if !AG_DIST
                 ImGuizmo::BeginFrame();
+#endif
                 break;
             }
             default:
@@ -170,15 +172,6 @@ namespace AGE
     void ImGuiLayer::End()
     {
         //If we've changed renderers then that means there will be nothing there to draw so we'll simply skip this frame and start fresh
-        if (m_RendererChanged)
-        {
-            m_RendererChanged = false;
-            ImGui::Render();
-            ImGui::UpdatePlatformWindows();
-            ImGui::RenderPlatformWindowsDefault();
-            m_CurrentGraphicsAPI = Renderer::GetAPI();
-            return;
-        }
         AGE_PROFILE_FUNCTION();
         ImGuiIO& IO = ImGui::GetIO();
 
@@ -187,7 +180,6 @@ namespace AGE
         IO.DisplaySize = ImVec2((float)app.GetDeviceManager().GetWindow().GetWidth(), (float)app.GetDeviceManager().GetWindow().GetHeight());
 
         //Rendering
-    
 
         switch (Renderer::GetAPI())
         {

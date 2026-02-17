@@ -1,5 +1,5 @@
+#if AG_DIST
 #include "Base/Public/Dockspace.h"
-
 
 namespace Proj
 {
@@ -63,3 +63,4 @@ namespace Proj
 		}
 	}
 }
+#endif

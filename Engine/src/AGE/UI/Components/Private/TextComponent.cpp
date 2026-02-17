@@ -16,7 +16,7 @@ namespace AGE
 	{
 		m_Name = Name;
 		m_Type = UIComponentType::TextComponent;
-		m_StringProperties.TextFont = Font::GetDefault();
+		m_StringProperties.TextFont = AGEFont::GetDefault();
 	}
 	void TextComponent::OnUpdate(TimeStep DeltaTime)
 	{
@@ -32,12 +32,12 @@ namespace AGE
 
 	void TextComponent::DrawFontSelectionComboBox()
 	{
-		std::unordered_map<UUID,Ref<Font>> Fonts = AssetManager::Get().GetAssetRegistry()->GetFonts();
+		std::unordered_map<UUID,Ref<AGEFont>> Fonts = AssetManager::Get().GetAssetRegistry()->GetFonts();
 		std::vector<std::string> FontNames = AssetManager::Get().GetAssetRegistry()->GetFontNames();
 
 		if (m_StringProperties.FontName.empty())
 		{
-			m_StringProperties.FontName = Font::GetDefault()->GetAtlasTexture()->GetName();
+			m_StringProperties.FontName = AGEFont::GetDefault()->GetAtlasTexture()->GetName();
 		}
 		ImGui::Text("Fonts"); ImGui::SameLine();
 		if (ImGui::BeginCombo("##Fonts",m_StringProperties.FontName.c_str()))

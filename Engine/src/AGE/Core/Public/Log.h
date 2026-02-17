@@ -7,10 +7,15 @@
 #include "spdlog/spdlog.h"
 #include "spdlog/fmt/ostr.h"
 #pragma warning(pop)
+
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include <string_view>
 #include <format>
+#ifdef AG_PLATFORM_WINDOWS
 #include <debugapi.h>
+#else
+#include <csignal>
+#endif
 
 
 namespace AGE 
@@ -62,10 +67,12 @@ namespace AGE
 			}
 			Log::GetOffsets().push_back(Log::GetOffsets().back() + Size);
 			Log::GetTypes().push_back(LogType::Trace);
+#ifdef AG_PLATFORM_WINDOWS
 			std::wstring wLine(Line.begin(), Line.end());
-
 			OutputDebugString(wLine.c_str());
-
+#elif defined(AG_PLATFORM_LINUX)
+			printf("%s", Line.c_str());
+#endif
 		}
 		template<typename ... Args>
 		void Info(std::string_view fmt, Args&& ... args)
@@ -81,10 +88,12 @@ namespace AGE
 			}
 			Log::GetOffsets().push_back(Log::GetOffsets().back() + Size);
 			Log::GetTypes().push_back(LogType::Info);
+#ifdef AG_PLATFORM_WINDOWS
 			std::wstring wLine(Line.begin(), Line.end());
-
 			OutputDebugString(wLine.c_str());
-
+#elif defined(AG_PLATFORM_LINUX)
+			printf("%s", Line.c_str());
+#endif
 		}
 		template<typename ... Args>
 		void Warn(std::string_view fmt, Args&& ... args)
@@ -100,10 +109,12 @@ namespace AGE
 			}
 			Log::GetOffsets().push_back(Log::GetOffsets().back() + Size);
 			Log::GetTypes().push_back(LogType::Warn);
+#ifdef AG_PLATFORM_WINDOWS
 			std::wstring wLine(Line.begin(), Line.end());
-
 			OutputDebugString(wLine.c_str());
-
+#elif defined(AG_PLATFORM_LINUX)
+			printf("%s", Line.c_str());
+#endif
 		}
 		template<typename ... Args>
 		void Error(std::string_view fmt, Args&& ... args)
@@ -119,10 +130,12 @@ namespace AGE
 			}
 			Log::GetOffsets().push_back(Log::GetOffsets().back() + Size);
 			Log::GetTypes().push_back(LogType::Error);
+#ifdef AG_PLATFORM_WINDOWS
 			std::wstring wLine(Line.begin(), Line.end());
-
 			OutputDebugString(wLine.c_str());
-
+#elif defined(AG_PLATFORM_LINUX)
+			printf("%s", Line.c_str());
+#endif
 		}
 		template<typename ... Args>
 		void Critical(std::string_view fmt, Args&& ... args)
@@ -138,10 +151,12 @@ namespace AGE
 			}
 			Log::GetOffsets().push_back(Log::GetOffsets().back() + Size);
 			Log::GetTypes().push_back(LogType::Critical);
+#ifdef AG_PLATFORM_WINDOWS
 			std::wstring wLine(Line.begin(), Line.end());
-
 			OutputDebugString(wLine.c_str());
-
+#elif defined(AG_PLATFORM_LINUX)
+			printf("%s", Line.c_str());
+#endif
 		}
 #ifdef AGE_ENABLE_ASSERTS
 		template<typename ... Args> // CoreLogger->Assert(true ==  false, "True does not equal false")
@@ -159,10 +174,18 @@ namespace AGE
 				}
 				Log::GetOffsets().push_back(Log::GetOffsets().back() + Size);
 				Log::GetTypes().push_back(LogType::Critical);
+#ifdef AG_PLATFORM_WINDOWS
 				std::wstring wLine(Line.begin(), Line.end());
-
 				OutputDebugString(wLine.c_str());
 				__debugbreak();
+#elif defined(AG_PLATFORM_LINUX)
+				printf("%s", Line.c_str());
+#ifdef __clang__
+				__builtin_debugtrap();
+#else
+				__builtin_trap();
+#endif
+#endif
 			}
 		}
 #else// Just Do Nothing
@@ -189,10 +212,12 @@ void Assert(bool Condition, std::string_view fmt, Args&& ... args){}
 			}
 			Log::GetOffsets().push_back(Log::GetOffsets().back() + Size);
 			Log::GetTypes().push_back(LogType::Trace);
+#ifdef AG_PLATFORM_WINDOWS
 			std::wstring wLine(Line.begin(), Line.end());
-
 			OutputDebugString(wLine.c_str());
-
+#elif defined(AG_PLATFORM_LINUX)
+			printf("%s", Line.c_str());
+#endif
 		}
 		template<typename ... Args>
 		void Info(std::string_view fmt, Args&& ... args)
@@ -208,10 +233,12 @@ void Assert(bool Condition, std::string_view fmt, Args&& ... args){}
 			}
 			Log::GetOffsets().push_back(Log::GetOffsets().back() + Size);
 			Log::GetTypes().push_back(LogType::Info);
+#ifdef AG_PLATFORM_WINDOWS
 			std::wstring wLine(Line.begin(), Line.end());
-
 			OutputDebugString(wLine.c_str());
-
+#elif defined(AG_PLATFORM_LINUX)
+			printf("%s", Line.c_str());
+#endif
 		}
 		template<typename ... Args>
 		void Warn(std::string_view fmt, Args&& ... args)
@@ -227,10 +254,12 @@ void Assert(bool Condition, std::string_view fmt, Args&& ... args){}
 			}
 			Log::GetOffsets().push_back(Log::GetOffsets().back() + Size);
 			Log::GetTypes().push_back(LogType::Warn);
+#ifdef AG_PLATFORM_WINDOWS
 			std::wstring wLine(Line.begin(), Line.end());
-
 			OutputDebugString(wLine.c_str());
-
+#elif defined(AG_PLATFORM_LINUX)
+			printf("%s", Line.c_str());
+#endif
 		}
 		template<typename ... Args>
 		void Error(std::string_view fmt, Args&& ... args)
@@ -246,10 +275,12 @@ void Assert(bool Condition, std::string_view fmt, Args&& ... args){}
 			}
 			Log::GetOffsets().push_back(Log::GetOffsets().back() + Size);
 			Log::GetTypes().push_back(LogType::Error);
+#ifdef AG_PLATFORM_WINDOWS
 			std::wstring wLine(Line.begin(), Line.end());
-
 			OutputDebugString(wLine.c_str());
-
+#elif defined(AG_PLATFORM_LINUX)
+			printf("%s", Line.c_str());
+#endif
 		}
 		template<typename ... Args>
 		void Critical(std::string_view fmt, Args&& ... args)
@@ -265,10 +296,12 @@ void Assert(bool Condition, std::string_view fmt, Args&& ... args){}
 			}
 			Log::GetOffsets().push_back(Log::GetOffsets().back() + Size);
 			Log::GetTypes().push_back(LogType::Critical);
+#ifdef AG_PLATFORM_WINDOWS
 			std::wstring wLine(Line.begin(), Line.end());
-
 			OutputDebugString(wLine.c_str());
-
+#elif defined(AG_PLATFORM_LINUX)
+			printf("%s", Line.c_str());
+#endif
 		}
 #ifdef AGE_ENABLE_ASSERTS
 		template<typename ... Args>
@@ -286,10 +319,18 @@ void Assert(bool Condition, std::string_view fmt, Args&& ... args){}
 				}
 				Log::GetOffsets().push_back(Log::GetOffsets().back() + Size);
 				Log::GetTypes().push_back(LogType::Critical);
+#ifdef AG_PLATFORM_WINDOWS
 				std::wstring wLine(Line.begin(), Line.end());
-
 				OutputDebugString(wLine.c_str());
 				__debugbreak();
+#elif defined(AG_PLATFORM_LINUX)
+				printf("%s", Line.c_str());
+#ifdef __clang__
+				__builtin_debugtrap();
+#else
+				__builtin_trap();
+#endif
+#endif
 			}
 		}
 #else //Just Do Nothing
@@ -299,28 +340,3 @@ void Assert(bool Condition, std::string_view fmt, Args&& ... args){}
 	}
 
 }
-
-
-
-
-/**
-* Leaving these here for compatibility sake, however I will at some point phase out the use of what's below in favor for what is above
-*/
-
-//Core Log macros
-
-
-#define AGE_CORE_TRACE(...) AGE::Log::GetCoreLogger()->trace(__VA_ARGS__); std::cout << "Will be Deprecated soon!" << std::endl;
-#define AGE_CORE_INFO(...) AGE::Log::GetCoreLogger()->info(__VA_ARGS__); std::cout << "Will be Deprecated soon!" << std::endl;
-#define AGE_CORE_WARN(...) AGE::Log::GetCoreLogger()->warn(__VA_ARGS__); std::cout << "Will be Deprecated soon!" << std::endl;
-#define AGE_CORE_ERROR(...) AGE::Log::GetCoreLogger()->error(__VA_ARGS__); std::cout << "Will be Deprecated soon!" << std::endl;
-#define AGE_CORE_CRITICAL(...) AGE::Log::GetCoreLogger()->critical(__VA_ARGS__); std::cout << "Will be Deprecated soon!" << std::endl;
-
-
-// Game Log macros
-
-#define AGE_GAME_TRACE(...) AGE::Log::GetGameLogger()->trace(__VA_ARGS__); std::cout << "Will be Deprecated soon!" << std::endl;
-#define AGE_GAME_INFO(...)AGE::Log::GetGameLogger()->info(__VA_ARGS__); std::cout << "Will be Deprecated soon!" << std::endl;
-#define AGE_GAME_WARN(...) AGE::Log::GetGameLogger()->warn(__VA_ARGS__); std::cout << "Will be Deprecated soon!" << std::endl;
-#define AGE_GAME_ERROR(...) AGE::Log::GetGameLogger()->error(__VA_ARGS__); std::cout << "Will be Deprecated soon!" << std::endl;
-#define AGE_GAME_CRITICAL(...) AGE::Log::GetGameLogger()->critical(__VA_ARGS__); std::cout << "Will be Deprecated soon!" << std::endl;

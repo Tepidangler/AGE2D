@@ -5,13 +5,14 @@
 #include "Scene/Public/ScriptableEntity.h"
 #include "Structs/Public/Functions.h"
 #include <rttr/registration>
+
 namespace AGE
 {
 
 	enum class AGEPinType : uint8_t
 	{
 		Flow,
-		Bool,
+		Boolean,
 		Int,
 		Int16,
 		Int64,
@@ -28,9 +29,10 @@ namespace AGE
 		Callback,
 		Any
 	};
+
 	enum class NodeArgType : uint8_t
 	{
-		Bool,
+		Boolean,
 		Int,
 		Int16,
 		Int64,
@@ -54,7 +56,7 @@ namespace AGE
 {
 	rttr::registration::enumeration<AGE::AGEPinType>("AGEPinType")(
 		rttr::value("Flow",AGE::AGEPinType::Flow),
-		rttr::value("Bool",AGE::AGEPinType::Bool),
+		rttr::value("Bool",AGE::AGEPinType::Boolean),
 		rttr::value("Int",AGE::AGEPinType::Int),
 		rttr::value("Int16",AGE::AGEPinType::Int16),
 		rttr::value("Int64",AGE::AGEPinType::Int64),
@@ -139,6 +141,7 @@ namespace AGE
 					//case 12:   Ptr->Outputs.back()->String = reinterpret_cast<ScriptableEntity*>(Ptr->Inputs.back()->ObjPtr)->GetName();  break;
 					//case AGEPinType::Function: m_Ptrs.back()->Outputs.back()->String = std:: break;
 					//case AGEPinType::Callback: m_Ptrs.back()->Outputs.back()->String = std:: break;
+				default: return nullptr;
 			}
 		}
 
@@ -219,7 +222,7 @@ namespace AGE
 			{
 				if (Arg.is_type<bool>())
 				{
-					Serializer->WriteRaw<uint8_t>((uint8_t)NodeArgType::Bool);
+					Serializer->WriteRaw<uint8_t>((uint8_t)NodeArgType::Boolean);
 					Serializer->WriteRaw<bool>(Arg.get_value<bool>());
 					continue;
 				}
@@ -314,10 +317,10 @@ namespace AGE
 					Serializer->WriteString(Arg.get_value<std::string>());
 					continue;
 				}
-				if (Arg.is_type<Ref<Font>>())
+				if (Arg.is_type<Ref<AGEFont>>())
 				{
 					Serializer->WriteRaw<uint8_t>((uint8_t)NodeArgType::Font);
-					Serializer->WriteString(Arg.get_value<Ref<Font>>()->GetAtlasTexture()->GetTextureFilePath());
+					Serializer->WriteString(Arg.get_value<Ref<AGEFont>>()->GetAtlasTexture()->GetTextureFilePath());
 					continue;
 				}
 				if (Arg.is_type<Matrix4D>())
@@ -353,7 +356,7 @@ namespace AGE
 
 				switch((NodeArgType)Type)
 				{
-					case NodeArgType::Bool:
+					case NodeArgType::Boolean:
 					{
 						bool Value;
 						Serializer->ReadRaw<bool>(Value);
@@ -460,7 +463,7 @@ namespace AGE
 					{
 						std::string Value;
 						Serializer->ReadString(Value);
-						Data.Args.emplace_back(Font::GetDefault());
+						Data.Args.emplace_back(AGEFont::GetDefault());
 					continue;
 					}
 					case NodeArgType::PinType:
@@ -506,7 +509,7 @@ namespace AGE
 
 		AGENode() = default;
 
-		AGENode(uint32_t id, const char* name, ImColor color = ImColor(255, 255, 255))
+		AGENode(ax::NodeEditor::NodeId id, const char* name, ImColor color = ImColor(255, 255, 255))
 			:ID(id), Name(name), Color(color), Type(AGENodeType::Blueprint), Size(0.f)
 		{
 
@@ -557,12 +560,12 @@ namespace AGE
 		}
 		bool CompileOutputPins()
 		{
-			bool Success = true;
+			bool success = true;
 			for (auto O : Outputs)
 			{
-				if (!Success)
+				if (!success)
 				{
-					return Success;
+					return success;
 				}
 				switch (O->Type)
 				{
@@ -570,7 +573,7 @@ namespace AGE
 					{
 						break;
 					}
-					case AGEPinType::Bool:
+					case AGEPinType::Boolean:
 					{
 						rttr::variant RetVal = Func.Execute();
 						if (RetVal.is_valid())
@@ -578,7 +581,7 @@ namespace AGE
 							O->Boolean = RetVal.get_value<bool>();
 							continue;
 						}
-						Success = false;
+						success = false;
 						break;
 					}
 					case AGEPinType::Int:
@@ -589,7 +592,7 @@ namespace AGE
 							O->Integer = RetVal.get_value<int>();
 							continue;
 						}
-						Success = false;
+						success = false;
 						break;
 					}
 					case AGEPinType::Int16:
@@ -600,7 +603,7 @@ namespace AGE
 							O->Integer16 = RetVal.get_value<int16_t>();
 							continue;
 						}
-						Success = false;
+						success = false;
 						break;
 					}
 					case AGEPinType::Int64:
@@ -611,7 +614,7 @@ namespace AGE
 							O->Integer64 = RetVal.get_value<int64_t>();
 							continue;
 						}
-						Success = false;
+						success = false;
 						break;
 					}
 					case AGEPinType::UInt16:
@@ -622,7 +625,7 @@ namespace AGE
 							O->UInteger16 = RetVal.get_value<uint16_t>();
 							continue;
 						}
-						Success = false;
+						success = false;
 						break;
 					}
 					case AGEPinType::UInt32:
@@ -633,7 +636,7 @@ namespace AGE
 							O->UInteger32 = RetVal.get_value<uint32_t>();
 							continue;
 						}
-						Success = false;
+						success = false;
 						break;
 					}
 					case AGEPinType::UInt64:
@@ -644,7 +647,7 @@ namespace AGE
 							O->UInteger64 = RetVal.get_value<uint64_t>();
 							continue;
 						}
-						Success = false;
+						success = false;
 						break;
 					}
 					case AGEPinType::Vector2D:
@@ -655,7 +658,7 @@ namespace AGE
 							O->Vector2D  = RetVal.get_value<Vector2>();
 							continue;
 						}
-						Success = false;
+						success = false;
 						break;
 					}
 					case AGEPinType::Vector3D:
@@ -666,7 +669,7 @@ namespace AGE
 							O->Vector3D = RetVal.get_value<Vector3>();
 							continue;
 						}
-						Success = false;
+						success = false;
 						break;
 					}
 					case AGEPinType::Vector4D:
@@ -677,7 +680,7 @@ namespace AGE
 							O->Vector4D = RetVal.get_value<Vector4>();
 							continue;
 						}
-						Success = false;
+						success = false;
 						break;
 					}
 					case AGEPinType::Float:
@@ -688,7 +691,7 @@ namespace AGE
 							O->Value = RetVal.get_value<float>();
 							continue;
 						}
-						Success = false;
+						success = false;
 						break;
 					}
 					case AGEPinType::String:
@@ -699,7 +702,7 @@ namespace AGE
 							O->String = RetVal.get_value<std::string>();
 							continue;
 						}
-						Success = false;
+						success = false;
 						break;
 					}
 					case AGEPinType::Object:
@@ -721,7 +724,7 @@ namespace AGE
 				}
 			}
 
-			return Success;
+			return success;
 		}
 		static void Serialize(DataWriter* Serializer, const AGENode& Data)
 		{

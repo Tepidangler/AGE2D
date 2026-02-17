@@ -16,7 +16,7 @@ namespace Proj
 		//m_Name = Name;
 		m_UIComponents.emplace_back(AGE::CreateRef<AGE::TextBoxComponent>("MainMenuTextBox"));
 		m_UIComponents.back()->As<AGE::TextBoxComponent>()->m_StringProperties.Text = "This is the Main Menu";
-		m_UIComponents.back()->As<AGE::TextBoxComponent>()->m_StringProperties.TextFont = AGE::Font::GetDefault();
+		m_UIComponents.back()->As<AGE::TextBoxComponent>()->m_StringProperties.TextFont = AGE::AGEFont::GetDefault();
 		m_UIComponents.back()->As<AGE::TextBoxComponent>()->m_BoxProperties.TintColor = {0.f,0.f,1.f,1.f};
 		m_UIComponents.back()->As<AGE::TextBoxComponent>()->m_BoxProperties.Position = {0.f,-2.2f,0.f};
 		m_UIComponents.back()->As<AGE::TextBoxComponent>()->m_BoxProperties.Rotation = {0.f};

@@ -171,6 +171,7 @@ namespace AGE
 			}
 
 			CoreLogger::Error("Unable to Find Scene with name {0}", Name.c_str());
+			return nullptr;
 		}
 
 		std::vector<Ref<Scene>> GetAllScenes()
@@ -199,9 +200,9 @@ namespace AGE
 			return false;
 		}
 
-		Ref<Font> LoadFont(const std::filesystem::path& Filepath)
+		Ref<AGEFont> LoadFont(const std::filesystem::path& Filepath)
 		{
-			Ref<Font> NewFont = CreateRef<Font>(Filepath);
+			Ref<AGEFont> NewFont = CreateRef<AGEFont>(Filepath);
 
 			UUID ID = UUID();
 			NewFont->GetAtlasTexture()->SetAssetID(ID);
@@ -211,7 +212,7 @@ namespace AGE
 			return GetFont(ID);
 		}
 
-		Ref<Font> GetFont(const UUID& ID)
+		Ref<AGEFont> GetFont(const UUID& ID)
 		{
 			auto it = m_Fonts.find(ID);
 
@@ -219,10 +220,10 @@ namespace AGE
 			{
 				return it->second;
 			}
-			return Ref<Font>(nullptr);
+			return Ref<AGEFont>(nullptr);
 		}
 
-		Ref<Font> GetFont(const std::string& Name)
+		Ref<AGEFont> GetFont(const std::string& Name)
 		{
 			for (auto& F : m_Fonts)
 			{
@@ -232,7 +233,7 @@ namespace AGE
 				}
 			}
 
-			return Ref<Font>(nullptr);
+			return Ref<AGEFont>(nullptr);
 		}
 		const std::vector<std::string>& GetFontNames()
 		{
@@ -280,6 +281,10 @@ namespace AGE
 				return true;
 				break;
 			}
+			default:
+			{
+				return false;
+			}
 			}
 
 			return false;
@@ -292,18 +297,31 @@ namespace AGE
 			{
 			case AudioEngineType::WWiseEngine:
 			{
+#if WITH_WWISE
 				CoreLogger::Assert(false, "Checking for loaded soundbanks with Wwise is not Implemented yet!");
 				return false;
+#else
+				CoreLogger::Error("Engine was not build with Wwise Support! Enable WITH_WWISE and provide a path to the SDK directory in CMake!");
+				return false;
+#endif
 				break;
 			}
 
 			case AudioEngineType::FModEngine:
 			{
+#if WITH_FMOD
 				if (m_AudioManager->GetAudioEngine()->As<FmodEngine>()->GetBanks()[Utils::EngineStatics::GetFilename(Path)])
 				{
 					return true;
 				}
+#else
+				CoreLogger::Error("Engine was not build with FMod Support! Enable WITH_FMOD and provide a path to the SDK directory in CMake!");
+#endif
 				break;
+			}
+			default:
+			{
+				return false;
 			}
 			}
 
@@ -367,7 +385,7 @@ namespace AGE
 		{
 			return m_TextureAssets;
 		}
-		std::unordered_map<UUID, Ref<Font>>& GetFonts()
+		std::unordered_map<UUID, Ref<AGEFont>>& GetFonts()
 		{
 			return m_Fonts;
 		}
@@ -385,7 +403,7 @@ namespace AGE
 		}
 		std::unordered_map<UUID,Ref<Scene>> m_Scenes;
 		std::unordered_map<UUID, Ref<Texture2D>> m_TextureAssets;
-		std::unordered_map<UUID, Ref<Font>> m_Fonts;
+		std::unordered_map<UUID, Ref<AGEFont>> m_Fonts;
 		std::unordered_map<UUID, Ref<AudioSource>> m_Sounds;
 		std::unordered_map<UUID, Ref<SoundBank>> m_SoundBanks;
 		std::vector<std::string> m_FontNames;
@@ -449,9 +467,9 @@ namespace AGE
 		Ref<Texture2D> GetAsepriteTexture(const std::string& Name);
 		bool IsAsepriteFileLoaded(const std::filesystem::path& Filepath);
 
-		Ref<Font> LoadFont(const std::filesystem::path& Filepath);
-		Ref<Font> GetFont(const UUID& ID);
-		Ref<Font> GetFont(const std::string& Name);
+		Ref<AGEFont> LoadFont(const std::filesystem::path& Filepath);
+		Ref<AGEFont> GetFont(const UUID& ID);
+		Ref<AGEFont> GetFont(const std::string& Name);
 		bool IsFontLoaded(const std::filesystem::path& Filepath);
 
 		void LoadSoundbank(const std::filesystem::path& Filepath);

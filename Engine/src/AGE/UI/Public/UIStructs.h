@@ -109,7 +109,13 @@ namespace AGE
 					return "ImageComponent";
 					break;
 				}
+				default:
+				{
+					break;
+				}
 			}
+
+			return std::string();
 		}
 
 		std::string ToString(Value Val) const
@@ -142,7 +148,13 @@ namespace AGE
 					return "ImageComponent";
 					break;
 				}
+				default:
+				{
+					break;
+				}
 			}
+			return std::string();
+
 		}
 
 		static void Serialize(DataWriter* Serializer, const UIComponentType& Instance)
@@ -180,7 +192,7 @@ namespace AGE
 		Vector3 Rotation = {0.f};
 		Vector3 Scale = {1.f};
 		Vector4 TintColor = {1.f};
-		Ref<Texture> Texture = nullptr;
+		Ref<Texture> BoxTexture = nullptr;
 	};
 }
 #endif //AGE2D_UISTRUCTS_H

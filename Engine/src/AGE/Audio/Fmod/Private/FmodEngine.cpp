@@ -122,7 +122,7 @@ namespace AGE
 			m_Banks["Master.strings"]->getStringInfo(i,&ID,Path, 2048, Retrieved);
 			BankStrings[i] = Path;
 			delete[] Path;
-			delete[] Retrieved;
+			delete Retrieved;
 		}
 
 		for (auto S : BankStrings)

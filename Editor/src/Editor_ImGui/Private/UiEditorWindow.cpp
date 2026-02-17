@@ -184,7 +184,8 @@ namespace AGE
 			SetViewportSize(SpecView);
 
 		}
-		ImGui::Image((ImTextureID)m_UIFrameBuffer->GetColorAttachmentRendererID(0), ImVec2(SpecView[0], SpecView[1]), ImVec2(0, 1), ImVec2(1, 0));
+		uint32_t TextureID = m_UIFrameBuffer->GetColorAttachmentRendererID(0);
+		ImGui::Image((ImTextureID)&TextureID, ImVec2(SpecView[0], SpecView[1]), ImVec2(0, 1), ImVec2(1, 0));
 		if (ImGui::BeginDragDropTarget())
 		{
 			if (const ImGuiPayload* Payload = ImGui::AcceptDragDropPayload("WIDGET_PANEL_ITEM"))
@@ -210,7 +211,7 @@ namespace AGE
 		rttr::enumeration Types = CompTypes.get_enumeration();
 		for (auto& Type : Types.get_names())
 		{
-			ImGui::Text(Type.data());
+			ImGui::Text("%s",Type.data());
 			if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
 			{
 				const UIComponentType::Value WidgetType = Types.name_to_value(Type).get_value<UIComponentType::Value>();

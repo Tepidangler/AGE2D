@@ -59,6 +59,9 @@ namespace AGE
 		{
 			return *it;
 		}
+
+		// TODO: Add something to let users know what happened
+		return nullptr;
 	}
 }
 

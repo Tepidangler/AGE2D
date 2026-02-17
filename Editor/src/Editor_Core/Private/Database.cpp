@@ -182,6 +182,11 @@ namespace AGE
 						m_Connections.at(KV.first)->prepare(SP.second);
 						break;
 					}
+					default:
+					{
+						CoreLogger::Assert(false, "Statement Type is not supported!");
+						break;
+					}
 				}
 			}
 		}

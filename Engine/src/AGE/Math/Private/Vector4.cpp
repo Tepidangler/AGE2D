@@ -1,7 +1,8 @@
 #include "AGEpch.hpp"
 #include "Math/Public/Vector4.h"
-
+#ifdef AG_PLATFORM_WINDOWS
 #include <shtypes.h>
+#endif
 
 namespace AGE {
 	Vector4::Vector4() {

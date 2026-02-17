@@ -32,7 +32,7 @@ namespace AGE
 	public:
 
 		Scene();
-		Scene(const Scene& Other) = default;
+		Scene(const Scene& Other) = delete;
 		Scene(UUID ID)
 			:m_AssetID(ID) {}
 		Scene(const std::string& Name)
@@ -84,7 +84,10 @@ namespace AGE
 			m_SceneEvent(Event);
 		}
 
+		void operator=(const Scene& Other)
+		{
 
+		}
 	private:
 		template<typename T>
 		void OnComponentAdded(Entity E, T& Component);

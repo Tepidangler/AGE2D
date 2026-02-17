@@ -1,5 +1,5 @@
 #pragma once
-#ifdef WITH_WWISE
+#if WITH_WWISE
 #ifndef AK_OPTIMIZED
 #include <AK/Comm/AkCommunication.h>
 #endif

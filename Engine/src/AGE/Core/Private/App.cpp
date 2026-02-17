@@ -29,7 +29,16 @@ namespace AGE
 		CoreLogger::Assert(!s_Instance, "Application already exists!");
 		s_Instance = this;
 		m_CommandLineArgs = Args;
-		m_AppConfig.ProjectBasePath = std::string(getenv("USERPROFILE")) + "/OneDrive/Documents/AGEProjects";
+#ifdef AG_PLATFORM_WINDOWS
+		char** Buffer = new char*;
+		size_t BufferCount = 0;
+		_dupenv_s(Buffer, &BufferCount, "USERPROFILE");
+		m_AppConfig.ProjectBasePath = std::string(Buffer[0]) + "/OneDrive/Documents/AGEProjects";
+		delete Buffer;
+#else
+		std::string BasePath{std::getenv("USERPROFILE")};
+		m_AppConfig.ProjectBasePath = std::string{ BasePath + "/OneDrive/Documents/AGEProjects"};
+#endif
 
 		if (m_CommandLineArgs.Count < 3)
 		{

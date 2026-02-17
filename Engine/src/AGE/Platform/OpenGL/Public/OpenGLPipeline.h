@@ -9,26 +9,19 @@ namespace AGE
 	public:
 
 		OpenGLPipeline();
-		virtual ~OpenGLPipeline();
+		~OpenGLPipeline() override;
 
-		virtual void Init() override;
-		virtual void StartBatch2D() override;
-		virtual void NextBatch2D() override;
-		virtual void Flush2D() override;
+		void Init() override;
+		void StartBatch2D() override;
+		void NextBatch2D() override;
+		void Flush2D() override;
 
-		virtual Renderer2DData& GetData() override;
-
-
-		virtual void ResetStats() override;
-
-		virtual Statistics& GetStats() override;
-
+		Renderer2DData& GetData() override;
+		void ResetStats() override;
+		Statistics& GetStats() override;
 		void GenerateDefaultTextures();
 
 	private:
 		Renderer2DData m_Data;
-
-
-
 	};
 }

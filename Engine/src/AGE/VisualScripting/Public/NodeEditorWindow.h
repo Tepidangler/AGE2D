@@ -13,7 +13,7 @@
 #include <utilities/widgets.h>
 
 struct ImRect;
-class Font;
+class AGEFont;
 
 namespace AGE
 {
@@ -64,7 +64,7 @@ namespace AGE
 			for (auto& N : Nodes)
 			{
 				// AGENode(int id, const char* name, ImColor color = ImColor(255,255,255))
-				Data.m_Nodes.emplace_back(CreateRef<AGENode>((uint64_t)N.ID, N.Name.c_str(), N.Color));
+				Data.m_Nodes.emplace_back(CreateRef<AGENode>(N.ID, N.Name.c_str(), N.Color));
 				Data.m_Nodes.back()->Inputs = N.Inputs;
 				Data.m_Nodes.back()->Outputs = N.Outputs;
 				Data.m_Nodes.back()->State = N.State;
@@ -217,7 +217,7 @@ namespace AGE
 		Ref<ScriptableEntity> m_Target = nullptr;
 
 		friend class NodeEditorManager;
-		static Ref<Font> s_Font;
+		static Ref<AGEFont> s_Font;
 
 	};
 

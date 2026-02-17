@@ -19,6 +19,8 @@ namespace GameFramework
                 break;
             }
         }
+
+        return nullptr;
     }
 
 

@@ -19,10 +19,10 @@ namespace AGE
 
         case 1:
         {
-#ifdef WITH_WWISE
+#if WITH_WWISE
             return CreateRef<Wwise>();
 #else
-            CoreLogger::Assert(false, "AGE was not built with WWise! You can enable WWise by setting the BUILD_WITH_WWISE option to ON in the CMake File");
+            CoreLogger::Assert(false, "AGE was not built with WWise! Check the value of your CMake variables and make sure BUILD_WITH_WWISE is ON and you have set a path for the SDK in WWISE_INSTALL_PATH");
             return nullptr;
 #endif
         }
@@ -32,7 +32,7 @@ namespace AGE
 #if WITH_FMOD
             return CreateRef<FmodEngine>();
 #else
-            CoreLogger::Assert(false, "AGE was not built with FMod! You can enable WWise by setting the BUILD_WITH_FMOD option to ON in the CMake File");
+            CoreLogger::Assert(false, "AGE was not built with FMod! Check the value of your CMake variables and make sure BUILD_WITH_FMOD is ON and you have set a path for the SDK in FMOD_INSTALL_PATH");
             return nullptr;
 #endif
         }

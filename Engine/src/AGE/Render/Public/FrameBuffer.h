@@ -10,7 +10,7 @@ namespace AGE
 {
 	enum class FramebufferTextureFormat
 	{
-		None = 0,
+		INVALIDFORMAT = 0,
 
 		//Color
 		RGBA8,
@@ -28,7 +28,7 @@ namespace AGE
 		FramebufferTextureSpecification(FramebufferTextureFormat Format)
 			:TextureFormat(Format) {}
 
-		FramebufferTextureFormat TextureFormat = FramebufferTextureFormat::None;
+		FramebufferTextureFormat TextureFormat = FramebufferTextureFormat::INVALIDFORMAT;
 	};
 
 	struct FramebufferAttachmentSpecification
@@ -52,19 +52,10 @@ namespace AGE
 		uint32_t Samples = 1;
 		uint32_t MipLevels;
 		uint32_t ArraySize;
-		DXGI_FORMAT DXGIFormat;
-		DXGI_SAMPLE_DESC DXGISampleDesc;
-		D3D11_USAGE DXGIUsage;
 		uint32_t BindFlags;
 		uint32_t CPUAccessFlags;
 		uint32_t MiscFlags;
 		bool SwapChainTarget = false;
-		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> SRV;
-
-	public:
-
-		//Getters
-		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& GetSRV() { return SRV; }
 	};
 
 	

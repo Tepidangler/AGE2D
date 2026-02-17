@@ -217,7 +217,7 @@ namespace AGE
 		mangled *= BIT_NOISE3;
 		mangled ^= (mangled >> 8);
 
-		return (float)std::clamp(mangled, ONE_OVER_MIN_UINT, ONE_OVER_MAX_UINT);
+		return (float)std::clamp(mangled, 1u, ONE_OVER_MAX_UINT);
 	}
 
 }

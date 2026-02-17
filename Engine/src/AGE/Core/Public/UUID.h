@@ -1,6 +1,10 @@
 #pragma once
+#ifdef AG_PLATFORM_WINDOWS
 #include <xhash>
-
+#else
+#include <functional>
+#endif
+#include <cinttypes>
 namespace AGE
 {
 	class UUID
@@ -25,7 +29,7 @@ namespace std
 	template<>
 	struct hash<AGE::UUID>
 	{
-		std::size_t operator()(const AGE::UUID& uuid) const
+		std::size_t operator()(const AGE::UUID& uuid) const noexcept
 		{
 			return hash<uint64_t>()((uint64_t)uuid);
 		}

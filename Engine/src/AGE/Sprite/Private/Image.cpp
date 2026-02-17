@@ -223,6 +223,10 @@ namespace AGE
 			m_GSImage = new uint16_t[m_Spec.GetWidth() * m_Spec.GetHeight()];
 			break;
 		}
+		default:
+		{
+			break;
+		}
 		}
 		m_Buffer = new uint8_t[BufferSize];
 
@@ -305,7 +309,7 @@ namespace AGE
 				{
 					if (uncompressed_offset + uncompressed_bytes > m_Spec.GetHeight() * m_RowBytes)
 					{
-						throw std::exception("Bad compressed image.");
+						CoreLogger::Error("Bad compressed image.");
 					}
 					uncompressed_offset += uncompressed_bytes;
 					Addr += uncompressed_bytes;

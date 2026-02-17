@@ -39,16 +39,16 @@ namespace GameFramework
 
 		if (Header.compare("AGE_SAVEGAME") != 0)
 		{
-			AGE_GAME_ERROR("Unable to Load {0}! \n\t Invalid Header!", FileName);
+			AGE::GameLogger::Error("Unable to Load {0}! \n\t Invalid Header!", FileName);
 			return *this;
 		}
 
-		AGE_GAME_INFO("Header Sucessfully Read!");
+		AGE::GameLogger::Info("Header Sucessfully Read!");
 		stream.ReadString(m_SlotName);
 		stream.ReadRaw<int>(m_Version);
 		stream.ReadRaw<int>(m_Index);
 		stream.ReadObject<AGE::Buffer>(*m_Data.get());
-		AGE_GAME_INFO("{0} Loaded Successfully", FileName);
+		AGE::GameLogger::Info("{0} Loaded Successfully", FileName);
 
 		return *this;
 

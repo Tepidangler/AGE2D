@@ -2,8 +2,25 @@
 #include "AGEpch.hpp"
 #include "Math/Public/Math.h"
 #include "Math/Public/UtilityFunctions.h"
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wconversion"
+#pragma clang diagnostic ignored "-Wmicrosoft-unqualified-friend"
 #include <rttr/registration>
-
+#pragma clang diagnostic pop
+#elif defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wmicrosoft-unqualified-friend"
+#include <rttr/registration>
+#pragma GCC diagnostic pop
+#elif defined(_MSC_VER)
+#pragma warning(push, 0)
+#include <rttr/registration>
+#pragma warning(pop)
+#else
+#error "Compiler is not supported with AGE yet"
+#endif
 #include "glm/gtx/quaternion.hpp"
 
 RTTR_REGISTRATION

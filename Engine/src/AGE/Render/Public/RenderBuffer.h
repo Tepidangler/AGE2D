@@ -3,13 +3,14 @@
 #include "Math/Public/UtilityFunctions.h"
 #include "Core/Public/Log.h"
 
+
 struct Matrix3D;
 
 namespace AGE
 {
-	enum class ShaderDataType
+	enum class ShaderDataType : uint16_t
 	{
-		None = 0,
+		INVALIDSHADERDATATYPE = 0,
 		Float = 1,
 		Float2 = 2,
 		Float3 = 3,
@@ -20,7 +21,7 @@ namespace AGE
 		Int2 = 8,
 		Int3 = 9,
 		Int4 = 10,
-		Bool = 11
+		Boolean = 11
 
 	};
 
@@ -73,10 +74,8 @@ namespace AGE
 	{
 		std::string Name = "";
 		uint32_t Index = 0;
-		DXGI_FORMAT Format;
 		uint32_t Slot = 0;
 		uint32_t Offset = 0;
-		D3D11_INPUT_CLASSIFICATION SlotClass;
 		uint32_t DataStepRate = 0;
 		uint32_t Size = 0;
 		ShaderDataType DataType;
@@ -157,12 +156,12 @@ namespace AGE
 
 		inline uint32_t GetStride() const { return m_Stride; }
 
-		std::vector<BufferElement>::iterator begin() { return m_Elements.begin(); }
+		[[nodiscard]] std::vector<BufferElement>::iterator begin() { return m_Elements.begin(); }
 
-		std::vector<BufferElement>::iterator end() { return m_Elements.end(); }
-		std::vector<BufferElement>::const_iterator begin() const { return m_Elements.begin(); }
+		[[nodiscard]] std::vector<BufferElement>::iterator end() { return m_Elements.end(); }
+		[[nodiscard]] std::vector<BufferElement>::const_iterator begin() const { return m_Elements.begin(); }
 
-		std::vector<BufferElement>::const_iterator end() const { return m_Elements.end(); }
+		[[nodiscard]] std::vector<BufferElement>::const_iterator end() const { return m_Elements.end(); }
 	private:
 
 		void CalculateOffsetsAndStride()

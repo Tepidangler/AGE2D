@@ -2,7 +2,6 @@
 #include "Math/Public/Vector3.h"
 #include "Math/Public/Vector2.h"
 #include "Math/Public/Vector4.h"
-#include <rttr/registration>
 
 namespace AGE {
 	Vector3::Vector3() {

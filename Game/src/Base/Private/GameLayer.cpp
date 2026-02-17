@@ -3,12 +3,12 @@
 namespace Proj
 {
 #if AG_DIST
-	static AGE::Ref<AGE::Font> s_Font;
+	static AGE::Ref<AGE::AGEFont> s_Font;
 #endif
 
 	GameLayer* GameLayer::s_Instance  = nullptr;
 	GameLayer::GameLayer()
-		:Layer("GameLayer")
+		:AGE::Layer("GameLayer")
 	{
 
 		s_Instance = this;
@@ -21,7 +21,7 @@ namespace Proj
 	void GameLayer::Init()
 	{
 #if AG_DIST
-		s_Font = AGE::Font::GetDefault();
+		s_Font = AGE::AGEFont::GetDefault();
 #endif
 	}
 
@@ -29,10 +29,6 @@ namespace Proj
 	{
 #if AG_DIST
 		m_ActiveScene->OnViewportResize((uint32_t)Size[0], (uint32_t)Size[1]);
-		if (AGE::Renderer::GetAPI() != AGE::RendererAPI::DirectX11 && AGE::Renderer::GetAPI() != AGE::RendererAPI::DirectX12)
-		{
-			m_FrameBuffer->Resize((uint32_t)Size.x, (uint32_t)Size.y);
-		}
 #endif
 	}
 	void GameLayer::OnUpdate(AGE::TimeStep DeltaTime)
@@ -44,24 +40,12 @@ namespace Proj
 		//UpdateScene
 		AGE::RenderCommand::ResetStats();
 		//Render
-		if (AGE::RendererAPI::GetAPI() != AGE::RendererAPI::DirectX11)
-		{
-			m_FrameBuffer->Bind(0);
-		}
 		AGE::RenderCommand::SetClearColor(AGE::Vector4(1.f, .1f, .8f, .1f));
 		AGE::RenderCommand::SetViewport(0, 0, m_FrameBuffer->GetSpecification().Width, m_FrameBuffer->GetSpecification().Height);
 		AGE::RenderCommand::Clear();
 		m_FrameBuffer->ClearAttachment(1, -1);
 		m_ActiveScene->OnRuntimeUpdate(DeltaTime);
-
-		if (AGE::RendererAPI::GetAPI() != AGE::RendererAPI::DirectX11)
-		{
-			m_FrameBuffer->Unbind();
-		}
-		else
-		{
-			m_FrameBuffer->Bind(0);
-		}
+		m_FrameBuffer->Bind();
 #endif
 
 		m_GameState->OnUpdate(DeltaTime);
@@ -79,7 +63,7 @@ namespace Proj
 
 #else
 		AGE::FrameBufferSpecification FbSpec;
-		FbSpec.Attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RED_INTEGER, FramebufferTextureFormat::DEPTH24STENCIL8 };
+		FbSpec.Attachments = { AGE::FramebufferTextureFormat::RGBA8, AGE::FramebufferTextureFormat::RED_INTEGER, AGE::FramebufferTextureFormat::DEPTH24STENCIL8 };
 		FbSpec.Width = 1280;
 		FbSpec.Height = 720;
 #endif

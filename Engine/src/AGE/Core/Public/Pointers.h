@@ -1,13 +1,14 @@
 //
 // Created by gdmgp on 2/8/2026.
 //
+#pragma once
 #include <memory>
 #ifndef AGE2D_POINTERS_H
 #define AGE2D_POINTERS_H
 namespace AGE {
 
     template<typename T>
-using Scope = std::unique_ptr<T>;
+    using Scope = std::unique_ptr<T>;
 
     template<typename T, typename ... Args>
     constexpr Scope<T> CreateScope(Args&& ... args)
