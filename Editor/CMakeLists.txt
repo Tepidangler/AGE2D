@@ -151,9 +151,14 @@ if(WIN32)
     )
 elseif(UNIX)
     target_compile_options(Editor PUBLIC
-            $<$<CONFIG:Debug>:-fsanitize=address -fsanitize=undefined -MT -Wall -Wconversion -O0>
-            $<$<CONFIG:RelWithDebInfo>:-fsanitize=address -fsanitize=undefined -MT -Wall -Wconversion -O3>
-            $<$<CONFIG:MinSizeRel>:-fsanitize=address -fsanitize=undefined -MT -Wall -Wconversion -Os>
+            $<$<CONFIG:Debug>:-fsanitize=address,undefined -static-libasan -MT -Wall -Wconversion -O0>
+            $<$<CONFIG:RelWithDebInfo>:-fsanitize=address,undefined -MT -Wall -Wconversion -O3>
+            $<$<CONFIG:MinSizeRel>:-fsanitize=address,undefined -MT -Wall -Wconversion -Os>
+    )
+    target_link_options(Editor PUBLIC
+            $<$<CONFIG:Debug>:-fsanitize=address,undefined -static-libasan>
+            $<$<CONFIG:RelWithDebInfo>:-fsanitize=address,undefined>
+            $<$<CONFIG:MinSizeRel>:-fsanitize=address,undefined>
     )
 elseif(APPLE)
     target_compile_options(Editor PUBLIC

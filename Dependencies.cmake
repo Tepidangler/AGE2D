@@ -170,6 +170,7 @@ if(UNIX)
     FetchContent_Declare(Imgui-Node-Editor
             GIT_REPOSITORY https://github.com/Tepidangler/imgui-node-editor.git
             GIT_TAG x11-compat)
+    FetchContent_MakeAvailable(Imgui-Node-Editor)
 
     find_path(STB_INC_DIRS "stb_image.h" ${stb_SOURCE_DIR})
     find_path(FILEWATCH_INC_DIRS "FileWatch.hpp" ${filewatch_SOURCE_DIR})

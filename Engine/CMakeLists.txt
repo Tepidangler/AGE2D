@@ -318,9 +318,14 @@ if(WIN32)
 	)
 elseif(UNIX)
 	target_compile_options(Engine PUBLIC
-			$<$<CONFIG:Debug>:-fsanitize=address -fsanitize=undefined -MT -Wall -Wconversion -O0>
+			$<$<CONFIG:Debug>:-fsanitize=address,undefined -static-libasan -MT -Wall -Wconversion -O0>
 			$<$<CONFIG:RelWithDebInfo>:-Wall -Wconversion -MT -O3>
 			$<$<CONFIG:MinSizeRel>:-Wall -Wconversion -MT -Os>
+	)
+	target_link_options(Engine PUBLIC
+			$<$<CONFIG:Debug>:-fsanitize=address,undefined -static-libasan>
+			$<$<CONFIG:RelWithDebInfo>:-fsanitize=address,undefined>
+			$<$<CONFIG:MinSizeRel>:-fsanitize=address,undefined>
 	)
 elseif(APPLE)
 	target_compile_options(Engine PUBLIC
@@ -333,9 +338,16 @@ endif()
 #target_precompile_headers(Engine PUBLIC
 #		${CMAKE_SOURCE_DIR}/Engine/src/AGE/Core/Public/AGEpch.hpp
 #)
-find_library(opengl32.lib OpenGL32)
 find_library(glm glm PATHS ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/glm/lib NO_DEFAULT_PATH)
 find_library(AkSoundEngine AkSoundEngine.lib PATHS ${CMAKE_SOURCE_DIR}/Engine/libs/vendor/Wwise/x64_vc170/Debug\(StaticCRT\)/lib NO_DEFAULT_PATH)
+find_package(X11)
+if(APPLE AND X11_FOUND)
+	set(CMAKE_FIND_FRAMEWORK NEVER)
+	find_package(OpenGL)
+	unset(CMAKE_FIND_FRAMEWORK)
+else()
+	find_package(OpenGL)
+endif()
 find_package(LibXml2 REQUIRED)
 find_package(ZLIB REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
@@ -383,7 +395,7 @@ target_link_libraries(Engine PUBLIC
 						RTTR::Core_Lib_STL
 						box2d::box2d
 						ZLIB::ZLIB
-                     	opengl32
+						OpenGL::GL
 						tmx
                         ImGUI
                         glfw
@@ -396,8 +408,15 @@ if(WIN32)
 			Winmm
 			BCrypt
 			xinput
+			opengl32
 	)
+#else()
+#	target_link_libraries(Engine PUBLIC
+#			GLEW::GLEW
+#			GL
+#	)
 endif()
+
 if(${BUILD_WITH_WWISE})
 	if(NOT "${WWISE_INSTALL_PATH}" STREQUAL "")
 		target_link_libraries(Engine PUBLIC

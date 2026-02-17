@@ -218,9 +218,14 @@ if(WIN32)
     )
 elseif(UNIX)
     target_compile_options(Game PUBLIC
-            $<$<CONFIG:Debug>:-fsanitize=address -fsanitize=undefined -MT -Wall -Wconversion -O0>
+            $<$<CONFIG:Debug>:-fsanitize=address,undefined -static-libasan -MT -Wall -Wconversion -O0>
             $<$<CONFIG:RelWithDebInfo>:-Wall -MT -Wconversion -O3>
             $<$<CONFIG:MinSizeRel>:-Wall -MT -Wconversion -Os>
+    )
+    target_link_options(Game PUBLIC
+            $<$<CONFIG:Debug>:-fsanitize=address,undefined -static-libasan>
+            $<$<CONFIG:RelWithDebInfo>:-fsanitize=address,undefined>
+            $<$<CONFIG:MinSizeRel>:-fsanitize=address,undefined>
     )
 elseif(APPLE)
     target_compile_options(Game PUBLIC

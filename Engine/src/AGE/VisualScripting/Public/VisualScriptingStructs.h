@@ -335,7 +335,7 @@ namespace AGE
 					Serializer->WriteRaw<AGEPinType>(Arg.get_value<AGEPinType>());
 					continue;
 				}
-				if (Arg.is_type<nullptr_t>())
+				if (Arg.is_type<std::nullptr_t>())
 				{
 					Serializer->WriteRaw<uint8_t>((uint8_t)NodeArgType::NullType);
 					Serializer->WriteRaw<uint8_t>(0);

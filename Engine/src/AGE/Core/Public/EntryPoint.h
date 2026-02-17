@@ -1,7 +1,7 @@
 #pragma once
 #include"Core/Public/App.h"
 
-#ifdef AG_PLATFORM_WINDOWS
+
 
 //Creates our Game/App for us rather than having to do that inside of the application itself because we don't truly know what anyone might use this for.
 // Looking at you here Donald.
@@ -24,4 +24,4 @@ int main(int argc, char** argv)
 	AGE_PROFILE_END_SESSION();
 }
 
-#endif
+
