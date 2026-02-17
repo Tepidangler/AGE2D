@@ -13,7 +13,9 @@ Compact, native C++ 2D game engine — a focused 2D adaptation of the Alcoy Game
 ## Table of Contents
 - [Project summary](#project-summary)
 - [Notable systems & architecture](#notable-systems--architecture)
-- [Windows build (Visual Studio + CMake)](#windows-build-visual-studio--cmake)
+- [Build Instructions](#build-instructions)
+  - [Windows Visual Studio-CMake](#windows-build-visual-studio--cmake)
+  - [Linux](#linux)
 - [Native C++ scripting (real API & example)](#native-c-scripting-real-api--example)
 - [Technical Highlights](#technical-highlights)
 - [Limitations](#limitations)
@@ -41,8 +43,11 @@ AGE2D is a compact, pragmatic engine intended for 2D games and rapid iteration w
   - Renderer2D (Render/Public/Renderer2D.h/.cpp) — 2D draw calls: quads, sprites, circles, text
 - Build + vendor libraries: CMakeLists.txt (top level) and Engine/CMakeLists.txt (vendor add_subdirectory calls)
 
+<a name="build-instructions"></a>
+## Build Instructions
+
 <a name="windows-build-visual-studio--cmake"></a>
-## Windows build (Visual Studio + CMake)
+# Windows build (Visual Studio + CMake)
 
 The project uses C++20 and is configured to build with Visual Studio on Windows. Steps:
 
@@ -59,7 +64,7 @@ The project uses C++20 and is configured to build with Visual Studio on Windows.
    ```
    mkdir build
    cd build
-   cmake .. -G "Visual Studio 17 2022" -A x64 -DCMAKE_BUILD_TYPE=Release
+   cmake.exe .. -G "Ninja Multi-Config" -DCMAKE_TOOLCHAIN_FILE=path\to\vcpkg.cmake -S path/to/source -B path/to/build/dir
    ```
 
    Notes:
@@ -67,13 +72,33 @@ The project uses C++20 and is configured to build with Visual Studio on Windows.
    - If you move vendors or use system libraries, set the Engine CMake cache variables (INC_GLFW, INC_GLAD, INC_GLM, etc.) or use vcpkg and point CMAKE_TOOLCHAIN_FILE appropriately.
 
 3. Build
-   
-   cmake --build . --config Release
-
+   ```
+   cmake --build . --config (Debug/Release/Distribution)
+    ```
 4. Artifacts
    
    - The build produces `Engine` (static lib) and the `Editor` and `Game` targets where applicable. There are no packaged sample runtime executables by default — the Game directory is the place to add your playable demo or test runner.
 
+<a name="linux"></a>
+# Linux
+
+1. Installing Dependencies 
+   2. Debian
+
+       ```
+       sudo apt-get update
+       sudo apt-get install -y libgl1-mesa-dev libfreetype6-dev libxml2-dev zlib1g-dev libx11-dev libxcursor-dev libxrandr-dev libxi-dev libxinerama-dev libxext-dev libtinyxml2-dev libspdlog-dev libyaml-cpp-dev libpqxx-dev libglm-dev libglfw3-dev libboost-all-dev ninja-build
+       ```
+   3. Fedora (untested)
+      ```
+       sudo dnf update
+      sudo apt-get install -y libgl1-mesa-devel libfreetype6-devel libxml2-devel zlib1g-devel libx11-devel libxcursor-devel libxrandr-devel libxi-devel libxinerama-devel libxext-devel libtinyxml2-devel libspdlog-devel libyaml-cpp-devel libpqxx-devel libglm-devel libglfw3-devel libboost-all-devel ninja-build
+      ```
+   
+2. CMake
+    ```
+   /usr/bin/cmake -DCMAKE_CXX_COMPILER=/path/to/compiler++ -G "Ninja Multi-Config" -S path/to/source -B path/to/build/dir 
+   ```
 <a name="native-c-scripting-real-api--example"></a>
 
 ## Native C++ scripting — real API, concise
