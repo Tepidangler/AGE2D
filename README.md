@@ -91,7 +91,7 @@ The project uses C++20 and is configured to build with Visual Studio on Windows.
    3. Fedora (untested)
       ```
        sudo dnf update
-      sudo apt-get install -y libgl1-mesa-devel libfreetype6-devel libxml2-devel zlib1g-devel libx11-devel libxcursor-devel libxrandr-devel libxi-devel libxinerama-devel libxext-devel libtinyxml2-devel libspdlog-devel libyaml-cpp-devel libpqxx-devel libglm-devel libglfw3-devel libboost-all-devel ninja-build
+      sudo dnf install -y libgl1-mesa-devel libfreetype6-devel libxml2-devel zlib1g-devel libx11-devel libxcursor-devel libxrandr-devel libxi-devel libxinerama-devel libxext-devel libtinyxml2-devel libspdlog-devel libyaml-cpp-devel libpqxx-devel libglm-devel libglfw3-devel libboost-all-devel ninja-build
       ```
    
 2. CMake
