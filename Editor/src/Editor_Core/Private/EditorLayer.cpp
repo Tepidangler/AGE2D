@@ -79,7 +79,7 @@ namespace AGE
 #ifdef WIN32
 		MONITORINFOEX MonInfo;
 		MonInfo.cbSize = sizeof(MonInfo);
-		GetMonitorInfo(MonitorFromWindow(App::Get().GetDeviceManager().GetWindow().GetWin32Window(), MONITOR_DEFAULTTONEAREST), (LPMONITORINFO) & MonInfo);
+		GetMonitorInfo(MonitorFromWindow(App::Get().GetDeviceManager().GetWindow().GetPlatformWindow(), MONITOR_DEFAULTTONEAREST), (LPMONITORINFO) & MonInfo);
 		FrameBufferSpecification FbSpec;
 		FbSpec.Attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RED_INTEGER, FramebufferTextureFormat::DEPTH24STENCIL8};
 		//FbSpec.Width = MonInfo.rcWork.right;
@@ -159,7 +159,7 @@ namespace AGE
 #ifdef WIN32
 		MONITORINFOEX MonInfo{};
 		MonInfo.cbSize = sizeof(MonInfo);
-		GetMonitorInfo(MonitorFromWindow(App::Get().GetDeviceManager().GetWindow().GetWin32Window(), MONITOR_DEFAULTTONEAREST), &MonInfo);
+		GetMonitorInfo(MonitorFromWindow(App::Get().GetDeviceManager().GetWindow().GetPlatformWindow(), MONITOR_DEFAULTTONEAREST), &MonInfo);
 		FrameBufferSpecification FbSpec;
 		FbSpec.Attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RED_INTEGER, FramebufferTextureFormat::DEPTH24STENCIL8 };
 		//FbSpec.Width = App::Get().GetDeviceManager().GetWindow().GetWidth();

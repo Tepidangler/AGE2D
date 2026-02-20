@@ -748,7 +748,9 @@ namespace AGE
 
 	void MainMenuBar::OpenScene()
 	{
-		std::string FilePath = AGE::FileDialogs::OpenFile("AGE Scene (*.AGEScene)\0*.AGEScene\0");
+		std::string FilePath = AGE::FileDialogs::OpenFile({"Open Scene"},AssetManager::Get().GetGameContentPath(),
+			{"AGE Scene", "*.AGEScene"
+			});
 		if (!FilePath.empty())
 		{
 			OpenScene(FilePath);
@@ -816,7 +818,8 @@ namespace AGE
 
 	void MainMenuBar::SaveAsScene()
 	{
-		std::string FilePath = AGE::FileDialogs::SaveFile("AGE Scene (*.AGEScene)\0*.AGEScene\0");
+		std::string FilePath = AGE::FileDialogs::SaveFile("Save Scene As",AssetManager::Get().GetGameContentPath(),
+			{"AGE Scene (*.AGEScene)","*.AGEScene"});
 		if (!FilePath.empty())
 		{
 			//TODO: TEMP
@@ -843,7 +846,8 @@ namespace AGE
 	void MainMenuBar::OpenProject()
 	{
 
-		std::string FilePath = AGE::FileDialogs::OpenFile("AGE Project (*.AGEProject)\0*.AGEProject\0");
+		std::string FilePath = AGE::FileDialogs::OpenFile("", AssetManager::Get().GetGameContentPath(),
+			{"AGE Project (*.AGEProject)", "*.AGEProject"});
 		if (!FilePath.empty())
 		{
 			Project::Load(FilePath);
@@ -902,7 +906,8 @@ namespace AGE
 	}
 	std::filesystem::path MainMenuBar::LoadQuestFile()
 	{
-		std::filesystem::path Filepath(FileDialogs::OpenFile("JSON(*.json)\0 * .json\0"));
+		std::filesystem::path Filepath(FileDialogs::OpenFile("Load Quest File", AssetManager::Get().GetGameContentPath(),
+			{"JSON(*.json)","*.json"}));
 		return Filepath;
 	}
 	void MainMenuBar::PackageGame()

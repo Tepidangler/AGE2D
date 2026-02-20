@@ -201,7 +201,8 @@ namespace AGE
     }
     void QuestManagerWindow::ImportQuest()
     {
-        std::filesystem::path Filepath(FileDialogs::OpenFile("JSON(*.json)\0 * .json\0"));
+        std::filesystem::path Filepath(FileDialogs::OpenFile("Import Quest",AssetManager::Get().GetGameContentPath(),
+            {"JSON(*.json)", "*.json"}));
         if (Filepath.empty())
         {
             return;

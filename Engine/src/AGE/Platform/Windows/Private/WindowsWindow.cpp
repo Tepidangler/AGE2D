@@ -130,9 +130,9 @@ namespace AGE
 		m_Context->Init();
 #ifdef AG_PLATFORM_WINDOWS
 		m_Win32Window = glfwGetWin32Window(m_Window);
-#elifdef AG_PLATFORM_LINUX
+#elif defined(AG_PLATFORM_LINUX)
 		m_X11Window = glfwGetX11Window(m_Window);
-#elifdef AG_PLATFORM_MACOS
+#elif defined(AG_PLATFORM_MACOS)
 		m_CocoaWindow = glfwGetCocoaWindow(m_Window);
 #endif
 

@@ -38,7 +38,8 @@ namespace AGE
 		{
 			if (ImGui::MenuItem("Open Widget"))
 			{
-				std::string FilePath = AGE::FileDialogs::OpenFile("Widget (*.AGEWidget)\0*.AGEWidget\0");
+				std::string FilePath = AGE::FileDialogs::OpenFile("Open Widget",AssetManager::Get().GetGameContentPath(),
+					{"Widget (*.AGEWidget)","*.AGEWidget"});
 				if (!FilePath.empty())
 				{
 					LoadWidget(FilePath);
@@ -47,7 +48,8 @@ namespace AGE
 			}
 			if (ImGui::MenuItem("Save Widget"))
 			{
-				std::string FilePath = AGE::FileDialogs::SaveFile("Widget (*.AGEWidget)\0*.AGEWidget\0");
+				std::string FilePath = AGE::FileDialogs::SaveFile("Save Widget", AssetManager::Get().GetGameContentPath(),
+					{"Widget (*.AGEWidget)", "*.AGEWidget"});
 				if (!FilePath.empty())
 				{
 					SaveWidget(FilePath);
@@ -184,8 +186,7 @@ namespace AGE
 			SetViewportSize(SpecView);
 
 		}
-		uint32_t TextureID = m_UIFrameBuffer->GetColorAttachmentRendererID(0);
-		ImGui::Image((ImTextureID)&TextureID, ImVec2(SpecView[0], SpecView[1]), ImVec2(0, 1), ImVec2(1, 0));
+		ImGui::Image((ImTextureID)(uintptr_t)m_UIFrameBuffer->GetColorAttachmentRendererID(0), ImVec2(SpecView[0], SpecView[1]), ImVec2(0, 1), ImVec2(1, 0));
 		if (ImGui::BeginDragDropTarget())
 		{
 			if (const ImGuiPayload* Payload = ImGui::AcceptDragDropPayload("WIDGET_PANEL_ITEM"))

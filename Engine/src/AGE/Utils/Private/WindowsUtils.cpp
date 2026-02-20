@@ -3,16 +3,17 @@
 #include "Utils/Public/WindowsUtils.h"
 #include "Assets/Public/AssetManager.h"
 #include <GLFW/glfw3.h>
+
+
 #ifdef AG_PLATFORM_WINDOWS
 #define GLFW_EXPOSE_NATIVE_WIN32
-#include <GLFW/glfw3native.h>
-#elifdef AG_PLATFORM_LINUX
+#elif defined( AG_PLATFORM_LINUX)
 #define GLFW_EXPOSE_NATIVE_X11
-#include <GLFW/glfw3native.h>
-#elifdef AG_PLATFORM_MACOS
+#elif defined( AG_PLATFORM_MACOS)
 #define GLFW_EXPOSE_NATIVE_COCOA
-#include <GLFW/glfw3native.h>
 #endif
+#include <GLFW/glfw3native.h>
+#include "portable-file-dialogs.h"
 
 namespace AGE
 {
@@ -49,79 +50,33 @@ namespace AGE
 		CoreLogger::Info("File Not Found!");
 		return false;
 	}
+#endif
 
 
-	std::string FileDialogs::OpenFile(const char* Filter)
+	std::string FileDialogs::OpenFile(const std::string& Title, const std::filesystem::path& DefaultPath, std::vector<std::string> Filter)
 	{
-		OPENFILENAMEA OFN;
+		auto f = pfd::open_file(Title.c_str(), DefaultPath.generic_string(),
+			Filter);
 
-		CHAR szFile[260] = { 0 };
-
-		ZeroMemory(&OFN, sizeof(OPENFILENAME));
-		OFN.lStructSize = sizeof(OPENFILENAME);
-		OFN.hwndOwner = glfwGetWin32Window((GLFWwindow*)App::Get().GetDeviceManager().GetWindow().GetNativeWindow());
-		OFN.lpstrFile = szFile;
-		OFN.nMaxFile = sizeof(szFile);
-		OFN.lpstrFilter = Filter;
-		OFN.lpstrInitialDir = AssetManager::Get().GetGameContentPath().string().c_str();
-		OFN.nFilterIndex = 1;
-		OFN.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;
-
-		if (GetOpenFileNameA(&OFN) == TRUE)
+		if (f.result().empty())
 		{
-			return OFN.lpstrFile;
+			return {};
 		}
 
-		return std::string();
+		return {f.result().front()};
 	}
 
-	std::string FileDialogs::SaveFile(const char* Filter)
+	std::string FileDialogs::SaveFile(const std::string& Title, const std::filesystem::path& DefaultPath, std::vector<std::string> Filter)
 	{
-		OPENFILENAMEA OFN;
+		auto f = pfd::open_file(Title.c_str(), DefaultPath.generic_string(),
+			Filter
+			,pfd::opt::force_overwrite);
 
-		CHAR szFile[260] = { 0 };
-
-		ZeroMemory(&OFN, sizeof(OPENFILENAME));
-		OFN.lStructSize = sizeof(OPENFILENAME);
-		OFN.hwndOwner = glfwGetWin32Window((GLFWwindow*)App::Get().GetDeviceManager().GetWindow().GetNativeWindow());
-		OFN.lpstrFile = szFile;
-		OFN.nMaxFile = sizeof(szFile);
-		OFN.lpstrFilter = Filter;
-		OFN.lpstrInitialDir = AssetManager::Get().GetGameContentPath().string().c_str();
-		OFN.nFilterIndex = 1;
-		OFN.lpstrDefExt = std::strchr(Filter, '\0') + 1;
-		OFN.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR | OFN_OVERWRITEPROMPT;
-
-		if (GetSaveFileNameA(&OFN) == TRUE)
+		if (f.result().empty())
 		{
-			return OFN.lpstrFile;
+			return {};
 		}
-		return std::string();
-	}
-#endif
 
-#ifdef AG_PLATFORM_LINUX
-//TODO: Implement this
-	std::string FileDialogs::OpenFile(const char* Filter)
-	{
-		return {};
+		return {f.result().front()};
 	}
-
-	std::string FileDialogs::SaveFile(const char* Filter)
-	{
-		return {};
-	}
-#endif
-
-#ifdef AG_PLATFORM_MACOS
-	std::string FileDialogs::OpenFile(const char* Filter)
-	{
-		return {};
-	}
-
-	std::string FileDialogs::SaveFile(const char* Filter)
-	{
-		return {};
-	}
-#endif
 }

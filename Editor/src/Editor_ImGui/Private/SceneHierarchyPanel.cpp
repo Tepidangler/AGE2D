@@ -125,7 +125,8 @@ namespace AGE
 
 	tmx_map* SceneHierarchyPanel::SelectTileMap()
 	{
-		std::string FilePath = FileDialogs::OpenFile("TMX (*.tmx)\0*.tmx\0");
+		std::string FilePath = FileDialogs::OpenFile("Load Tile Map", AssetManager::Get().GetGameContentPath(),
+			{"TMX (*.tmx)","*.tmx"});
 		if (!FilePath.empty())
 		{
 			return m_Importer->ImportMap(FilePath);
@@ -136,7 +137,8 @@ namespace AGE
 
 	Ref<AudioSource> SceneHierarchyPanel::SelectSound()
 	{
-		std::string FilePath = FileDialogs::OpenFile("WAV (*.wav)\0*.wav\0MP3 (*.mp3)\0*.mp3\0");
+		std::string FilePath = FileDialogs::OpenFile("Load Audio File", AssetManager::Get().GetGameContentPath(),
+			{"Audio Files (WAV,MP3)","*.wav *.mp3"});
 		if (!FilePath.empty())
 		{
 			return CreateRef<AudioSource>(FilePath);
@@ -152,13 +154,15 @@ namespace AGE
 
 	std::filesystem::path SceneHierarchyPanel::SelectStatsFile()
 	{
-		std::filesystem::path Filepath(FileDialogs::OpenFile("Comma Separated Value(*.csv)\0 * .csv\0(*.xls)\0 * .xls\0"));
+		std::filesystem::path Filepath(FileDialogs::OpenFile("Load Stats File", AssetManager::Get().GetGameContentPath(),
+			{"Comma Separated Value", "*.csv *.xls"}));
 		return Filepath;
 	}
 
 	std::filesystem::path SceneHierarchyPanel::SelectSoundBank()
 	{
-		std::filesystem::path Filepath(FileDialogs::OpenFile("SoundBank(*.bank)\0 * .bank\0"));
+		std::filesystem::path Filepath(FileDialogs::OpenFile("Load Soundbank", AssetManager::Get().GetGameContentPath(),
+			{"SoundBank","*.bank"}));
 		return Filepath;
 	}
 

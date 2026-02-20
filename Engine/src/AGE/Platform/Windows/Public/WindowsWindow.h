@@ -5,9 +5,9 @@
 #include <GLFW/glfw3.h>
 #ifdef AG_PLATFORM_WINDOWS
 #define GLFW_EXPOSE_NATIVE_WIN32
-#elifdef AG_PLATFORM_LINUX
+#elif defined(AG_PLATFORM_LINUX)
 #define GLFW_EXPOSE_NATIVE_X11
-#elifdef AG_PLATFORM_MACOS
+#elif defined(AG_PLATFORM_MACOS)
 #define GLFW_EXPOSE_NATIVE_COCOA
 #endif
 #include <GLFW/glfw3native.h>
@@ -48,9 +48,9 @@ namespace AGE
 		void* GetNativeWindow() const override { return m_Window; }
 #ifdef AG_PLATFORM_WINDOWS
 		HWND GetPlatformWindow() override { return m_Win32Window; }
-#elifdef AG_PLATFORM_LINUX
+#elif defined(AG_PLATFORM_LINUX)
 		Window GetPlatformWindow() override { return m_X11Window; }
-#elifdef AG_PLATFORM_MACOS
+#elif defined( AG_PLATFORM_MACOS)
 		HWND GetPlatformWindow() override { return m_CocoasWindow; }
 #endif
 		Vector2 GetMousePos() override;
@@ -74,9 +74,9 @@ namespace AGE
 		GLFWwindow* m_Window;
 #ifdef AG_PLATFORM_WINDOWS
 		HWND m_Win32Window;
-#elifdef AG_PLATFORM_LINUX
+#elif defined(AG_PLATFORM_LINUX)
 		Window m_X11Window;
-#elifdef AG_PLATFORM_MACOS
+#elif defined(AG_PLATFORM_MACOS)
 		NSWindow* m_CocoaWindow;
 #endif
 		GLFWgamepadstate m_PadState;

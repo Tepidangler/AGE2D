@@ -105,6 +105,14 @@ if(${BUILD_WITH_WWISE})
     endif()
 endif()
 
+#portable-file-dialogs
+FetchContent_Declare(portable-file-dialogs
+        GIT_REPOSITORY https://github.com/Tepidangler/portable-file-dialogs.git
+        GIT_TAG main)
+FetchContent_MakeAvailable(portable-file-dialogs)
+
+find_path(PFD_INC_DIRS "portable-file-dialogs.h" ${portable-file-dialogs_SOURCE_DIR})
+
 if(UNIX)
     #entt
     FetchContent_Declare(entt
@@ -172,10 +180,12 @@ if(UNIX)
             GIT_TAG x11-compat)
     FetchContent_MakeAvailable(Imgui-Node-Editor)
 
+
     find_path(STB_INC_DIRS "stb_image.h" ${stb_SOURCE_DIR})
     find_path(FILEWATCH_INC_DIRS "FileWatch.hpp" ${filewatch_SOURCE_DIR})
     find_path(SIMPLEINI_INCLUDE_DIRS "ConvertUTF.c" ${simpleini_SOURCE_DIR})
     find_path(MINIMP3_INCLUDE_DIRS "minimp3.h" ${minimp3_SOURCE_DIR})
     find_path(JSON_INC_DIRS "single_include/nlohmann/json.hpp" ${nlohmann_json_SOURCE_DIR})
     find_path(RCSV_INC_DIRS "src/rapidcsv.h" ${rapidcsv_SOURCE_DIR})
+
 endif()

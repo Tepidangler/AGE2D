@@ -62,13 +62,12 @@ namespace AGE
 
 					Ref<Texture2D> Icon = DirectoryEntry.is_directory() ? m_DirectoryIcon : m_FileIcon;
 					ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
-					uint32_t TextureID = Icon->GetTextureID();
-					ImGui::ImageButton((ImTextureID)&TextureID, { ThumbnailSize, ThumbnailSize }, { 0,1 }, { 1,0 });
+					ImGui::ImageButton((ImTextureID)(uintptr_t)Icon->GetTextureID(), { ThumbnailSize, ThumbnailSize }, { 0,1 }, { 1,0 });
 
 					if (ImGui::BeginDragDropSource())
 					{
-						const wchar_t* ItemPath = AbsolutePath.wstring().c_str();
-						ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", ItemPath, (wcslen(ItemPath) + 1) * sizeof(wchar_t));
+						const std::wstring ItemPath = AbsolutePath.wstring().data();
+						ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", ItemPath.data(), (ItemPath.length() + 1) * sizeof(wchar_t));
 						ImGui::EndDragDropSource();
 					}
 					ImGui::PopStyleColor();

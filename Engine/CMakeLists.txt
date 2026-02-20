@@ -18,6 +18,7 @@ include_directories(BEFORE
 					 ${UFBX_INC_DIR}
 					"${ImGuizmo_SOURCE_DIR}"
 					 ${RCSV_INC_DIRS}
+					 ${PFD_INC_DIRS}
 )
 
 if(${BUILD_WITH_WWISE})
@@ -348,6 +349,7 @@ if(APPLE AND X11_FOUND)
 else()
 	find_package(OpenGL)
 endif()
+
 find_package(LibXml2 REQUIRED)
 find_package(ZLIB REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
@@ -372,6 +374,7 @@ target_include_directories(Engine PRIVATE
 		${INE_INC_DIRS}
 		${JSON_INC_DIRS}
 		${RCSV_INC_DIRS}
+		${PFD_INC_DIRS}
 )
 link_directories(
 		${imgui-node-editor_BINARY_DIR}
@@ -408,13 +411,7 @@ if(WIN32)
 			Winmm
 			BCrypt
 			xinput
-			opengl32
 	)
-#else()
-#	target_link_libraries(Engine PUBLIC
-#			GLEW::GLEW
-#			GL
-#	)
 endif()
 
 if(${BUILD_WITH_WWISE})

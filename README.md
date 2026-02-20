@@ -87,13 +87,13 @@ The project uses C++20 and is configured to build with Visual Studio on Windows.
    2. Debian
        ```
        sudo apt-get update
-       sudo apt-get install -y libgl1-mesa-dev libfreetype6-dev libxml2-dev zlib1g-dev libx11-dev libxcursor-dev libxrandr-dev libxi-dev libxinerama-dev libxext-dev libtinyxml2-dev libspdlog-dev libyaml-cpp-dev libpqxx-dev libglm-dev libglfw3-dev libboost-all-dev ninja-build
+       sudo apt-get install -y libgl1-mesa-dev libfreetype6-dev libxml2-dev zlib1g-dev libx11-dev libxcursor-dev libxrandr-dev libxi-dev libxinerama-dev libxext-dev libtinyxml2-dev libspdlog-dev libyaml-cpp-dev libpqxx-dev libglm-dev libglfw3-dev libboost-all-dev libgtk-4-dev ninja-build
        ```
       
    3. Fedora (untested)
       ```
        sudo dnf update
-      sudo dnf install -y libgl1-mesa-devel libfreetype6-devel libxml2-devel zlib1g-devel libx11-devel libxcursor-devel libxrandr-devel libxi-devel libxinerama-devel libxext-devel libtinyxml2-devel libspdlog-devel libyaml-cpp-devel libpqxx-devel libglm-devel libglfw3-devel libboost-all-devel ninja-build
+      sudo dnf install -y libgl1-mesa-devel libfreetype6-devel libxml2-devel zlib1g-devel libx11-devel libxcursor-devel libxrandr-devel libxi-devel libxinerama-devel libxext-devel libtinyxml2-devel libspdlog-devel libyaml-cpp-devel libpqxx-devel libglm-devel gtk-4-devel libglfw3-devel libboost-all-devel ninja-build
       ```
    
 2. CMake

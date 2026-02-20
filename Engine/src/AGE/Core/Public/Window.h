@@ -6,7 +6,7 @@
 #include "Render/Public/GraphicsContext.h"
 #ifdef AG_PLATFORM_LINUX
 #include <X11/Xlib.h>
-#elifdef AG_PLATFORM_MACOS
+#elif defined( AG_PLATFORM_MACOS)
 #endif
 
 namespace AGE
@@ -50,9 +50,9 @@ namespace AGE
 		virtual void* GetNativeWindow() const = 0;
 #ifdef AG_PLATFORM_WINDOWS
 		inline virtual HWND GetPlatformWindow() = 0;
-#elifdef AG_PLATFORM_LINUX
+#elif defined(AG_PLATFORM_LINUX)
 		inline virtual Window GetPlatformWindow() = 0;
-#elifdef AG_PLATFORM_MACOS
+#elif defined(AG_PLATFORM_MACOS)
 		inline virtual HWND GetPlatformWindow() = 0;
 #endif
 

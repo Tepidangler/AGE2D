@@ -35,7 +35,10 @@ namespace AGE
 		_dupenv_s(Buffer, &BufferCount, "USERPROFILE");
 		m_AppConfig.ProjectBasePath = std::string(Buffer[0]) + "/OneDrive/Documents/AGEProjects";
 		delete Buffer;
-#else
+#elif defined(AG_PLATFORM_LINUX)
+		std::string BasePath{std::getenv("USERPROFILE")};
+		m_AppConfig.ProjectBasePath = std::string{ BasePath + "/OneDrive/Documents/AGEProjects"};
+#elif defined(AG_PLATFORM_MACOS)
 		std::string BasePath{std::getenv("USERPROFILE")};
 		m_AppConfig.ProjectBasePath = std::string{ BasePath + "/OneDrive/Documents/AGEProjects"};
 #endif
@@ -67,7 +70,7 @@ namespace AGE
 
 	void App::Init()
 	{
-		m_DeviceManager = Scope<DeviceManager>(DeviceManager::Create(AudioEngineType::FModEngine));
+		m_DeviceManager = Scope<DeviceManager>(DeviceManager::Create(AudioEngineType::AGESoundEngine));
 		m_DeviceManager->GetWindow().SetEventCallback(BIND_EVENT_FN(App::OnEvent));
 		//m_DeviceManager->GetXInput().SetEventCallback(BIND_EVENT_FN(App::OnEvent));
 #if !AG_DIST

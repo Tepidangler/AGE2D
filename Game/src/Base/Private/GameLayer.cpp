@@ -55,7 +55,7 @@ namespace Proj
 #ifdef WIN32
 		MONITORINFOEX MonInfo;
 		MonInfo.cbSize = sizeof(MonInfo);
-		GetMonitorInfo(MonitorFromWindow(AGE::App::Get().GetDeviceManager().GetWindow().GetWin32Window(), MONITOR_DEFAULTTONEAREST), (LPMONITORINFO)&MonInfo);
+		GetMonitorInfo(MonitorFromWindow(AGE::App::Get().GetDeviceManager().GetWindow().GetPlatformWindow(), MONITOR_DEFAULTTONEAREST), (LPMONITORINFO)&MonInfo);
 		AGE::FrameBufferSpecification FbSpec;
 		FbSpec.Attachments = { AGE::FramebufferTextureFormat::RGBA8, AGE::FramebufferTextureFormat::RED_INTEGER, AGE::FramebufferTextureFormat::DEPTH24STENCIL8 };
 		FbSpec.Width = MonInfo.rcWork.right;
