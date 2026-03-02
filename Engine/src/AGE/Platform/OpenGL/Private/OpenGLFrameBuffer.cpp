@@ -13,7 +13,7 @@ namespace AGE
 	
 		static void CreateTextures(bool Multisampled, uint32_t* OutID, uint32_t Count)
 		{
-			glCreateTextures(TextureTarget(Multisampled), Count, OutID);;
+			glCreateTextures(TextureTarget(Multisampled), (int)Count, OutID);;
 		}
 	
 		static void BindTexture(bool Multisampled, uint32_t ID)
@@ -27,11 +27,11 @@ namespace AGE
 	
 			if (Multisampled)
 			{
-				glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, Samples, InternalFormat, Width, Height, GL_FALSE);
+				glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, Samples, InternalFormat, (int)Width, (int)Height, GL_FALSE);
 			}
 			else
 			{
-				glTexImage2D(GL_TEXTURE_2D, 0, InternalFormat, Width, Height, 0, Format, GL_UNSIGNED_BYTE, nullptr);
+				glTexImage2D(GL_TEXTURE_2D, 0, (int)InternalFormat, (int)Width, (int)Height, 0, Format, GL_UNSIGNED_BYTE, nullptr);
 	
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,GL_LINEAR);
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -40,7 +40,7 @@ namespace AGE
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 			}
 	
-			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + Index, TextureTarget(Multisampled), ID, 0);
+			glFramebufferTexture2D(GL_FRAMEBUFFER, (GLenum)(GL_COLOR_ATTACHMENT0 + Index), TextureTarget(Multisampled), ID, 0);
 		}
 	
 	
@@ -50,11 +50,11 @@ namespace AGE
 	
 			if (Multisampled)
 			{
-				glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, Samples, Format, Width, Height, GL_FALSE);
+				glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, Samples, Format, (int)Width, (int)Height, GL_FALSE);
 			}
 			else
 			{
-				glTexStorage2D(GL_TEXTURE_2D, 1, Format, Width, Height);
+				glTexStorage2D(GL_TEXTURE_2D, 1, Format, (int)Width, (int)Height);
 	
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -112,15 +112,15 @@ namespace AGE
 		OpenGLFrameBuffer::OpenGLFrameBuffer(const FrameBufferSpecification& Spec)
 			:m_Specification(Spec)
 		{
-			for (auto Spec : m_Specification.Attachments.Attachments)
+			for (auto FBSpec : m_Specification.Attachments.Attachments)
 			{
-				if (!Utils::IsDepthFormat(Spec.TextureFormat))
+				if (!Utils::IsDepthFormat(FBSpec.TextureFormat))
 				{
-					m_ColorAttachmentSpecifications.emplace_back(Spec);
+					m_ColorAttachmentSpecifications.emplace_back(FBSpec);
 				}
 				else
 				{
-					m_DepthAttachmentSpecification = Spec;
+					m_DepthAttachmentSpecification = FBSpec;
 				}
 			}
 
@@ -129,7 +129,7 @@ namespace AGE
 		OpenGLFrameBuffer::~OpenGLFrameBuffer()
 		{
 			glDeleteFramebuffers(1, &m_RendererID);
-			glDeleteTextures(m_ColorAttachments.size(), m_ColorAttachments.data());
+			glDeleteTextures((int)m_ColorAttachments.size(), m_ColorAttachments.data());
 			glDeleteTextures(1, &m_DepthAttachment);
 		}
 		void OpenGLFrameBuffer::Invalidate()
@@ -138,7 +138,7 @@ namespace AGE
 			if (m_RendererID)
 			{
 				glDeleteFramebuffers(1, &m_RendererID);
-				glDeleteTextures(m_ColorAttachments.size(), m_ColorAttachments.data());
+				glDeleteTextures((int)m_ColorAttachments.size(), m_ColorAttachments.data());
 				glDeleteTextures(1, &m_DepthAttachment);
 				m_ColorAttachments.clear();
 				m_DepthAttachment = 0;
@@ -154,7 +154,7 @@ namespace AGE
 			if (m_ColorAttachmentSpecifications.size())
 			{
 				m_ColorAttachments.resize(m_ColorAttachmentSpecifications.size());
-				Utils::CreateTextures(Multisample, m_ColorAttachments.data(), m_ColorAttachments.size());
+				Utils::CreateTextures(Multisample, m_ColorAttachments.data(), (uint32_t)m_ColorAttachments.size());
 
 				for (size_t i = 0; i < m_ColorAttachments.size(); i++)
 				{
@@ -163,12 +163,12 @@ namespace AGE
 					{
 					case FramebufferTextureFormat::RGBA8:
 					{
-						Utils::AttachColorTexture(m_ColorAttachments[i], m_Specification.Samples, GL_RGBA8, GL_RGBA, m_Specification.Width, m_Specification.Height, i);
+						Utils::AttachColorTexture(m_ColorAttachments[i], (int)m_Specification.Samples, GL_RGBA8, GL_RGBA, m_Specification.Width, m_Specification.Height, (int)i);
 						break;
 					}
 					case FramebufferTextureFormat::RED_INTEGER:
 					{
-						Utils::AttachColorTexture(m_ColorAttachments[i], m_Specification.Samples, GL_R32I, GL_RED_INTEGER, m_Specification.Width, m_Specification.Height, i);
+						Utils::AttachColorTexture(m_ColorAttachments[i], (int)m_Specification.Samples, GL_R32I, GL_RED_INTEGER, m_Specification.Width, m_Specification.Height, (int)i);
 						break;
 					}
 					default:
@@ -187,7 +187,7 @@ namespace AGE
 				{
 				case FramebufferTextureFormat::DEPTH24STENCIL8:
 				{
-					Utils::AttachDepthTexture(m_DepthAttachment, m_Specification.Samples, GL_DEPTH24_STENCIL8, GL_DEPTH_STENCIL_ATTACHMENT, m_Specification.Width, m_Specification.Height);
+					Utils::AttachDepthTexture(m_DepthAttachment, (int)m_Specification.Samples, GL_DEPTH24_STENCIL8, GL_DEPTH_STENCIL_ATTACHMENT, m_Specification.Width, m_Specification.Height);
 					break;
 				}
 				default:
@@ -201,7 +201,7 @@ namespace AGE
 			{
 				CoreLogger::Assert(m_ColorAttachments.size() <= 4, "Color Attachments is not less than or equal to 4");
 				GLenum Buffers[4] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3 };
-				glDrawBuffers(m_ColorAttachments.size(), Buffers);
+				glDrawBuffers((int)m_ColorAttachments.size(), Buffers);
 			}
 			else if (m_ColorAttachments.empty())
 			{
@@ -231,7 +231,7 @@ namespace AGE
 		{
 			glBindFramebuffer(GL_FRAMEBUFFER, m_RendererID);
 	
-			glViewport(0, 0, m_Specification.Width, m_Specification.Height);
+			glViewport(0, 0, (int)m_Specification.Width, (int)m_Specification.Height);
 		}
 		void OpenGLFrameBuffer::Unbind()
 		{

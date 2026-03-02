@@ -319,9 +319,9 @@ if(WIN32)
 	)
 elseif(UNIX)
 	target_compile_options(Engine PUBLIC
-			$<$<CONFIG:Debug>:-fsanitize=address,undefined -static-libasan -MT -Wall -Wconversion -O0>
-			$<$<CONFIG:RelWithDebInfo>:-Wall -Wconversion -MT -O3>
-			$<$<CONFIG:MinSizeRel>:-Wall -Wconversion -MT -Os>
+			$<$<CONFIG:Debug>:-fsanitize=address,undefined -static-libasan -MT -Wall -Werror -Wconversion -O0>
+			$<$<CONFIG:RelWithDebInfo>:-Wall -Werror -Wconversion -MT -O3>
+			$<$<CONFIG:MinSizeRel>:-Wall -Werror -Wconversion -MT -Os>
 	)
 	target_link_options(Engine PUBLIC
 			$<$<CONFIG:Debug>:-fsanitize=address,undefined -static-libasan>

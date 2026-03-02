@@ -30,12 +30,12 @@ namespace AGE
 		this->m_Name = Utils::EngineStatics::GetFilename(Path);
 
 	}
-	AudioSource::AudioSource(uint32_t Handle, bool Loaded, float Length)
+	AudioSource::AudioSource(uint32_t Handle, bool Loaded, double Length)
 		: m_BufferHandle(Handle), bLoaded(Loaded), m_TotalDuration(Length)
 	{
 	}
 
-	AudioSource::AudioSource(uint32_t Handle, bool Loaded, float Length, std::vector<char> Data)
+	AudioSource::AudioSource(uint32_t Handle, bool Loaded, double Length, std::vector<char> Data)
 		: m_BufferHandle(Handle), bLoaded(Loaded), m_TotalDuration(Length), m_SoundData(Data)
 	{
 	}

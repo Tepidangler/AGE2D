@@ -89,7 +89,7 @@ namespace AGE
 		OutArray.clear();
 		OutArray.shrink_to_fit();
 		OutArray.resize(Scenes.size());
-		for (int i = 0; i < OutArray.size(); ++i)
+		for (size_t i = 0; i < OutArray.size(); ++i)
 		{
 			OutArray[i] = Scenes[i]->GetName();
 		}

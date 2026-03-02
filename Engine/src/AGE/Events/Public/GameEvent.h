@@ -9,7 +9,7 @@ namespace AGE
 
 	class InputEvent : public Event
 	{
-		inline uint8_t GetGamepadButton() { return m_Button; }
+		inline int GetGamepadButton() { return m_Button; }
 
 		EVENT_CLASS_CATEGORY(EventCategoryInput | EventCategoryGame)
 
@@ -43,7 +43,7 @@ namespace AGE
 		GamepadButtonPressedEvent(int Button)
 			:InputEvent(Button) {}
 
-		inline uint8_t GetButton() { return m_Button; }
+		inline int GetButton() { return m_Button; }
 		EVENT_CLASS_TYPE(GamepadButtonPressed)
 	};
 

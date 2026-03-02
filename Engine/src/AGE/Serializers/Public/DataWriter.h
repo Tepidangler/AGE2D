@@ -155,8 +155,21 @@ namespace AGE
 		virtual ~FileStreamWriter();
 
 		bool IsStreamGood() const final { return m_Stream.good(); }
-		uint64_t GetStreamPosition() final { return m_Stream.tellp(); }
-		void SetStreamPosition(uint64_t Pos) final { m_Stream.seekp(Pos); }
+		//On clang we return UINT64_MAX to indicate a failure, so if compiling with clang be sure to check for that
+		uint64_t GetStreamPosition() final
+		{
+#if __clang__
+			long pos = m_Stream.tellp();
+			if (pos == -1) // -1 Indicated a failure per clang implementation
+			{
+				return UINT64_MAX;
+			}
+			return static_cast<uint64_t>(pos);
+#else
+			return m_Stream.tellp();
+#endif
+		}
+		void SetStreamPosition(uint64_t Pos) final { m_Stream.seekp((long)Pos); }
 		bool WriteData(const char* Data, size_t Size) final;
 
 	private:
@@ -175,8 +188,21 @@ namespace AGE
 		virtual ~MemoryStreamWriter();
 
 		bool IsStreamGood() const final { return m_Stream.good(); }
-		uint64_t GetStreamPosition() final { return m_Stream.tellp(); }
-		void SetStreamPosition(uint64_t Pos) final { m_Stream.seekp(Pos); }
+		//On clang we return UINT64_MAX to indicate a failure, so if compiling with clang be sure to check for that
+		uint64_t GetStreamPosition() final
+		{
+#if __clang__
+			long pos = m_Stream.tellp();
+			if (pos == -1) // -1 Indicated a failure per clang implementation
+			{
+				return UINT64_MAX;
+			}
+			return static_cast<uint64_t>(pos);
+#else
+			return m_Stream.tellp();
+#endif
+		}
+		void SetStreamPosition(uint64_t Pos) final { m_Stream.seekp((long)Pos); }
 		bool WriteData(const char* Data, size_t Size) final;
 
 	private:

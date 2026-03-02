@@ -3,19 +3,58 @@
 #include "Statics/Public/Statics.h"
 #include "Audio/AGESound/Public/AGEAudio.h"
 #include "Audio/AGESound/Public/Sound.h"
-#include "core/device.h"
-#include "alc/device.h"
-#include "common/intrusive_ptr.h"
+//#include "core/device.h"
+//#include "alc/device.h"
+//#include "common/intrusive_ptr.h"
 #include "Core/Public/Log.h"
 
 #define MINIMP3_IMPLEMENTATION
-
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wconversion"
+#pragma clang diagnostic ignored "-Wdeprecated-literal-operator"
 #ifdef AG_PLATFORM_WINDOWS
+#pragma clang diagnostic ignored "-Wmicrosoft-unqualified-friend"
 #include "minimp3/minimp3.h"
 #include "minimp3/minimp3_ex.h"
+#include "core/device.h"
+#include "alc/device.h"
+#include "common/intrusive_ptr.h"
 #else
 #include "minimp3.h"
 #include "minimp3_ex.h"
+#include "core/device.h"
+#include "alc/device.h"
+#include "common/intrusive_ptr.h"
+#endif
+#pragma clang diagnostic pop
+#elif defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#ifdef AG_PLATFORM_WINDOWS
+#include "minimp3/minimp3.h"
+#include "minimp3/minimp3_ex.h"
+#include "core/device.h"
+#include "alc/device.h"
+#include "common/intrusive_ptr.h"
+#else
+#include "minimp3.h"
+#include "minimp3_ex.h"
+#include "core/device.h"
+#include "alc/device.h"
+#include "common/intrusive_ptr.h"
+#endif
+#pragma GCC diagnostic pop
+#elif defined(_MSC_VER)
+#pragma warning(push, 0)
+#include "minimp3/minimp3.h"
+#include "minimp3/minimp3_ex.h"
+#include "core/device.h"
+#include "alc/device.h"
+#include "common/intrusive_ptr.h"
+#pragma warning(pop)
+#else
+#error "Compiler is not supported with AGE yet"
 #endif
 namespace AGE
 {
@@ -332,7 +371,7 @@ namespace AGE
 	}
 	void AGESound::Stop(const std::vector<Ref<AudioSource>>& Sources)
 	{
-		for (int i = 0; i < Sources.size(); i++)
+		for (size_t i = 0; i < Sources.size(); i++)
 		{
 			Stop(Sources[i]);
 		}
@@ -340,6 +379,7 @@ namespace AGE
 	void AGESound::SetDebugLogging(bool Log)
 	{
 	}
+
 	int32_t AGESound::ConvertToInt(char* Buffer, size_t Length)
 	{
 		int32_t a = 0;
@@ -365,15 +405,15 @@ namespace AGE
 
 		auto SampleRate = Info.hz;
 		auto Channels = Info.channels;
-		auto ALFormat = GetFormat(Channels, 16);
-		float LengthSeconds = Size / (Info.avg_bitrate_kbps * 1024.f);
+		auto ALFormat = GetFormat((uint8_t)Channels, 16);
+		double LengthSeconds = (double)Size / ((float)Info.avg_bitrate_kbps * 1024.f);
 		ALuint Buffer;
 		alGenBuffers(1, &Buffer);
-		alBufferData(Buffer, ALFormat, Info.buffer, Size, SampleRate);
+		alBufferData(Buffer, ALFormat, Info.buffer, (int)Size, SampleRate);
 
 		AudioSource Audio = { Buffer, true, LengthSeconds };
 		alGenSources(1, &Audio.m_SourceHandle);
-		alSourcei(Audio.m_SourceHandle, AL_BUFFER, Buffer);
+		alSourcei(Audio.m_SourceHandle, AL_BUFFER, (int)Buffer);
 
 		CoreLogger::Info("File Info - {0}", FileName.c_str());
 		CoreLogger::Info("\tChannels: {0}", Channels);
@@ -406,7 +446,7 @@ namespace AGE
 			return AudioSource();
 		}
 
-		char* Buffer = new char[Size];
+		char* Buffer = new char[(size_t)Size];
 		In.read(Buffer, Size);
 		std::vector<char> Data(Buffer, Buffer + Size);
 		AudioSource Audio;
@@ -480,7 +520,7 @@ namespace AGE
 			CoreLogger::Error("Could not read number of channels!");
 			return false;
 		}
-		Channels = ConvertToInt(Buffer, 2);
+		Channels = (uint8_t)ConvertToInt(Buffer, 2);
 		//Sample rate
 		if (!File.read(Buffer, 4))
 		{
@@ -510,7 +550,7 @@ namespace AGE
 			CoreLogger::Error("Could not read Bits Per Sample!");
 			return false;
 		}
-		BitsPerSample = ConvertToInt(Buffer, 2);
+		BitsPerSample = (uint8_t)ConvertToInt(Buffer, 2);
 
 		//Data Chunk Header "data"
 		if (!File.read(Buffer, 4))

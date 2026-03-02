@@ -2,21 +2,25 @@
 #include "Core/Public/Core.h"
 #include "Serializers/Public/DataReader.h"
 #include "Serializers/Public/DataWriter.h"
-#include "Render/Public/Renderer2D.h"
-#include "Scene/Public/Entity.h"
-#include <imgui.h>
-#include <misc/cpp/imgui_stdlib.h>
-#include <imgui_internal.h>
-#include <imgui_node_editor.h>
+//#include "Render/Public/Renderer2D.h"
+//#include "Scene/Public/Entity.h"
+//#include <imgui.h>
+//#include <misc/cpp/imgui_stdlib.h>
+//#include <imgui_internal.h>
+//#include <imgui_node_editor.h>
 #ifdef __clang__
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wconversion"
+#pragma clang diagnostic ignored "-Wfloat-conversion"
+#ifdef AG_PLATFORM_WINDOWS
 #pragma clang diagnostic ignored "-Wmicrosoft-unqualified-friend"
+#endif
 #include <rttr/type>
 #pragma clang diagnostic pop
 #elif defined(__GNUC__)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wfloat-conversion"
 #ifdef AG_PLATFORM_WINDOWS
 #pragma GCC diagnostic ignored "-Wmicrosoft-unqualified-friend"
 #endif

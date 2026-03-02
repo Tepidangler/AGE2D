@@ -15,7 +15,11 @@ namespace AGE
 	}
 	bool FileStreamWriter::WriteData(const char* Data, size_t Size)
 	{
+#if __clang__
+		m_Stream.write(Data, (long)Size);
+#else
 		m_Stream.write(Data, Size);
+#endif
 		return true;
 	}
 	void DataWriter::WriteBuffer(Buffer buffer, bool WriteSize)
@@ -53,7 +57,12 @@ namespace AGE
 	}
 	bool MemoryStreamWriter::WriteData(const char* Data, size_t Size)
 	{
+#if __clang__
+		m_Stream.write(Data, (long)Size);
+#else
 		m_Stream.write(Data, Size);
+#endif
+
 		return true;
 	}
 }

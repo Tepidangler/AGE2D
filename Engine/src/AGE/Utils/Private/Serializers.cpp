@@ -164,7 +164,7 @@ namespace YAML
 
 		static bool decode(const Node& node, std::vector<std::pair<std::string, std::vector<uint8_t>>>& rhs)
 		{		
-			rhs.resize(node.size()*.5f);
+			rhs.resize(node.size()*(uint64_t)(.5f));
   			std::cout << Dump(node) << std::endl;
 			if (!node["second"].IsSequence() || node["second"].size() <= 0)
 			{

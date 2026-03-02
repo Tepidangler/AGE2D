@@ -60,7 +60,12 @@ namespace AGE
     {
         ImVec4 col = { C::LightGreen[0], C::LightGreen[1], C::LightGreen[2], C::LightGreen[3] };
         char buf[256];
+#ifdef AG_PLATFORM_WINDOWS
         snprintf(buf, sizeof buf, "QuestID: %I64u", (uintptr_t)m_QuestManager->GetQuest(CurrentQuestName)->ID);
+#else
+        snprintf(buf, sizeof buf, "QuestID: %ld", (uintptr_t)m_QuestManager->GetQuest(CurrentQuestName)->ID);
+#endif
+
         ImGui::TextColored(col, "%s",buf);
         ImGui::SameLine();
         std::string NameString = "Quest Name: " + CurrentQuestName;

@@ -149,11 +149,11 @@ namespace AGE {
 		}
 
 		float norm(const Vector4& vec) const {
-			float Magnitude = sqrt(
-				pow((x - vec.x), 2.f) +
-				pow((y - vec.y), 2.f) +
-				pow((z - vec.z), 2.f) +
-				pow((w - vec.w), 2.f)
+			float Magnitude = sqrtf(
+				powf((x - vec.x), 2.f) +
+				powf((y - vec.y), 2.f) +
+				powf((z - vec.z), 2.f) +
+				powf((w - vec.w), 2.f)
 			);
 
 			return Magnitude;

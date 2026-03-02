@@ -117,7 +117,7 @@ namespace AGE
 		GenerateDefaultTextures();
 
 		int32_t Samplers[m_Data.MaxTextureSlots];
-		for (uint32_t i = 0; i < m_Data.MaxTextureSlots; i++)
+		for (int i = 0; i < m_Data.MaxTextureSlots; i++)
 		{
 			Samplers[i] = i;
 		}
@@ -155,7 +155,7 @@ namespace AGE
 
 		if (m_Data.TileVertexBufferBases.size() > 0)
 		{
-			for (int i = 0; i < m_Data.TileVertexBufferBases.size(); i++)
+			for (size_t i = 0; i < m_Data.TileVertexBufferBases.size(); i++)
 			{
 				m_Data.TileIndexCounts[i] = 0;
 				m_Data.TileVertexBufferPtrs[i] = m_Data.TileVertexBufferBases[i];
@@ -217,11 +217,11 @@ namespace AGE
 			m_Data.VertexBuffers["Text"]->AddDataToBuffer(m_Data.TextVertexBufferBase, DataSize);
 
 			auto Buffer = m_Data.TextVertexBufferBase;
-			for (int i = 0; i < m_Data.FontAtlasTextures.size(); i++)
+			for (size_t i = 0; i < m_Data.FontAtlasTextures.size(); i++)
 			{
 				if (m_Data.FontAtlasTextures[i])
 				{
-					m_Data.FontAtlasTextures[i]->Bind(i);
+					m_Data.FontAtlasTextures[i]->Bind((uint32_t)i);
 				}
 
 			}
@@ -231,7 +231,7 @@ namespace AGE
 			RenderCommand::DrawIndexed(m_Data.TextVertexArray, m_Data.TextIndexCount);
 			m_Data.Stats.DrawCalls++;
 		}
-		for (int i = 0; i < m_Data.TileVertexArrays.size(); i++)
+		for (size_t i = 0; i < m_Data.TileVertexArrays.size(); i++)
 		{
 			if (m_Data.TileIndexCounts[i])
 			{

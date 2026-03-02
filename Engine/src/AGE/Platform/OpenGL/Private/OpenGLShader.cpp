@@ -145,7 +145,7 @@ namespace AGE
 	void OpenGLShader::UploadMat4(const char* Name, const Matrix4D& Matrix) const
 	{
 		//Figure out why this is taking 15mss
-		uint32_t location = 0;
+		int location = 0;
 		{
 			{
 				AGE_PROFILE_SCOPE("glGetUniformLocation -> OpenGLShader::UploadMat4");
@@ -179,9 +179,9 @@ namespace AGE
 		if (In)
 		{
 			In.seekg(0, std::ios::end);
-			Result.resize(In.tellg());
+			Result.resize((size_t)In.tellg());
 			In.seekg(0, std::ios::beg);
-			In.read(&Result[0], Result.size());
+			In.read(&Result[0], (std::streamsize)Result.size());
 			In.close();
 		}
 		else
@@ -244,7 +244,7 @@ namespace AGE
 				glGetShaderiv(Shader, GL_INFO_LOG_LENGTH, &maxLength);
 				
 
-				std::vector<GLchar> infoLog(maxLength);
+				std::vector<GLchar> infoLog((size_t)maxLength);
 				glGetShaderInfoLog(Shader, maxLength, &maxLength, &infoLog[0]);
 
 
@@ -257,7 +257,7 @@ namespace AGE
 				break;
 			}
 			glAttachShader(program, Shader);
-			GLShaderIDs[GlShaderIDIndex++] = Shader;
+			GLShaderIDs[(size_t)GlShaderIDIndex++] = Shader;
 		}			
 
 			// Vertex and fragment shaders are successfully compiled.
@@ -279,7 +279,7 @@ namespace AGE
 				glGetProgramiv(program, GL_INFO_LOG_LENGTH, &maxLength);
 				
 				// The maxLength includes the NULL character
-				std::vector<GLchar> infoLog(maxLength);
+				std::vector<GLchar> infoLog((size_t)maxLength);
 				glGetProgramInfoLog(program, maxLength, &maxLength, &infoLog[0]);
 				
 				// We don't need the program anymore.

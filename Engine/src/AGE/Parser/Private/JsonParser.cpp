@@ -28,7 +28,7 @@ namespace AGE
 			QuestInfo["quest_type"] = (int)D->GetQuestType();
 			QuestInfo["title"] = D->QuestName;
 			QuestInfo["description"] = D->QuestDescription;
-			for (int i = 0; i < D->GetCheckpoints().size(); i++)
+			for (size_t i = 0; i < D->GetCheckpoints().size(); i++)
 			{
 				QuestInfo["checkpoints"]["id"] = i + 1;
 				QuestInfo["checkpoints"]["text"] = D->GetCheckpointTexts()[i];
@@ -160,7 +160,11 @@ namespace AGE
 		// and less if it's corrupted
 		std::ifstream In(Filepath);
 		In.seekg(std::ios::end);
+#if __clang__
+		long Size = In.tellg();
+#else
 		size_t Size = In.tellg();
+#endif
 		if (Size <= 2)
 		{
 			CoreLogger::Warn("{} was empty!", Filepath.string());

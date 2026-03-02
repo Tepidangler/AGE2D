@@ -15,7 +15,7 @@
 #include "Project/Public/Project.h"
 #include "Render/Public/GraphicsContext.h"
 #include "DeviceManager.h"
-#include "VisualScripting/Public/NodeEditorManager.h"
+//#include "VisualScripting/Public/NodeEditorManager.h"
 
 
 namespace AGE

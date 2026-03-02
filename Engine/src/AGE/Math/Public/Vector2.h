@@ -25,7 +25,7 @@ namespace AGE {
 		}
 
 		float norm(const Vector2& vec) const {
-			float magnitude = sqrt(pow((x - vec.x), 2.f) + pow((y - vec.y), 2.f));
+			float magnitude = sqrtf(powf((x - vec.x), 2.f) + powf((y - vec.y), 2.f));
 
 			return magnitude;
 		}

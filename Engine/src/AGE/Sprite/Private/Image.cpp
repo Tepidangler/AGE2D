@@ -143,12 +143,12 @@ namespace AGE
 	}
 
 
-	uint32_t* Image::GetRGBAddress(int x, int y)
+	uint32_t* Image::GetRGBAddress(uint32_t x, uint32_t y)
 	{
 		return GetRGBLineAddress(y) + x;
 	}
 
-	uint16_t* Image::GetGSAddress(int x, int y)
+	uint16_t* Image::GetGSAddress(uint16_t x, uint16_t y)
 	{
 		return GetGSLineAddress(y) + x;
 	}
@@ -179,12 +179,12 @@ namespace AGE
 		if (bShouldFlip)
 		{
 			Img = new T[(m_Spec.GetWidth() * m_Spec.GetHeight()) * 2];
-			for (int i = m_Spec.GetHeight() -1; i >= 0 ; --i)
+			for (int i = (int)m_Spec.GetHeight() -1; i >= 0 ; --i)
 			{
 				const T* Begin = Buffer[i];
 				const T* End = Begin + m_Spec.GetWidth();
 
-				std::copy(Begin,End , Img + m_Spec.GetWidth() * ((m_Spec.GetHeight() -1) -i));
+				std::copy(Begin,End , Img + (int)m_Spec.GetWidth() * (((int)m_Spec.GetHeight() -1) -i));
 
 			}
 
@@ -265,7 +265,7 @@ namespace AGE
 
 
 			uint64_t StartPositon = Stream.GetStreamPosition();
-			Stream.ReadBytes(&compressed[0], Len);
+			Stream.ReadBytes(&compressed[0], (size_t)Len);
 			if (!Stream.IsStreamGood())
 			{
 				CoreLogger::Error("Error Reading Aseprite Image Data!");
@@ -294,7 +294,7 @@ namespace AGE
 				//	}
 				//}
 				ZStream.next_out = (Bytef*)Addr;
-				ZStream.avail_out = AddrEnd - Addr;
+				ZStream.avail_out = (uint32_t)(AddrEnd - Addr);
 
 				err = inflate(&ZStream, Z_NO_FLUSH);
 				if (err != Z_OK && err != Z_STREAM_END && err != Z_BUF_ERROR)

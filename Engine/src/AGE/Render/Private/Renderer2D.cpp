@@ -2,7 +2,6 @@
 
 #include "Render/Public/Renderer2D.h"
 #include "Render/Public/RenderCommand.h"
-#include "Render/Public/MSDFData.h"
 #include "Render/Public/VertexArray.h"
 #include "Render/Public/Shader.h"
 #include "Scene/Public/Entity.h"
@@ -14,18 +13,27 @@
 #ifdef __clang__
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wconversion"
-#pragma clang diagnostic ignored "-Wmicrosoft-unqualified-friend"
+#pragma clang diagnostic ignored "-Wfloat-conversion"
+#ifdef AG_PLATFORM_WINDOWS
+#pragma GCC diagnostic ignored "-Wmicrosoft-unqualified-friend"
+#endif
+#include "Render/Public/MSDFData.h"
 #include <rttr/registration>
 #pragma clang diagnostic pop
 #elif defined(__GNUC__)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wfloat-conversion"
+#ifdef AG_PLATFORM_WINDOWS
 #pragma GCC diagnostic ignored "-Wmicrosoft-unqualified-friend"
+#endif
 #include <rttr/registration>
+#include "Render/Public/MSDFData.h"
 #pragma GCC diagnostic pop
 #elif defined(_MSC_VER)
 #pragma warning(push, 0)
 #include <rttr/registration>
+#include "Render/Public/MSDFData.h"
 #pragma warning(pop)
 #else
 #error "Compiler is not supported with AGE yet"
@@ -331,17 +339,17 @@ namespace AGE
 			Vector2 QuadMin((float)pl, (float)pb);
 			Vector2 QuadMax((float)pr, (float)pt);
 
-			QuadMin *= FSScale, QuadMax *= FSScale;
-			QuadMin += Vector2(x, y);
-			QuadMax += Vector2(x, y);
+			QuadMin *= (float)FSScale, QuadMax *= (float)FSScale;
+			QuadMin += Vector2((float)x, (float)y);
+			QuadMax += Vector2((float)x, (float)y);
 
-			float TexelWidth = 1.f / FontAtlas->GetWidth();
-			float TexelHeight = 1.f / FontAtlas->GetHeight();
+			double TexelWidth = 1.f / (float)FontAtlas->GetWidth();
+			double TexelHeight = 1.f / (float)FontAtlas->GetHeight();
 
-			TexCoordMin.x *= TexelWidth;
-			TexCoordMin.y *= TexelHeight;
-			TexCoordMax.x *= TexelWidth;
-			TexCoordMax.y *= TexelHeight;
+			TexCoordMin.x *= (float)TexelWidth;
+			TexCoordMin.y *= (float)TexelHeight;
+			TexCoordMax.x *= (float)TexelWidth;
+			TexCoordMax.y *= (float)TexelHeight;
 
 			Vector4 Pos[4];
 			Pos[0] = { QuadMin.x, QuadMin.y, 0.f,1.f };
@@ -364,7 +372,7 @@ namespace AGE
 			{
 				double Advance = Glyph->getAdvance();
 				char NextCharacter = Props.Text[i + 1];
-				FontGeometry.getAdvance(Advance, Character, NextCharacter);
+				FontGeometry.getAdvance(Advance, (uint32_t)Character, (uint32_t)NextCharacter);
 
 				float KerningOffset = 0.f;
 				x += FSScale * Advance + KerningOffset;

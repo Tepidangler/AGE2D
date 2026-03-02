@@ -38,8 +38,8 @@ namespace AGE
 	private:
 		AudioSource() = default;
 		AudioSource(const AudioSource&) = default;
-		AudioSource(uint32_t Handle, bool Loaded, float Length);
-		AudioSource(uint32_t Handle, bool Loaded, float Length, std::vector<char> Data);
+		AudioSource(uint32_t Handle, bool Loaded, double Length);
+		AudioSource(uint32_t Handle, bool Loaded, double Length, std::vector<char> Data);
 
 
 	private:
@@ -51,7 +51,7 @@ namespace AGE
 		bool bLoaded = false;
 		bool bSpatial = false;
 		bool bIsPlaying = false;
-		float m_TotalDuration = 0; //Seconds
+		double m_TotalDuration = 0.0; //Seconds
 
 		Vector3 m_Position;
 		float m_Gain = 1.f;

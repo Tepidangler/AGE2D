@@ -101,7 +101,7 @@ namespace GameFramework
 			else
 			{
 				CurrentCheckpoint++;
-				CurrentCheckpointText = CheckpointTexts[CurrentCheckpoint];
+				CurrentCheckpointText = CheckpointTexts[(size_t)CurrentCheckpoint];
 				return true;
 			}
 

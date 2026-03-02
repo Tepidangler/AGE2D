@@ -9,7 +9,12 @@
 #include "Render/Public/Font.h"
 #include "Serializers/Public/DataWriter.h"
 #include "Serializers/Public/DataReader.h"
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wnontrivial-memcall"
 #include <imgui.h>
+#pragma clang diagnostic pop
+#endif
 
 #include "UI/Public/UiComponent.h"
 

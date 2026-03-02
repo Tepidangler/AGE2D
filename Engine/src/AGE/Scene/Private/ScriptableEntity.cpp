@@ -3,7 +3,7 @@
 #include "Core/Public/App.h"
 #include <rttr/registration>
 
-
+#include "VisualScripting/Public/VisualScriptingStructs.h"
 
 
 namespace AGE

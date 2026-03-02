@@ -171,8 +171,23 @@ namespace AGE
 		virtual ~FileStreamReader();
 
 		bool IsStreamGood() const final { return m_Stream.good(); }
-		uint64_t GetStreamPosition() final { return m_Stream.tellg(); }
-		void SetStreamPosition(uint64_t Pos) final { m_Stream.seekg(Pos); }
+		/*
+		 * On clang we return UINT64_MAX to indicate a failure, so if compiling with clang be sure to check for that
+		 */
+		uint64_t GetStreamPosition() final
+		{
+#if __clang__
+			long pos = m_Stream.tellg();
+			if (pos == -1) // -1 Indicated a failure per clang implementation
+			{
+				return UINT64_MAX;
+			}
+			return static_cast<uint64_t>(pos);
+#else
+			return m_Stream.tellg();
+#endif
+		}
+		void SetStreamPosition(uint64_t Pos) final { m_Stream.seekg((long)Pos); }
 		bool ReadData(char* Data, size_t Size) final;
 		bool ReadBytes(std::vector<std::byte>& Data, size_t Size) final;
 		bool ReadBytes(uint8_t* Data, size_t Size) final;
@@ -193,16 +208,30 @@ namespace AGE
 		MemoryStreamReader(void* Addr, size_t Size);
 		MemoryStreamReader(const MemoryStreamReader&) = delete;
 
-		virtual ~MemoryStreamReader();
+		virtual ~MemoryStreamReader()
+		;
 
 		bool IsStreamGood() const final { return m_Stream.good(); }
-		uint64_t GetStreamPosition() final { return m_Stream.tellg(); }
-		void SetStreamPosition(uint64_t Pos) final { m_Stream.seekg(Pos); }
+
+//On clang we return UINT64_MAX to indicate a failure, so if compiling with clang be sure to check for that
+		uint64_t GetStreamPosition() final
+		{
+#if __clang__
+			long pos = m_Stream.tellg();
+			if (pos == -1) // -1 Indicated a failure per clang implementation
+			{
+				return UINT64_MAX;
+			}
+			return static_cast<uint64_t>(pos);
+#else
+			return m_Stream.tellg();
+#endif
+		}
+		void SetStreamPosition(uint64_t Pos) final { m_Stream.seekg((long)Pos); }
 		bool ReadData(char* Data, size_t Size) final;
 		bool ReadBytes(std::vector<std::byte>& Data, size_t Size) final;
 		bool ReadBytes(uint8_t* Data, size_t Size) final;
 		bool ReadJson(std::string& String) final;
-
 	private:
 
 		void* m_Addr;

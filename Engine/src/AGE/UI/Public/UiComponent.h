@@ -9,27 +9,33 @@
 #include "Math/Public/Math.h"
 #include "Core/Public/DeltaTime.h"
 #include "Scene/Public/Components.h"
-#include <imgui.h>
 #include "UI/Public/UIStructs.h"
-#include <imgui_internal.h>
 #ifdef __clang__
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wconversion"
+#pragma clang diagnostic ignored "-Wnontrivial-memcall"
+#ifdef AG_PLATFORM_WINDOWS
 #pragma clang diagnostic ignored "-Wmicrosoft-unqualified-friend"
+#endif
+#include <imgui_internal.h>
+#include <imgui.h>
 #include <rttr/registration>
 #include "rttr/registration_friend.h"
 #pragma clang diagnostic pop
 #elif defined(__GNUC__)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wfloat-conversion"
 #ifdef AG_PLATFORM_WINDOWS
 #pragma GCC diagnostic ignored "-Wmicrosoft-unqualified-friend"
 #endif
+#include <imgui_internal.h>
 #include <rttr/registration>
 #include "rttr/registration_friend.h"
 #pragma GCC diagnostic pop
 #elif defined(_MSC_VER)
 #pragma warning(push, 0)
+#include <imgui_internal.h>
 #include <rttr/registration>
 #include "rttr/registration_friend.h"
 #pragma warning(pop)

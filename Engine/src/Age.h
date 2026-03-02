@@ -53,6 +53,7 @@
 #include "AGE/Render/Public/GraphicsContext.h"
 #include "AGE/Render/Public/Pipeline.h"
 #include "AGE/Render/Public/Renderer.h"
+#include "AGE/Render/Public/Renderer2D.h"
 #include "AGE/Render/Public/RenderCommand.h"
 #include "AGE/Render/Public/Shader.h"
 #include "AGE/Render/Public/VertexArray.h"

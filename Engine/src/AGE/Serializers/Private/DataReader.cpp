@@ -18,19 +18,31 @@ namespace AGE
 	}
 	bool FileStreamReader::ReadData(char* Data, size_t Size)
 	{
+#if __clang__
+		m_Stream.read(Data, (long)Size);
+#else
 		m_Stream.read(Data, Size);
+#endif
 		return true;
 	}
 
 	bool FileStreamReader::ReadBytes(std::vector<std::byte>& Data, size_t Size)
 	{
+#if __clang__
+		m_Stream.read(reinterpret_cast<char*>(Data.data()), (long)Size);
+#else
 		m_Stream.read(reinterpret_cast<char*>(Data.data()), Size);
+#endif
 		return true;
 	}
 
 	bool FileStreamReader::ReadBytes(uint8_t* Data, size_t Size)
 	{
+#if __clang__
+		m_Stream.read(reinterpret_cast<char*>(Data), (long)Size);
+#else
 		m_Stream.read(reinterpret_cast<char*>(Data), Size);
+#endif
 		return true;
 	}
 
@@ -46,19 +58,31 @@ namespace AGE
 	}
 	bool MemoryStreamReader::ReadData(char* Data, size_t Size)
 	{
+#if __clang__
+		m_Stream.read(Data, (long)Size);
+#else
 		m_Stream.read(Data, Size);
+#endif
 		return true;
 	}
 
 	bool MemoryStreamReader::ReadBytes(std::vector<std::byte>& Data, size_t Size)
 	{
+#if __clang__
+		m_Stream.read(reinterpret_cast<char*>(Data.data()), (long)Size);
+#else
 		m_Stream.read(reinterpret_cast<char*>(Data.data()), Size);
+#endif
 		return true;
 	}
 
 	bool MemoryStreamReader::ReadBytes(uint8_t* Data, size_t Size)
 	{
+#if __clang__
+		m_Stream.read(reinterpret_cast<char*>(Data), (long)Size);
+#else
 		m_Stream.read(reinterpret_cast<char*>(Data), Size);
+#endif
 		return true;
 	}
 
@@ -98,7 +122,11 @@ namespace AGE
 		In.resize(Sizet);
 		std::fill(&In[0], &In[Sizet-1], 0);
 
+#if __clang__
+		m_Stream.read(&In[0], (long)Sizet);
+#else
 		m_Stream.read(&In[0], Sizet);
+#endif
 		String = In.data();
 
 		return true;

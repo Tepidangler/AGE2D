@@ -2,7 +2,7 @@
 #include "Core/Public/App.h"
 #include "VisualScripting/Public/NodeEditorManager.h"
 #include "Characters/Public/Character.h"
-
+//#include <imgui_node_editor_internal.h>
 
 
 namespace AGE

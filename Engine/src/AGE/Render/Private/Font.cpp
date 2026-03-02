@@ -132,7 +132,7 @@ namespace AGE
 					uint64_t GlyphSeed = (LCG_MULTIPLIER * (ColoringSeed ^ i) + LCG_INCREMENT) * !!ColoringSeed;
 					Glyphs[i].edgeColoring(msdfgen::edgeColoringInkTrap, DEFAULT_ANGLE_THRESHOLD, GlyphSeed);
 					return true;
-				}, m_Data->Glyphs.size()).finish(THREAD_COUNT);
+				}, (int)m_Data->Glyphs.size()).finish(THREAD_COUNT);
 		}
 		else
 		{
@@ -195,7 +195,7 @@ namespace AGE
 		TextureBytes.Allocate(Size);
 		FontData.ReadBuffer((char*)TextureBytes.Data, TextureBytes.Size);
 		m_AtlasTexture = Texture2D::Create(FontSpec);
-		m_AtlasTexture->SetData(TextureBytes.Data, TextureBytes.Size);
+		m_AtlasTexture->SetData(TextureBytes.Data, (uint32_t)TextureBytes.Size);
 		CoreLogger::Info("Loaded Font {}", FontName);
 	}
 

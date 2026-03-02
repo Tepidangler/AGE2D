@@ -197,7 +197,7 @@ namespace AGE
 		void SetImageSpec(const ImageSpecification& Spec) { m_Spec = Spec; }
 		
 		template<typename T>
-		T GetPixel(int x, int y)
+		T GetPixel(T x, T y)
 		{
 			if (std::is_same<T,uint32_t>::value)
 			{
@@ -233,9 +233,9 @@ namespace AGE
 		uint16_t* GetGSLineAddress(int y);
 
 
-		uint32_t* GetRGBAddress(int x, int y);
+		uint32_t* GetRGBAddress(uint32_t x, uint32_t y);
 
-		uint16_t* GetGSAddress(int x, int y);
+		uint16_t* GetGSAddress(uint16_t x, uint16_t y);
 
 		void ReadScanline(uint32_t* Addr, uint32_t Width, uint8_t* Buffer);
 

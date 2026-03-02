@@ -10,7 +10,7 @@
 
 namespace AGE
 {
-	void UIEditorWindow::DrawProperties(Ref<UIComponent> Comp)
+	void UIEditorWindow::DrawProperties(const Ref<UIComponent>& Comp)
 	{
 		UIProperties& Props = Comp->GetProperties();
 
@@ -21,7 +21,7 @@ namespace AGE
 		ImGui::Checkbox("Is Visible", &Props.Visible);
 	}
 
-	void UIEditorWindow::DrawContent(Ref<UIComponent> Comp)
+	void UIEditorWindow::DrawContent(const Ref<UIComponent>& Comp)
 	{
 		Comp->DrawContent();
 	}
@@ -101,7 +101,7 @@ namespace AGE
 		Writer.WriteString("AGEWidget"); // Header
 		Writer.WriteRaw<uint16_t>(100); // Version Number (100 == 1.0.0)
 		Writer.WriteRaw<size_t>(m_UIComponents.size());
-		std::for_each(m_UIComponents.begin(), m_UIComponents.end(),[&](Ref<UIComponent> Comp)
+		std::ranges::for_each(m_UIComponents.begin(), m_UIComponents.end(),[&](const Ref<UIComponent>& Comp)
 		{
 			Writer.WriteObject<UIComponentType>(Comp->GetType());
 			Comp->CallSerialize(&Writer);
@@ -164,7 +164,6 @@ namespace AGE
 		{
 			m_ImGuiWindowID = ImGui::GetID("Widget Editor");
 		}
-		auto& io = ImGui::GetIO();
 
 		auto ViewportMinRegion = ImGui::GetWindowContentRegionMin();
 		auto ViewportMaxRegion = ImGui::GetWindowContentRegionMax();
@@ -227,7 +226,6 @@ namespace AGE
 
 	void UIEditorWindow::RenderDetailsPane()
 	{
-		auto& io = ImGui::GetIO();
 		if (!ImGui::BeginChild("DetailsPanel",ImVec2(400.f,0.f)))
 		{
 			ImGui::EndChild();

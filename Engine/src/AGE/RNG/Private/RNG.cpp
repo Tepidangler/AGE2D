@@ -93,7 +93,7 @@ namespace AGE
 		constexpr unsigned int BIT_NOISE2 = 0x68E31DA4;
 		constexpr unsigned int BIT_NOISE3 = 0x1B56C4E9;
 
-		unsigned int mangled = Position;
+		unsigned int mangled = (uint32_t)Position;
 		mangled *= BIT_NOISE1;
 		mangled += Seed;
 		mangled ^= (mangled >> 8);
@@ -151,7 +151,7 @@ namespace AGE
 	{
 		//constexpr int PRIME_NUMBER1 = 198491317;
 		//constexpr int PRIME_NUMBER2 = 6542989;
-		return (float)(ONE_OVER_MAX_UINT * Get3dNoiseUint(PositionX, PositionY, Seed));
+		return (float)(ONE_OVER_MAX_UINT * Get3dNoiseUint(PositionX, PositionY, PositionZ, Seed));
 	}
 
 	float SquirrelNoise::Get4dNoiseZeroToOne(int PositionX, int PositionY, int PositionZ, int PositionW, uint32_t Seed)
@@ -190,7 +190,7 @@ namespace AGE
 	{
 		//constexpr int PRIME_NUMBER1 = 198491317;
 		//constexpr int PRIME_NUMBER2 = 6542989;
-		return (float)(ONE_OVER_MAX_INT * Get3dNoiseUint(PositionX, PositionY, Seed));
+		return (float)(ONE_OVER_MAX_INT * Get3dNoiseUint(PositionX, PositionY, PositionZ, Seed));
 	}
 
 	float SquirrelNoise::Get4dNoiseNegOneToOne(int PositionX, int PositionY, int PositionZ, int PositionW, uint32_t Seed)
@@ -208,7 +208,7 @@ namespace AGE
 		constexpr unsigned int BIT_NOISE2 = 0x68E31DA4;
 		constexpr unsigned int BIT_NOISE3 = 0x1B56C4E9;
 
-		unsigned int mangled = Rotation;
+		unsigned int mangled = (uint32_t)Rotation;
 		mangled *= BIT_NOISE1;
 		mangled += Seed;
 		mangled ^= (mangled >> 8);

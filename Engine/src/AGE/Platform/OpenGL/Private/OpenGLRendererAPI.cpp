@@ -25,7 +25,7 @@ namespace AGE
 	}
 	void OpenGLRendererAPI::SetViewport(uint32_t x, uint32_t y, uint32_t Width, uint32_t Height)
 	{
-		glViewport(-1, -1, Width, Height);
+		glViewport(-1, -1, (int)Width, (int)Height);
 		
 	}
 	void OpenGLRendererAPI::Clear()
@@ -42,20 +42,20 @@ namespace AGE
 		VertexArray->Bind();
 
 		uint32_t Count = IndexCount ? IndexCount : VertexArray->GetIndexBuffer()->GetCount();
-		glDrawElements(GL_TRIANGLES, Count, GL_UNSIGNED_INT, nullptr);
+		glDrawElements(GL_TRIANGLES, (int)Count, GL_UNSIGNED_INT, nullptr);
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 	void OpenGLRendererAPI::DrawLines(const Ref<VertexArray>& VertexArray, uint32_t VertexCount)
 	{
 		VertexArray->Bind();
-		glDrawArrays(GL_LINES, 0, VertexCount);
+		glDrawArrays(GL_LINES, 0, (int)VertexCount);
 	}
 	void OpenGLRendererAPI::DrawStrips(const Ref<VertexArray>& VertexArray, uint32_t IndexCount)
 	{
 		VertexArray->Bind();
 
 		uint32_t Count = IndexCount ? IndexCount : VertexArray->GetIndexBuffer()->GetCount();
-		glDrawElements(GL_TRIANGLE_STRIP, Count, GL_UNSIGNED_INT, nullptr);
+		glDrawElements(GL_TRIANGLE_STRIP, (int)Count, GL_UNSIGNED_INT, nullptr);
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 	void OpenGLRendererAPI::SetLineWidth(float Width)

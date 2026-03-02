@@ -1,19 +1,40 @@
 #include "AGEpch.hpp"
 #include "VisualScripting/Public/NodeEditorWindow.h"
 #include "Core/Public/Colors.h"
-#include "Scene/Public/Scene.h"
 #include "Scene/Public/ScriptableEntity.h"
 #include "Render/Public/Renderer2D.h"
 #include "Render/Public/Font.h"
 #include "Math/Public/MathStructures.h"
-#include "Math/Public/Math.h"
 #include "Structs/Public/DataStructures.h"
 #include "Structs/Public/Functions.h"
-#include "Render/Public/Font.h"
-#include <rttr/type>
 #include <misc/cpp/imgui_stdlib.h>
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wconversion"
+#pragma clang diagnostic ignored "-Wfloat-conversion"
+#ifdef AG_PLATFORM_WINDOWS
+#pragma GCC diagnostic ignored "-Wmicrosoft-unqualified-friend"
+#endif
 #include <imgui_node_editor_internal.h>
-#include <imgui_internal.h>
+#pragma clang diagnostic pop
+#elif defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wfloat-conversion"
+#ifdef AG_PLATFORM_WINDOWS
+#pragma GCC diagnostic ignored "-Wmicrosoft-unqualified-friend"
+#endif
+#include <imgui_node_editor_internal.h>
+#pragma GCC diagnostic pop
+#elif defined(_MSC_VER)
+#pragma warning(push, 0)
+#include <imgui_node_editor_internal.h>
+#pragma warning(pop)
+#else
+#error "Compiler is not supported with AGE yet"
+#endif
+
+//#include <imgui_internal.h>
 
 #include "Characters/Public/Character.h"
 
@@ -114,7 +135,7 @@ namespace AGE
 		}
 	}
 	Ref<AGEFont> NodeEditorWindow::s_Font = nullptr;
-	static void DrawVec2Control(const std::string Label, Vector2& Values, float ResetValue = 0.f)
+	static void DrawVec2Control(const std::string& Label, Vector2& Values, float ResetValue = 0.f)
 	{
 		ImGuiIO& io = ImGui::GetIO();
 
@@ -157,7 +178,7 @@ namespace AGE
 
 	}
 
-	static void DrawVec3Control(const std::string Label, Vector3& Values, float ResetValue = 0.f, float ColumnWidth = 100.f)
+	static void DrawVec3Control(const std::string& Label, Vector3& Values, float ResetValue = 0.f, float ColumnWidth = 100.f)
 	{
 		ImGuiIO& io = ImGui::GetIO();
 
@@ -215,7 +236,7 @@ namespace AGE
 
 	}
 
-	static void DrawVec4Control(const std::string Label, Vector4& Values, float ResetValue = 0.f, float ColumnWidth = 100.f)
+	static void DrawVec4Control(const std::string& Label, Vector4& Values, float ResetValue = 0.f, float ColumnWidth = 100.f)
 	{
 		ImGuiIO& io = ImGui::GetIO();
 
@@ -815,7 +836,6 @@ namespace AGE
 		}
 		rttr::instance Instance = m_Target;
 		rttr::type TargetType = m_Target->get_type();
-		auto paneWidth = ImGui::GetContentRegionAvail().x;
 		//Draw Stats for Entity
 		ImGui::Text("Entity Type:"); ImGui::SameLine();
 		ImGui::Text("%s", TargetType.get_name().to_string().c_str());
@@ -875,19 +895,19 @@ namespace AGE
 
 		std::vector<ax::NodeEditor::NodeId> selectedNodes;
 		std::vector<ax::NodeEditor::LinkId> selectedLinks;
-		selectedNodes.resize(ax::NodeEditor::GetSelectedObjectCount());
-		selectedLinks.resize(ax::NodeEditor::GetSelectedObjectCount());
+		selectedNodes.resize((size_t)ax::NodeEditor::GetSelectedObjectCount());
+		selectedLinks.resize((size_t)ax::NodeEditor::GetSelectedObjectCount());
 
 		int nodeCount = ax::NodeEditor::GetSelectedNodes(selectedNodes.data(), static_cast<int>(selectedNodes.size()));
 		int linkCount = ax::NodeEditor::GetSelectedLinks(selectedLinks.data(), static_cast<int>(selectedLinks.size()));
 
-		selectedNodes.resize(nodeCount);
-		selectedLinks.resize(linkCount);
+		selectedNodes.resize((size_t)nodeCount);
+		selectedLinks.resize((size_t)linkCount);
 
-		int saveIconWidth = m_SaveIcon->GetWidth();
-		int saveIconHeight = m_SaveIcon->GetHeight();
-		int restoreIconWidth = m_RestoreIcon->GetWidth();
-		int restoreIconHeight = m_RestoreIcon->GetHeight();
+		float saveIconWidth = (float)m_SaveIcon->GetWidth();
+		float saveIconHeight = (float)m_SaveIcon->GetHeight();
+		float restoreIconWidth = (float)m_RestoreIcon->GetWidth();
+		float restoreIconHeight = (float)m_RestoreIcon->GetHeight();
 
 		ImGui::GetWindowDrawList()->AddRectFilled(
 			ImGui::GetCursorScreenPos(),
@@ -1039,7 +1059,7 @@ namespace AGE
 	{
 		ax::Widgets::IconType iconType;
 		ImColor Color = GetIconColor(Pin->Type);
-		Color.Value.w = Alpha / 255.f;
+		Color.Value.w = (float)(Alpha / 255);
 
 		switch (Pin->Type)
 		{

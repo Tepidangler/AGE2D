@@ -29,7 +29,7 @@ namespace AGE
 	Ref<SubTexture2D> SubTexture2D::CreateFromCoords(const Ref<Texture2D>& Texture, const Vector2& SpriteLoc, const Vector2& CellSize, const Vector2& SpriteSize)
 	{
 		Vector2 min = { (SpriteLoc[0] * CellSize[0]) / (float)Texture->GetWidth(), (SpriteLoc[1] * CellSize[1]) / (float)Texture->GetHeight() };
-		Vector2 max = { ((SpriteLoc[0] + SpriteSize[0]) * (float)CellSize[0]) / Texture->GetWidth(), ((SpriteLoc[1] + SpriteSize[1]) * CellSize[1]) / (float)Texture->GetHeight()};
+		Vector2 max = { ((SpriteLoc[0] + SpriteSize[0]) * (float)CellSize[0]) / (float)Texture->GetWidth(), ((SpriteLoc[1] + SpriteSize[1]) * CellSize[1]) / (float)Texture->GetHeight()};
 
 		return CreateRef<SubTexture2D>(Texture, min, max);
 	}

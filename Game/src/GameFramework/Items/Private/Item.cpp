@@ -8,11 +8,11 @@ namespace GameFramework
 	Item::Item(const ItemInfo& Info)
 	{
 		m_ID = Info.ID;
-		m_Stats.HP = Info.HP;
-		m_Stats.MP = Info.MP;
-		m_Stats.Def = Info.Defense;
-		m_Stats.Str = Info.Strength;
-		m_Stats.Spd = Info.Speed;
+		m_Stats.HP = (float)Info.HP;
+		m_Stats.MP = (float)Info.MP;
+		m_Stats.Def = (float)Info.Defense;
+		m_Stats.Str = (float)Info.Strength;
+		m_Stats.Spd = (float)Info.Speed;
 		m_BuffType = (ItemBuffType)Info.ItemBuffType;
 		m_Name = Info.Name;
 		m_Type = (ItemType)Info.ItemType;

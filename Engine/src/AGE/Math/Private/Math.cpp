@@ -5,13 +5,19 @@
 #ifdef __clang__
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wconversion"
+#pragma clang diagnostic ignored "-Wfloat-conversion"
+#ifdef AG_PLATFORM_WINDOWS
 #pragma clang diagnostic ignored "-Wmicrosoft-unqualified-friend"
+#endif
 #include <rttr/registration>
 #pragma clang diagnostic pop
 #elif defined(__GNUC__)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wfloat-conversion"
+#ifdef AG_PLATFORM_WINDOWS
 #pragma GCC diagnostic ignored "-Wmicrosoft-unqualified-friend"
+#endif
 #include <rttr/registration>
 #pragma GCC diagnostic pop
 #elif defined(_MSC_VER)
@@ -37,18 +43,10 @@ RTTR_REGISTRATION
 	rttr::registration::method("Divide", rttr::select_overload<int(int,int)>(&AGE::Math::Divide<int>));
 	rttr::registration::method("Divide", rttr::select_overload<float(float,float)>(&AGE::Math::Divide<float>));
 	rttr::registration::method("Divide", rttr::select_overload<double(double,double)>(&AGE::Math::Divide<double>));
-	rttr::registration::method("Modulo", rttr::select_overload<int(int,int)>(&AGE::Math::Modulo<int>));
-	rttr::registration::method("Modulo", rttr::select_overload<float(float,float)>(&AGE::Math::Modulo<float>));
-	rttr::registration::method("Modulo", rttr::select_overload<double(double,double)>(&AGE::Math::Modulo<double>));
-	rttr::registration::method("Pow", rttr::select_overload<int(int,int)>(&AGE::Math::Pow<int>));
-	rttr::registration::method("Pow", rttr::select_overload<float(float,float)>(&AGE::Math::Pow<float>));
-	rttr::registration::method("Pow", rttr::select_overload<double(double,double)>(&AGE::Math::Pow<double>));
-	rttr::registration::method("Square Root", rttr::select_overload<int(int)>(&AGE::Math::Sqrt<int>));
-	rttr::registration::method("Square Root", rttr::select_overload<float(float)>(&AGE::Math::Sqrt<float>));
-	rttr::registration::method("Square Root", rttr::select_overload<double(double)>(&AGE::Math::Sqrt<double>));
-	rttr::registration::method("Cube Root", rttr::select_overload<int(int)>(&AGE::Math::CubeRoot<int>));
-	rttr::registration::method("Cube Root", rttr::select_overload<float(float)>(&AGE::Math::CubeRoot<float>));
-	rttr::registration::method("Cube Root", rttr::select_overload<double(double)>(&AGE::Math::CubeRoot<double>));
+	rttr::registration::method("Modulo", &AGE::Math::Modulo);
+	rttr::registration::method("Pow", &AGE::Math::Pow);
+	rttr::registration::method("Square Root", &AGE::Math::Sqrt);
+	rttr::registration::method("Cube Root", &AGE::Math::CubeRoot);
 }
 namespace AGE
 {
@@ -479,11 +477,11 @@ namespace AGE
 
 		Rotation.y = asin(-Row[0][2]);
 		if (cos(Rotation.y) != 0) {
-			Rotation.x = atan2(Row[1][2], Row[2][2]);
-			Rotation.z = atan2(Row[0][1], Row[0][0]);
+			Rotation.x = atan2f(Row[1][2], Row[2][2]);
+			Rotation.z = atan2f(Row[0][1], Row[0][0]);
 		}
 		else {
-			Rotation.x = atan2(-Row[2][0], Row[1][1]);
+			Rotation.x = atan2f(-Row[2][0], Row[1][1]);
 			Rotation.z = 0;
 		}
 

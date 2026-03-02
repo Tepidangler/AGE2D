@@ -60,17 +60,17 @@ namespace GameFramework
 		static void Serialize(AGE::DataWriter* Serializer, const Inventory& Instance)
 		{
 			Serializer->WriteRaw<int>((int)Instance.m_Items.size());
-			for (int i = 0; i < Instance.m_Items.size(); i++)
+			for (size_t i = 0; i < Instance.m_Items.size(); i++)
 			{
 				Serializer->WriteObject<Item>(*Instance.m_Items[i].get());
 			}
 			Serializer->WriteRaw<int>((int)Instance.m_Weapons.size());
-			for (int i = 0; i < Instance.m_Weapons.size(); i++)
+			for (size_t i = 0; i < Instance.m_Weapons.size(); i++)
 			{
 				Serializer->WriteObject<Weapon>(*Instance.m_Weapons[i].get());
 			}
 			Serializer->WriteRaw<int>((int)Instance.m_Armor.size());
-			for (int i = 0; i < Instance.m_Armor.size(); i++)
+			for (size_t i = 0; i < Instance.m_Armor.size(); i++)
 			{
 				Serializer->WriteObject<Armor>(*Instance.m_Armor[i].get());
 			}
@@ -85,22 +85,22 @@ namespace GameFramework
 			Armor A;
 			int Size;
 			Deserializer->ReadRaw<int>(Size);
-			Instance.m_Items.resize(Size);
-			for (int i = 0; i < Size; i++)
+			Instance.m_Items.resize((size_t)Size);
+			for (size_t i = 0; i < Size; i++)
 			{
 				Deserializer->ReadObject<Item>(I);
 				Instance.m_Items[i] = AGE::CreateRef<Item>(I);
 			}
 			Deserializer->ReadRaw<int>(Size);
-			Instance.m_Weapons.resize(Size);
-			for (int i = 0; i < Size; i++)
+			Instance.m_Weapons.resize((size_t)Size);
+			for (size_t i = 0; i < Size; i++)
 			{
 				Deserializer->ReadObject<Weapon>(W);
 				Instance.m_Weapons[i] = AGE::CreateRef<Weapon>(W);
 			}
 			Deserializer->ReadRaw<int>(Size);
-			Instance.m_Armor.resize(Size);
-			for (int i = 0; i < Size; i++)
+			Instance.m_Armor.resize((size_t)Size);
+			for (size_t i = 0; i < Size; i++)
 			{
 				Deserializer->ReadObject<Armor>(A);
 				Instance.m_Armor[i] = AGE::CreateRef<Armor>(A);

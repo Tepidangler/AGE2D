@@ -5,6 +5,7 @@
 #include "../Public/ButtonComponent.h"
 #include "Events/Public/KeyEvent.h"
 #include "Core/Public/App.h"
+#include "Render/Public/Renderer2D.h"
 
 RTTR_REGISTRATION{
 	rttr::registration::class_<AGE::ButtonComponent>("ButtonComponent")

@@ -28,8 +28,8 @@ namespace AGE
 		void RenderWidgetsPane(float PaneWidth);
 		void RenderDetailsPane();
 		void RenderHierarchyPane();
-		void DrawProperties(Ref<UIComponent> Comp);
-		void DrawContent(Ref<UIComponent> Comp);
+		void DrawProperties(const Ref<UIComponent>& Comp);
+		void DrawContent(const Ref<UIComponent>& Comp);
 		void DrawMenuBar();
 		void LoadWidget(const std::filesystem::path& Path);
 		void SaveWidget(const std::filesystem::path& Path);

@@ -45,6 +45,10 @@ namespace AGE
 		case 11:
 			return GL_BOOL;
 			break;
+		default:
+		{
+			break;
+		}
 		}
 
 		CoreLogger::Assert(false, "Unknown ShaderDataType!");
@@ -94,13 +98,13 @@ namespace AGE
 			case ShaderDataType::Float3:
 			case ShaderDataType::Float4:
 			{
-				EnableVertexAttribArray(index);
+				EnableVertexAttribArray((int)index);
 
 				MakeVertexAttribPtr(index,
-					E.GetComponentCount(),
+					(int)E.GetComponentCount(),
 					ShaderDataTypeToOpenGLBaseType(E.DataType),
 					E.Normalized ? GL_TRUE : GL_FALSE,
-					Layout.GetStride(),
+					(int)Layout.GetStride(),
 					(const void*)&E.Offset);
 				index++;
 				break;
@@ -108,16 +112,16 @@ namespace AGE
 			case ShaderDataType::Mat3:
 			case ShaderDataType::Mat4:
 			{
-				uint8_t count = E.GetComponentCount();
-				for (uint8_t i = 0; i < count; i++)
+				uint32_t count = E.GetComponentCount();
+				for (uint32_t i = 0; i < count; i++)
 				{
-					EnableVertexAttribArray(index);
+					EnableVertexAttribArray((int)index);
 
 					MakeVertexAttribPtr(index,
-						E.GetComponentCount(),
+						(int)E.GetComponentCount(),
 						ShaderDataTypeToOpenGLBaseType(E.DataType),
 						E.Normalized ? GL_TRUE : GL_FALSE,
-						Layout.GetStride(),
+						(int)Layout.GetStride(),
 						(const void*)(E.Offset+ sizeof(float) * count * i));
 					glVertexAttribDivisor(index, 1);
 					index++;
@@ -131,12 +135,12 @@ namespace AGE
 			case ShaderDataType::Int4:
 			case ShaderDataType::Boolean:
 			{
-				EnableVertexAttribArray(index);
+				EnableVertexAttribArray((int)index);
 
 				glVertexAttribIPointer(index,
-					E.GetComponentCount(),
+					(int)E.GetComponentCount(),
 					ShaderDataTypeToOpenGLBaseType(E.DataType),
-					Layout.GetStride(),
+					(int)Layout.GetStride(),
 					(const void*)&E.Offset);
 				index++;
 				break;
@@ -164,7 +168,7 @@ namespace AGE
 	}
 	void OpenGLVertexArray::EnableVertexAttribArray(int ArrayID) const
 	{
-		glEnableVertexAttribArray(ArrayID);		
+		glEnableVertexAttribArray((uint32_t)ArrayID);
 	}
 	void OpenGLVertexArray::MakeVertexAttribPtr(GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const void* pointer) const
 	{

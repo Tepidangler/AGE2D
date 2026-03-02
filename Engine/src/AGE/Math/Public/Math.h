@@ -253,10 +253,9 @@ namespace AGE
 		{
 			return std::acos(a);
 		}
-		template<typename T>
-		static T Sqrt(T a)
+		static float Sqrt(float a)
 		{
-			return std::sqrt(a);
+			return std::sqrtf(a);
 		}
 
 		template<typename T>
@@ -279,20 +278,20 @@ namespace AGE
 		{
 			return a / b;
 		}
-		template<typename T>
-		static T Modulo(T a, T b)
+
+		static double Modulo(double a, double b)
 		{
 			return std::fmod(a,b);
 		}
-		template<typename T>
-		static T Pow(T a, T b = 2)
+
+		static float Pow(float a, float b = 2.f)
 		{
-			return std::pow(a, b);
+			return std::powf(a, b);
 		}
-		template<typename T>
-		static T CubeRoot(T a)
+
+		static float CubeRoot(float a)
 		{
-			return std::cbrt(a);
+			return std::cbrtf(a);
 		}
 
 	};

@@ -13,8 +13,6 @@
 #include <xmmintrin.h>
 #include <smmintrin.h>
 #include <immintrin.h>
-//#include "DirectXMath.h"
-//#include "d3d11_4.h"
 
 
 
@@ -120,7 +118,7 @@ namespace AGE
 
 		operator uint32_t()
 		{
-			return ((RGBAc[0] << 0) | (RGBAc[1] << 8) | (RGBAc[2] << 16) | (RGBAc[3] << 24));
+			return (uint32_t)((RGBAc[0] << 0) | (RGBAc[1] << 8) | (RGBAc[2] << 16) | (RGBAc[3] << 24));
 		}
 	private:
 #pragma warning(push, 0)

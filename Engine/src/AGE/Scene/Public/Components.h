@@ -198,15 +198,15 @@ namespace AGE
 		void SetTileLocations()
 		{
 			AGE_PROFILE_FUNCTION();
-			uint32_t Width, Height;
+			unsigned long Width, Height;
 
 			//Now sure if 1 will always be valid, but it should be
 			Width = TileMap->tiles[1]->tileset->image->width;
 			Height = TileMap->tiles[1]->tileset->image->height;
 
-			for (uint32_t x = (Height / TileMap->tiles[1]->tileset->tile_height)-1; x >= 0 ; x--)
+			for (unsigned long x = (Height / TileMap->tiles[1]->tileset->tile_height)-1; x >= 0 ; x--)
 			{
-				for (uint32_t y = 0; y < (Width / TileMap->tiles[1]->tileset->tile_width); y++)
+				for (uint64_t y = 0; y < (Width / TileMap->tiles[1]->tileset->tile_width); y++)
 				{
 					TileLocs.push_back(Vector2((float)y, (float)x));
 				}

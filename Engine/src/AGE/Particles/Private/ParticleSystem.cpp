@@ -82,6 +82,6 @@ namespace AGE
 		particle.SizeBegin = particleProps.SizeBegin + particleProps.SizeVariation * (SquirrelRNG::RollRandomFloatZeroToOne() - 0.5f);
 		particle.SizeEnd = particleProps.SizeEnd;
 
-		m_PoolIndex = --m_PoolIndex % m_ParticlePool.size();
+		m_PoolIndex = --m_PoolIndex % (uint32_t)m_ParticlePool.size();
 	}
 }

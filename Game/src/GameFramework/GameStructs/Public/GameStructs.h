@@ -41,14 +41,14 @@ namespace GameFramework
         EnemyStats(const EnemyStats&) = default;
         EnemyStats(std::tuple<int,int,int,int,int,int,int,int,uint8_t,uint8_t,uint8_t,std::string> Tuple)
         {
-            HP = std::get<0>(Tuple);
-            MP = std::get<1>(Tuple);
-            Strength = std::get<2>(Tuple);
-            MagicAttack = std::get<3>(Tuple);
-            Attack = std::get<4>(Tuple);
-            Defense = std::get<5>(Tuple);
-            Agility = std::get<6>(Tuple);
-            Speed = std::get<7>(Tuple);
+            HP = (uint32_t)std::get<0>(Tuple);
+            MP = (uint32_t)std::get<1>(Tuple);
+            Strength = (uint32_t)std::get<2>(Tuple);
+            MagicAttack = (uint32_t)std::get<3>(Tuple);
+            Attack = (uint32_t)std::get<4>(Tuple);
+            Defense = (uint32_t)std::get<5>(Tuple);
+            Agility = (uint32_t)std::get<6>(Tuple);
+            Speed = (uint32_t)std::get<7>(Tuple);
             Name = std::get<11>(Tuple);
 
         }

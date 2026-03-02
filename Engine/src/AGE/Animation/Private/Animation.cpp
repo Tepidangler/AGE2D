@@ -77,6 +77,6 @@ namespace AGE
 	}
 	void Animation::SetCurrentTexture(CharMovementStatus status)
 	{
-		m_CurrentTexture = AGE::SubTexture2D::CreateFromCoords(m_AnimationTextures[status].Texture, AGE::Vector2((float)m_CurrentFrame, 0.f), AGE::Vector2(m_AnimationTextures[status].Width / m_AnimationTextures[status].NumberOfFrames, m_AnimationTextures[status].Height));
+		m_CurrentTexture = AGE::SubTexture2D::CreateFromCoords(m_AnimationTextures[status].Texture, AGE::Vector2((float)m_CurrentFrame, 0.f), AGE::Vector2(m_AnimationTextures[status].Width / (float)m_AnimationTextures[status].NumberOfFrames, m_AnimationTextures[status].Height));
 	}
 }

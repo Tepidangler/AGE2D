@@ -30,7 +30,7 @@ namespace AGE
 		};
 
 		UIComponentType() = default;
-		constexpr UIComponentType(Value Val)
+		 UIComponentType(Value Val)
 			: value(Val)
 		{
 			Name = ToString(value);

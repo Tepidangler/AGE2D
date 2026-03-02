@@ -59,7 +59,7 @@ namespace AGE
 	}
 
 	OpenGLTexture2D::OpenGLTexture2D(const TextureSpecification& Spec)
-		:m_Specification(Spec), m_Width(Spec.Width), m_Height(Spec.Height)
+		:m_Specification(Spec), m_Width((int)Spec.Width), m_Height((int)Spec.Height)
 	{
 		AGE_PROFILE_FUNCTION();
 		m_InternalFormat = Utils::AGEImageFormatToGLInternalFormat(Spec.Format);
@@ -83,7 +83,7 @@ namespace AGE
 	}
 
 	OpenGLTexture2D::OpenGLTexture2D(const Image* Img, uint32_t Width, uint32_t Height, int Channels, size_t Size)
-		:m_Width(Width), m_Height(Height), m_nrChannels(Channels)
+		:m_Width((int)Width), m_Height((int)Height), m_nrChannels(Channels)
 	{
 		AGE_PROFILE_FUNCTION();
 
@@ -249,7 +249,7 @@ namespace AGE
 	{
 		AGE_PROFILE_FUNCTION();
 		//stbi_set_flip_vertically_on_load(true);
-		for (int i = 0; i < Paths.size(); i++)
+		for (size_t i = 0; i < Paths.size(); i++)
 		{
 
 
@@ -321,7 +321,7 @@ namespace AGE
 	{
 		AGE_PROFILE_FUNCTION();
 		uint32_t bpc = m_DataFormat == GL_RGBA ? 4 : 3; //bytes per channel
-		CoreLogger::Assert(Size == m_Width * m_Height * bpc, "Size Data must be entire texture!");
+		CoreLogger::Assert(Size == ((uint32_t)(m_Width * m_Height) * bpc), "Size Data must be entire texture!");
 		glTextureSubImage2D(m_TextureID, 0, 0, 0, m_Width, m_Height, m_DataFormat, GL_UNSIGNED_BYTE, Data);
 		if (!m_ImageData.first)
 		{
