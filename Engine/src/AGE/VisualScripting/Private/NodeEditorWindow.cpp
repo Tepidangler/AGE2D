@@ -12,6 +12,7 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wconversion"
 #pragma clang diagnostic ignored "-Wfloat-conversion"
+#pragma clang diagnostic ignored "-Wnontrivial-memcall"
 #ifdef AG_PLATFORM_WINDOWS
 #pragma GCC diagnostic ignored "-Wmicrosoft-unqualified-friend"
 #endif
@@ -98,14 +99,14 @@ namespace AGE
 
 								if (QuestStrings.size() > 0)
 								{
-									CurrentQuestString = QuestStrings[(int)DerivedTarget->GetQuestComponent()->GetQuest()];
+									CurrentQuestString = QuestStrings[(size_t)DerivedTarget->GetQuestComponent()->GetQuest()];
 								}
 
 
 
 								if (ImGui::BeginCombo("Quest Title", CurrentQuestString.c_str()))
 								{
-									for (int i = 0; i < QuestStrings.size(); i++)
+									for (size_t i = 0; i < QuestStrings.size(); i++)
 									{
 										bool IsSelected = CurrentQuestString == QuestStrings[i];
 
@@ -390,7 +391,7 @@ namespace AGE
 
 			auto cursorTopLeft = ImGui::GetCursorScreenPos();
 			uint32_t HeaderBGTexID = m_HeaderBg->GetTextureID();
-			INEUtils::BlueprintNodeBuilder Builder((ImTextureID)&HeaderBGTexID, m_HeaderBg->GetWidth(), m_HeaderBg->GetHeight());
+			INEUtils::BlueprintNodeBuilder Builder((ImTextureID)&HeaderBGTexID, (int)m_HeaderBg->GetWidth(), (int)m_HeaderBg->GetHeight());
 
 			for (auto& N : m_Nodes)
 			{
@@ -920,8 +921,8 @@ namespace AGE
 		{
 			ImGui::PushID(node->ID.AsPointer());
 			auto start = ImGui::GetCursorScreenPos();
-
-			if (const auto progress = GetTouchProgress(node->ID))
+			const auto progress = GetTouchProgress(node->ID);
+			if (progress > 0.f)
 			{
 				ImGui::GetWindowDrawList()->AddLine(
 					start + ImVec2(-8, 0),
@@ -1042,8 +1043,8 @@ namespace AGE
 			ax::NodeEditor::ClearSelection();
 		ImGui::EndHorizontal();
 		ImGui::Indent();
-		for (int i = 0; i < nodeCount; ++i) ImGui::Text("Node (%p)", selectedNodes[i].AsPointer());
-		for (int i = 0; i < linkCount; ++i) ImGui::Text("Link (%p)", selectedLinks[i].AsPointer());
+		for (size_t i = 0; i < nodeCount; ++i) ImGui::Text("Node (%p)", selectedNodes[i].AsPointer());
+		for (size_t i = 0; i < linkCount; ++i) ImGui::Text("Link (%p)", selectedLinks[i].AsPointer());
 		ImGui::Unindent();
 
 		if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Z)))

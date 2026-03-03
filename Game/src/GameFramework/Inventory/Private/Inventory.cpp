@@ -51,11 +51,11 @@ namespace GameFramework
     }
     bool Inventory::RemoveItem(AGE::Ref<Item> Item)
     {
-        for (int i = 0; i < m_Items.size(); i++)
+        for (size_t i = 0; i < m_Items.size(); i++)
         {
             if (*m_Items[i].get() == *Item.get())
             {
-                m_Items.erase(m_Items.begin() + i);
+                m_Items.erase(m_Items.begin() + (long)i);
                 m_Items.shrink_to_fit();
                 Item->DecrementCount();
                 return true;
@@ -80,11 +80,11 @@ namespace GameFramework
     }
     bool Inventory::RemoveWeapon(AGE::Ref<Weapon> Weapon)
     {
-        for (int i = 0; i < m_Weapons.size(); i++)
+        for (size_t i = 0; i < m_Weapons.size(); i++)
         {
             if (*m_Weapons[i].get() == *Weapon.get())
             {
-                m_Weapons.erase(m_Weapons.begin() + i);
+                m_Weapons.erase(m_Weapons.begin() + (long)i);
                 m_Weapons.shrink_to_fit();
                 Weapon->DecrementCount();
                 return true;
@@ -108,11 +108,11 @@ namespace GameFramework
     }
     bool Inventory::RemoveArmor(AGE::Ref<Armor> Armor)
     {
-        for (int i = 0; i < m_Armor.size(); i++)
+        for (size_t i = 0; i < m_Armor.size(); i++)
         {
             if (*m_Armor[i].get() == *Armor.get())
             {
-                m_Armor.erase(m_Armor.begin() + i);
+                m_Armor.erase(m_Armor.begin() + (long)i);
                 m_Armor.shrink_to_fit();
                 Armor->DecrementCount();
                 return true;

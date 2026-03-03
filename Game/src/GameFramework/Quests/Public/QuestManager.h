@@ -1,7 +1,33 @@
 #pragma once
 #include "Core/Public/Core.h"
 #include "Actors/Public/Actor.h"
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wconversion"
+#pragma clang diagnostic ignored "-Wnontrivial-memcall"
+#pragma clang diagnostic ignored "-Wsign-conversion"
+#ifdef AG_PLATFORM_WINDOWS
+#pragma clang diagnostic ignored "-Wmicrosoft-unqualified-friend"
+#endif
 #include <rttr/registration>
+#pragma clang diagnostic pop
+#elif defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wfloat-conversion"
+#pragma GCC diagnostic ignored "-Wsign-conversion"
+#ifdef AG_PLATFORM_WINDOWS
+#pragma GCC diagnostic ignored "-Wmicrosoft-unqualified-friend"
+#endif
+#include <rttr/registration>
+#pragma GCC diagnostic pop
+#elif defined(_MSC_VER)
+#pragma warning(push, 0)
+#include <rttr/registration>
+#pragma warning(pop)
+#else
+#error "Compiler is not supported with AGE yet"
+#endif
 
 #include "crude_json.h"
 

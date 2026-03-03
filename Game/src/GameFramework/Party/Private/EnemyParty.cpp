@@ -11,6 +11,10 @@
 
 namespace GameFramework
 {
+    static std::random_device Device;
+    static std::mt19937 Rng(Device());
+    static std::uniform_int_distribution<> RngDist(1u, 6u);
+
     EnemyParty::EnemyParty()
     {
         m_Inventory = AGE::CreateRef<Inventory>();
@@ -48,10 +52,8 @@ namespace GameFramework
 
     void EnemyParty::GenerateEnemyParty()
     {
-        std::random_device Device;
-        std::mt19937 Rng(Device());
-        std::uniform_int_distribution<> RngDist(1, 6);
-        uint32_t PartyLimit = RngDist(Rng);
+
+        int PartyLimit = RngDist(Rng);
 
         SetPartyLimit(PartyLimit);
 
@@ -67,7 +69,7 @@ namespace GameFramework
     {
         for (uint32_t x = 0; x < m_Party.size(); ++x)
         {
-            auto Member = m_Party.find(x);
+            auto Member = m_Party.find((const int)x);
 
             if (Char.get() == Member->second.get())
             {

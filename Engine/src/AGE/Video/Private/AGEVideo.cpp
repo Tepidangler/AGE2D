@@ -3,7 +3,7 @@
 #include "Video/Public/VideoSource.h"
 #include "Render/Public/Renderer2D.h"
 #include "Render/Public/RenderCommand.h"
-
+#if 0
 
 namespace AGE
 {
@@ -63,3 +63,4 @@ namespace AGE
         CoreLogger::Assert(false, "Direct X Not Implemented!");
     }
 }
+#endif

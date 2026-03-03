@@ -156,7 +156,7 @@ namespace GameFramework
 			{
 				const KeyState PairedEvent = Binding.State == KeyState::Pressed ? KeyState::Released : KeyState::Pressed;
 
-				for (int i = (int)(m_ActionBindings.size() - 2); i >= 0; i--)
+				for (size_t i = m_ActionBindings.size() - 2; i >= 0; i--)
 				{
 					InputActionBinding& Ref = *m_ActionBindings[i].get();
 					if (Ref.GetActionName() == BindRef.GetActionName())

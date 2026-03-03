@@ -59,8 +59,8 @@ namespace AGE
 		if (event == GLFW_CONNECTED)
 		{
 			CoreLogger::Info("Controller {0} Connected!", jid);
-			WindowsWindow::Get().m_JDatas[jid].Name = "Controller " + std::to_string(jid);
-			glfwSetJoystickUserPointer(jid, &WindowsWindow::Get().m_JDatas[jid]);
+			WindowsWindow::Get().m_JDatas[(size_t)jid].Name = "Controller " + std::to_string(jid);
+			glfwSetJoystickUserPointer(jid, &WindowsWindow::Get().m_JDatas[(size_t)jid]);
 
 		}
 		else if (event == GLFW_DISCONNECTED)
@@ -184,9 +184,9 @@ namespace AGE
 		glfwSetFramebufferSizeCallback(m_Window, [](GLFWwindow* Window, int Width, int Height)
 		{
 				WindowData& Data = *(WindowData*)glfwGetWindowUserPointer(Window);
-				Data.Width = Width;
-				Data.Height = Height;
-				FramebufferResizeEvent Event(Width,Height);
+				Data.Width = (uint32_t)Width;
+				Data.Height = (uint32_t)Height;
+				FramebufferResizeEvent Event((uint32_t)Width,(uint32_t)Height);
 				Data.EventCallback(Event);
 
 				
@@ -195,10 +195,10 @@ namespace AGE
 		glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* Window, int Width, int Height)
 			{
 				WindowData& Data = *(WindowData*)glfwGetWindowUserPointer(Window);
-				Data.Width = Width;
-				Data.Height = Height;
+				Data.Width = (uint32_t)Width;
+				Data.Height = (uint32_t)Height;
 
-				WindowResizeEvent Event(Width, Height);
+				WindowResizeEvent Event((uint32_t)Width, (uint32_t)Height);
 
 				Data.EventCallback(Event);
 			});
@@ -248,7 +248,7 @@ namespace AGE
 		{
 				WindowData& Data = *(WindowData*)glfwGetWindowUserPointer(Window);
 
-				KeyTypedEvent Event(Char);
+				KeyTypedEvent Event((int)Char);
 				Data.EventCallback(Event);
 		});
 

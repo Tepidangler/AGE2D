@@ -61,7 +61,7 @@ namespace GameFramework
     {
         for (uint32_t x = 0; x < m_Party.size(); ++x)
         {
-            auto Member = m_Party.find(x);
+            auto Member = m_Party.find((int)x);
 
             if (Char.get() == Member->second.get())
             {

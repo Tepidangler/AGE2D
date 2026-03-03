@@ -424,7 +424,7 @@ namespace AGE
 
 									if (Sprite.bTile)
 									{
-										Sprite.SubTexture = Map.TileTextures[Sprite.TileID];
+										Sprite.SubTexture = Map.TileTextures[(size_t)Sprite.TileID];
 									}
 
 								}
@@ -595,7 +595,7 @@ namespace AGE
 							
 							if (Sprite.bTile)
 							{
-								Sprite.SubTexture = Map.TileTextures[Sprite.TileID];
+								Sprite.SubTexture = Map.TileTextures[(size_t)Sprite.TileID];
 							}
 
 						}

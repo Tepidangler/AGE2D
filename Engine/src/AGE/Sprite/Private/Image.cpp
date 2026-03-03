@@ -93,7 +93,7 @@ namespace AGE
 	}
 	void Image::DrawHorizontalLine(int x1, int y, int x2, Vector4 Color)
 	{
-		uint32_t* Start = GetRGBAddress(x1, y);
+		uint32_t* Start = GetRGBAddress((uint32_t)x1, (uint32_t)y);
 		int Width = x2 - x1 + 1;
 
 		std::fill(Start, Start + Width, (uint32_t)Color);
@@ -103,12 +103,12 @@ namespace AGE
 
 		DrawHorizontalLine(x1, y1, x2, Color);
 
-		uint32_t* FirstPixel = GetRGBAddress(x1, y1);
+		uint32_t* FirstPixel = GetRGBAddress((uint32_t)x1, (uint32_t)y1);
 		int Width = x2 - x1 +1;
 		
 			for (int y = y1; y <= y2; ++y)
 			{
-				std::copy(FirstPixel, FirstPixel + Width, GetRGBAddress(x1, y));
+				std::copy(FirstPixel, FirstPixel + Width, GetRGBAddress((uint32_t)x1, (uint32_t)y));
 			}
 	}
 	std::pair<int, int> Image::GetPixelLocation()
@@ -118,7 +118,7 @@ namespace AGE
 
 	void Image::SetPixel(int x, int y, uint32_t Data)
 	{
-		*GetRGBAddress(x, y) = Data;
+		*GetRGBAddress((uint32_t)x, (uint32_t)y) = Data;
 	}
 
 	void Image::ClearImage(Vector4 Color)
@@ -132,12 +132,12 @@ namespace AGE
 
 	}
 
-	uint32_t* Image::GetRGBLineAddress(int y)
+	uint32_t* Image::GetRGBLineAddress(uint32_t y)
 	{
 		return m_RGBRows[y];
 	}
 
-	uint16_t* Image::GetGSLineAddress(int y)
+	uint16_t* Image::GetGSLineAddress(uint16_t y)
 	{
 		return m_GSRows[y];
 	}

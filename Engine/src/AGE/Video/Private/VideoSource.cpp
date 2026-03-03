@@ -1,6 +1,6 @@
 #include "AGEpch.hpp"
 #include "Video/Public/VideoSource.h"
-
+#if 0
 namespace AGE
 {
 
@@ -37,3 +37,4 @@ namespace AGE
 
     }
 }
+#endif

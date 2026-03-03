@@ -217,16 +217,32 @@ if(WIN32)
             $<$<CONFIG:MinSizeRel>:/WX /Os /Oy>
     )
 elseif(UNIX)
-    target_compile_options(Game PUBLIC
-            $<$<CONFIG:Debug>:-fsanitize=address,undefined -static-libasan -MT -Wall -Wconversion -O0>
-            $<$<CONFIG:RelWithDebInfo>:-Wall -MT -Wconversion -O3>
-            $<$<CONFIG:MinSizeRel>:-Wall -MT -Wconversion -Os>
-    )
-    target_link_options(Game PUBLIC
-            $<$<CONFIG:Debug>:-fsanitize=address,undefined -static-libasan>
-            $<$<CONFIG:RelWithDebInfo>:-fsanitize=address,undefined>
-            $<$<CONFIG:MinSizeRel>:-fsanitize=address,undefined>
-    )
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+        target_compile_options(Game PUBLIC
+                $<$<CONFIG:Debug>:-fsanitize=address,undefined -static-libsan -MT -Wall -Werror -Wconversion -O0  -g>
+                $<$<CONFIG:RelWithDebInfo>:-Wall -Werror -Wconversion -MT -O3>
+                $<$<CONFIG:MinSizeRel>:-Wall -Werror -Wconversion -MT -Os>
+        )
+        target_link_options(Game PUBLIC
+
+                $<$<CONFIG:Debug>:-fsanitize=address,undefined -static-libsan>
+                $<$<CONFIG:RelWithDebInfo>:-fsanitize=address,undefined>
+                $<$<CONFIG:MinSizeRel>:-fsanitize=address,undefined>
+        )
+    elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+        target_compile_options(Game PUBLIC
+                $<$<CONFIG:Debug>:-fsanitize=address,undefined -static-libasan -static-libubsan -MT -Wall -Werror -Wconversion -O0  -g>
+                $<$<CONFIG:RelWithDebInfo>:-Wall -Werror -Wconversion -MT -O3>
+                $<$<CONFIG:MinSizeRel>:-Wall -Werror -Wconversion -MT -Os>
+        )
+        target_link_options(Game PUBLIC
+
+                $<$<CONFIG:Debug>:-fsanitize=address,undefined -static-libasan -static-libubsan>
+                $<$<CONFIG:RelWithDebInfo>:-fsanitize=address,undefined>
+                $<$<CONFIG:MinSizeRel>:-fsanitize=address,undefined>
+        )
+    endif()
+
 elseif(APPLE)
     target_compile_options(Game PUBLIC
             $<$<CONFIG:Debug>:-Wall -MT -Wconversion -O0>

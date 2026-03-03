@@ -10,6 +10,7 @@
 #pragma once
 #include "Core/Public/Core.h"
 #include <pqxx/pqxx>
+
 namespace AGE
 {
 	enum class StatementType : uint8_t
@@ -56,9 +57,6 @@ namespace AGE
 		template<typename T>
 		void InsertRow(const std::string& DBName, const std::string& TableName, const T& Data);
 
-	private:
-
-	public:
 		std::unordered_map<std::string, Ref<pqxx::connection>> m_Connections;
 	private:
 		std::unordered_map<std::string, std::vector<std::pair<StatementType, std::string>>> m_PreparedStatements;

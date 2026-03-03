@@ -236,7 +236,7 @@ namespace AGE
 	{
 		//SpriteSheetUtils::SetTexCoords(SRC.SubTexture, SRC.QuadProps, false);
 
-		if (RenderCommand::s_GraphicsPipeline->GetData().TileIndexCounts[SRC.TilesLayer] >= Renderer2DData::MaxIndexCount)
+		if (RenderCommand::s_GraphicsPipeline->GetData().TileIndexCounts[(size_t)SRC.TilesLayer] >= Renderer2DData::MaxIndexCount)
 		{
 			RenderCommand::s_GraphicsPipeline->NextBatch2D();
 		}
@@ -262,8 +262,8 @@ namespace AGE
 
 			}
 		}
-		RenderCommand::s_GraphicsPipeline->GetData().TileVertexBufferPtrs[SRC.TilesLayer] = RenderCommand::s_GraphicsPipeline->GetData().TileVertexBuffers[SRC.TilesLayer]->CreateTile(RenderCommand::s_GraphicsPipeline->GetData().TileVertexBufferPtrs[SRC.TilesLayer], SRC.QuadProps.TintColor, RenderCommand::s_GraphicsPipeline->GetData().QuadVertexPositions, SRC.QuadProps.Size, SRC.QuadProps.Transform, SRC.QuadProps.TextureCoords, SRC.QuadProps.TilingFactor, TextureIndex, SRC.QuadProps.EntityID);
-		RenderCommand::s_GraphicsPipeline->GetData().TileIndexCounts[SRC.TilesLayer] += 6;
+		RenderCommand::s_GraphicsPipeline->GetData().TileVertexBufferPtrs[(size_t)SRC.TilesLayer] = RenderCommand::s_GraphicsPipeline->GetData().TileVertexBuffers[(size_t)SRC.TilesLayer]->CreateTile(RenderCommand::s_GraphicsPipeline->GetData().TileVertexBufferPtrs[(size_t)SRC.TilesLayer], SRC.QuadProps.TintColor, RenderCommand::s_GraphicsPipeline->GetData().QuadVertexPositions, SRC.QuadProps.Size, SRC.QuadProps.Transform, SRC.QuadProps.TextureCoords, SRC.QuadProps.TilingFactor, TextureIndex, SRC.QuadProps.EntityID);
+		RenderCommand::s_GraphicsPipeline->GetData().TileIndexCounts[(size_t)SRC.TilesLayer] += 6;
 		RenderCommand::s_GraphicsPipeline->GetData().Stats.TileCount++;
 	}
 	void Renderer2D::DrawString(const StringProperties& Props)
@@ -314,7 +314,7 @@ namespace AGE
 				y -= FSScale * Metrics.lineHeight + LineHeightOffset;
 				continue;
 			}
-			auto Glyph = FontGeometry.getGlyph(Character);
+			auto Glyph = FontGeometry.getGlyph((uint32_t)Character);
 			if (!Glyph)
 			{
 				Glyph = FontGeometry.getGlyph('?');
@@ -410,7 +410,7 @@ namespace AGE
 		Ref<IndexBuffer> SquareIB;
 		SquareIB = IndexBuffer::Create(SquareIndices, RenderCommand::s_GraphicsPipeline->GetData().MaxIndexCount);
 
-		for (int i = 0; i < layers.size(); i++)
+		for (size_t i = 0; i < layers.size(); i++)
 		{
 			RenderCommand::s_GraphicsPipeline->GetData().TileVertexArrays.push_back(VertexArray::Create());
 
@@ -440,7 +440,7 @@ namespace AGE
 
 		for (int i = (int)layers.size() - 1; i >= 0 ; i--)
 		{
-			DrawTileMapLayer(TMRC, Map, layers[i], i);
+			DrawTileMapLayer(TMRC, Map, layers[(size_t)i], i);
 			
 		}
 		TMRC.bFirstPass = false;
@@ -473,7 +473,7 @@ namespace AGE
 			{
 				uint32_t i, j;
 				uint32_t gid, x, y, w, h, flags;
-				int ID;
+				uint32_t ID;
 				double op;
 				tmx_tileset* ts;
 				tmx_image* im;
@@ -502,13 +502,13 @@ namespace AGE
 							{
 								image = ts->image->resource_image;
 							}
-							flags = (layer->content.gids[(i * Map->width) + j]) & ~TMX_FLIP_BITS_REMOVAL;
+							//flags = (layer->content.gids[(i * Map->width) + j]) & ~TMX_FLIP_BITS_REMOVAL;
 							if (image)
 							{
 								std::string Name = "Tile " + std::to_string(j) + ":" + std::to_string(i);
 								Entity E = TMRC.ActiveScene->CreateEntity(Name);
 								E.AddComponent<SpriteRendererComponent>();
-								E.GetComponent<SpriteRendererComponent>().TileID = ID;
+								E.GetComponent<SpriteRendererComponent>().TileID = (int)ID;
 								E.GetComponent<SpriteRendererComponent>().bTile = true;
 								E.GetComponent<SpriteRendererComponent>().TilesLayer = Depth;
 								E.GetComponent<SpriteRendererComponent>().SubTexture = TMRC.TileTextures[ID];

@@ -228,9 +228,9 @@ namespace AGE
 
 		void ClearImage(Vector4 Color);
 
-		uint32_t* GetRGBLineAddress(int y);
+		uint32_t* GetRGBLineAddress(uint32_t y);
 
-		uint16_t* GetGSLineAddress(int y);
+		uint16_t* GetGSLineAddress(uint16_t y);
 
 
 		uint32_t* GetRGBAddress(uint32_t x, uint32_t y);

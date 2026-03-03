@@ -1,4 +1,5 @@
 #pragma once
+#if 0
 #include "Core/Public/Core.h"
 #include "Texture/Public/Texture.h"
 
@@ -63,3 +64,4 @@ namespace AGE
 		int m_Channels;
 	};
 }
+#endif

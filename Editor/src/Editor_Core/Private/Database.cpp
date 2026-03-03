@@ -7,10 +7,6 @@
 #include "Core/Public/Log.h"
 #include <string>
 
-#include "Core/Public/Keycodes.h"
-
-#include "glm/gtc/matrix_access.hpp"
-
 namespace AGE
 {
 	Database::Database()
@@ -152,7 +148,6 @@ namespace AGE
 		}
 		return false;
 	}
-
 	void Database::AddPreppedStatement(const std::string &DBName, StatementType Type,
 		const std::string &PreppedStatement)
 	{
@@ -203,7 +198,7 @@ namespace AGE
 
 		std::string Query = std::vformat("CREATE TABLE \"{}\"(\n", std::make_format_args(TableName));
 
-		for (int i =0; i < Columns.size(); i++)
+		for (size_t i =0; i < Columns.size(); i++)
 		{
 			if (i == Columns.size() - 1)
 			{
@@ -238,7 +233,7 @@ namespace AGE
 		std::string Query = std::vformat("SELECT * FROM  \"{}\"", std::make_format_args(TableName));
 		std::vector<GameFramework::EnemyStats> Fields;
 		pqxx::result r = txn.exec(Query);
-		size_t row = std::size(r);
+		int row = std::size(r);
 
 		for (int i = 0; i < row; i++)
 		{
@@ -254,17 +249,17 @@ namespace AGE
 			Stats.Speed = Entry["\"Speed\""].as<uint32_t>();
 			Stats.Name = Entry["\"Name\""].as<std::string>();
 			pqxx::array<uint16_t> Abs = Entry["\"Absorb\""].as_sql_array<uint16_t>();
-			for (int i =0; i < Abs.size(); i++)
+			for (int a =0; i < Abs.size(); a++)
 			{
-				Stats.Absorb.emplace_back(Abs[i]);
+				Stats.Absorb.emplace_back(Abs[a]);
 			}
 			pqxx::array<uint16_t> Red = Entry["\"Reduce\""].as_sql_array<uint16_t>();
-			for (int i =0; i < Red.size(); i++)
+			for (int a =0; i < Red.size(); a++)
 			{
-				Stats.Reduce.emplace_back(Red[i]);
+				Stats.Reduce.emplace_back(Red[a]);
 			}
 			pqxx::array<uint16_t> Weakness = Entry["\"Weak\""].as_sql_array<uint16_t>();
-			for (int i =0; i < Weakness.size(); i++)
+			for (int a =0; a < Weakness.size(); a++)
 			{
 				Stats.Weak.emplace_back(Weakness[i]);
 			}

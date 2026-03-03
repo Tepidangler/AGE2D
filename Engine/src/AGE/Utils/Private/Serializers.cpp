@@ -153,7 +153,7 @@ namespace YAML
 		static Node encode(const std::vector<std::pair<std::string, std::vector<uint8_t>>>& rhs)
 		{
 			Node node;
-			for (int i = 0; i < rhs.size(); i++)
+			for (size_t i = 0; i < rhs.size(); i++)
 			{
 				node = rhs[i].first;
 				node = rhs[i].second;
@@ -170,7 +170,7 @@ namespace YAML
 			{
 				return false;
 			}
-			int i = 0;
+			size_t i = 0;
 			std::pair<std::string, std::vector<uint8_t>> Pair;
 			for (auto& N: node)
 			{
@@ -195,7 +195,7 @@ namespace YAML
 		static Node encode(const std::vector<uint8_t>& rhs)
 		{
 			Node node;
-			for (int i = 0; i < rhs.size(); i++)
+			for (size_t i = 0; i < rhs.size(); i++)
 			{
 				node[i] = rhs[i];
 			}
@@ -210,11 +210,11 @@ namespace YAML
 			}
 
 			rhs.resize(node.size());
-			for (int i = 0; i < node.size(); i++)
+			for (size_t i = 0; i < node.size(); i++)
 			{
 				//part of this potential workaround
 				std::string s = node[i].as<std::string>();
-				rhs[i] = *s.data();
+				rhs[i] = (unsigned char)*s.data();
 			}
 
 			return true;
@@ -309,9 +309,9 @@ namespace AGE
 			//Ignorant workaround, but this should be looked into for fixing
 			for (auto& i : B.second)
 			{
-				char c = i;
+				unsigned char c = i;
 				std::string s;
-				s += c;
+				s += (char)c;
 				Out << s;
 			}
 			Out << YAML::EndSeq;
@@ -935,7 +935,7 @@ namespace AGE
 				std::string::size_type const p(base.find_last_of('.'));
 				std::string filename = base.substr(0, p);
 				In.seekg(0, std::ios::end);
-				Result.resize(In.tellg());
+				Result.resize((size_t)In.tellg());
 				CurrentOffset += filename.size();
 				CurrentOffset += Result.size();
 				Stream.WriteRaw<size_t>(CurrentOffset);
@@ -955,9 +955,13 @@ namespace AGE
 			if (In)
 			{
 				In.seekg(0, std::ios::end);
-				Result.resize(In.tellg());
+				Result.resize((size_t)In.tellg());
 				In.seekg(0, std::ios::beg);
+#ifdef __clang__
+				In.read(&Result[0], (long)Result.size());
+#else
 				In.read(&Result[0], Result.size());
+#endif
 				Stream.WriteRaw<const char*>(Result.c_str());
 			}
 
@@ -997,7 +1001,7 @@ namespace AGE
 		Info.ConfigFilepath = ProjectNode["ConfigPath"].as <std::string>();
 		if (ProjectNode["Scenes"])
 		{
-			int index = 0;
+			size_t index = 0;
 			for (auto S : ProjectNode["Scenes"])
 			{
 				Info.BuiltScenes.resize(ProjectNode["Scenes"].size());

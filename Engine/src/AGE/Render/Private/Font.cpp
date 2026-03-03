@@ -7,6 +7,8 @@
 #ifdef __clang__
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
+#pragma clang diagnostic ignored "-Wfloat-conversion"
+#pragma clang diagnostic ignored "-Wsign-conversion"
 #include "msdf-atlas-gen/msdf-atlas-gen.h"
 #pragma clang diagnostic pop
 #elif defined(__GNUC__)
@@ -38,7 +40,7 @@ namespace AGE
 		Attributes.config.overlapSupport = true;
 		Attributes.scanlinePass = true;
 
-		msdf_atlas::ImmediateAtlasGenerator<S, N, GenFunc, msdf_atlas::BitmapAtlasStorage<T, N>> Generator(Width, Height);
+		msdf_atlas::ImmediateAtlasGenerator<S, N, GenFunc, msdf_atlas::BitmapAtlasStorage<T, N>> Generator((int)Width, (int)Height);
 		Generator.setAttributes(Attributes);
 		Generator.setThreadCount(8);
 		Generator.generate(Glyphs.data(), (int)Glyphs.size());
@@ -46,14 +48,14 @@ namespace AGE
 		msdfgen::BitmapConstRef<T, N> BitMap = (msdfgen::BitmapConstRef<T, N>)Generator.atlasStorage();
 
 		TextureSpecification Spec;
-		Spec.Width = BitMap.width;
-		Spec.Height = BitMap.height;
+		Spec.Width = (uint32_t)BitMap.width;
+		Spec.Height = (uint32_t)BitMap.height;
 		Spec.Format = ImageFormat::RGB8;
 		Spec.GenerateMips = false;
 
 
 		Ref<Texture2D> Texture = Texture2D::Create(Spec);
-		Texture->SetData((void*)BitMap.pixels, BitMap.width * BitMap.height * 3);
+		Texture->SetData((void*)BitMap.pixels, (uint32_t)(BitMap.width * BitMap.height * 3));
 		Texture->SetName(FontName);
 		return Texture;
 	}
@@ -129,8 +131,8 @@ namespace AGE
 		{
 			msdf_atlas::Workload([&Glyphs = m_Data->Glyphs, &ColoringSeed](int i, int ThreadNo) -> bool
 				{
-					uint64_t GlyphSeed = (LCG_MULTIPLIER * (ColoringSeed ^ i) + LCG_INCREMENT) * !!ColoringSeed;
-					Glyphs[i].edgeColoring(msdfgen::edgeColoringInkTrap, DEFAULT_ANGLE_THRESHOLD, GlyphSeed);
+					uint64_t GlyphSeed = (LCG_MULTIPLIER * (ColoringSeed ^ (uint64_t)i) + LCG_INCREMENT) * !!ColoringSeed;
+					Glyphs[(size_t)i].edgeColoring(msdfgen::edgeColoringInkTrap, DEFAULT_ANGLE_THRESHOLD, GlyphSeed);
 					return true;
 				}, (int)m_Data->Glyphs.size()).finish(THREAD_COUNT);
 		}
@@ -144,7 +146,7 @@ namespace AGE
 			}
 		}
 
-		m_AtlasTexture = CreateAndCacheAtlas<uint8_t, float, 3, msdf_atlas::msdfGenerator>(Utils::EngineStatics::GetFilename(Path), (float)EmSize, m_Data->Glyphs, m_Data->FontGeometry, width, height);
+		m_AtlasTexture = CreateAndCacheAtlas<uint8_t, float, 3, msdf_atlas::msdfGenerator>(Utils::EngineStatics::GetFilename(Path), (float)EmSize, m_Data->Glyphs, m_Data->FontGeometry, (uint32_t)width, (uint32_t)height);
 		m_AtlasTexture->SetTextureFilePath(FontPath.string());
 		SaveFont();
 

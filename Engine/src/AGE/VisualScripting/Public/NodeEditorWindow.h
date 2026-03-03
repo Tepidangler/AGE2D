@@ -33,11 +33,11 @@ namespace AGE
 			std::vector<AGENode> Nodes(Data.m_Nodes.size());
 			std::vector<AGENodeLink> Links(Data.m_Links.size());
 
-			for (int i = 0; i < Nodes.size(); i++)
+			for (size_t i = 0; i < Nodes.size(); i++)
 			{
 				Nodes[i] = *Data.m_Nodes[i].get();
 			}
-			for (int i = 0; i < Links.size(); i++)
+			for (size_t i = 0; i < Links.size(); i++)
 			{
 				Links[i] = *Data.m_Links[i].get();
 			}

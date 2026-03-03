@@ -1,10 +1,37 @@
 #pragma once
-#include <imgui_node_editor.h>
-#include <utilities/builders.h>
-#include <utilities/widgets.h>
 #include "Scene/Public/ScriptableEntity.h"
 #include "Structs/Public/Functions.h"
+
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wconversion"
+#pragma clang diagnostic ignored "-Wnontrivial-memcall"
+#ifdef AG_PLATFORM_WINDOWS
+#pragma clang diagnostic ignored "-Wmicrosoft-unqualified-friend"
+#endif
+#include <utilities/builders.h>
+#include <utilities/widgets.h>
+#include <imgui_node_editor.h>
 #include <rttr/registration>
+#pragma clang diagnostic pop
+#elif defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wfloat-conversion"
+#ifdef AG_PLATFORM_WINDOWS
+#pragma GCC diagnostic ignored "-Wmicrosoft-unqualified-friend"
+#endif
+#include <rttr/registration>
+#include <imgui_node_editor.h>
+#pragma GCC diagnostic pop
+#elif defined(_MSC_VER)
+#pragma warning(push, 0)
+#include <rttr/registration>
+#include <imgui_node_editor.h>
+#pragma warning(pop)
+#else
+#error "Compiler is not supported with AGE yet"
+#endif
 
 namespace AGE
 {
@@ -731,11 +758,11 @@ namespace AGE
 			std::vector<AGEPin> Inputs(Data.Inputs.size());
 			std::vector<AGEPin> Outputs(Data.Outputs.size());
 
-			for (int i = 0; i < Inputs.size(); i++)
+			for (size_t i = 0; i < Inputs.size(); i++)
 			{
 				Inputs[i] = *Data.Inputs[i].get();
 			}
-			for (int i = 0; i < Outputs.size(); i++)
+			for (size_t i = 0; i < Outputs.size(); i++)
 			{
 				Outputs[i] = *Data.Outputs[i].get();
 			}

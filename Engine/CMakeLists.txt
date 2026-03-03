@@ -318,16 +318,32 @@ if(WIN32)
 			$<$<CONFIG:MinSizeRel>:/WX /Os /Oy>
 	)
 elseif(UNIX)
-	target_compile_options(Engine PUBLIC
-			$<$<CONFIG:Debug>:-fsanitize=address,undefined -static-libasan -MT -Wall -Werror -Wconversion -O0>
-			$<$<CONFIG:RelWithDebInfo>:-Wall -Werror -Wconversion -MT -O3>
-			$<$<CONFIG:MinSizeRel>:-Wall -Werror -Wconversion -MT -Os>
-	)
-	target_link_options(Engine PUBLIC
-			$<$<CONFIG:Debug>:-fsanitize=address,undefined -static-libasan>
-			$<$<CONFIG:RelWithDebInfo>:-fsanitize=address,undefined>
-			$<$<CONFIG:MinSizeRel>:-fsanitize=address,undefined>
-	)
+	if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+		target_compile_options(Engine PUBLIC
+				$<$<CONFIG:Debug>:-fsanitize=address,undefined -static-libsan -MT -Wall -Werror -Wconversion -O0  -g>
+				$<$<CONFIG:RelWithDebInfo>:-Wall -Werror -Wconversion -MT -O3>
+				$<$<CONFIG:MinSizeRel>:-Wall -Werror -Wconversion -MT -Os>
+		)
+		target_link_options(Engine PUBLIC
+
+				$<$<CONFIG:Debug>:-fsanitize=address,undefined -static-libsan>
+				$<$<CONFIG:RelWithDebInfo>:-fsanitize=address,undefined>
+				$<$<CONFIG:MinSizeRel>:-fsanitize=address,undefined>
+		)
+	elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+		target_compile_options(Engine PUBLIC
+				$<$<CONFIG:Debug>:-fsanitize=address,undefined -static-libasan -static-libubsan -MT -Wall -Werror -Wconversion -O0  -g>
+				$<$<CONFIG:RelWithDebInfo>:-Wall -Werror -Wconversion -MT -O3>
+				$<$<CONFIG:MinSizeRel>:-Wall -Werror -Wconversion -MT -Os>
+		)
+		target_link_options(Engine PUBLIC
+
+				$<$<CONFIG:Debug>:-fsanitize=address,undefined -static-libasan -static-libubsan>
+				$<$<CONFIG:RelWithDebInfo>:-fsanitize=address,undefined>
+				$<$<CONFIG:MinSizeRel>:-fsanitize=address,undefined>
+		)
+	endif()
+
 elseif(APPLE)
 	target_compile_options(Engine PUBLIC
 			$<$<CONFIG:Debug>:-Wall -Wconversion -MT -O0>
@@ -359,9 +375,9 @@ find_package(EnTT REQUIRED)
 find_package(fastgltf CONFIG REQUIRED)
 find_package(nlohmann_json 3.12.0 REQUIRED)
 find_package(tmx CONFIG REQUIRED)
+find_package(box2d CONFIG REQUIRED)
 endif()
 find_package(glm REQUIRED)
-find_package(box2d CONFIG REQUIRED)
 find_package(fmt CONFIG REQUIRED)
 find_package(yaml-cpp REQUIRED)
 

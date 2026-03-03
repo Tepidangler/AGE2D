@@ -3,7 +3,7 @@
 #include "Render/Public/FrameBuffer.h"
 #include "Core/Public/DeltaTime.h"
 #include "Camera/Public/EditorCamera.h"
-
+#if 0
 
 namespace AGE
 {
@@ -34,3 +34,4 @@ namespace AGE
 
 
 }
+#endif

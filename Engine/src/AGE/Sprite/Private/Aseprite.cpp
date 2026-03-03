@@ -111,7 +111,7 @@ namespace AGE
 		uint8_t NotNeeded[2];
 		//uint16_t Type;
 
-		for (int i = 0; i < Size; i++)
+		for (size_t i = 0; i < Size; i++)
 		{
 			//Read Frame header data
 			Stream->ReadRaw<uint32_t>(Data.BytesInFrame);
@@ -185,7 +185,7 @@ namespace AGE
 						for (int x = 0; x < (int)Chunk.NumOfColors; x++)
 						{
 							Stream.ReadRaw<uint8_t[3]>(Color);
-							Chunk.Colors[x] = Color;
+							Chunk.Colors[(size_t)x] = Color;
 						}
 					}
 					F.OldPaletteChunks.push_back(Chunk);
@@ -238,7 +238,7 @@ namespace AGE
 	{
 		AsepriteCelChunk CelChunk;
 		uint8_t Useless;
-		int Index = 0;
+		size_t Index = 0;
 
 		for (auto& F : Data.Frames)
 		{
@@ -431,7 +431,7 @@ namespace AGE
 						Stream.ReadRaw<uint8_t>(Useless);
 					}
 
-					for (int i = 0; i < Chunk.NumOfTags; i++)
+					for (size_t i = 0; i < Chunk.NumOfTags; i++)
 					{
 						Stream.ReadRaw<uint16_t>(Chunk.Tags[i].FromFrame);
 						Stream.ReadRaw<uint16_t>(Chunk.Tags[i].ToFrame);
@@ -644,13 +644,13 @@ namespace AGE
 								{
 									int32_t A;
 									int32_t B;
-									int32_t C;
-									int32_t D;
+									int32_t W;
+									int32_t H;
 									Stream.ReadRaw<int32_t>(A);
 									Stream.ReadRaw<int32_t>(B);
-									Stream.ReadRaw<int32_t>(C);
-									Stream.ReadRaw<int32_t>(D);
-									KV.PropData.Rect = { A,B, C,D };
+									Stream.ReadRaw<int32_t>(W);
+									Stream.ReadRaw<int32_t>(H);
+									KV.PropData.Rect = { A,B, W,H };
 									break;
 								}
 								case AsepritePropertyTypes::Vector:
@@ -660,7 +660,7 @@ namespace AGE
 									Stream.ReadRaw<uint16_t>(KV.ElementsType);
 									if (KV.ElementsType == 0)
 									{
-										for (uint32_t i = 0; i < KV.NumofElementsInVec; i++)
+										for (uint32_t e = 0; i < KV.NumofElementsInVec; e++)
 										{
 											//Get Type
 											uint16_t Type;
@@ -675,7 +675,7 @@ namespace AGE
 									else
 									{
 										std::vector<std::byte> Bytes;
-										for (uint32_t i = 0; i < KV.NumofElementsInVec; i++)
+										for (uint32_t e = 0; e < KV.NumofElementsInVec; e++)
 										{
 											Stream.ReadBytes(Bytes, 4);
 										}
@@ -685,12 +685,12 @@ namespace AGE
 								}
 								case AsepritePropertyTypes::NestedMapProps:
 								{
-									uint32_t NumOfProps;
-									Stream.ReadRaw<uint32_t>(NumOfProps);
+									uint32_t NumOfProperties;
+									Stream.ReadRaw<uint32_t>(NumOfProperties);
 									std::vector<std::byte> Bytes;
 									CoreLogger::Error("Not Implemented");
 
-									for (uint32_t i = 0; i < NumOfProps; i++)
+									for (uint32_t p = 0; p < NumOfProperties; p++)
 									{
 										Stream.ReadBytes(Bytes, sizeof(std::map<std::string, AsepriteVariant>));
 									}
@@ -769,9 +769,9 @@ namespace AGE
 		{
 			for (auto& L : F.Layers)
 			{
-				for (int i = 0; i < (int)L.CelChunks.size(); ++i)
+				for (int s = 0; s < (int)L.CelChunks.size(); ++s)
 				{
-					const int z = L.CelChunks[i].zIndex;
+					const int z = L.CelChunks[(size_t)s].zIndex;
 					if (z != 0)
 					{
 						ZIndexExist = true;
