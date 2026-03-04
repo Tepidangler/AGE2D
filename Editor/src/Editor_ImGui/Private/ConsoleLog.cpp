@@ -21,7 +21,7 @@ namespace AGE
 				clipper.Begin((int)LineOffsets.size());
 				while (clipper.Step())
 				{
-					for (int l = clipper.DisplayStart; l < clipper.DisplayEnd; l++)
+					for (size_t l = (size_t)clipper.DisplayStart; l < clipper.DisplayEnd; l++)
 					{
 						const char* line_start = Buf + LineOffsets[l];
 						const char* line_end = (l + 1 < LineOffsets.size()) ? (Buf + LineOffsets[l + 1] - 1) : Buf_End;

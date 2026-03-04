@@ -138,7 +138,7 @@ namespace AGE
 
 			if (ImGui::BeginCombo("Projects", CurrentProjectString.data()))
 			{
-				for (int i = 0; i < ProjectStrings.size(); i++)
+				for (size_t i = 0; i < ProjectStrings.size(); i++)
 				{
 					bool IsSelected = CurrentProjectString == ProjectStrings[i];
 

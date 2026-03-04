@@ -81,7 +81,7 @@ namespace AGE
         ImGui::InputInt("##XPReward", &Reward, 1, 10);
         m_QuestManager->GetQuest(CurrentQuestName)->XPReward = Reward;
         ImGui::Text("Item Reward: "); ImGui::SameLine();
-        for (int i = 0; i < m_QuestManager->GetQuest(CurrentQuestName)->ItemRewards.size(); i++)
+        for (size_t i = 0; i < m_QuestManager->GetQuest(CurrentQuestName)->ItemRewards.size(); i++)
         {
             std::string Item = m_QuestManager->GetQuest(CurrentQuestName)->ItemRewards[i];
             ImGui::Text("%s",Item.c_str());
@@ -103,7 +103,7 @@ namespace AGE
         ImGui::Text("%s", ConvertQuestTypeToString(m_QuestManager->GetQuest(CurrentQuestName)->GetQuestType()).c_str());
         ImGui::Separator();
 
-        int Index = 0;
+        size_t Index = 0;
         for (auto& C : m_QuestManager->GetQuest(CurrentQuestName)->GetCheckpoints())
         {
             ImGui::Text("Checkpoint ID: "); ImGui::SameLine();
@@ -126,7 +126,7 @@ namespace AGE
             ImGui::Text("Quest Type: ");
             if (ImGui::BeginCombo("##QuestType", CurrentQuestTypeString))
             {
-                for (int i = 0; i < 2; i++)
+                for (size_t i = 0; i < 2; i++)
                 {
                     bool IsSelected = CurrentQuestTypeString == QuestTypeStrings[i];
 
@@ -154,7 +154,7 @@ namespace AGE
             {
                 m_SelectionContext.AddCheckpoint();
             }
-            int Index = 0;
+            size_t Index = 0;
             for (auto& C : m_SelectionContext.GetCheckpoints())
             {
                 ImGui::Text("Checkpoint ID: "); ImGui::SameLine();
@@ -167,7 +167,7 @@ namespace AGE
             ImGui::Text("Rewards");
             ImGui::Text("XP: "); ImGui::SameLine();
             ImGui::InputInt("##XP", &m_SelectionContext.XPReward, 1, 10);
-            for (int i = 0; i < m_SelectionContext.ItemRewards.size(); i++)
+            for (size_t i = 0; i < m_SelectionContext.ItemRewards.size(); i++)
             {
                 std::string Item = m_SelectionContext.ItemRewards[i];
                 ImGui::Text("%s",Item.c_str());
@@ -235,7 +235,7 @@ namespace AGE
                     ImGui::Text("%s","Current Quest: ");
                     if (ImGui::BeginCombo("##CurrentQuest", CurrentQuestName.c_str()))
                     {
-                        for (int i = 0; i < m_QuestNameStrings.size(); i++)
+                        for (size_t i = 0; i < m_QuestNameStrings.size(); i++)
                         {
                             bool IsSelected = CurrentQuestName == m_QuestNameStrings[i];
 

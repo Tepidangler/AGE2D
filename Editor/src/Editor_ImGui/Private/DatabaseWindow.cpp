@@ -4,7 +4,35 @@
 
 #include "Core/Public/AGEpch.hpp"
 #include "Editor_ImGui/Public/DatabaseWindow.h"
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wconversion"
+#pragma clang diagnostic ignored "-Wnontrivial-memcall"
+#ifdef AG_PLATFORM_WINDOWS
+#pragma clang diagnostic ignored "-Wmicrosoft-unqualified-friend"
+#endif
 #include <misc/cpp/imgui_stdlib.h>
+#include <misc/cpp/imgui_stdlib.cpp>
+#pragma clang diagnostic pop
+#elif defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wfloat-conversion"
+#ifdef AG_PLATFORM_WINDOWS
+#pragma GCC diagnostic ignored "-Wmicrosoft-unqualified-friend"
+#endif
+#include <misc/cpp/imgui_stdlib.h>
+#include <misc/cpp/imgui_stdlib.cpp>
+#pragma GCC diagnostic pop
+#elif defined(_MSC_VER)
+#pragma warning(push, 0)
+#include <misc/cpp/imgui_stdlib.h>
+#include <misc/cpp/imgui_stdlib.cpp>
+#pragma warning(pop)
+#else
+#error "Compiler is not supported with AGE yet"
+#endif
+
 #include <openssl/evp.h>
 #include <Age.h>
 
@@ -73,7 +101,7 @@ namespace AGE
 			ImGui::Text("Database: "); ImGui::SameLine();
 			if (ImGui::BeginCombo("##Databases", m_CurrentDatabaseString.c_str()))
 			{
-				for (int i = 0; i < m_AvailableDBs.size(); ++i)
+				for (size_t i = 0; i < m_AvailableDBs.size(); ++i)
 				{
 					bool IsSelected = m_CurrentDatabaseString == m_AvailableDBs.at(i);
 					if (ImGui::Selectable(m_AvailableDBs[i].c_str(), IsSelected))
@@ -136,7 +164,7 @@ namespace AGE
 						ImGui::InputText(MakeWindowID(ID).c_str(), &std::get<0>(D)); ImGui::SameLine();
 						if (ImGui::BeginCombo(MakeWindowID(ID).c_str(), std::get<1>(D).c_str()))
 						{
-							for (int i = 0; i < m_SQLTypes.size(); ++i)
+							for (size_t i = 0; i < m_SQLTypes.size(); ++i)
 							{
 								bool IsSelected = std::get<1>(D) == m_SQLTypes[i];
 								if (ImGui::Selectable(m_SQLTypes[i].c_str(), IsSelected))
@@ -514,7 +542,7 @@ namespace AGE
 			ImGui::Text("Table: ");ImGui::SameLine();
 			if (ImGui::BeginCombo("##ReloadTableCombo",m_CurrentTable.c_str()))
 			{
-				for (int i = 0; i < m_Tables.size(); ++i)
+				for (size_t i = 0; i < m_Tables.size(); ++i)
 				{
 					bool IsSelected = m_CurrentTable == m_Tables[i];
 					if (ImGui::Selectable(m_Tables[i].c_str(), IsSelected))
@@ -557,7 +585,7 @@ namespace AGE
 			ImGui::Text("Table: ");ImGui::SameLine();
 			if (ImGui::BeginCombo("##ExportTableCombo",m_CurrentTable.c_str()))
 			{
-				for (int i = 0; i < m_Tables.size(); ++i)
+				for (size_t i = 0; i < m_Tables.size(); ++i)
 				{
 					bool IsSelected = m_CurrentTable == m_Tables[i];
 					if (ImGui::Selectable(m_Tables[i].c_str(), IsSelected))
@@ -614,7 +642,7 @@ namespace AGE
 			{
 				std::string Column = "(";
 				std::string Values = " VALUES (";
-				for (int i = 0; i < Columns.size(); ++i)
+				for (size_t i = 0; i < Columns.size(); ++i)
 				{
 					if (i == Columns.size() - 1)
 					{
@@ -643,10 +671,10 @@ namespace AGE
 				{
 					if (i == Columns.size() - 1)
 					{
-						ColumnValue += std::format(" \"{}\"=${}", Columns[i], std::to_string(i+1));
+						ColumnValue += std::format(" \"{}\"=${}", Columns[(size_t)i], std::to_string(i+1));
 						continue;
 					}
-					ColumnValue += std::format(" \"{}\"=${},", Columns[i], std::to_string(i+1));
+					ColumnValue += std::format(" \"{}\"=${},", Columns[(size_t)i], std::to_string(i+1));
 				}
 
 				UpdateStatement += ColumnValue;

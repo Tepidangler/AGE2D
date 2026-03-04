@@ -324,3 +324,4 @@ _deps
 !/cmake-build-relwithdebinfo-wsl-clang/
 
 !/cmake-build-relwithdebinfo-wsl-gcc/
+!/Editor/AppConfig.ini

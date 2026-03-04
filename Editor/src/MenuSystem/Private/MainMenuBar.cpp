@@ -589,7 +589,7 @@ namespace AGE
 				ImGui::Text("Start Scene "); ImGui::SameLine();
 				if (ImGui::BeginCombo("##SelectedScene", CurrentSceneSelection.c_str()))
 				{
-					for (int i = 0; i < m_SceneNames.size(); i++)
+					for (size_t i = 0; i < m_SceneNames.size(); i++)
 					{
 						bool IsSelected = CurrentSceneSelection == m_SceneNames[i];
 						if (ImGui::Selectable(m_SceneNames[i].c_str(), IsSelected))
@@ -630,7 +630,7 @@ namespace AGE
 				{
 					if (ImGui::BeginTable("Axis KeyBindings", 1))
 					{
-						for (int i = 0; i < m_AxisBindings.size(); i++)
+						for (size_t i = 0; i < m_AxisBindings.size(); i++)
 						{
 							std::string InputTextName = "##KeyBinding" + std::to_string(i);
 							std::string AddName = "Add Axis Key Binding " + std::to_string(i);
@@ -654,9 +654,9 @@ namespace AGE
 							std::string KeyName = "##Keys" + std::to_string(i);
 							if (ImGui::CollapsingHeader(KeyName.c_str()))
 							{
-								for (int x = 0; x < m_AxisBindings[i].second.size(); x++)
+								for (size_t x = 0; x < m_AxisBindings[i].second.size(); x++)
 								{
-									DrawAxisCombo(i, x);
+									DrawAxisCombo((int)i, (int)x);
 								}
 								ImGui::Separator();
 							}
@@ -687,7 +687,7 @@ namespace AGE
 				{
 					if (ImGui::BeginTable("Action KeyBindings", 1))
 					{
-						for (int i = 0; i < m_ActionBindings.size(); i++)
+						for (size_t i = 0; i < m_ActionBindings.size(); i++)
 						{
 							ImGui::TableNextColumn();
 							std::string InputTextName = "##ActionBinding" + std::to_string(i);
@@ -711,9 +711,9 @@ namespace AGE
 							std::string KeyName = "##Keys" + std::to_string(i);
 							if (ImGui::CollapsingHeader(KeyName.c_str()))
 							{
-								for (int x = 0; x < m_ActionBindings[i].second.size(); x++)
+								for (size_t x = 0; x < m_ActionBindings[i].second.size(); x++)
 								{
-									DrawActionCombo(i, x);
+									DrawActionCombo((int)i, (int)x);
 								}
 								ImGui::Separator();
 							}
@@ -918,19 +918,19 @@ namespace AGE
 	void MainMenuBar::DrawAxisCombo(int i, int x)
 	{
 		const char* KeyBindingStrings[] = { "Left Joystick X", "Left Joystick Y", "Right Joystick X", "Right Joystick Y", "DPad Left", "DPad Up", "DPad Right", "DPad Down" };
-		const char* CurrentKeyBindingString = KeyBindingStrings[(int)m_AxisBindings[i].second[x]];
+		const char* CurrentKeyBindingString = KeyBindingStrings[(int)m_AxisBindings[(size_t)i].second[(size_t)x]];
 		std::string ComboName = "Binding " + std::to_string(x);
 
 		if (ImGui::BeginCombo(ComboName.c_str(), CurrentKeyBindingString))
 		{
-			for (int y = 0; y < 8; y++)
+			for (size_t y = 0; y < 8; y++)
 			{
 				bool IsSelected = CurrentKeyBindingString == KeyBindingStrings[y];
 
 				if (ImGui::Selectable(KeyBindingStrings[y], IsSelected))
 				{
 					CurrentKeyBindingString = KeyBindingStrings[y];
-					m_AxisBindings[i].second[x] = Utils::ConvertToAxisKeyBinding(CurrentKeyBindingString);
+					m_AxisBindings[(size_t)i].second[(size_t)x] = Utils::ConvertToAxisKeyBinding(CurrentKeyBindingString);
 				}
 
 				if (IsSelected)
@@ -947,9 +947,9 @@ namespace AGE
 		std::string ButtonName = "Delete " + ComboName;
 		if (ImGui::Button(ButtonName.c_str()))
 		{
-			if (m_AxisBindings[i].second.size() > 0)
+			if (m_AxisBindings[(size_t)i].second.size() > 0)
 			{
-				m_AxisBindings[i].second.erase(m_AxisBindings[i].second.begin() + x);
+				m_AxisBindings[(size_t)i].second.erase(m_AxisBindings[(size_t)i].second.begin() + x);
 
 			}
 		}
@@ -959,7 +959,7 @@ namespace AGE
 	void MainMenuBar::DrawActionCombo(int i, int x)
 	{
 		const char* KeyBindingStrings[] = { "Face Button Bottom", "Face Button Right", "Face Button Left", "Face Button Top", "Left Bumper Button", "Right Bumper Button", "Select Button", "Start Button", "Guide Button", "Left Thumbstick", "Right Thumbstick"};
-		const char* CurrentKeyBindingString = KeyBindingStrings[(int)m_ActionBindings[i].second[x]];
+		const char* CurrentKeyBindingString = KeyBindingStrings[(int)m_ActionBindings[(size_t)i].second[(size_t)x]];
 		std::string ComboName = "Binding " + std::to_string(x);
 
 		if (ImGui::BeginCombo(ComboName.c_str(), CurrentKeyBindingString))
@@ -971,7 +971,7 @@ namespace AGE
 				if (ImGui::Selectable(KeyBindingStrings[y], IsSelected))
 				{
 					CurrentKeyBindingString = KeyBindingStrings[y];
-					m_ActionBindings[i].second[x] = Utils::ConvertToActionKeyBinding(CurrentKeyBindingString);
+					m_ActionBindings[(size_t)i].second[(size_t)x] = Utils::ConvertToActionKeyBinding(CurrentKeyBindingString);
 				}
 
 				if (IsSelected)
@@ -988,9 +988,9 @@ namespace AGE
 		std::string ButtonName = "Delete " + ComboName;
 		if (ImGui::Button(ButtonName.c_str()))
 		{
-			if (m_ActionBindings[i].second.size() > 0)
+			if (m_ActionBindings[(size_t)i].second.size() > 0)
 			{
-				m_ActionBindings[i].second.erase(m_ActionBindings[i].second.begin() + x);
+				m_ActionBindings[(size_t)i].second.erase(m_ActionBindings[(size_t)i].second.begin() + x);
 
 			}
 		}
