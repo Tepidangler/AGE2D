@@ -24,16 +24,16 @@ elseif(APPLE)
     set(CMAKE_STATIC_LIBRARY_SUFFIX ".a")
 endif()
 
-if(BUILD_PACKAGE)
-include(GNUInstallDirs)
-include(CPack)
-endif()
+
 project(AGE LANGUAGES CXX)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-
-
 include(Dependencies.cmake)
+
+if(BUILD_PACKAGE)
+    include(GNUInstallDirs)
+    include(CPack)
+endif()
 
 add_subdirectory(Engine)
 
