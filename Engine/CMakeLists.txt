@@ -474,3 +474,15 @@ else()
 endif()
 
 configure_file(CMake/Versioning.h.in Versioning.h)
+
+if(BUILD_PACKAGE)
+#	install(DIRECTORY
+#			${CMAKE_CURRENT_SOURCE_DIR}/src/AGE
+#	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/age2d/Engine
+#	FILES_MATCHING PATTERN "*.h"
+#	)
+	install(TARGETS Engine
+			LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+			PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/age2d/Engine
+	)
+endif()

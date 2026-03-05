@@ -8,6 +8,8 @@ set(WWISE_INSTALL_PATH "" CACHE PATH "Path Wwise SDK is Installed to")
 option(BUILD_WITH_WWISE "Build with Wwise Audio Engine" OFF)
 set(SPDLOG_USE_STD_FORMAT ON CACHE BOOL "Use std::format instead of fmtlib")
 set(MSDF_ATLAS_USE_SKIA OFF CACHE BOOL "Use Skia with msdf-gen-atlas")
+
+option(BUILD_PACKAGE "Build a package for corresponding operating systems" OFF)
 if(WIN32)
     message(Status " VCPKG_ROOT: " $ENV{VCPKG_ROOT})
     set(YAML_MSVC_SHARED_RT OFF CACHE BOOL "Don't use /MD || Don't use /MT")
@@ -22,8 +24,14 @@ elseif(APPLE)
     set(CMAKE_STATIC_LIBRARY_SUFFIX ".a")
 endif()
 
+if(BUILD_PACKAGE)
+include(GNUInstallDirs)
+include(CPack)
+endif()
 project(AGE LANGUAGES CXX)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+
 
 include(Dependencies.cmake)
 
