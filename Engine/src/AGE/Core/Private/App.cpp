@@ -36,11 +36,11 @@ namespace AGE
 		m_AppConfig.ProjectBasePath = std::string(Buffer[0]) + "/OneDrive/Documents/AGEProjects";
 		delete Buffer;
 #elif defined(AG_PLATFORM_LINUX)
-		std::string BasePath{std::getenv("USERPROFILE")};
-		m_AppConfig.ProjectBasePath = std::string{ BasePath + "/OneDrive/Documents/AGEProjects"};
+		std::string BasePath{std::getenv("HOME")};
+		m_AppConfig.ProjectBasePath = std::string{ BasePath + "/ageprojects"};
 #elif defined(AG_PLATFORM_MACOS)
-		std::string BasePath{std::getenv("USERPROFILE")};
-		m_AppConfig.ProjectBasePath = std::string{ BasePath + "/OneDrive/Documents/AGEProjects"};
+		std::string BasePath{std::getenv("HOME")};
+		m_AppConfig.ProjectBasePath = std::string{ BasePath + "/AGEProjects"};
 #endif
 
 		if (m_CommandLineArgs.Count < 3)
@@ -48,15 +48,23 @@ namespace AGE
 			bShowNewProjectMenu = true;
 		}
 
-		IniReader ini(m_CommandLineArgs.Args[1]);
-		bool HasMulti;
-		m_AppConfig.EditorAssetPath = ini.Read("Paths", "EditorAssetsPath",HasMulti);
-		m_AppConfig.DefaultFontPath = m_AppConfig.EditorAssetPath.string() + "/Fonts/Open_Sans/static/OpenSans-Regular.ttf";
-		if (HasMulti)
+		if (!m_CommandLineArgs.Args[1])
 		{
-			std::vector<std::string> Values  = ini.ReadAll("Paths", "EditorAssetsPath");
-			return;
+
 		}
+		else
+		{
+			IniReader ini(m_CommandLineArgs.Args[1]);
+			bool HasMulti;
+			m_AppConfig.EditorAssetPath = ini.Read("Paths", "EditorAssetsPath",HasMulti);
+			m_AppConfig.DefaultFontPath = m_AppConfig.EditorAssetPath.string() + "/Fonts/Open_Sans/static/OpenSans-Regular.ttf";
+			if (HasMulti)
+			{
+				std::vector<std::string> Values  = ini.ReadAll("Paths", "EditorAssetsPath");
+				return;
+			}
+		}
+
 
 
 	}
