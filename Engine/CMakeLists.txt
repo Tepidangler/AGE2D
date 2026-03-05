@@ -138,7 +138,7 @@ add_library(Engine STATIC
 		src/AGE/Audio/Fmod/Private/FmodEngine.cpp
 		src/AGE/Audio/Fmod/Public/FmodEngine.h
 		src/AGE/Audio/Wwise/Private/WwiseEngine.cpp
-		src/AGE/Audio/Wwise/Public/WwiseEngine.h
+		src/AGE/Audio/Wwise/Public/WWiseEngine.h
 		src/AGE/Camera/Private/EditorCamera.cpp
 		src/AGE/Camera/Public/EditorCamera.h
 		src/AGE/Camera/Public/Camera.h
