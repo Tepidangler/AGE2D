@@ -325,3 +325,4 @@ _deps
 
 !/cmake-build-relwithdebinfo-wsl-gcc/
 !/Editor/AppConfig.ini
+!/Engine/libs/
