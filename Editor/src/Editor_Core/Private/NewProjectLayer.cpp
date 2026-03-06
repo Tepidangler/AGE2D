@@ -2,7 +2,7 @@
 // Created by gdmgp on 12/6/2025.
 //
 
-#ifndef AG_DIST
+#if !AG_DIST
 #include "../Public/NewProjectLayer.h"
 #include "Editor_ImGui/Public/Dockspace.h"
 

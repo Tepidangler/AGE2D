@@ -1,5 +1,5 @@
 #pragma once
-#ifndef AG_DIST
+#if !AG_DIST
 #include "Editor_ImGui/Public/Dockspace.h"
 #include "Editor_Core/Public/Database.h"
 #include "Editor_ImGui/Public/DatabaseWindow.h"

@@ -1,4 +1,4 @@
-#ifndef AG_DIST
+#if !AG_DIST
 #include "MenuSystem/Public/CreateProjectMenu.h"
 #include "Editor_Core/Public/EditorLayer.h"
 #include <Age.h>

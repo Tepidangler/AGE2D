@@ -1,4 +1,4 @@
-#ifndef AG_DIST
+#if !AG_DIST
 #include "Editor_Core/Public/EditorLayer.h"
 #include <Core/Public/AGEpch.hpp>
 #include <Scene/Public/Components.h>

@@ -1,4 +1,4 @@
-#ifndef AG_DIST
+#if !AG_DIST
 #include <Core/Public/AGEpch.hpp>
 #include "Editor_ImGui/Public/Toolbar.h"
 #include "Editor_Core/Public/EditorLayer.h"
