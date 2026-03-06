@@ -43,6 +43,7 @@ FetchContent_Declare(openal-soft
         GIT_TAG master)
 
 set(LIBTYPE STATIC)
+
 FetchContent_MakeAvailable(openal-soft)
 
 set(OPENAL_INC_DIRS

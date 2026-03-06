@@ -32,13 +32,19 @@ include(Dependencies.cmake)
 
 if(BUILD_PACKAGE)
     include(GNUInstallDirs)
-    include(CPack)
 endif()
-
+set(CPACK_PACKAGE_NAME "age2d")
+set(CPACK_PACKAGE_ARCHITECTURE "amd64")
+set(CPACK_PACKAGE_VENDOR "Alcoy Game Studio")
+set(CPACK_PACKAGE_MAINTAINER "De'Lano Wilcox <tepidangler@protonmail.com>")
+set(CPACK_DEBIAN_PACKAGE_DEPENDS "libglfw3 (=3.4-3)")
 add_subdirectory(Engine)
 
 add_subdirectory(Game)
 
 add_subdirectory(Editor)
+if(BUILD_PACKAGE)
+    include(CPack)
+endif()
 
 
