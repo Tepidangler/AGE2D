@@ -20,8 +20,8 @@ namespace AGE
 		EVENT_CLASS_TYPE(WidgetConstructed)
 		EVENT_CLASS_CATEGORY(EventCategoryUI)
 	private:
-		Ref<ScriptableWidget> m_ScriptableWidget;
 		uint8_t m_Stack;
+		Ref<ScriptableWidget> m_ScriptableWidget;
 	};
 
 	class WidgetActivatedEvent : public Event
@@ -36,8 +36,8 @@ namespace AGE
 		EVENT_CLASS_TYPE(WidgetActivated)
 		EVENT_CLASS_CATEGORY(EventCategoryUI)
 	private:
-		Ref<ScriptableWidget> m_ScriptableWidget;
 		uint8_t m_Stack;
+		Ref<ScriptableWidget> m_ScriptableWidget;
 	};
 
 	class WidgetDeactivatedEvent : public Event
@@ -52,8 +52,8 @@ namespace AGE
 		EVENT_CLASS_TYPE(WidgetDeactivated)
 		EVENT_CLASS_CATEGORY(EventCategoryUI)
 	private:
-		Ref<ScriptableWidget> m_ScriptableWidget;
 		uint8_t m_Stack;
+		Ref<ScriptableWidget> m_ScriptableWidget;
 	};
 
 }

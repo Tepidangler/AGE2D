@@ -18,6 +18,8 @@ namespace AGE
 
 		template<typename T>
 		T* As();
+
+		virtual ~AudioEngine() = default;
 		static Ref<AudioEngine> Create(AudioEngineType Type);
 
 		virtual void Init() = 0;

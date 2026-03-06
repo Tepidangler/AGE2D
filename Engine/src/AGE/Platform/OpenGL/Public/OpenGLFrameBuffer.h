@@ -41,8 +41,6 @@ namespace AGE
 		FramebufferTextureSpecification m_DepthAttachmentSpecification = FramebufferTextureFormat::INVALIDFORMAT;
 		uint32_t m_DepthAttachment = 0;
 
-		int m_nrChannels = 4;
-
 		FrameBufferSpecification m_Specification;
 
 	};

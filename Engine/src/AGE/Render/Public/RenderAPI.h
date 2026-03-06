@@ -48,7 +48,7 @@ namespace AGE
 
 	namespace Utils
 	{
-		static std::string ConvertAPIToString()
+		[[maybe_unused]]static std::string ConvertAPIToString()
 		{
 			switch ((int)RendererAPI::GetAPI())
 			{

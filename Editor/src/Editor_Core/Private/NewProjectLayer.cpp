@@ -2,6 +2,7 @@
 // Created by gdmgp on 12/6/2025.
 //
 
+#ifndef AG_DIST
 #include "../Public/NewProjectLayer.h"
 #include "Editor_ImGui/Public/Dockspace.h"
 
@@ -53,3 +54,5 @@ namespace AGE
 		m_ProjectMenu->OnImGuiRender();
 	}
 } // AGE
+
+#endif

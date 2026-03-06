@@ -1,3 +1,4 @@
+#ifndef AG_DIST
 #include "MenuSystem/Public/CreateProjectMenu.h"
 #include "Editor_Core/Public/EditorLayer.h"
 #include <Age.h>
@@ -242,4 +243,4 @@ namespace AGE
 		}
 	}
 }
-
+#endif

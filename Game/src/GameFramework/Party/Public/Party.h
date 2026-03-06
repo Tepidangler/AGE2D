@@ -96,7 +96,7 @@ namespace GameFramework
 
 	private:
 
-		int m_ControlledCharacterKey = 0;
+		[[maybe_unused]] int m_ControlledCharacterKey = 0;
 	};
 
 

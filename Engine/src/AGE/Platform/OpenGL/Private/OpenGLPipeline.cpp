@@ -116,7 +116,11 @@ namespace AGE
 		
 		GenerateDefaultTextures();
 
+#ifdef __clang__
+		int32_t Samplers[32];
+#else
 		int32_t Samplers[m_Data.MaxTextureSlots];
+#endif
 		for (int i = 0; i < m_Data.MaxTextureSlots; i++)
 		{
 			Samplers[i] = i;
@@ -216,7 +220,7 @@ namespace AGE
 			uint32_t DataSize = (uint32_t)((uint8_t*)m_Data.TextVertexBufferPtr - (uint8_t*)m_Data.TextVertexBufferBase);
 			m_Data.VertexBuffers["Text"]->AddDataToBuffer(m_Data.TextVertexBufferBase, DataSize);
 
-			auto Buffer = m_Data.TextVertexBufferBase;
+			[[maybe_unused]] auto Buffer = m_Data.TextVertexBufferBase;
 			for (size_t i = 0; i < m_Data.FontAtlasTextures.size(); i++)
 			{
 				if (m_Data.FontAtlasTextures[i])

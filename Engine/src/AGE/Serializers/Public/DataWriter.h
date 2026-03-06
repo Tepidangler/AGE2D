@@ -207,7 +207,7 @@ namespace AGE
 
 	private:
 
-		void* m_Addr;
+		[[maybe_unused]] void* m_Addr;
 		std::stringstream m_Stream;
 	};
 }

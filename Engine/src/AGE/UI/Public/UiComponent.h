@@ -15,6 +15,7 @@
 #pragma clang diagnostic ignored "-Wconversion"
 #ifdef AG_PLATFORM_LINUX
 #pragma clang diagnostic ignored "-Wnontrivial-memcall"
+#pragma clang diagnostic ignored "-Wunused-function"
 #endif
 #ifdef AG_PLATFORM_WINDOWS
 #pragma clang diagnostic ignored "-Wmicrosoft-unqualified-friend"
@@ -84,7 +85,7 @@ namespace AGE
 		UIComponent() = default;
 
 
-		friend class Widget;
+		friend struct Widget;
 		RTTR_REGISTRATION_FRIEND
 
 	};

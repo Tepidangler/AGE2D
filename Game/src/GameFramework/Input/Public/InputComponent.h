@@ -17,10 +17,10 @@ namespace GameFramework
 	struct InputActionBinding
 	{
 	private:
-		uint8_t bConsumeInput = 1;
-		uint8_t bExecuteWhenPaused = 1;
 		uint8_t bPaired = 1;
 		std::string Name;
+		[[maybe_unused]] uint8_t bConsumeInput = 1;
+		[[maybe_unused]] uint8_t bExecuteWhenPaused = 1;
 		int Handle;
 
 	public:
@@ -31,10 +31,10 @@ namespace GameFramework
 
 	public:
 		InputActionBinding()
-			:bPaired(false), Name(std::string()), State(KeyState::Pressed), Handle(-1), bConsumeInput(true), bExecuteWhenPaused(false) {}
+			:bPaired(false), Name(std::string()), bConsumeInput(true), bExecuteWhenPaused(false), Handle(-1), State(KeyState::Pressed){}
 
 		InputActionBinding(const std::string& ActionName, const KeyState EventStatus)
-			: bPaired(false), Name(ActionName), State(EventStatus), Handle(-1), bConsumeInput(true), bExecuteWhenPaused(false) {}
+			: bPaired(false), Name(ActionName), bConsumeInput(true), bExecuteWhenPaused(false),Handle(-1), State(EventStatus) {}
 
 		InputActionBinding(const InputActionBinding&) = default;
 		//InputActionBinding(const AGE::Ref<InputActionBinding>&) = default;
@@ -69,12 +69,12 @@ namespace GameFramework
 	struct InputAxisBinding
 	{
 	public:
+		std::string AxisName;
+		float AxisValue;
 		uint8_t bConsumeInput = 1;
 		uint8_t bExecuteWhenPaused = 1;
 
-		std::string AxisName;
 
-		float AxisValue;
 
 		using AxisCallbackFn = std::function<void(float)>;
 

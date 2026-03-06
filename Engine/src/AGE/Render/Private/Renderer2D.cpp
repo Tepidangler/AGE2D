@@ -472,7 +472,7 @@ namespace AGE
 			else if (layer->type == L_LAYER)
 			{
 				uint32_t i, j;
-				uint32_t gid, x, y, w, h, flags;
+				[[maybe_unused]] uint32_t gid, x, y, w, h, flags;
 				uint32_t ID;
 				double op;
 				tmx_tileset* ts;

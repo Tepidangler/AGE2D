@@ -155,8 +155,8 @@ namespace AGE
 		uint32_t Height = 0;
 		int Channels = 4;
 		PixelType Type = PixelType::RGBA;
-		AsepriteFileData FileData;
 		AGESize Size = { 0,0 };
+		AsepriteFileData FileData;
 		AGERect Bounds = { 0,0,0,0 };
 		int PixelsPerByte = 0;
 		

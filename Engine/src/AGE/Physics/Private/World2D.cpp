@@ -70,7 +70,7 @@ namespace AGE
 
 	void World2D::QueryBoxOverlap(const QueryParams& Params)
 	{
-		Box2DQueryContext QC = { Params.Point2D,Params.InstigatorID };
+		[[maybe_unused]] Box2DQueryContext QC = { Params.Point2D,Params.InstigatorID };
 		b2Transform Trans;
 		Trans.p = { Params.Location.x,Params.Location.y };
 		Trans.q = b2MakeRot(Params.Rotation.z);
@@ -79,7 +79,7 @@ namespace AGE
 
 	void World2D::QueryCapsuleOverlap(const QueryParams& Params)
 	{
-		Box2DQueryContext QC = { Params.Point2D,Params.InstigatorID };
+		[[maybe_unused]] Box2DQueryContext QC = { Params.Point2D,Params.InstigatorID };
 		b2Transform Trans;
 		Trans.p = { Params.Location.x,Params.Location.y };
 		Trans.q = b2MakeRot(Params.Rotation.z);

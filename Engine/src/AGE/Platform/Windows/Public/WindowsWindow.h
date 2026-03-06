@@ -79,7 +79,7 @@ namespace AGE
 #elif defined(AG_PLATFORM_MACOS)
 		NSWindow* m_CocoaWindow;
 #endif
-		GLFWgamepadstate m_PadState;
+		[[maybe_unused]] GLFWgamepadstate m_PadState;
 
 		struct WindowData
 		{

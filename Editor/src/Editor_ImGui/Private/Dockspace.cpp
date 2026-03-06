@@ -32,7 +32,6 @@ int FormatString(char* buf, size_t buf_size, const char* fmt, ...)
 void DockSpace::MakeDockspace(/**const ImGuiViewport* viewport, ImGuiDockNodeFlags dockspace_flags, const ImGuiWindowClass* window_class*/)
 {
     AGE_PROFILE_FUNCTION();
-    AGE::App& App = AGE::App::Get();
 
 	static bool dockingEnabled = true;
 	if (dockingEnabled)

@@ -150,10 +150,9 @@ namespace AGE
 		TimeStep m_DeltaTime;
 		float m_LastFrame = 0.f;
 
-		bool m_PlayedTheme = false;
 		bool bShowNewProjectMenu = true;
 		bool bBlockThisFrame = false;
-		const uint64_t MAIN_MENU_GAME_OBJECT = 100;
+		//const uint64_t MAIN_MENU_GAME_OBJECT = 100;
 
 		std::vector<std::thread> m_Threads;
 

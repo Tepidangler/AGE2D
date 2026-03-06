@@ -456,7 +456,7 @@ namespace AGE
 			auto& MovementStatus = E.GetComponent<SpriteRendererComponent>().MovementStatus;
 			auto& Texture = E.GetComponent<SpriteRendererComponent>().Texture;
 			auto& Anims = E.GetComponent<SpriteRendererComponent>().AnimTextures;
-			auto& SubTexture = E.GetComponent<SpriteRendererComponent>().SubTexture;
+			[[maybe_unused]] auto& SubTexture = E.GetComponent<SpriteRendererComponent>().SubTexture;
 			auto& TileID = E.GetComponent<SpriteRendererComponent>().TileID;
 			auto& Width = E.GetComponent<SpriteRendererComponent>().TileWidth;
 			auto& Height = E.GetComponent<SpriteRendererComponent>().TileHeight;

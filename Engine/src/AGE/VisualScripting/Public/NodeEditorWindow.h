@@ -212,8 +212,8 @@ namespace AGE
 		bool m_IsOpen = true;
 
 		bool m_bLoadingExisting = false;
-		ax::NodeEditor::EditorContext* m_Context;
 
+		ax::NodeEditor::EditorContext* m_Context;
 		Ref<ScriptableEntity> m_Target = nullptr;
 
 		friend class NodeEditorManager;

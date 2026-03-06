@@ -12,8 +12,26 @@
 #include "Scene/Public/Entity.h"
 #include "Structs/Public/Functions.h"
 #include <rttr/type>
-
+#ifdef __clang__
+#pragma clang diagnostic push
+#ifdef AG_PLATFORM_LINUX
+#pragma clang diagnostic ignored "-Wunused-function"
+#endif
 #include "rttr/registration_friend.h"
+#pragma clang diagnostic pop
+#elif defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma clang diagnostic ignored "-Wunused-function"
+#include "rttr/registration_friend.h"
+#pragma GCC diagnostic pop
+#elif defined(_MSC_VER)
+#pragma warning(push, 0)
+#include "rttr/registration_friend.h"
+#pragma warning(pop)
+#else
+#error "Compiler is not supported with AGE yet"
+#endif
+
 
 
 namespace AGE

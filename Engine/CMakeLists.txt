@@ -53,7 +53,6 @@ if(WIN32)
 elseif(APPLE)
     add_compile_definitions(AG_PLATFORM_MACOS
                             GLFW_INCLUDE_NONE
-                            AK_OPTIMIZED
                             AL_LIBTYPE_STATIC
                             IMGUI_DEFINE_MATH_OPERATORS
                             _CRT_SECRURE_NO_WARNINGS
@@ -63,7 +62,6 @@ elseif(APPLE)
 elseif(UNIX)
     add_compile_definitions(AG_PLATFORM_LINUX
                             GLFW_INCLUDE_NONE
-                            AK_OPTIMIZED
                             AL_LIBTYPE_STATIC
                             IMGUI_DEFINE_MATH_OPERATORS
                             _CRT_SECRURE_NO_WARNINGS

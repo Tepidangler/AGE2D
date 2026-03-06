@@ -163,7 +163,7 @@ namespace AGE
 
 			Vector4 P( R,G,B,A );
 			uint32_t Pixel = P;
-			uint32_t* Pixel2 = &Pixel;
+			[[maybe_unused]] uint32_t* Pixel2 = &Pixel;
 			if (IsSameColor(Pixel, Addr[x]))
 			{
 				continue;
@@ -254,7 +254,7 @@ namespace AGE
 		size_t Remain = AvailBytes;
 		std::vector<uint8_t> compressed(4096);
 
-		int Y = 0;
+		[[maybe_unused]] int Y = 0;
 		uint8_t* Addr = (uint8_t*)GetRGBAddress(0,0);
 		uint8_t* AddrEnd = (uint8_t*)GetRGBAddress(0, 0) + m_Spec.GetHeight() * m_RowBytes;
 		int uncompressed_offset = 0;

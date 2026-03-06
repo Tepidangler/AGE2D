@@ -407,7 +407,7 @@ namespace AGE
 
 						if (Map.TileMap)
 						{
-							tmx_layer* CurrentLayer = Map.TileMap->ly_head;
+							[[maybe_unused]] tmx_layer* CurrentLayer = Map.TileMap->ly_head;
 							auto SpriteView = GetAllEntitiesWith<SpriteRendererComponent>();
 							if (Map.LayerCount == -1)
 							{
@@ -518,7 +518,7 @@ namespace AGE
 
 					for (auto E : View)
 					{
-						auto [Map, Audio] = View.get<TileMapRendererComponent, AudioComponent>(E);
+						[[maybe_unused]] auto [Map, Audio] = View.get<TileMapRendererComponent, AudioComponent>(E);
 
 						//if (Audio.Sounds[0] && !Audio.Sounds[0]->IsPlaying())
 						//{
@@ -578,7 +578,7 @@ namespace AGE
 
 				if (Map.TileMap)
 				{
-					tmx_layer* CurrentLayer = Map.TileMap->ly_head;
+					[[maybe_unused]] tmx_layer* CurrentLayer = Map.TileMap->ly_head;
 					auto SpriteView = GetAllEntitiesWith<SpriteRendererComponent>();
 					if (Map.LayerCount == -1)
 					{

@@ -20,7 +20,6 @@ namespace AGE
 	std::atomic_bool Active = true;
 	std::atomic_bool Scene_Flag = false;
 	static std::atomic<bool> bProgramRunning = true;
-	static std::atomic<bool> bLoadingFonts = true;
 
 	App::App(const std::string& name, ApplicationCommandLineArgs Args)
 	{

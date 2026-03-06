@@ -14,6 +14,7 @@
 #pragma clang diagnostic ignored "-Wfloat-conversion"
 #ifdef AG_PLATFORM_LINUX
 #pragma clang diagnostic ignored "-Wnontrivial-memcall"
+#pragma clang diagnostic ignored "-Wunused-but-set-variable"
 #endif
 #ifdef AG_PLATFORM_WINDOWS
 #pragma GCC diagnostic ignored "-Wmicrosoft-unqualified-friend"
@@ -311,7 +312,7 @@ namespace AGE
 	}
 
 	NodeEditorWindow::NodeEditorWindow(const std::string& WindowName, ax::NodeEditor::EditorContext* Context, void* Target, bool LoadingExisting)
-		:m_Name(WindowName), m_Context(Context), m_bLoadingExisting(LoadingExisting)
+		:m_Name(WindowName), m_bLoadingExisting(LoadingExisting), m_Context(Context)
 	{
 		AppConfig Config = App::Get().GetAppConfig();
 		ScriptableEntity* Entt = reinterpret_cast<ScriptableEntity*>(Target);

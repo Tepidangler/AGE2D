@@ -421,10 +421,10 @@ namespace AGE
 		AssetPak(const AssetPak&) = delete;
 		AssetPak(AssetPak&&) = delete;
 
-	private:
+	//private:
 
-		size_t m_OffsetTableSize = 0;
-		std::vector<std::tuple<uint64_t, uint32_t, size_t>> m_OffsetTable;
+		//size_t m_OffsetTableSize = 0;
+		//std::vector<std::tuple<uint64_t, uint32_t, size_t>> m_OffsetTable;
 	};
 
 

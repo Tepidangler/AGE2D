@@ -75,10 +75,10 @@ namespace AGE
 		std::string Name = "";
 		uint32_t Index = 0;
 		uint32_t Slot = 0;
+		ShaderDataType DataType;
+		uint32_t Size = 0;
 		uint32_t Offset = 0;
 		uint32_t DataStepRate = 0;
-		uint32_t Size = 0;
-		ShaderDataType DataType;
 		bool Normalized = false;
 
 		uint32_t ElementBinding = 0;
@@ -87,7 +87,7 @@ namespace AGE
 		BufferElement() {};
 
 		BufferElement(ShaderDataType Type, const std::string& Name, bool normalized = false)
-			: Name(Name), DataType(Type), Size(ShaderDataTypeSize(Type)), Offset(0), Normalized(false)
+			: Name(Name), DataType(Type), Size(ShaderDataTypeSize(Type)), Offset(0), Normalized(normalized)
 		{
 
 		}

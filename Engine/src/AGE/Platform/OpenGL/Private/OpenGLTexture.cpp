@@ -189,7 +189,7 @@ namespace AGE
 
 	OpenGLTexture2D::OpenGLTexture2D(const tmx_image* Image)
 	{
-		char* TexData = (char*)Image->resource_image;
+		[[maybe_unused]] char* TexData = (char*)Image->resource_image;
 
 		
 		//if (Tex)

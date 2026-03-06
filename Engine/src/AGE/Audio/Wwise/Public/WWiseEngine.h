@@ -24,7 +24,7 @@ namespace AGE
 
 		Wwise();
 
-		~Wwise();
+		~Wwise() override;
 
 
 		inline void SetMarkerLabel(const std::string& Label) { m_MarkerLabel = Label; }

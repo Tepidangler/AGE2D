@@ -121,7 +121,6 @@ namespace AGE
 			return (uint32_t)((RGBAc[0] << 0) | (RGBAc[1] << 8) | (RGBAc[2] << 16) | (RGBAc[3] << 24));
 		}
 	private:
-#pragma warning(push, 0)
 		uint32_t* ConvertFloatToU32(float* Bytes)
 		{
 			double rgb[4] = { Bytes[0], Bytes[1], Bytes[2], 0};
@@ -145,7 +144,6 @@ namespace AGE
 			U32RBGA[3] = out[3];
 			return U32RBGA;
 		}
-#pragma warning(pop)
 	};
 
 	typedef struct alignas(16) _constantBufferStruct
