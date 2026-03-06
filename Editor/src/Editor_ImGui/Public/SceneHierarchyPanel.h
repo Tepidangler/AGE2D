@@ -13,6 +13,8 @@ namespace AGE
 		SceneHierarchyPanel() = default;
 		SceneHierarchyPanel(const Ref<Scene>& Scene);
 
+		virtual ~SceneHierarchyPanel() = default;
+
 		Ref<Scene> GetContext() { return m_Context; }
 		void SetContext(const Ref<Scene>& Context);
 

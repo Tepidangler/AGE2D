@@ -543,7 +543,6 @@ namespace AGE
 			{
 				if (ImGui::Begin("Create New Project", &bCreateProject))
 				{
-					static char Input[128];
 					ImGui::InputText("Project Name", &Project::GetActive()->GetConfig().Name);
 					if (ImGui::Button("Create Project"))
 					{

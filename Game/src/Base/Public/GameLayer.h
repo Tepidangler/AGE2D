@@ -36,6 +36,6 @@ namespace Proj
 		[[maybe_unused]] bool m_bLoadedIni = false;
 
 
-		float DT = 0.f;
+		[[maybe_unused]] float DT = 0.f;
 	};
 }

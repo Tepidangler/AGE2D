@@ -10,17 +10,15 @@
 
 namespace AGE
 {
-	class Panel : public Layer
+	class Panel
 	{
 	public:
 
-		Panel(const char* Name);
+		Panel();
 		virtual ~Panel() = default;
 
-		virtual void OnImGuiRender(AGE::TimeStep DeltaTime) override;
+		void OnImGuiRender([[maybe_unused]] AGE::TimeStep DeltaTime);
 
-	private:
-		const char* m_Name;
 	};
 }
  
