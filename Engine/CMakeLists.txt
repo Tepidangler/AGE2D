@@ -599,7 +599,7 @@ set_target_properties(Engine PROPERTIES
 		PUBLIC_HEADER src/AGE/VisualScripting/Public/VisualScriptingStructs.h
 		PUBLIC_HEADER src/AGE/VisualScripting/Public/NodeEditorWindow.h
 		PUBLIC_HEADER src/AGE/Core/Public/Pointers.h
-		PUBLIC_HEADER src/AGE/Age.h
+		PUBLIC_HEADER src/Age.h
 )
 	install(TARGETS Engine
 			ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
