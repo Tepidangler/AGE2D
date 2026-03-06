@@ -38,10 +38,8 @@ set(CPACK_DEBIAN_PACKAGE_ARCHITECTURE "amd64")
 set(CPACK_PACKAGE_VENDOR "Alcoy Game Studio")
 set(CPACK_DEBIAN_PACKAGE_MAINTAINER "De'Lano Wilcox <tepidangler@protonmail.com>")
 set(CPACK_DEBIAN_PACKAGE_DEPENDS "libglfw3 (=3.4-3)")
-set(CPACK_PACKAGE_FILE_NAME
-        "$<$<Config:Debug>:AGE-${CMAKE_PROJECT_VERSION}-${CMAKE_SYSTEM_NAME}-Debug>"
-        "$<$<Config:RelWithDebInfo>:AGE-${CMAKE_PROJECT_VERSION}-${CMAKE_SYSTEM_NAME}-RelWithDebInfo>"
-        "$<$<Config:MinSizeRel>:AGE-${CMAKE_PROJECT_VERSION}-${CMAKE_SYSTEM_NAME}-MinSizeRel>"
+string(GENEX_EVAL CURR_CONFIG "$<CONFIG>")
+set(CPACK_PACKAGE_FILE_NAME "AGE-${CMAKE_PROJECT_VERSION}-${CMAKE_SYSTEM_NAME}-${CURR_CONFIG}"
 )
 message(STATUS "Package Name: " ${CPACK_PACKAGE_FILE_NAME})
 add_subdirectory(Engine)
