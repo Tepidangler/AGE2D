@@ -18,8 +18,8 @@
 #include "AGE/Core/Public/Pointers.h"
 #include "AGE/Core/Public/MouseButtonCodes.h"
 #include "AGE/Core/Public/GamepadCodes.h"
-#include "AGE/Core/Public/JoyStickCodes.h"
 #include "AGE/Core/Public/Layer.h"
+#include "AGE/Core/Public/InputBinding.h"
 
 
 #include "AGE/Camera/Public/Camera.h"

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Core/Public/InputBinding.h"
 #include "Core/Public/Pointers.h"
 
 namespace AGE
@@ -22,23 +23,21 @@ namespace AGE
 		std::filesystem::path ConfigFilepath;
 		std::vector<std::filesystem::path> BuiltScenes;
 		//Probably set input Bindings here too
-
-		std::vector<std::pair<std::string, std::vector<uint8_t>>> AxisBindings;
-		std::vector<std::pair<std::string, std::vector<uint8_t>>> ActionBindings;
-
-		void UpdateAxisBindings(std::vector<std::pair<std::string, std::vector<uint8_t>>>& Bindings)
-		{
-			AxisBindings = Bindings;
-		}
-
-		void UpdateActionBindings(std::vector<std::pair<std::string, std::vector<uint8_t>>>& Bindings)
-		{
-			ActionBindings = Bindings;
-		}
+		std::vector<Ref<InputBinding>> AxisBindings;
+		std::vector<Ref<InputBinding>> ActionBindings;
 
 		void SetQuestFilepath(const std::filesystem::path& Filepath)
 		{
 			QuestFilepath = Filepath;
+		}
+
+		void UpdateActionBindings(const std::vector<Ref<InputBinding>>& Bindings)
+		{
+			std::ranges::copy(Bindings, std::back_inserter(ActionBindings));
+		}
+		void UpdateAxisBindings(const std::vector<Ref<InputBinding>>& Bindings)
+		{
+			std::ranges::copy(Bindings, std::back_inserter(AxisBindings));
 		}
 	};
 
@@ -107,7 +106,7 @@ namespace AGE
 		ProjectInfo m_Info;
 		std::filesystem::path m_ProjectDirectory;
 		static std::array<std::string, 14> m_DirectoryNames;
-		static std::array<std::string, 5> m_GameContDirNames;
+		static std::array<std::string, 6> m_GameContDirNames;
 		inline static Ref<Project> s_ActiveProject;
 
 	};

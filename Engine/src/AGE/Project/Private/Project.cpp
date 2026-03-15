@@ -8,7 +8,7 @@
 namespace AGE
 {
 	std::array<std::string, 14> Project::m_DirectoryNames = { "/Assets", "/Assets/Quests", "/Assets/InventoryDatabase", "/Assets/VisualScripting", "/Scenes", "/Shaders", "/Saves","/Config", "/src","/src/Base","/src/Base/Private","/src/Base/Public","/src/UI/Private","/src/UI/Public"};
-	std::array<std::string, 5> Project::m_GameContDirNames = { "/Textures", "Sounds/Banks", "/Aesprite", "/Shaders", "/UI"};
+	std::array<std::string, 6> Project::m_GameContDirNames = { "/Textures", "Sounds/Banks", "/Aesprite", "/Shaders", "/UI", "/Fonts"};
 
 	void Project::WriteProjectConfig(const std::filesystem::path& Path, const std::string& ProjectName)
 	{
@@ -256,6 +256,27 @@ namespace AGE
 				}
 				break;
 			}
+			case 1: // Linux
+			{
+				if (std::filesystem::is_directory(Path.parent_path()))
+				{
+					std::string NewPath = Path.parent_path().string() + "/Linux/" + s_ActiveProject->GetConfig().Name + ".apak";
+					ProjectSerializer Serializer(s_ActiveProject);
+
+					Serializer.SerializeBinary(NewPath);
+					CompileProject();
+				}
+				else
+				{
+					std::string NewPath = Path.parent_path().string() + "/Linux/";
+					std::filesystem::create_directories(NewPath);
+					ProjectSerializer Serializer(s_ActiveProject);
+					NewPath = NewPath + s_ActiveProject->GetConfig().Name + ".apak";
+					Serializer.SerializeBinary(NewPath);
+					CompileProject();
+				}
+				break;
+			}
 			default:
 			{
 				CoreLogger::Error("Target Platform Not Supported!");
@@ -323,6 +344,9 @@ namespace AGE
 
 
 
+#elif defined(AG_PLATFORM_LINUX)
+//We'll use cpack, honestly for both Windows and Linux, however I don't feel like setting that up right now
+		//TODO: Setup packaging using Cpack
 
 #endif
 	}

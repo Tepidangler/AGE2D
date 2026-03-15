@@ -57,7 +57,6 @@ namespace AGE
 
 	Scene::Scene()
 	{
-		m_Importer = TileMapImporter(*this);
 		m_Physics = CreateRef<Physics2D>();
 	}
 	Scene::~Scene()
@@ -398,55 +397,9 @@ namespace AGE
 					for (auto E : View)
 					{
 						auto [Map, Transform] = View.get<TileMapRendererComponent, TransformComponent>(E);
-						if (!Map.TileMap)
-						{
-							m_Importer.SetActiveScene(shared_from_this());
-							Map.TileMap = m_Importer.ImportMap(Map.TileMapPath);
-							Map.TileMapTexture = m_Importer.GetTexture();
-						}
 
 						if (Map.TileMap)
 						{
-							[[maybe_unused]] tmx_layer* CurrentLayer = Map.TileMap->ly_head;
-							auto SpriteView = GetAllEntitiesWith<SpriteRendererComponent>();
-							if (Map.LayerCount == -1)
-							{
-								Map.SetTileLocations();
-								Map.LayerCount = Map.ProcessLayers(Map.TileMap->ly_head);
-
-							}
-							if (!Map.bLoaded)
-							{
-
-								for (auto E : SpriteView)
-								{
-									auto& Sprite = SpriteView.get<SpriteRendererComponent>(E);
-
-									if (Sprite.bTile)
-									{
-										Sprite.SubTexture = Map.TileTextures[(size_t)Sprite.TileID];
-									}
-
-								}
-								Map.bLoaded = true;
-							}
-							else
-							{
-								Renderer2D::DrawTileMapLayers(Map, Map.TileMap, Map.Layers);
-							}
-
-							for (auto E : Reverse(SpriteView))
-							{
-								auto& Sprite = SpriteView.get<SpriteRendererComponent>(E);
-
-								if (Sprite.bTile)
-								{
-									Sprite.QuadProps.TintColor = Sprite.Color;
-									Sprite.QuadProps.EntityID = (int)E;
-									Renderer2D::DrawTile(Sprite);
-								}
-							}
-
 						}
 					}
 
@@ -569,54 +522,8 @@ namespace AGE
 			for (auto E : View)
 			{
 				auto [Map, Transform] = View.get<TileMapRendererComponent, TransformComponent>(E);
-				if (!Map.TileMap)
-				{
-					m_Importer.SetActiveScene(shared_from_this());
-					Map.TileMap = m_Importer.ImportMap(Map.TileMapPath);
-					Map.TileMapTexture = m_Importer.GetTexture();
-				}
-
 				if (Map.TileMap)
 				{
-					[[maybe_unused]] tmx_layer* CurrentLayer = Map.TileMap->ly_head;
-					auto SpriteView = GetAllEntitiesWith<SpriteRendererComponent>();
-					if (Map.LayerCount == -1)
-					{
-						Map.SetTileLocations();
-						Map.LayerCount = Map.ProcessLayers(Map.TileMap->ly_head);
-						
-					}
-					if (!Map.bLoaded)
-					{
-
-						for (auto E : SpriteView)
-						{
-							auto& Sprite = SpriteView.get<SpriteRendererComponent>(E);
-							
-							if (Sprite.bTile)
-							{
-								Sprite.SubTexture = Map.TileTextures[(size_t)Sprite.TileID];
-							}
-
-						}
-						Map.bLoaded = true;
-					}
-					else
-					{
-						Renderer2D::DrawTileMapLayers(Map, Map.TileMap, Map.Layers);
-					}
-
-					for (auto E : Reverse(SpriteView))
-					{
-						auto& Sprite = SpriteView.get<SpriteRendererComponent>(E);
-
-						if (Sprite.bTile)
-						{
-							Sprite.QuadProps.TintColor = Sprite.Color;
-							Sprite.QuadProps.EntityID = (int)E;
-							Renderer2D::DrawTile(Sprite);
-						}
-					}
 
 				}
 			}

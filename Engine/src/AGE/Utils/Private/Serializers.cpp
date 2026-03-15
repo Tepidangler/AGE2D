@@ -500,11 +500,8 @@ namespace AGE
 			Out << YAML::BeginMap;
 
 			auto& Name = E.GetComponent<TileMapRendererComponent>().Name;
-			auto& Path = E.GetComponent<TileMapRendererComponent>().TileMapPath;
 
 			Out << YAML::Key << "Name" << YAML::Value << Name;
-			Out << YAML::Key << "Path" << YAML::Value << Path;
-			Out << YAML::Key << "FirstPass" << YAML::Value << E.GetComponent<TileMapRendererComponent>().bFirstPass;
 			Out << YAML::EndMap;
 		}
 		if (E.HasComponent<CircleRendererComponent>())
@@ -708,8 +705,6 @@ namespace AGE
 					auto& Comp = DeserializedEntity.AddComponent<TileMapRendererComponent>();
 
 					Comp.Name = TMRC["Name"].as<std::string>();
-					Comp.TileMapPath = TMRC["Path"].as<std::string>();
-					Comp.bFirstPass = TMRC["FirstPass"].as<bool>();
 				}
 				auto SRC = E["SpriteRendererComponent"];
 				if (SRC)
@@ -1016,75 +1011,5 @@ namespace AGE
 	{
 		return false;
 	}
-	IniSerializer::IniSerializer(std::vector<std::pair<std::string, std::vector<uint8_t>>>& AxisBindings, std::vector<std::pair<std::string, std::vector<uint8_t>>>& ActionBindings)
-		:m_AxisBindings(AxisBindings), m_ActionBindings(ActionBindings)
-	{
-	}
 
-	bool IniSerializer::Serialize(const std::filesystem::path& FilePath, const std::string& FileName)
-	{
-		//return false;
-		std::string Path = FilePath.parent_path().string() + FileName;
-		YAML::Emitter Out;
-
-		Out << YAML::BeginMap;
-		Out << YAML::Key << "Ini File" << YAML::Value << YAML::BeginMap;
-		Out << YAML::Key << "AxisBindings";
-		Out << YAML::Value;
-		Out << m_AxisBindings;
-		Out << YAML::Key << "ActionBindings";
-		Out << YAML::Value;
-		Out << m_ActionBindings;
-		Out << YAML::EndMap;
-		Out << YAML::EndMap;
-		std::ofstream Fout(Path, std::ios::out);
-		Fout << Out.c_str();
-		return true;
-	}
-	bool IniSerializer::Deserialize(const std::filesystem::path& FilePath, const std::string& FileName)
-	{
-		//return false;
-		auto Proj = Project::GetActive();
-		if (!Proj)
-		{
-			return false;
-		}
-
-		auto& Info = Project::GetActive()->GetInfo();
-
-		YAML::Node Data;
-		std::string Path = FilePath.string() + FileName;
-		if (!std::filesystem::exists(Path))
-		{
-			return false;
-		}
-		try
-		{
-			Data = YAML::LoadFile(Path);
-		}
-		catch (YAML::ParserException E)
-		{
-			CoreLogger::Error("Failed to load ini file '{0}'\n    {1}", E.what());
-			return false;
-		}
-
-		auto IniNode = Data["Ini File"];
-		if (!IniNode)
-		{
-			return false;
-		}
-
-		auto AxisNode = IniNode["AxisBindings"];
-		if (AxisNode)
-		{
-			Info.AxisBindings = AxisNode.as<std::vector<std::pair<std::string, std::vector<uint8_t>>>>();
-		}
-
-		auto ActionNode = IniNode["ActionBindings"];
-		if (ActionNode)
-		{
-			Info.ActionBindings = ActionNode.as<std::vector<std::pair<std::string, std::vector<uint8_t>>>>();
-		}
-		return true;
-	}
 }

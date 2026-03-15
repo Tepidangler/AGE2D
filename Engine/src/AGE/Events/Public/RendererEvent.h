@@ -1,7 +1,7 @@
 #pragma once
 #include "Core/Public/Core.h"
 #include "Event.h"
-#include "Platform/Windows/Public/WindowsWindow.h"
+#include "Core/Public/Window.h"
 #include "Render/Public/RenderAPI.h"
 
 namespace AGE
@@ -9,11 +9,11 @@ namespace AGE
 	class RendererChangeEvent : public Event
 	{
 	public:
-		RendererChangeEvent(WindowsWindow* Window)
+		RendererChangeEvent(AGEWindow* Window)
 			: m_Window(Window) {}
 
 
-		inline WindowsWindow* GetWindow() const { return m_Window; }
+		inline AGEWindow* GetWindow() const { return m_Window; }
 
 		std::string ToString() const override
 		{
@@ -25,7 +25,7 @@ namespace AGE
 		EVENT_CLASS_TYPE(RendererChanged)
 			EVENT_CLASS_CATEGORY(EventCategoryApplication)
 	private:
-		WindowsWindow* m_Window;
+		AGEWindow* m_Window;
 	};
 
 	class RenderUIEvent : public Event

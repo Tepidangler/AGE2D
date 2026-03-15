@@ -34,7 +34,7 @@ namespace AGE
 		void LoadWidget(const std::filesystem::path& Path);
 		void SaveWidget(const std::filesystem::path& Path);
 
-		bool m_Opened = true;
+		bool m_Opened = false;
 
 		//std::vector<std::string> m_UIComponentTypes = {"TextBoxComponent", "TextComponent"};
 

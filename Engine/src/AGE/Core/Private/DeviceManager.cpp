@@ -17,12 +17,6 @@ namespace AGE
 #endif
 		CoreLogger::Info("Device Manager Initialized!");
 	}
-
-	Scope<DeviceManager> DeviceManager::Create(AudioEngineType AudioEngine, bool UseXInput)
-	{
-		return Scope<DeviceManager>(new DeviceManager(AudioEngine));
-	}
-
 	//AUDIO MANAGER
 
 	AudioManager::AudioManager(AudioEngineType Type)

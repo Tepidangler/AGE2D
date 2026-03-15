@@ -116,7 +116,7 @@ namespace AGE
 		for (int i = 0; i < 4; i++)
 		{
 			Target->VertexWorldPosition = Transform * Position[i];
-			Target->VertexLocalPosition = Position[i] * 2.f;
+			Target->VertexLocalPosition = Vector3(Position[i] * 2.f);
 			Target->VertexColor = Color;
 			Target->VertexThickness = Thickness;
 			Target->VertexFade = Fade;

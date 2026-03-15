@@ -174,7 +174,7 @@ namespace AGE
 			printf("%s", Line.c_str());
 #endif
 		}
-#ifdef AGE_ENABLE_ASSERTS
+#if defined(AGE_ENABLE_ASSERTS)
 		template<typename ... Args> // CoreLogger->Assert(true ==  false, "True does not equal false")
 		void Assert(bool Condition, std::string_view fmt, Args&& ... args)
 		{
@@ -196,11 +196,11 @@ namespace AGE
 				__debugbreak();
 #elif defined(AG_PLATFORM_LINUX)
 				printf("%s", Line.c_str());
-#ifdef __clang__
+	#ifdef __clang__
 				__builtin_debugtrap();
-#else
+	#else
 				__builtin_trap();
-#endif
+	#endif
 #endif
 			}
 		}

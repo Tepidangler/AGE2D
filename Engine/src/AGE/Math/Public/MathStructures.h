@@ -478,7 +478,14 @@ namespace AGE
 		Matrix4D const Add1 = Mul2 + Mul3;
 		Matrix4D const Add2 = Add0 + Add1;
 
-		return Vector3(Add2(0, 0), Add2(1, 1), Add2(2, 2));
+		//glm::mat4 mat = M.ToGLM();
+		//glm::vec4 vec{V.x, V.y, V.z, V.w};
+		//glm::vec4 New = mat*vec;
+
+
+
+		return {Add2(0, 0), Add2(1, 1), Add2(2, 2)};
+		//return {New.x, New.y, New.z};
 	}
 
 	inline Matrix3D operator *(const Matrix3D& A, const Matrix3D& B)

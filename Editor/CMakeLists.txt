@@ -199,7 +199,7 @@ find_package(nlohmann_json 3.12.0 REQUIRED)
 endif()
 find_package(fmt CONFIG REQUIRED)
 target_link_libraries(Editor PRIVATE 
-                        Engine #-WHOLEARCHIVE:$<TARGET_FILE:Engine>
+                        Engine
                         Game
                         Freetype::Freetype
                         OpenSSL::Crypto
@@ -225,32 +225,6 @@ endif()
 configure_file(CMake/Versioning.h.in Versioning.h)
 
 if(BUILD_PACKAGE)
-    #	install(DIRECTORY
-    #			${CMAKE_CURRENT_SOURCE_DIR}/src/AGE
-    #	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/age2d/Engine
-    #	FILES_MATCHING PATTERN "*.h"
-    #	)
-    set_target_properties(Editor PROPERTIES
-            PUBLIC_HEADER src/Viewports/Public/Viewport.h
-            PUBLIC_HEADER src/Editor_Core/Public/EditorLayer.h
-            PUBLIC_HEADER src/Editor_ImGui/Public/QuestManagerWindow.h
-            PUBLIC_HEADER src/Editor_ImGui/Public/Toolbar.h
-            PUBLIC_HEADER src/MenuSystem/Public/CreateProjectMenu.h
-            PUBLIC_HEADER src/Editor_ImGui/Public/AssetRegistryWindow.h
-            PUBLIC_HEADER src/Editor_ImGui/Public/ContentBrowserPanel.h
-            PUBLIC_HEADER src/MenuSystem/Public/MainMenuBar.h
-            PUBLIC_HEADER src/Editor_ImGui/Public/SceneHierarchyPanel.h
-            PUBLIC_HEADER src/Editor_ImGui/Public/InventoryDatabase.h
-            PUBLIC_HEADER src/Editor_ImGui/Public/ConsoleLog.h
-            PUBLIC_HEADER src/Editor_Core/Public/Database.h
-            PUBLIC_HEADER src/Editor_ImGui/Public/Panel.h
-            PUBLIC_HEADER src/Editor_ImGui/Public/Dockspace.h
-            PUBLIC_HEADER src/Editor_ImGui/Public/DatabaseWindow.h
-            PUBLIC_HEADER src/Editor_Core/Public/NewProjectLayer.h
-            PUBLIC_HEADER src/Editor_ImGui/Public/UiEditorWindow.h
-            PUBLIC_HEADER src/Editor_Core/Public/CodeGen.h
-
-    )
     install(TARGETS Editor
             RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
             PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/age2d/Editor

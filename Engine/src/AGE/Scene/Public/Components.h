@@ -1,5 +1,4 @@
 #pragma once
-#include "Core/Public/Core.h"
 #include "Core/Public/UUID.h"
 #include "Scene/Public/SceneCamera.h"
 #include "Scene/Public/Scene.h"
@@ -12,17 +11,13 @@
 #include "Serializers/Public/DataReader.h"
 #include "Serializers/Public/DataWriter.h"
 #include "Assets/Public/AssetManager.h"
-#include "Core/Public/Keycodes.h"
-#include "Core/Public/MouseButtonCodes.h"
-#include "Core/Public/JoyStickCodes.h"
-#include "Core/Public/GamepadCodes.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/quaternion.hpp>
 #include <box2d/id.h>
-#include <box2d/types.h>
 #include <tmx.h>
 
 #include "Debug/Public/Instrumentor.h"
+#include "TileMap/Public/Tilemap.h"
 
 namespace GameFramework
 {
@@ -64,12 +59,12 @@ namespace AGE
 		TransformComponent(const Vector3& T)
 			:Translation(T) {}
 
-		Matrix4D GetTransform() const
+		Matrix4D GetTransform()
 		{ 
-			Matrix4D Rot = glm::toMat4(glm::quat(Convert::ToGLM(Rotation)));
+			Matrix4D Rot = glm::toMat4((glm::quat)Rotation);
 			
 
-			return glm::translate(Matrix4D(1.f).ToGLM(),Convert::ToGLM(Translation)) * Rot.ToGLM() * glm::scale(Matrix4D(1.f).ToGLM(), Convert::ToGLM(Scale));
+			return glm::translate(Matrix4D(1.f).ToGLM(),(glm::vec3)Translation) * Rot.ToGLM() * glm::scale(Matrix4D(1.f).ToGLM(), (glm::vec3)Scale);
 		}
 
 		static void Serialize(DataWriter* Serializer, const TransformComponent& Data)
@@ -154,83 +149,35 @@ namespace AGE
 	struct TileMapRendererComponent
 	{
 		std::string Name;
-		tmx_map* TileMap;
-		Ref<Texture2D> TileMapTexture;
+		Ref<Tilemap> TileMap;
+#if 0
 		std::vector<Vector2> TileLocs;
 		std::vector <Ref<SubTexture2D>> TileTextures;
 		std::vector<tmx_layer*> Layers;
 		int LayerCount = -1;
 		std::vector<uint64_t> IDs;
 		std::string TileMapPath;
-		Ref<Scene> ActiveScene;
-
 		int TileCount = 0;
 		bool bFirstPass = true;
 		bool bLoaded = false;
-		
+#endif
+
 
 		TileMapRendererComponent() = default;
 		TileMapRendererComponent(const TileMapRendererComponent&) = default;
 		TileMapRendererComponent(const std::string& N)
 			:Name(N) {}
 
-
-		static void Serialize(DataWriter* Serializer, const TileMapRendererComponent& Data)
-		{
-
-		}
-
-		static void Deserialize(DataReader* Serializer, TileMapRendererComponent& Data)
-		{
-
-		}
-
-		tmx_map* GetTileMap()
+		Ref<Tilemap> GetTileMap()
 		{
 			return TileMap;
 		}
 
-		void SetTileMap(tmx_map* Map)
+		void SetTileMap(Ref<Tilemap> Map)
 		{
 			TileMap = Map;
 		}
 
-		void SetTileLocations()
-		{
-			AGE_PROFILE_FUNCTION();
-			unsigned long Width, Height;
-
-			//Now sure if 1 will always be valid, but it should be
-			Width = TileMap->tiles[1]->tileset->image->width;
-			Height = TileMap->tiles[1]->tileset->image->height;
-
-			for (unsigned long x = (Height / TileMap->tiles[1]->tileset->tile_height)-1; x >= 0 ; x--)
-			{
-				for (uint64_t y = 0; y < (Width / TileMap->tiles[1]->tileset->tile_width); y++)
-				{
-					TileLocs.push_back(Vector2((float)y, (float)x));
-				}
-			}
-
-			for (size_t i = 0; i < TileLocs.size() - 1; i++)
-			{
-				TileTextures.push_back(SubTexture2D::CreateFromCoords(TileMapTexture, TileLocs[i], { (float)TileMap->tiles[1]->tileset->tile_width,(float)TileMap->tiles[1]->tileset->tile_height}));
-			}
-		}
-
-		int ProcessLayers(tmx_layer* Head)
-		{
-			int Tmp = 0;
-			tmx_layer* Current = Head;
-			while (Current)
-			{
-				Layers.push_back(Current);
-				Current = Current->next;
-				Tmp++;
-			}
-
-			return Tmp;
-		}
 	};
 
 	struct MovementComponent

@@ -49,7 +49,7 @@ namespace AGE
 		uint32_t m_TextureID;
 		uint64_t m_AssetID;
 		TextureSpecification m_Specification;
-		int m_Width,m_Height,m_nrChannels;
+		int m_Width,m_Height,m_nrChannels = 0;
 		std::pair<uint8_t*,size_t> m_ImageData = {nullptr, 0};
 
 		GLenum m_InternalFormat, m_DataFormat;

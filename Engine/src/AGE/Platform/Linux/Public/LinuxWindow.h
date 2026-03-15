@@ -1,21 +1,24 @@
-
-#ifdef AG_PLATFORM_WINDOWS
-#pragma once
+//
+// Created by gdmgp on 3/7/2026.
+//
+#ifdef AG_PLATFORM_LINUX
+#ifndef AGE_LINUXWINDOW_H
+#define AGE_LINUXWINDOW_H
 #include "Core/Public/Window.h"
 #include "Render/Public/GraphicsContext.h"
 #include <GLFW/glfw3.h>
-#define GLFW_EXPOSE_NATIVE_WIN32
+#define GLFW_EXPOSE_NATIVE_X11
 #include <GLFW/glfw3native.h>
 
-typedef uint16_t JoyStickID;
+
 namespace AGE
 {
-	class WindowsWindow : public AGEWindow
+	class LinuxWindow : public AGEWindow
 	{
 	public:
 
-		WindowsWindow(const WindowProps& Props);
-		virtual ~WindowsWindow();
+		LinuxWindow(const WindowProps& Props);
+		virtual ~LinuxWindow();
 
 		void OnUpdate() override;
 
@@ -24,9 +27,9 @@ namespace AGE
 
 		// Window Attributes
 
-		inline void SetEventCallback(const EventCallbackFn& Callback) override 
+		inline void SetEventCallback(const EventCallbackFn& Callback) override
 		{
-			m_Data.EventCallback = Callback; 
+			m_Data.EventCallback = Callback;
 			m_RendererCallback = Callback;
 
 			for (auto& D : m_JDatas)
@@ -39,9 +42,9 @@ namespace AGE
 		bool IsVSync() const override;
 		void ProcessJoystickInput();
 
-		static WindowsWindow& Get() { return *s_Window; }
+		static LinuxWindow& Get() { return *s_Window; }
 		void* GetNativeWindow() const override { return m_Window; }
-		HWND GetPlatformWindow() override { return m_Win32Window; }
+		Window GetPlatformWindow() override { return m_X11Window; }
 		Vector2 GetMousePos() override;
 
 		GraphicsContext* GetGraphicsContext() override { return m_Context.get(); }
@@ -58,10 +61,10 @@ namespace AGE
 		virtual void Init(const WindowProps& Props);
 		virtual void Shutdown();
 
-	private:
-
 		GLFWwindow* m_Window;
-		HWND m_Win32Window;
+
+		Window m_X11Window;
+
 		[[maybe_unused]] GLFWgamepadstate m_PadState;
 
 		struct WindowData
@@ -87,12 +90,14 @@ namespace AGE
 
 		std::array<JoystickData, 15> m_JDatas;
 
-		static WindowsWindow* s_Window;
+		static LinuxWindow* s_Window;
 
 		Scope<GraphicsContext> m_Context;
 
 		GLFWimage m_Images[1];
-		
+
 	};
-}
-#endif
+} // AGE
+
+#endif //AGE_LINUXWINDOW_H
+#endif //AG_PLATFORM_LINUX

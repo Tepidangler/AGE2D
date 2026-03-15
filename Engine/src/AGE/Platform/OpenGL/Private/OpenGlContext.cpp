@@ -27,11 +27,9 @@ namespace AGE
 		CoreLogger::Assert(status, "Failed to initialize GLAD");
 
 		CoreLogger::Info("OpenGL Info: ");
-		
+
 		CoreLogger::Trace("	Vendor: {0}", (const char*)glGetString(GL_VENDOR));
-				
 		CoreLogger::Trace("	Renderer: {0}", (const char*)glGetString(GL_RENDERER));
-				
 		CoreLogger::Trace("	Version: {0}", (const char*)glGetString(GL_VERSION));
 
 	}

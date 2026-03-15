@@ -1,4 +1,7 @@
-#ifdef AG_PLATFORM_WINDOWS
+//
+// Created by gdmgp on 3/7/2026.
+//
+#ifdef AG_PLATFORM_LINUX
 #include "AGEpch.hpp"
 #include "Core/Public/Input.h"
 #include "App.h"
@@ -41,7 +44,7 @@ namespace AGE
 				return false;
 			}
 			return false;
-			
+
 		}
 		CoreLogger::Error("Joystick {0} Not Connected!", ID);
 		return false;

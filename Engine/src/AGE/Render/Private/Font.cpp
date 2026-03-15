@@ -64,17 +64,32 @@ namespace AGE
 
 
 
-	AGEFont::AGEFont(const std::filesystem::path& FontPath)
-		:m_Data(new MSDFData())
+	AGEFont::AGEFont(const std::filesystem::path& FontPath, bool LoadingDefault)
+		:m_Data(new MSDFData()), m_AssetID(UUID())
 	{
 		std::filesystem::path Path = FontPath;
 		const std::string FontName = Utils::EngineStatics::GetFilename(Path);
+		m_FontName = FontName;
 		const AppConfig& Config = App::Get().GetAppConfig();
-		if (std::filesystem::exists(Config.EditorAssetPath/std::vformat("Fonts/AGEFonts/{}.AGEfont", std::make_format_args(FontName))))
+
+		if (LoadingDefault)
 		{
-			LoadFont(FontName);
-			return;
+			if (std::filesystem::exists(Config.EditorAssetPath/std::vformat("Fonts/AGEFonts/{}.AGEfont", std::make_format_args(FontName))))
+			{
+				LoadDefaultFont(FontName);
+				return;
+			}
 		}
+		else
+		{
+			if (std::filesystem::exists(Config.GameContentPath / std::vformat("Fonts/{}.AGEfont", std::make_format_args(FontName))))
+			{
+				LoadFont(FontName);
+				return;
+			}
+		}
+
+
 		msdfgen::FreetypeHandle* FT = msdfgen::initializeFreetype();
 
 		CoreLogger::Assert(FT, "Unable to Initialize FreeType!");
@@ -150,26 +165,32 @@ namespace AGE
 
 		m_AtlasTexture = CreateAndCacheAtlas<uint8_t, float, 3, msdf_atlas::msdfGenerator>(Utils::EngineStatics::GetFilename(Path), (float)EmSize, m_Data->Glyphs, m_Data->FontGeometry, (uint32_t)width, (uint32_t)height);
 		m_AtlasTexture->SetTextureFilePath(FontPath.string());
-		SaveFont();
+		if (LoadingDefault)
+		{
+			SaveDefaultFont();
+		}
+		else
+		{
+			SaveFont();
+		}
 
 		msdfgen::destroyFont(Font);
 		msdfgen::deinitializeFreetype(FT);
-		m_AtlasTexture.reset();
-
 	}
 	AGEFont::~AGEFont()
 	{
 		delete m_Data;
 	}
 
-	void AGEFont::SaveFont() const
+	void AGEFont::SaveFont()
 	{
 		const AppConfig& Config = App::Get().GetAppConfig();
 		const std::string& FileName = m_AtlasTexture->GetName();
-		FileStreamWriter FontData(Config.EditorAssetPath/std::vformat("Fonts/AGEFonts/{}.AGEfont", std::make_format_args(FileName)));
+		FileStreamWriter FontData(Config.GameContentPath/std::vformat("Fonts/{}.AGEfont", std::make_format_args(FileName)));
 
 		FontData.WriteString("AGEFont");
 		FontData.WriteRaw<uint16_t>(1);
+		FontData.WriteRaw<uint64_t>(m_AtlasTexture->GetAssetID());
 		TextureSpecification FontSpec = m_AtlasTexture->GetSpecification();
 		FontData.WriteObject<TextureSpecification>(FontSpec);
 		Buffer TextureBytes(m_AtlasTexture->GetTextureData().first, m_AtlasTexture->GetTextureData().second);
@@ -177,6 +198,67 @@ namespace AGE
 	}
 
 	void AGEFont::LoadFont(const std::string& FontName)
+	{
+		const AppConfig& Config = App::Get().GetAppConfig();
+		const std::string& FileName = FontName;
+		FileStreamReader FontData(Config.GameContentPath /std::vformat("Fonts/{}.AGEfont", std::make_format_args(FileName)));
+
+		std::string Header;
+		FontData.ReadString(Header);
+		if (Header.compare("AGEFont") != 0)
+		{
+			CoreLogger::Error("Font File is corrupted");
+			return;
+		}
+		uint16_t version; //While not in this particular version, in other versions of this engine, these version numbers are subject to change, so we write them so we can easily make our files backwards compatible
+		FontData.ReadRaw<uint16_t>(version);
+		FontData.ReadRaw<uint64_t>(m_AssetID);
+		TextureSpecification FontSpec{};
+		FontData.ReadObject<TextureSpecification>(FontSpec);
+		size_t Size;
+		FontData.ReadRaw<size_t>(Size);
+		Buffer TextureBytes;
+		TextureBytes.Allocate(Size);
+		FontData.ReadBuffer((char*)TextureBytes.Data, TextureBytes.Size);
+		m_AtlasTexture = Texture2D::Create(FontSpec);
+		m_AtlasTexture->SetData(TextureBytes.Data, (uint32_t)TextureBytes.Size);
+		m_AtlasTexture->SetAssetID(m_AssetID);
+		m_AtlasTexture->SetName(FontName);
+		m_FontName = FontName;
+		CoreLogger::Info("Loaded Font {}", FontName);
+	}
+
+	Ref<AGEFont> AGEFont::GetDefault()
+	{
+		static Ref<AGEFont> DefaultFont;
+
+		if (!DefaultFont)
+		{
+			AppConfig Config = App::Get().GetAppConfig();
+			DefaultFont = CreateRef<AGEFont>(Config.DefaultFontPath.string(), true);
+			AssetManager::Get().RegisterAsset(DefaultFont);
+
+			return DefaultFont;
+		}
+		return DefaultFont;
+	}
+
+	void AGEFont::SaveDefaultFont()
+	{
+		const AppConfig& Config = App::Get().GetAppConfig();
+		const std::string& FileName = m_AtlasTexture->GetName();
+		FileStreamWriter FontData(Config.EditorAssetPath/std::vformat("Fonts/AGEFonts/{}.AGEfont", std::make_format_args(FileName)));
+
+		FontData.WriteString("AGEFont");
+		FontData.WriteRaw<uint16_t>(1);
+		FontData.WriteRaw<uint64_t>(m_AtlasTexture->GetAssetID());
+		TextureSpecification FontSpec = m_AtlasTexture->GetSpecification();
+		FontData.WriteObject<TextureSpecification>(FontSpec);
+		Buffer TextureBytes(m_AtlasTexture->GetTextureData().first, m_AtlasTexture->GetTextureData().second);
+		FontData.WriteBuffer(TextureBytes);
+	}
+
+	void AGEFont::LoadDefaultFont(const std::string &FontName)
 	{
 		const AppConfig& Config = App::Get().GetAppConfig();
 		const std::string& FileName = FontName;
@@ -191,6 +273,7 @@ namespace AGE
 		}
 		uint16_t version; //While not in this particular version, in other versions of this engine, these version numbers are subject to change, so we write them so we can easily make our files backwards compatible
 		FontData.ReadRaw<uint16_t>(version);
+		FontData.ReadRaw<uint64_t>(m_AssetID);
 		TextureSpecification FontSpec{};
 		FontData.ReadObject<TextureSpecification>(FontSpec);
 		size_t Size;
@@ -200,21 +283,9 @@ namespace AGE
 		FontData.ReadBuffer((char*)TextureBytes.Data, TextureBytes.Size);
 		m_AtlasTexture = Texture2D::Create(FontSpec);
 		m_AtlasTexture->SetData(TextureBytes.Data, (uint32_t)TextureBytes.Size);
+		m_AtlasTexture->SetAssetID(m_AssetID);
+		m_AtlasTexture->SetName(FontName);
+		m_FontName = FontName;
 		CoreLogger::Info("Loaded Font {}", FontName);
-	}
-
-	Ref<AGEFont> AGEFont::GetDefault()
-	{
-		static Ref<AGEFont> DefaultFont;
-
-		if (!DefaultFont)
-		{
-			AppConfig Config = App::Get().GetAppConfig();
-			DefaultFont = CreateRef<AGEFont>(Config.DefaultFontPath.string());
-			//DefaultFont = CreateRef<Font>(g_EditorAssetPath.string() +"/Fonts/Open_Sans/static/OpenSans-Regular.ttf");
-
-			return DefaultFont;
-		}
-		return DefaultFont;
 	}
 }

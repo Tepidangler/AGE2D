@@ -100,7 +100,6 @@ namespace AGE
 		uint32_t m_ViewportHeight = 0;
 
 		Ref<Physics2D> m_Physics;
-		TileMapImporter m_Importer;
 		UUID m_AssetID = UUID();
 
 		SceneInfo m_SceneInfo;

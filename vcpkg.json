@@ -30,9 +30,6 @@
     "name" : "entt",
     "version>=" : "3.16.0"
   }, {
-    "name" : "stb",
-    "version>=" : "2024-07-29#1"
-  }, {
     "name" : "thomasmonkman-filewatch",
     "version>=" : "2023-01-16#2"
   }, {

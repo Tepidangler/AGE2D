@@ -5,6 +5,8 @@
 #pragma once
 #include <cmath>
 #include <glm/glm.hpp>
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/quaternion.hpp>
 #include <sstream>
 
 namespace AGE {
@@ -35,7 +37,6 @@ namespace AGE {
 		{
 			return ((&x)[i]);
 		}
-
 		Vector3 operator+(const Vector3& vec) const {
 			return Vector3(x + vec.x, y + vec.y, z + vec.z);
 		}
@@ -87,16 +88,11 @@ namespace AGE {
 			return DotProduct;
 		}
 		
-		Vector3 cross(const Vector3& vec) const {
-			struct Vector3 CrossProduct;
-			CrossProduct.x = (y * vec.z) - (z * vec.y);
-			CrossProduct.y = (z * vec.x) - (x * vec.z);
-			CrossProduct.z = (x * vec.y) - (y * vec.x);
-
-			return CrossProduct;
+		[[nodiscard]] Vector3 cross(const Vector3& vec) const {
+			return {(y * vec.z) - (z * vec.y), (z * vec.x) - (x * vec.z), (x * vec.y) - (y * vec.x)};
 		}
 
-		float norm(const Vector3& vec) const {
+		[[nodiscard]] float norm(const Vector3& vec) const {
 			float Magnitude = sqrtf(
 				powf((x - vec.x), 2.f) +
 				powf((y - vec.y), 2.f) +
@@ -106,7 +102,7 @@ namespace AGE {
 			return Magnitude;
 		}
 
-		float magnitude() const {
+		[[nodiscard]] float magnitude() const {
 			return norm(Vector3());
 		}
 		bool operator==(Vector3 vec) const {
@@ -128,12 +124,22 @@ namespace AGE {
 
 			return SS.str();
 		}
+
+		operator glm::vec3()
+		{
+			return {x, y,z};
+		}
+
+		operator glm::quat()
+		{
+			return {glm::vec3(x,y,z)};
+		}
+
 	};
 
 	inline Vector3 operator*(const Vector3& a, const Vector3& b)
 	{
 		return Vector3(a.x * b.x, a.y * b.y, a.z * b.z);
 	}
-
 
 }

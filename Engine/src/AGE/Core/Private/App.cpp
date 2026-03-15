@@ -77,7 +77,7 @@ namespace AGE
 
 	void App::Init()
 	{
-		m_DeviceManager = Scope<DeviceManager>(DeviceManager::Create(AudioEngineType::AGESoundEngine));
+		m_DeviceManager = CreateScope<DeviceManager>(AudioEngineType::AGESoundEngine);
 		m_DeviceManager->GetWindow().SetEventCallback(BIND_EVENT_FN(App::OnEvent));
 		//m_DeviceManager->GetXInput().SetEventCallback(BIND_EVENT_FN(App::OnEvent));
 #if !AG_DIST
@@ -288,14 +288,14 @@ namespace AGE
 		{
 		case RendererAPI::OpenGL:
 		{
-			for (auto& S : std::filesystem::recursive_directory_iterator(m_AppConfig.EditorAssetPath.string() + "/Shaders/GLSL/Vertex"))
-			{
-				if (!S.is_directory())
-				{
-					AssetManager::Get().LoadShader(S.path().string());
-				}
-			}
 			InitRenderer();
+			//for (auto& S : std::filesystem::recursive_directory_iterator(m_AppConfig.EditorAssetPath.string() + "Shaders/GLSL/Vertex"))
+			//{
+			//	if (!S.is_directory())
+			//	{
+			//		AssetManager::Get().LoadShader(S.path().string());
+			//	}
+			//}
 			break;
 		}
 		default:

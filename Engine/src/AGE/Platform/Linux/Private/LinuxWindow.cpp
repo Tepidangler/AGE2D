@@ -1,7 +1,11 @@
-#ifdef AG_PLATFORM_WINDOWS
+//
+// Created by gdmgp on 3/7/2026.
+//
+#ifdef AG_PLATFORM_LINUX
+
 #include "AGEpch.hpp"
 #include "Utils/Public/WindowsUtils.h"
-#include "Platform/Windows/Public/WindowsWindow.h"
+#include "Platform/Linux/Public/LinuxWindow.h"
 #include "Render/Public/GraphicsContext.h"
 #include "Render/Public/Renderer.h"
 
@@ -12,15 +16,15 @@
 #include "Events/Public/GameEvent.h"
 #include "Events/Public/RendererEvent.h"
 
+#include "Core/Public/JoyStickCodes.h"
+
 #include <stb_image.h>
 #include <glad/glad.h>
 
-
-
 namespace AGE
 {
-	static bool s_GLFWInitialized = false;
-	WindowsWindow* WindowsWindow::s_Window;
+		static bool s_GLFWInitialized = false;
+	LinuxWindow* LinuxWindow::s_Window;
 
 	static void GLFWErrorCallback(int Error, const char* Description)
 	{
@@ -29,37 +33,37 @@ namespace AGE
 
 	Scope<AGEWindow> AGEWindow::Create(const WindowProps& Props)
 	{
-		return CreateScope<WindowsWindow>(Props);
+		return CreateScope<LinuxWindow>(Props);
 	}
 
-	WindowsWindow::WindowsWindow(const WindowProps& Props)
+	LinuxWindow::LinuxWindow(const WindowProps& Props)
 	{
 		AGE_PROFILE_FUNCTION();
 		Init(Props);
 		s_Window = this;
 	}
 
-	WindowsWindow::~WindowsWindow()
+	LinuxWindow::~LinuxWindow()
 	{
 		AGE_PROFILE_FUNCTION();
 		Shutdown();
 	}
 
-	Vector2 WindowsWindow::GetMousePos()
+	Vector2 LinuxWindow::GetMousePos()
 	{
 		double x, y;
 		glfwGetCursorPos(m_Window,&x, &y);
 		return {static_cast<float>(x),static_cast<float>(y)};
 	}
 
-	void WindowsWindow::JoystickCallback(int jid, int event)
+	void LinuxWindow::JoystickCallback(int jid, int event)
 	{
 
 		if (event == GLFW_CONNECTED)
 		{
 			CoreLogger::Info("Controller {0} Connected!", jid);
-			WindowsWindow::Get().m_JDatas[(size_t)jid].Name = "Controller " + std::to_string(jid);
-			glfwSetJoystickUserPointer(jid, &WindowsWindow::Get().m_JDatas[(size_t)jid]);
+			LinuxWindow::Get().m_JDatas[(size_t)jid].Name = "Controller " + std::to_string(jid);
+			glfwSetJoystickUserPointer(jid, &LinuxWindow::Get().m_JDatas[(size_t)jid]);
 
 		}
 		else if (event == GLFW_DISCONNECTED)
@@ -68,13 +72,13 @@ namespace AGE
 		}
 	}
 
-	void WindowsWindow::SwitchRenderer()
+	void LinuxWindow::SwitchRenderer()
 	{
 		RendererChangeEvent Event(this);
 		m_RendererCallback(Event);
 	}
 
-	void WindowsWindow::RebuildWindow()
+	void LinuxWindow::RebuildWindow()
 	{
 		Shutdown();
 		m_Context.reset();
@@ -86,14 +90,14 @@ namespace AGE
 		Init(Props);
 	}
 
-	void WindowsWindow::SetWindowIcon(const std::filesystem::path& Path)
+	void LinuxWindow::SetWindowIcon(const std::filesystem::path& Path)
 	{
 		m_Images[0].pixels = stbi_load(Path.string().c_str(), &m_Images[0].width, &m_Images[0].height, 0, 4);
 		glfwSetWindowIcon(m_Window, 1, m_Images);
 		stbi_image_free(m_Images[0].pixels);
 	}
 
-	void WindowsWindow::Init(const WindowProps& Props)
+	void LinuxWindow::Init(const WindowProps& Props)
 	{
 		AGE_PROFILE_FUNCTION();
 		m_Data.Title = Props.Title;
@@ -127,11 +131,9 @@ namespace AGE
 		m_Window = glfwCreateWindow((int)Props.Width, (int)Props.Height, m_Data.Title.c_str(), nullptr, nullptr);
 		m_Context = GraphicsContext::Create(m_Window);
 		m_Context->Init();
-		m_Win32Window = glfwGetWin32Window(m_Window);
-
+		m_X11Window = glfwGetX11Window(m_Window);
 		glfwSetWindowUserPointer(m_Window, &m_Data);
-			
-			//SetVSync(true);
+
 		// Set GLFW callbacks
 
 		glfwSetJoystickCallback(JoystickCallback);
@@ -160,6 +162,10 @@ namespace AGE
 				GamepadButtonReleasedEvent Event(Button);
 
 				Data.EventCallback(Event);
+			}
+			default:
+			{
+				break;
 			}
 
 			}
@@ -232,6 +238,10 @@ namespace AGE
 							Data.EventCallback(Event);
 							break;
 						}
+						default:
+						{
+							break;
+						}
 						
 
 					}
@@ -244,8 +254,6 @@ namespace AGE
 				KeyTypedEvent Event((int)Char);
 				Data.EventCallback(Event);
 		});
-
-
 
 		glfwSetMouseButtonCallback(m_Window, [](GLFWwindow* Window, int Button, int Action, int Mods)
 			{
@@ -264,6 +272,10 @@ namespace AGE
 					{
 						MouseButtonReleasedEvent Event(Button);
 						Data.EventCallback(Event);
+						break;
+					}
+					default:
+					{
 						break;
 					}
 				}
@@ -296,21 +308,16 @@ namespace AGE
 
 	}
 
-	void WindowsWindow::Shutdown()
+	void LinuxWindow::Shutdown()
 	{
 		AGE_PROFILE_FUNCTION();
 		glfwSetWindowShouldClose(m_Window, true);
 		glfwDestroyWindow(m_Window);
 		glfwTerminate();
 		s_GLFWInitialized = false;
-	
-
 	}
 
-
-
-
-	void WindowsWindow::OnUpdate()
+	void LinuxWindow::OnUpdate()
 	{
 		AGE_PROFILE_FUNCTION();
 		glfwPollEvents();
@@ -318,7 +325,7 @@ namespace AGE
 		m_Context->SwapBuffers();
 	}
 
-	void WindowsWindow::SetVSync(bool Enabled)
+	void LinuxWindow::SetVSync(bool Enabled)
 	{
 		AGE_PROFILE_FUNCTION();
 
@@ -334,14 +341,12 @@ namespace AGE
 		m_Data.VSync = Enabled;
 	}
 
-	bool WindowsWindow::IsVSync() const
+	bool LinuxWindow::IsVSync() const
 	{
 		return m_Data.VSync;
 	}
-	void WindowsWindow::ProcessJoystickInput()
+	void LinuxWindow::ProcessJoystickInput()
 	{
 	}
-}
+} // AGE
 #endif
-
-

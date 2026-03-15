@@ -13,7 +13,6 @@ namespace AGE
 	{
 		AGE_PROFILE_FUNCTION();
 		RenderCommand::Init();
-		Renderer2D::Init();
 	}
 
 	

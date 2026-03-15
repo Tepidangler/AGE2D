@@ -29,7 +29,7 @@ namespace AGE
 		return m_World->As<World2D>()->CreateBody(Def);
 	}
 
-	b2BodyDef Physics2D::MakeBodyDefinition(const BodyType& Type, const Vector3& Translation, const Vector3 Rotation, bool IsRotationFixed, void* UserData)
+	b2BodyDef Physics2D::MakeBodyDefinition(const BodyType& Type, const Vector3& Translation, const Vector3& Rotation, bool IsRotationFixed, void* UserData)
 	{
 		return m_World->As<World2D>()->MakeBodyDefinition(Type,Translation,Rotation,IsRotationFixed,UserData);
 	}
@@ -44,7 +44,7 @@ namespace AGE
 		return m_World->As<World2D>()->MakeRotation(Z);
 	}
 
-	b2Polygon Physics2D::CreateBox(float HeightX, float HeightY, const Vector3 Scale)
+	b2Polygon Physics2D::CreateBox(float HeightX, float HeightY, const Vector3& Scale)
 	{
 		return m_World->As<World2D>()->CreateBox(HeightX,HeightY,Scale);
 	}
@@ -54,7 +54,7 @@ namespace AGE
 		return m_World->As<World2D>()->CreatePolygonShape(ID,Fixture,Box);
 	}
 
-	b2Capsule Physics2D::CreateCapsule(const Vector2& Offset, const Vector3 Scale, const float Radius)
+	b2Capsule Physics2D::CreateCapsule(const Vector2& Offset, const Vector3& Scale, const float Radius)
 	{
 		return m_World->As<World2D>()->CreateCapsule(Offset,Scale,Radius);
 	}

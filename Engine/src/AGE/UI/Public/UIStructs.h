@@ -178,9 +178,9 @@ namespace AGE
 	struct UIProperties
 	{
 		UIProperties() = default;
-		Vector3 Position = {0.f};
-		Vector3 Rotation = {0.f};
-		Vector3 Scale = {1.f};
+		Vector3 Position = Vector3(0.f);
+		Vector3 Rotation = Vector3(0.f);
+		Vector3 Scale = Vector3(1.f);
 		bool Visible = true;
 		bool Focused = false;
 	};
@@ -188,9 +188,9 @@ namespace AGE
 	struct BoxProperties
 	{
 		BoxProperties() = default;
-		Vector3 Position = {0.f};
-		Vector3 Rotation = {0.f};
-		Vector3 Scale = {1.f};
+		Vector3 Position = Vector3(0.f);
+		Vector3 Rotation = Vector3(0.f);
+		Vector3 Scale = Vector3(1.f);
 		Vector4 TintColor = {1.f};
 		Ref<Texture> BoxTexture = nullptr;
 	};

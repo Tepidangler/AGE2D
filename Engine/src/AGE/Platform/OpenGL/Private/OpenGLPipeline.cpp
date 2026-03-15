@@ -3,6 +3,8 @@
 #include "Render/Public/RenderCommand.h"
 #include "Assets/Public/AssetManager.h"
 #include <glm/glm.hpp>
+
+#include "App.h"
 #include "Debug/Public/Instrumentor.h"
 namespace AGE
 {
@@ -25,6 +27,7 @@ namespace AGE
 	{
 		//2D Init
 
+		CoreLogger::Info("Initializing OpenGL Pipeline");
 		m_Data.CameraUniformBuffer = UniformBuffer::Create(sizeof(Renderer2DData::CameraData), 0);
 
 		m_Data.QuadVertexArray = VertexArray::Create();
@@ -125,6 +128,12 @@ namespace AGE
 		{
 			Samplers[i] = i;
 		}
+		AppConfig& AppConfigRef = App::Get().GetAppConfig();
+		AssetManager::Get().LoadShader(AppConfigRef.EditorAssetPath.string() +"Shaders/GLSL/Vertex/QuadShader.glsl");
+		AssetManager::Get().LoadShader(AppConfigRef.EditorAssetPath.string() +"Shaders/GLSL/Vertex/CircleShader.glsl");
+		AssetManager::Get().LoadShader(AppConfigRef.EditorAssetPath.string() +"Shaders/GLSL/Vertex/LineShader.glsl");
+		AssetManager::Get().LoadShader(AppConfigRef.EditorAssetPath.string() +"Shaders/GLSL/Vertex/TextShader.glsl");
+		AssetManager::Get().LoadShader(AppConfigRef.EditorAssetPath.string() +"Shaders/GLSL/Vertex/TileShader.glsl");
 
 		m_Data.QuadShader = AssetManager::Get().GetShader("QuadShader");
 		m_Data.CircleShader = AssetManager::Get().GetShader("CircleShader");

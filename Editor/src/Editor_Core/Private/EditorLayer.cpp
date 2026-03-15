@@ -76,7 +76,7 @@ namespace AGE
 
 	void EditorLayer::OnAttach() 
 	{
-#ifdef WIN32
+#ifdef AG_PLATFORM_WINDOWS
 		MONITORINFOEX MonInfo;
 		MonInfo.cbSize = sizeof(MonInfo);
 		GetMonitorInfo(MonitorFromWindow(App::Get().GetDeviceManager().GetWindow().GetPlatformWindow(), MONITOR_DEFAULTTONEAREST), (LPMONITORINFO) & MonInfo);
@@ -120,7 +120,7 @@ namespace AGE
 
 		if (!m_bLoadedIni)
 		{
-			m_MainMenuBar->LoadProjectIniFile();
+			m_MainMenuBar->LoadInputIni();
 			m_bLoadedIni = true;
 		}
 		m_MainMenuBar->OnImGuiRender(DeltaTime);
@@ -155,7 +155,7 @@ namespace AGE
 	bool EditorLayer::OnRendererChanged(RendererChangeEvent& E)
 	{
 		m_FrameBuffer.reset();
-#ifdef WIN32
+#ifdef AG_PLATFORM_WINDOWS
 		MONITORINFOEX MonInfo{};
 		MonInfo.cbSize = sizeof(MonInfo);
 		GetMonitorInfo(MonitorFromWindow(App::Get().GetDeviceManager().GetWindow().GetPlatformWindow(), MONITOR_DEFAULTTONEAREST), &MonInfo);

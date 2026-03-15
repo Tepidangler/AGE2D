@@ -8,7 +8,7 @@ struct Matrix3D;
 
 namespace AGE
 {
-	enum class ShaderDataType : uint16_t
+	enum class ShaderDataType
 	{
 		INVALIDSHADERDATATYPE = 0,
 		Float = 1,
@@ -80,9 +80,6 @@ namespace AGE
 		uint32_t Offset = 0;
 		uint32_t DataStepRate = 0;
 		bool Normalized = false;
-
-		uint32_t ElementBinding = 0;
-		uint32_t ElementLocation = 0;
 
 		BufferElement() {};
 

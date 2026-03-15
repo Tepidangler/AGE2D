@@ -24,7 +24,7 @@ namespace AGE
 
 		Physics2D() = default;
 
-		virtual ~Physics2D() = default;
+		~Physics2D() = default;
 
 		bool CreateNewPhysicsWorld(Ref<Scene> scene);
 
@@ -34,16 +34,16 @@ namespace AGE
 
 		b2BodyId CreateBody(b2BodyDef& Def);
 
-		b2BodyDef MakeBodyDefinition(const BodyType& Type, const Vector3& Translation, const Vector3 Rotation, bool IsRotationFixed, void* UserData);
+		b2BodyDef MakeBodyDefinition(const BodyType& Type, const Vector3& Translation, const Vector3& Rotation, bool IsRotationFixed, void* UserData);
 
 		b2ShapeDef MakeShapeDefinition(float Density, float Friction, float Restitution, bool ShouldGenerateEvents, void* UserData);
 
 		b2Rot MakeRotation(float Z);
 
-		b2Polygon CreateBox(float HeightX, float HeightY, const Vector3 Scale);
+		b2Polygon CreateBox(float HeightX, float HeightY, const Vector3& Scale);
 		b2ShapeId CreatePolygonShape(const b2BodyId& ID, const b2ShapeDef& Fixture, const b2Polygon& Box);
 
-		b2Capsule CreateCapsule(const Vector2& Offset, const Vector3 Scale, const float Radius);
+		b2Capsule CreateCapsule(const Vector2& Offset, const Vector3& Scale, const float Radius);
 		b2ShapeId CreateCapsuleShape(const b2BodyId& ID, const b2ShapeDef& Fixture, const b2Capsule& Capsule);
 
 		b2Segment CreateSegment();

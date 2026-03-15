@@ -94,6 +94,7 @@ endif()
 add_library(Engine STATIC
 
 		${STB_INC_DIRS}/stb_image.h
+		${STB_INC_DIRS}/stb_image.cpp
 		src/AGE/Core/Private/AGEpch.cpp
 		src/AGE/Core/Public/AGEpch.hpp
 		src/AGE/Audio/AudioEngine/Public/Soundbank.h
@@ -161,7 +162,6 @@ add_library(Engine STATIC
 		src/AGE/Core/Public/Colors.h
 		src/AGE/Core/Public/Wwise_IDs.h
 		src/AGE/Core/Public/DeltaTime.h
-		src/AGE/Core/Public/JoyStickCodes.h
 		src/AGE/Core/Public/Buffer.h
 		src/AGE/Core/Public/Window.h
 		src/AGE/Core/Public/GamepadCodes.h
@@ -248,7 +248,6 @@ add_library(Engine STATIC
 		src/AGE/Render/Private/Pipeline.cpp
 		src/AGE/Render/Public/Pipeline.h
 		src/AGE/Render/Public/MSDFData.h
-		src/AGE/Render/Private/stb_image.cpp
 		src/AGE/RNG/Private/RNG.cpp
 		src/AGE/RNG/Public/RNG.h
 		src/AGE/Scene/Private/Scene.cpp
@@ -295,6 +294,13 @@ add_library(Engine STATIC
 		src/AGE/VisualScripting/Private/NodeEditorWindow.cpp
 		src/AGE/VisualScripting/Public/NodeEditorWindow.h
 		src/AGE/Core/Public/Pointers.h
+		src/AGE/Platform/Linux/Private/LinuxWindow.cpp
+		src/AGE/Platform/Linux/Public/LinuxWindow.h
+		src/AGE/Platform/Linux/Private/LinuxInput.cpp
+		src/AGE/Core/Private/InputBinding.cpp
+		src/AGE/Core/Public/InputBinding.h
+        src/AGE/TileMap/Private/Tilemap.cpp
+		src/AGE/TileMap/Public/Tilemap.h
 )
 set_property(TARGET Engine PROPERTY
 		MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
@@ -311,9 +317,9 @@ target_compile_definitions(Engine PUBLIC
 )
 if(WIN32)
 	target_compile_options(Engine PUBLIC
-			$<$<CONFIG:Debug>:/WX /Od>
-			$<$<CONFIG:RelWithDebInfo>:/WX /O2>
-			$<$<CONFIG:MinSizeRel>:/WX /Os /Oy>
+			$<$<CONFIG:Debug>:/WX>
+			$<$<CONFIG:RelWithDebInfo>:/O2>
+			$<$<CONFIG:MinSizeRel>:/Os /Oy>
 	)
 elseif(UNIX)
 	if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
@@ -413,6 +419,7 @@ target_link_libraries(Engine PUBLIC
 						box2d::box2d
 						ZLIB::ZLIB
 						OpenGL::GL
+						#opengl32.lib
 						tmx
                         ImGUI
                         glfw
@@ -474,133 +481,6 @@ endif()
 configure_file(CMake/Versioning.h.in Versioning.h)
 
 if(BUILD_PACKAGE)
-#	install(DIRECTORY
-#			${CMAKE_CURRENT_SOURCE_DIR}/src/AGE
-#	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/age2d/Engine
-#	FILES_MATCHING PATTERN "*.h"
-#	)
-
-set_target_properties(Engine PROPERTIES
-		PUBLIC_HEADER ${STB_INC_DIRS}/stb_image.h
-		PUBLIC_HEADER src/AGE/Core/Public/AGEpch.hpp
-		PUBLIC_HEADER src/AGE/Audio/AudioEngine/Public/Soundbank.h
-		PUBLIC_HEADER src/AGE/UI/Public/WidgetStack.h
-		PUBLIC_HEADER src/AGE/UI/Public/Widget.h
-		PUBLIC_HEADER src/AGE/UI/Public/UiComponent.h
-		PUBLIC_HEADER src/AGE/UI/Components/Public/TextComponent.h
-		PUBLIC_HEADER src/AGE/UI/Components/Public/TextBoxComponent.h
-		PUBLIC_HEADER src/AGE/Serializers/Public/IniReader.h
-		PUBLIC_HEADER src/AGE/Serializers/Public/IniWriter.h
-		PUBLIC_HEADER src/AGE/UI/Public/UIStructs.h
-		PUBLIC_HEADER src/AGE/UI/Public/ScriptableWidget.h
-		PUBLIC_HEADER src/AGE/Events/Public/UIEvent.h
-		PUBLIC_HEADER src/AGE/UI/Components/Public/UiImageComponent.h
-		PUBLIC_HEADER src/AGE/UI/Components/Public/ButtonComponent.h
-		PUBLIC_HEADER src/AGE/UI/Components/Public/VerticalBoxComponent.h
-		PUBLIC_HEADER src/AGE/UI/Components/Public/HorizontalBoxComponent.h
-		PUBLIC_HEADER src/AGE/Animation/Public/Animation.h
-		PUBLIC_HEADER src/AGE/Assets/Public/AssetManager.h
-		PUBLIC_HEADER src/AGE/Audio/AGESound/Public/Sound.h
-		PUBLIC_HEADER src/AGE/Audio/AGESound/Public/AGEAudio.h
-		PUBLIC_HEADER src/AGE/Audio/AudioEngine/Public/AudioEngine.h
-		PUBLIC_HEADER src/AGE/Audio/Fmod/Public/FmodEngine.h
-		PUBLIC_HEADER src/AGE/Audio/Wwise/Public/WWiseEngine.h
-		PUBLIC_HEADER src/AGE/Camera/Public/EditorCamera.h
-		PUBLIC_HEADER src/AGE/Camera/Public/Camera.h
-		PUBLIC_HEADER src/AGE/Core/Public/App.h
-		PUBLIC_HEADER src/AGE/Core/Public/DeviceManager.h
-		PUBLIC_HEADER src/AGE/Core/Public/Layer.h
-		PUBLIC_HEADER src/AGE/Core/Public/LayerStack.h
-		PUBLIC_HEADER src/AGE/Core/Public/Log.h
-		PUBLIC_HEADER src/AGE/Core/Public/ScriptableComponentStack.h
-		PUBLIC_HEADER src/AGE/Core/Private/UUID.cpp
-		PUBLIC_HEADER src/AGE/Core/Public/UUID.h
-		PUBLIC_HEADER src/AGE/Core/Public/Timer.h
-		PUBLIC_HEADER src/AGE/Core/Public/Core.h
-		PUBLIC_HEADER src/AGE/Core/Public/MouseButtonCodes.h
-		PUBLIC_HEADER src/AGE/Core/Public/Keycodes.h
-		PUBLIC_HEADER src/AGE/Core/Public/Colors.h
-		PUBLIC_HEADER src/AGE/Core/Public/Wwise_IDs.h
-		PUBLIC_HEADER src/AGE/Core/Public/DeltaTime.h
-		PUBLIC_HEADER src/AGE/Core/Public/JoyStickCodes.h
-		PUBLIC_HEADER src/AGE/Core/Public/Buffer.h
-		PUBLIC_HEADER src/AGE/Core/Public/Window.h
-		PUBLIC_HEADER src/AGE/Core/Public/GamepadCodes.h
-		PUBLIC_HEADER src/AGE/Core/Public/EntryPoint.h
-		PUBLIC_HEADER src/AGE/Core/Public/Input.h
-		PUBLIC_HEADER src/AGE/Debug/Public/Instrumentor.h
-		PUBLIC_HEADER src/AGE/Events/Public/ApplicationEvent.h
-		PUBLIC_HEADER src/AGE/Events/Public/Event.h
-		PUBLIC_HEADER src/AGE/Events/Public/GameEvent.h
-		PUBLIC_HEADER src/AGE/Events/Public/KeyEvent.h
-		PUBLIC_HEADER src/AGE/Events/Public/MouseEvent.h
-		PUBLIC_HEADER src/AGE/Events/Public/RendererEvent.h
-		PUBLIC_HEADER src/AGE/ImGui/Public/ImGuiLayer.h
-		PUBLIC_HEADER src/AGE/Math/Public/Math.h
-		PUBLIC_HEADER src/AGE/Math/Public/MathStructures.h
-		PUBLIC_HEADER src/AGE/Math/Public/Vector4.h
-		PUBLIC_HEADER src/AGE/Math/Public/UtilityFunctions.h
-		PUBLIC_HEADER src/AGE/Math/Public/Vector3.h
-		PUBLIC_HEADER src/AGE/Math/Public/Vector2.h
-		PUBLIC_HEADER src/AGE/Parser/Public/CsvParser.h
-		PUBLIC_HEADER src/AGE/Parser/Public/JsonParser.h
-		PUBLIC_HEADER src/AGE/Parser/Public/FbxParser.h
-		PUBLIC_HEADER src/AGE/Particles/Public/ParticleSystem.h
-		PUBLIC_HEADER src/AGE/Physics/Public/World.h
-		PUBLIC_HEADER src/AGE/Physics/Public/World2D.h
-		PUBLIC_HEADER src/AGE/Physics/Public/Physics2D.h
-		PUBLIC_HEADER src/AGE/Platform/OpenGL/Public/OpenGLVertexArray.h
-		PUBLIC_HEADER src/AGE/Platform/OpenGL/Public/OpenGlContext.h
-		PUBLIC_HEADER src/AGE/Platform/OpenGL/Public/OpenGLFrameBuffer.h
-		PUBLIC_HEADER src/AGE/Platform/OpenGL/Public/OpenGLPipeline.h
-		PUBLIC_HEADER src/AGE/Platform/OpenGL/Public/OpenGLShader.h
-		PUBLIC_HEADER src/AGE/Platform/OpenGL/Public/OpenGLRendererAPI.h
-		PUBLIC_HEADER src/AGE/Platform/OpenGL/Public/OpenGLTexture.h
-		PUBLIC_HEADER src/AGE/Platform/OpenGL/Public/imgui_impl_opengl3_loader.h
-		PUBLIC_HEADER src/AGE/Platform/Windows/Public/WindowsWindow.h
-		PUBLIC_HEADER src/AGE/Platform/Microsoft/XInput/Public/XInput.h
-		PUBLIC_HEADER src/AGE/Platform/OpenGL/Public/OpenGLBuffer.h
-		PUBLIC_HEADER src/AGE/Project/Public/Project.h
-		PUBLIC_HEADER src/AGE/Render/Public/Shader.h
-		PUBLIC_HEADER src/AGE/Render/Public/Font.h
-		PUBLIC_HEADER src/AGE/Render/Public/Renderer2D.h
-		PUBLIC_HEADER src/AGE/Render/Public/RenderCommand.h
-		PUBLIC_HEADER src/AGE/Render/Public/RenderBuffer.h
-		PUBLIC_HEADER src/AGE/Render/Public/GraphicsContext.h
-		PUBLIC_HEADER src/AGE/Render/Public/FrameBuffer.h
-		PUBLIC_HEADER src/AGE/Render/Public/RenderAPI.h
-		PUBLIC_HEADER src/AGE/Render/Public/VertexArray.h
-		PUBLIC_HEADER src/AGE/Render/Public/Renderer.h
-		PUBLIC_HEADER src/AGE/Render/Public/Pipeline.h
-		PUBLIC_HEADER src/AGE/Render/Public/MSDFData.h
-		PUBLIC_HEADER src/AGE/RNG/Public/RNG.h
-		PUBLIC_HEADER src/AGE/Scene/Public/Scene.h
-		PUBLIC_HEADER src/AGE/Scene/Public/Entity.h
-		PUBLIC_HEADER src/AGE/Scene/Public/SceneCamera.h
-		PUBLIC_HEADER src/AGE/Scene/Public/ScriptableEntity.h
-		PUBLIC_HEADER src/AGE/Scene/Public/Components.h
-		PUBLIC_HEADER src/AGE/Serializers/Public/DataReader.h
-		PUBLIC_HEADER src/AGE/Serializers/Public/DataWriter.h
-		PUBLIC_HEADER src/AGE/Sprite/Public/Aseprite.h
-		PUBLIC_HEADER src/AGE/Sprite/Public/Image.h
-		PUBLIC_HEADER src/AGE/Sprite/Public/SpriteAPI.h
-		PUBLIC_HEADER src/AGE/Statics/Public/Statics.h
-		PUBLIC_HEADER src/AGE/Structs/Public/DataStructures.h
-		PUBLIC_HEADER src/AGE/Structs/Public/Functions.h
-		PUBLIC_HEADER src/AGE/Texture/Public/Texture.h
-		PUBLIC_HEADER src/AGE/Texture/Public/SubTexture.h
-		PUBLIC_HEADER src/AGE/TileMap/Public/TileMapManager.h
-		PUBLIC_HEADER src/AGE/TileMap/Public/TileMapImporter.h
-		PUBLIC_HEADER src/AGE/Utils/Public/Serializers.h
-		PUBLIC_HEADER src/AGE/Utils/Public/WindowsUtils.h
-		PUBLIC_HEADER src/AGE/Video/Public/VideoSource.h
-		PUBLIC_HEADER src/AGE/Video/Public/AGEVideo.h
-		PUBLIC_HEADER src/AGE/VisualScripting/Public/NodeEditorManager.h
-		PUBLIC_HEADER src/AGE/VisualScripting/Public/VisualScriptingStructs.h
-		PUBLIC_HEADER src/AGE/VisualScripting/Public/NodeEditorWindow.h
-		PUBLIC_HEADER src/AGE/Core/Public/Pointers.h
-		PUBLIC_HEADER src/Age.h
-)
 	install(TARGETS Engine
 			ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
 			PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/age2d/Engine

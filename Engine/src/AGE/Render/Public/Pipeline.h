@@ -16,17 +16,17 @@ namespace AGE
 		static const uint32_t MaxIndexCount = MaxQuadCount * 6;
 		static const uint32_t MaxTextureSlots = 32;
 
-		Ref<VertexArray> QuadVertexArray;
-		Ref<Shader> QuadShader;
-		Ref<Texture2D> WhiteTexture;
+		Ref<VertexArray> QuadVertexArray = nullptr;
+		Ref<Shader> QuadShader = nullptr;
+		Ref<Texture2D> WhiteTexture = nullptr;
 		ShaderLibrary Library;
 
 		uint32_t QuadIndexCount = 0;
 		Vertex* QuadVertexBufferBase = nullptr;
 		Vertex* QuadVertexBufferPtr = nullptr;
 
-		Ref<VertexArray> CircleVertexArray;
-		Ref<Shader> CircleShader;
+		Ref<VertexArray> CircleVertexArray = nullptr;
+		Ref<Shader> CircleShader = nullptr;
 
 		uint32_t CircleIndexCount = 0;
 		CircleVertex* CircleVertexBufferBase = nullptr;

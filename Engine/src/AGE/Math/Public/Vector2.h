@@ -16,8 +16,20 @@ namespace AGE {
 		
 
 		Vector2();
-		Vector2(float a);
+		explicit Vector2(float a);
 		Vector2(float a, float b);
+		Vector2(const Vector2& Other)
+		{
+			x = Other.x;
+			y = Other.y;
+		}
+
+		Vector2& operator=(const Vector2& Other)
+		{
+			x = Other.x;
+			y = Other.y;
+			return *this;
+		}
 
 		float dot(const Vector2& vec) const {
 			float product = (x * vec.x) + (y * vec.y);
@@ -58,6 +70,10 @@ namespace AGE {
 		Vector2 operator-(const Vector2& vec) const {
 			return Vector2(x - vec.x, y - vec.y);
 		}
+		Vector2 operator-(const float val) const {
+			return Vector2(x - val, y - val);
+		}
+
 
 		void operator-=(const Vector2& vec) {
 			x -= vec.x;

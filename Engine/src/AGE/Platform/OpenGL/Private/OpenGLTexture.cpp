@@ -127,17 +127,17 @@ namespace AGE
 	}
 	
 	OpenGLTexture2D::OpenGLTexture2D(const std::string& Path)
-		:m_Path(Path)
+		: m_Path(Path), m_AssetID(UUID())
 	{
 		AGE_PROFILE_FUNCTION();
-		//stbi_set_flip_vertically_on_load(true);
-		unsigned char* Data = nullptr;
+
+		unsigned char *Data = nullptr;
 		{
 			stbi_set_flip_vertically_on_load(true);
 			AGE_PROFILE_SCOPE("stbi_load -> OpenGLTexture2D::OpenGLTexture2D(const std::string& Path)");
 			Data = stbi_load(Path.c_str(), &m_Width, &m_Height, &m_nrChannels, 0);
 		}
-		CoreLogger::Assert(Data, "Unable to Load Image");
+		CoreLogger::Assert(Data != nullptr, "Unable to Load Image");
 		m_ImageData = {Data, ((m_Width * m_Height) * m_nrChannels)};
 
 		GLenum InternalFormat = 0, DataFormat = 0;
@@ -145,18 +145,15 @@ namespace AGE
 		{
 			InternalFormat = GL_RGBA8;
 			DataFormat = GL_RGBA;
-		}
-		else if (m_nrChannels == 3)
+		} else if (m_nrChannels == 3)
 		{
 			InternalFormat = GL_RGB8;
 			DataFormat = GL_RGB;
-		}
-		else if (m_nrChannels == 2)
+		} else if (m_nrChannels == 2)
 		{
 			InternalFormat = GL_RG8;
 			DataFormat = GL_RG;
-		}
-		else
+		} else
 		{
 			InternalFormat = GL_R8;
 			DataFormat = GL_RED;
@@ -168,23 +165,23 @@ namespace AGE
 		glCreateTextures(GL_TEXTURE_2D, 1, &m_TextureID);
 
 		glTextureStorage2D(m_TextureID, 1, InternalFormat, m_Width, m_Height);
-		
+
 		//Set Texture wrapping params
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		
+
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		
+
 		//Set Texture filtering params
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		
+
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		
+
 		glTextureSubImage2D(m_TextureID, 0, 0, 0, m_Width, m_Height, DataFormat, GL_UNSIGNED_BYTE, Data);
 
+		CoreLogger::Error("{}", glGetError());
 		stbi_image_free(Data);
 		std::filesystem::path FilePath = m_Path;
 		m_Name = Utils::EngineStatics::GetFilename(FilePath);
-		
 	}
 
 	OpenGLTexture2D::OpenGLTexture2D(const tmx_image* Image)

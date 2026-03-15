@@ -3,11 +3,8 @@
 #include "Render/Public/Renderer2D.h"
 #include "Render/Public/RenderCommand.h"
 #include "Render/Public/VertexArray.h"
-#include "Render/Public/Shader.h"
 #include "Scene/Public/Entity.h"
 #include "Platform/OpenGL/Public/OpenGLShader.h"
-#include "Platform/OpenGL/Public/OpenGLTexture.h"
-#include "Utils/Public/WindowsUtils.h"
 #include "Sprite/Public/SpriteAPI.h"
 #include <glm/gtc/matrix_transform.hpp>
 #ifdef __clang__
@@ -363,7 +360,7 @@ namespace AGE
 			Coords[2] = TexCoordMax;
 			Coords[3] = { TexCoordMax.x, TexCoordMin.y };
 
-			Matrix4D Transform  = Math::MakeTransform(Props.Position, Props.Rotation, {1.f});
+			Matrix4D Transform  = Math::MakeTransform(Props.Position, Props.Rotation, Vector3(1.f));
 			RenderCommand::s_GraphicsPipeline->GetData().TextVertexBufferPtr = RenderCommand::s_GraphicsPipeline->GetData().VertexBuffers["Text"]->CreateText(RenderCommand::s_GraphicsPipeline->GetData().TextVertexBufferPtr, Transform, Pos, Props.Color, Coords, TextureIndex,0);
 			RenderCommand::s_GraphicsPipeline->GetData().TextIndexCount += 6;
 			RenderCommand::s_GraphicsPipeline->GetData().Stats.QuadCount++;
@@ -382,6 +379,7 @@ namespace AGE
 	}
 	void Renderer2D::DrawTileMapLayers(TileMapRendererComponent& TMRC, tmx_map* Map, std::vector<tmx_layer*> layers)
 	{
+#if 0
 		AGE_PROFILE_FUNCTION();
 		if (!TMRC.bFirstPass)
 		{
@@ -444,10 +442,11 @@ namespace AGE
 			
 		}
 		TMRC.bFirstPass = false;
-		
+#endif
 	}
 	void Renderer2D::DrawTileMapLayer(TileMapRendererComponent& TMRC, tmx_map* Map, tmx_layer* layer, int Depth)
 	{
+#if 0
 		AGE_PROFILE_FUNCTION();
 		if (layer->visible)
 		{
@@ -530,6 +529,7 @@ namespace AGE
 				}
 			}
 		}
+#endif
 	}
 	Statistics Renderer2D::GetStats()
 	{

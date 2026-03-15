@@ -133,7 +133,13 @@ namespace AGE
 			
 			tmp1 = _mm_mul_ps(fact, tmp1); //rbg0
 			alpha = _mm_mul_ps(_mm_set1_ps(255.f), _mm_set1_ps(Bytes[3])); //alpha
+#ifdef _MSC_VER
+#pragma warning(push,0)
 			tmp1 = _mm_insert_ps(tmp1, alpha, _MM_MK_INSERTPS_NDX(1,3, 0x00000400));
+#pragma warning(pop)
+#else
+			tmp1 = _mm_insert_ps(tmp1, alpha, _MM_MK_INSERTPS_NDX(1,3, 0x00000400));
+#endif
 			
 			__m128i tmp1i = _mm_cvtps_epi32(tmp1);
 			
@@ -277,8 +283,8 @@ namespace AGE
 		std::string FontName;
 		Vector4 Color = {0.f,0.f,0.f,1.f};
 		double FontSize =1.0;
-		Vector3 Position = {0.f};
-		Vector3 Rotation = {0.f};
+		Vector3 Position = Vector3(0.f);
+		Vector3 Rotation = Vector3(0.f);
 	};
 
 	struct UniformBufferObj

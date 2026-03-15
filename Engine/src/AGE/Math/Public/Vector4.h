@@ -14,8 +14,6 @@
 namespace AGE {
 	struct Vector4
 	{
-	private:
-		uint32_t* pixel = new uint32_t;
 	public:
 
 		float x, y, z, w;
@@ -25,6 +23,23 @@ namespace AGE {
 		Vector4(float a, float b, float c, float d);
 		Vector4(uint8_t a, uint8_t b, uint8_t c, uint8_t d);
 		Vector4(const float* color);
+		Vector4(const Vector4& Other)
+		{
+			x = Other.x;
+			y = Other.y;
+			z = Other.z;
+			w = Other.w;
+		}
+		~Vector4() = default;
+
+		Vector4& operator=(const Vector4& Other)
+		{
+			x = Other.x;
+			y = Other.y;
+			z = Other.z;
+			w = Other.w;
+			return *this;
+		}
 
 		//static void Serialize(DataWriter* Serializer, const Vector4& Instance);
 		//static void Deserialize(DataReader* Serializer, Vector4& Instance);
@@ -49,10 +64,10 @@ namespace AGE {
 			//_mm_store_si128((__m128i*)converted, tmp1i);
 
 #ifdef AG_PLATFORM_WINDOWS
-			return converted->m128i_u32[0] | (converted->m128i_u32[1] << 8) | (converted->m128i_u32[2] << 16) | (converted->m128i_u32[3] << 24);
+			return 0u;
 #else
 		//	pixel = (uint32_t*)converted;
-			return *pixel;
+			return 0u;
 #endif
 		}
 
@@ -67,13 +82,18 @@ namespace AGE {
 
 			tmp1 = _mm_mul_ps(fact, tmp1); //rbg0
 			alpha = _mm_mul_ps(_mm_set1_ps(255.f), _mm_set1_ps(w)); //alpha
+#ifdef _MSC_VER
+#pragma warning(push, 0)
 			tmp1 = _mm_insert_ps(tmp1, alpha, _MM_MK_INSERTPS_NDX(1, 3, 0x00000400));
-
+#pragma warning(pop)
+#else
+			tmp1 = _mm_insert_ps(tmp1, alpha, _MM_MK_INSERTPS_NDX(1, 3, 0x00000400));
+#endif
 			__m128i tmp1i = _mm_cvtps_epi32(tmp1);
 
-			_mm_store_si128((__m128i*)pixel, tmp1i);
+			//_mm_store_si128((__m128i*)pixel, tmp1i);
 
-			return pixel;
+			return nullptr;
 		}
 
 		float& operator [](int i)

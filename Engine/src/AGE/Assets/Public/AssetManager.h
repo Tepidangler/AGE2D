@@ -241,7 +241,7 @@ namespace AGE
 			{
 				for (auto& F : m_Fonts)
 				{
-					m_FontNames.emplace_back(F.second->GetAtlasTexture()->GetName());
+					m_FontNames.emplace_back(F.second->GetFontName());
 				}
 			}
 			return m_FontNames;
@@ -258,6 +258,11 @@ namespace AGE
 			}
 
 			return false;
+		}
+
+		void RegisterFont(const Ref<AGEFont>& font)
+		{
+			m_Fonts.emplace(font->GetAssetID(), font);
 		}
 
 
@@ -483,6 +488,28 @@ namespace AGE
 		bool IsSoundLoaded(const std::filesystem::path& Filepath);
 
 		Ref<AssetRegistry> GetAssetRegistry() const { return m_Registry; }
+
+		template<typename T>
+		void RegisterAsset(Ref<T> Asset)
+		{
+			if (std::is_same<T, AudioSource>::value)
+			{
+				CoreLogger::Error("Registering Audio Sources is currently unsupported!");
+				return;
+			}
+			if (std::is_same<T, AGEFont>::value)
+			{
+				m_Registry->RegisterFont(Asset);
+				return;
+			}
+			if (std::is_same<T, Texture2D>::value)
+			{
+				CoreLogger::Error("Registering Textures is currently unsupported!");
+				return;
+			}
+
+
+		}
 	private:
 
 		static AssetManager* s_Instance;

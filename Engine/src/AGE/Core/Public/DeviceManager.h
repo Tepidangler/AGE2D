@@ -28,6 +28,7 @@ namespace AGE
 	{
 	public:
 
+		DeviceManager(AudioEngineType AudioEngine, bool UseXInput = false);
 		virtual ~DeviceManager() = default;
 
 		inline AGEWindow& GetWindow() { return *m_Window; }
@@ -39,10 +40,8 @@ namespace AGE
 #ifdef AG_PLATFORM_WINDOWS
 		inline void PollInput() { m_XInput->PollControllers(); }
 #endif
-		static Scope<DeviceManager> Create(AudioEngineType AudioEngine = AudioEngineType::AGESoundEngine, bool UseXInput = false);
 
 	private:
-		DeviceManager(AudioEngineType AudioEngine, bool UseXInput = false);
 
 	private:
 		Scope<AGEWindow> m_Window;

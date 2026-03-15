@@ -38,6 +38,7 @@ namespace AGE
 	World2D::World2D(Ref<Scene> scene)
 		:m_WorldScene(scene)
 	{
+		CoreLogger::Trace("Initializing World {}", scene->GetName());
 		b2WorldDef WorldDef = b2DefaultWorldDef();
 		WorldDef.gravity = { 0.0f,-9.8f };
 		m_World = b2CreateWorld(&WorldDef);
@@ -71,19 +72,30 @@ namespace AGE
 	void World2D::QueryBoxOverlap(const QueryParams& Params)
 	{
 		[[maybe_unused]] Box2DQueryContext QC = { Params.Point2D,Params.InstigatorID };
+		b2ShapeProxy Proxy{};
+		Proxy.count = Params.Box2D.count;
+		for (size_t i = 0; i < 4; i++)
+		{
+			Proxy.points[i] = Params.Box2D.vertices[i];
+		}
 		b2Transform Trans;
 		Trans.p = { Params.Location.x,Params.Location.y };
 		Trans.q = b2MakeRot(Params.Rotation.z);
-		//b2World_OverlapPolygon(m_World, &Params.Box2D, Trans, GetQueryFilter(), Params.OverlapFunc2D, Params.Context);
+		b2World_OverlapShape(m_World, &Proxy,GetQueryFilter(),Params.OverlapFunc2D, Params.Context);
 	}
 
 	void World2D::QueryCapsuleOverlap(const QueryParams& Params)
 	{
 		[[maybe_unused]] Box2DQueryContext QC = { Params.Point2D,Params.InstigatorID };
+		b2ShapeProxy Proxy{};
+		Proxy.count = 2;
+		Proxy.points[0] = Params.Capsule2D.center1;
+		Proxy.points[1] = Params.Capsule2D.center2;
+		Proxy.radius = Params.Box2D.radius;
 		b2Transform Trans;
 		Trans.p = { Params.Location.x,Params.Location.y };
 		Trans.q = b2MakeRot(Params.Rotation.z);
-		//b2World_OverlapCapsule(m_World, &Params.Capsule2D, Trans, GetQueryFilter(), Params.OverlapFunc2D, Params.Context);
+		b2World_OverlapShape(m_World, &Proxy,GetQueryFilter(),Params.OverlapFunc2D, Params.Context);
 	}
 
 	void World2D::QuerySegmentOverlap(const QueryParams& Params)
@@ -107,7 +119,7 @@ namespace AGE
 		b2World_CastRay(m_World, Origin, Translation, GetQueryFilter(), Params.CastFunc2D, &QC);
 	}
 
-	b2BodyDef World2D::MakeBodyDefinition(const BodyType& Type, const Vector3& Translation, const Vector3 Rotation, bool IsRotationFixed, void* UserData)
+	b2BodyDef World2D::MakeBodyDefinition(const BodyType& Type, const Vector3& Translation, const Vector3& Rotation, bool IsRotationFixed, void* UserData)
 	{
 		b2BodyDef Def = b2DefaultBodyDef();
 
@@ -140,7 +152,7 @@ namespace AGE
 		return b2MakeRot(Z);
 	}
 
-	b2Polygon World2D::CreateBox(float HeightX, float HeightY, const Vector3 Scale)
+	b2Polygon World2D::CreateBox(float HeightX, float HeightY, const Vector3& Scale)
 	{
 		return b2MakeBox(HeightX * Scale.x, HeightY * Scale.y);
 	}
@@ -150,7 +162,7 @@ namespace AGE
 		return b2CreatePolygonShape(ID, &Fixture, &Box);
 	}
 
-	b2Capsule World2D::CreateCapsule(const Vector2& Offset, const Vector3 Scale, const float Radius)
+	b2Capsule World2D::CreateCapsule(const Vector2& Offset, const Vector3& Scale, const float Radius)
 	{
 		b2Capsule Capsule;
 		Capsule.center1 = { Offset.x * Scale.x, Offset.y * Scale.y };
