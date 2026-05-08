@@ -5,11 +5,23 @@
 
 namespace AGE
 {
-	SceneCamera::SceneCamera()
+	/**
+ * @brief Constructor for the SceneCamera class. 
+ * Initializes a new instance of SceneCamera and calls RecalculateProjection to set up the projection matrix.
+ */
+SceneCamera::SceneCamera()
 	{
 		RecalculateProjection();
 	}
-	void SceneCamera::SetOrthographic(float Size, float NearClip, float FarClip)
+	/**
+ * @brief Sets the camera's projection to Orthographic.
+ * 
+ * This function sets the camera's projection type to Orthographic and updates the size, near clip, and far clip values. It then calls RecalculateProjection() to recreate the projection matrix based on these new values.
+ * @param Size The desired orthographic size (width or height).
+ * @param NearClip The distance from the camera to the near clipping plane.
+ * @param FarClip The distance from the camera to the far clipping plane.
+ */
+void SceneCamera::SetOrthographic(float Size, float NearClip, float FarClip)
 	{
 		m_ProjectionType = ProjectionType::Orthographic;
 		m_OrthographicSize = Size;
@@ -17,7 +29,18 @@ namespace AGE
 		m_OrthographicFar = FarClip;
 		RecalculateProjection();
 	}
-	void SceneCamera::SetPerspective(float VerticalFOV, float NearClip, float FarClip)
+	/**
+ * @brief Sets the perspective parameters of the camera.
+ * 
+ * This function sets the vertical field of view (FOV), near clip plane, and far clip plane for a perspective projection. It also recalculates the projection matrix based on these new values.
+ * 
+ * @param VerticalFOV The vertical field of view in degrees.
+ * @param NearClip The distance to the near clipping plane.
+ * @param FarClip The distance to the far clipping plane.
+ * 
+ * @return void
+ */
+void SceneCamera::SetPerspective(float VerticalFOV, float NearClip, float FarClip)
 	{
 		m_ProjectionType = ProjectionType::Perspective;
 		m_PerspectiveFOV = VerticalFOV;
@@ -26,13 +49,29 @@ namespace AGE
 
 		RecalculateProjection();
 	}
-	void SceneCamera::SetViewportSize(uint32_t Width, uint32_t Height)
+	/**
+ * @brief Set the viewport size of the scene camera.
+ *
+ * This function sets the width and height of the viewport, calculates the aspect ratio based on these dimensions, 
+ * and updates the projection matrix accordingly.
+ *
+ * @param Width The new width of the viewport.
+ * @param Height The new height of the viewport.
+ */
+void SceneCamera::SetViewportSize(uint32_t Width, uint32_t Height)
 	{
 		m_AspectRatio = (float)Width / (float)Height;
 		
 		RecalculateProjection();
 	}
-	void SceneCamera::RecalculateProjection()
+	/**
+ * @brief Recalculates the projection matrix based on the current settings.
+ * 
+ * This function updates the projection matrix of the camera depending on its type (perspective or orthogonal) and the current aspect ratio. It uses the glm library for creating perspective or orthographic projections.
+ * 
+ * @return void
+ */
+void SceneCamera::RecalculateProjection()
 	{
 
 		if (m_ProjectionType == ProjectionType::Perspective && m_AspectRatio > 0.f)

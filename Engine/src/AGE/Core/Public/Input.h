@@ -5,7 +5,12 @@
 
 namespace AGE
 {
-	 class AGE_API Input
+	 /**
+ * @brief This class provides methods for checking the state of input devices.
+ * 
+ * It includes functions to check if a key, mouse button or gamepad button is pressed, as well as getting the position of the mouse and joystick.
+ */
+class AGE_API Input
 	 {
 		public:
 			static bool IsKeyPressed(int Keycode);

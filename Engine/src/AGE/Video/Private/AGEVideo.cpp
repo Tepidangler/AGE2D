@@ -7,19 +7,51 @@
 
 namespace AGE
 {
-    void AGEVideo::Init()
+    /**
+ * @brief Initializes the AGE Video Player.
+ * 
+ * This function initializes the AGE Video Player by logging an information message stating that the player is starting.
+ * It does not take any parameters and does not return anything.
+ */
+void AGEVideo::Init()
     {
         CoreLogger::Info("Starting AGE Video Player!");
     }
-    void AGEVideo::Shutdown()
+    /**
+ * @brief Shuts down the AGEVideo instance.
+ *
+ * This function is used to clean up any resources that were allocated during the lifetime of this object, such as memory or file handles. It prepares the object for destruction by setting all member variables to their default state and performing other necessary cleanup tasks.
+ *
+ * @return void
+ */
+void AGEVideo::Shutdown()
     {
     }
-    VideoSource AGEVideo::LoadVideoSource(const std::string& FileName)
+    /**
+ * @brief Loads a video source from the given file name and returns it.
+ * 
+ * This function takes in a string representing the filename of the video to be loaded, creates a new VideoSource object with this filename, and then returns it.
+ * 
+ * @param FileName The name of the file containing the video data.
+ * @return A new VideoSource object initialized with the given filename.
+ */
+VideoSource AGEVideo::LoadVideoSource(const std::string& FileName)
     {
         return VideoSource(FileName);
     }
 
-    void AGEVideo::Play(const Ref<VideoSource>& Source, EditorCamera& Camera)
+    /**
+ * @brief Plays a video with the given source and camera.
+ *
+ * This function plays a video using the provided source and camera. It first checks the current RendererAPI, 
+ * then performs different actions based on its value. If it's headless (RendererAPI::GetAPI() returns 0), 
+ * an assertion is triggered with a message indicating that Headless mode is currently unsupported. For other cases, 
+ * no specific action is taken and the function simply exits without doing anything else.
+ *
+ * @param Source The video source to play.
+ * @param Camera The camera used for rendering the video.
+ */
+void AGEVideo::Play(const Ref<VideoSource>& Source, EditorCamera& Camera)
     {
         switch ((int)RendererAPI::GetAPI())
         {
@@ -42,23 +74,69 @@ namespace AGE
         }
         }
     }
-    void AGEVideo::Stop(const Ref<VideoSource>& Source)
+    /**
+ * @brief Stops the video playback for a specific source.
+ * 
+ * This function is used to stop the video playback for a given VideoSource. It takes a reference to a constant VideoSource object as its parameter, indicating which source to stop.
+ * 
+ * @param Source A const reference to the VideoSource to be stopped.
+ * @return void No return value.
+ */
+void AGEVideo::Stop(const Ref<VideoSource>& Source)
     {
     }
-    void AGEVideo::Stop(const std::vector<Ref<VideoSource>>& Sources)
+    /**
+ * @brief Stops the operation of a list of VideoSources.
+ * 
+ * This function is used to stop the operation of a list of VideoSources. It takes in a constant reference to a vector of VideoSource references as its parameter.
+ * The function does not return any value, it simply stops the operations of the provided sources.
+ * 
+ * @param Sources A constant reference to a vector of VideoSource references. This is the list of VideoSources that will have their operation stopped.
+ * 
+ * @return None
+ */
+void AGEVideo::Stop(const std::vector<Ref<VideoSource>>& Sources)
     {
     }
 
-    void AGEVideo::PlayVideo(const Ref<VideoSource>& Source)
+    /**
+ * @brief Plays a video with the given source.
+ * 
+ * This function is used to play a video using the provided VideoSource reference. The source can be any type of video, such as file-based or stream-based sources.
+ * 
+ * @param Source A const reference to a VideoSource object representing the source from which the video will be played.
+ * 
+ * @return void No return value is expected for this function.
+ */
+void AGEVideo::PlayVideo(const Ref<VideoSource>& Source)
     {
 
     }
 
-    void AGEVideo::PlayVideoOpenGL(const Ref<VideoSource>& Source, EditorCamera& Camera)
+    /**
+ * @brief Plays a video using OpenGL.
+ *
+ * This function plays a video using the OpenGL API. It takes as parameters a reference to a VideoSource object and an EditorCamera object. 
+ * The function is currently not implemented, so it will always assert with the message "OpenGL Not Implemented!".
+ *
+ * @param Source A const reference to a VideoSource object representing the video source.
+ * @param Camera An EditorCamera object representing the camera used for rendering the video.
+ */
+void AGEVideo::PlayVideoOpenGL(const Ref<VideoSource>& Source, EditorCamera& Camera)
     {
         CoreLogger::Assert(false, "OpenGL Not Implemented!");
     }
-    void AGEVideo::PlayVideoDX(const Ref<VideoSource>& Source)
+    /**
+ * @brief Plays a video using DirectX.
+ *
+ * This function is currently not implemented and will always throw an assertion error with the message "Direct X Not Implemented!". 
+ * It's intended to be used for future development when we have fully implemented support for DirectX in our AGE framework.
+ *
+ * @param Source The video source to play. This parameter is currently not used and will always result in an assertion error if a non-null value is passed.
+ * 
+ * @return Nothing is returned as the function always throws an exception.
+ */
+void AGEVideo::PlayVideoDX(const Ref<VideoSource>& Source)
     {
         CoreLogger::Assert(false, "Direct X Not Implemented!");
     }

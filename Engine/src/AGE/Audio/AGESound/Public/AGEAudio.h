@@ -55,7 +55,14 @@ namespace AGE
 
 		//void AttachBufferToSource(uint32_t SourceID, ALsizei n, uint32_t* Buffer);
 		//void DetachBuffersFromSource(uint32_t SourceID, ALsizei n, uint32_t& Buffers);
-		std::vector<std::string> GetAvailableSoundDevices() { return m_AvailableSoundDevices; }
+		/**
+ * @brief Retrieves the list of available sound devices.
+ *
+ * This function returns a vector containing all the currently available sound devices. The devices are returned in no particular order.
+ *
+ * @return A std::vector<std::string> containing the names of all available sound devices. If there are no available sound devices, an empty vector is returned.
+ */
+std::vector<std::string> GetAvailableSoundDevices() { return m_AvailableSoundDevices; }
 
 		static bool DisplayErrorCode(const std::string& FN, const uint32_t line, ALenum Error);
 

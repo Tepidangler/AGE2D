@@ -12,7 +12,15 @@ namespace AGE
 {
 	namespace Utils
 	{
-		static GLenum AGEImageFormatToGLDataFormat(ImageFormat Format)
+		/**
+ * @brief Converts an ImageFormat to its corresponding GL data format.
+ *
+ * This function takes in an ImageFormat and returns the equivalent OpenGL data format. It uses a switch-case statement to handle different image formats, returning the appropriate GL_RGB or GL_RGBA based on the input. If the input is not supported by AGE (which should never happen as we only have two defined formats), it asserts false and returns 0.
+ *
+ * @param Format The ImageFormat to convert.
+ * @return The corresponding GL data format, or 0 if the format is not supported.
+ */
+static GLenum AGEImageFormatToGLDataFormat(ImageFormat Format)
 		{
 			switch (Format)
 			{
@@ -34,7 +42,15 @@ namespace AGE
 			return 0;
 		}
 
-		static GLenum AGEImageFormatToGLInternalFormat(ImageFormat Format)
+		/**
+ * @brief Converts an ImageFormat to its corresponding GL internal format.
+ *
+ * This function takes in an ImageFormat and returns the equivalent GL internal format. If the ImageFormat is not supported, it asserts false and returns 0.
+ *
+ * @param Format The ImageFormat to convert.
+ * @return The corresponding GL internal format or 0 if unsupported.
+ */
+static GLenum AGEImageFormatToGLInternalFormat(ImageFormat Format)
 		{
 			switch (Format)
 			{
@@ -58,7 +74,13 @@ namespace AGE
 
 	}
 
-	OpenGLTexture2D::OpenGLTexture2D(const TextureSpecification& Spec)
+	/**
+ * @brief Constructs an OpenGL 2D texture with the given specification.
+ * 
+ * The function creates a new OpenGL 2D texture and initializes it with the provided specification. It sets up the internal format, data format, width, height, and other parameters such as wrapping and filtering options for the texture.
+ * @param Spec The TextureSpecification object containing details about the texture to be created.
+ */
+OpenGLTexture2D::OpenGLTexture2D(const TextureSpecification& Spec)
 		:m_Specification(Spec), m_Width((int)Spec.Width), m_Height((int)Spec.Height)
 	{
 		AGE_PROFILE_FUNCTION();
@@ -82,7 +104,20 @@ namespace AGE
 		//glGenerateMipmap(m_TextureID);
 	}
 
-	OpenGLTexture2D::OpenGLTexture2D(const Image* Img, uint32_t Width, uint32_t Height, int Channels, size_t Size)
+	COMMENT:
+/**
+ * @brief Constructs an OpenGLTexture2D object from an image.
+ * 
+ * This function creates a 2D texture in the OpenGL context and initializes it with the provided image data. The width, height, number of channels, and size of the image are also stored as member variables.
+ * @param Img Pointer to the Image object containing the pixel data.
+ * @param Width Width of the image in pixels.
+ * @param Height Height of the image in pixels.
+ * @param Channels Number of channels in the image (3 for RGB, 4 for RGBA).
+ * @param Size Total size of the image data in bytes.
+ */
+CONFIDENCE: 1.0;
+
+OpenGLTexture2D::OpenGLTexture2D(const Image* Img, uint32_t Width, uint32_t Height, int Channels, size_t Size)
 		:m_Width((int)Width), m_Height((int)Height), m_nrChannels(Channels)
 	{
 		AGE_PROFILE_FUNCTION();
@@ -126,7 +161,8 @@ namespace AGE
 
 	}
 	
-	OpenGLTexture2D::OpenGLTexture2D(const std::string& Path)
+	Unknown
+OpenGLTexture2D::OpenGLTexture2D(const std::string& Path)
 		:m_Path(Path)
 	{
 		AGE_PROFILE_FUNCTION();
@@ -187,7 +223,8 @@ namespace AGE
 		
 	}
 
-	OpenGLTexture2D::OpenGLTexture2D(const tmx_image* Image)
+	
+OpenGLTexture2D::OpenGLTexture2D(const tmx_image* Image)
 	{
 		char* TexData = (char*)Image->resource_image;
 
@@ -245,7 +282,13 @@ namespace AGE
 		//glTextureSubImage2D(m_TextureID, 0, 0, 0, m_Width, m_Height, DataFormat, GL_UNSIGNED_BYTE, Image->source);
 	}
 
-	OpenGLTexture2D::OpenGLTexture2D(const std::vector<std::string>& Paths)
+	/**
+ * Constructor for OpenGLTexture2D class. Loads a 2D texture from the given file paths into an OpenGL Texture object.
+ * The constructor iterates over each path in the input vector, loads the image data using stbi_load(), and then creates an OpenGL texture object with the loaded data.
+ * It sets various parameters for the texture such as wrapping mode (GL_REPEAT), minifying/magnifying filter (GL_NEAREST). 
+ * The constructor also handles edge cases where the image channels are not supported or cannot be loaded.
+ */
+OpenGLTexture2D::OpenGLTexture2D(const std::vector<std::string>& Paths)
 	{
 		AGE_PROFILE_FUNCTION();
 		//stbi_set_flip_vertically_on_load(true);
@@ -301,23 +344,50 @@ namespace AGE
 	}
 
 
-	OpenGLTexture2D::~OpenGLTexture2D()
+	/**
+ * @brief Destructor for OpenGLTexture2D class. Deletes the texture from GPU memory.
+ * 
+ * This function uses the glDeleteTextures() function to delete a single texture, specified by its ID (m_TextureID).
+ * The texture is deleted from the GPU's memory and can no longer be used for rendering.
+ * 
+ * @return void
+ */
+OpenGLTexture2D::~OpenGLTexture2D()
 	{
 		AGE_PROFILE_FUNCTION();
 		glDeleteTextures(1, &m_TextureID);
 	}
-	void OpenGLTexture2D::Bind(uint32_t Slot) const
+	/** 
+ * @brief This function binds the texture to a specific slot in OpenGL.
+ * 
+ * @param Slot The index of the texture unit to which the texture is bound.
+ * @return void
+ */
+void OpenGLTexture2D::Bind(uint32_t Slot) const
 	{
 		AGE_PROFILE_FUNCTION();
 		glBindTextureUnit(Slot, m_TextureID);
 
 	}
-	void OpenGLTexture2D::Unbind() const
+	/**
+ * @brief Unbinds the texture from the specified texture unit.
+ *
+ * This function binds a specific OpenGL texture to the first available texture unit (unit 0). The texture is then unbound by setting its ID to zero, effectively detaching it from any further rendering operations.
+ *
+ * @return void
+ */
+void OpenGLTexture2D::Unbind() const
 	{
 		glBindTextureUnit(0, 0);
 	}
 
-	void OpenGLTexture2D::SetData(void* Data, uint32_t Size)
+	/**
+ * @brief Sets the texture data.
+ * @param Data Pointer to the new data.
+ * @param Size Size of the new data in bytes.
+ * @return None.
+ */
+void OpenGLTexture2D::SetData(void* Data, uint32_t Size)
 	{
 		AGE_PROFILE_FUNCTION();
 		uint32_t bpc = m_DataFormat == GL_RGBA ? 4 : 3; //bytes per channel

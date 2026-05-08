@@ -11,7 +11,12 @@ namespace AGE
 	std::vector<size_t> Log::s_Offsets;
 	std::vector<LogType> Log::s_Type;
 
-	void Log::Init()
+	/**
+ * @brief Initializes the logging system with specific formatting and log levels for two different logger instances, "AGECORE" and "AGEGAME". 
+ * The pattern used is "[TIME] NAME: MESSAGE", where TIME represents the time at which the message was logged, NAME is the name of the logger instance that produced the message, and MESSAGE is the actual log message.
+ * @return void
+ */
+void Log::Init()
 	{
 		spdlog::set_pattern("%^[%T] %n: %v%$");
 

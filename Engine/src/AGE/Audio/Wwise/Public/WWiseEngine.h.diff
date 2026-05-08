@@ -1,0 +1,15 @@
+--- a/C:\AGE\AGE2D\Engine\src\AGE\Audio\Wwise\Public\WWiseEngine.h
++++ b/C:\AGE\AGE2D\Engine\src\AGE\Audio\Wwise\Public\WWiseEngine.h
+@@ -27,7 +27,11 @@
+ 		~Wwise();
+ 
+ 
+-		inline void SetMarkerLabel(const std::string& Label) { m_MarkerLabel = Label; }
++		/**
++ * @brief Sets the marker label to a given string value.
++ * @param Label The new label for the marker.
++ */
++inline void SetMarkerLabel(const std::string& Label) { m_MarkerLabel = Label; }
+ 
+ 		virtual void Init() override;
+ 

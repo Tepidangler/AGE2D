@@ -13,7 +13,14 @@
 namespace AGE
 {
 
-	ParticleSystem::ParticleSystem(uint32_t MaxParticles)
+	/**
+ * @brief Constructs a ParticleSystem object with the specified maximum number of particles.
+ * 
+ * This constructor initializes the particle pool to the given size and sets up the random number generator for the indices.
+ * The m_PoolIndex is initialized as MaxParticles - 1, ensuring that the first call to GetNextFreeParticle() will return 0.
+ * @param MaxParticles The maximum number of particles that can be stored in the particle pool.
+ */
+ParticleSystem::ParticleSystem(uint32_t MaxParticles)
 		:m_PoolIndex(MaxParticles -1)
 	{
 		m_ParticlePool.resize(MaxParticles);
@@ -21,7 +28,16 @@ namespace AGE
 
 	}
 
-	void ParticleSystem::OnUpdate(TimeStep ts)
+	/**
+ * @brief This function updates the state of each particle in the system over a given time step.
+ *
+ * The function iterates through all particles in the system and performs several operations on them based on their current state. 
+ * If a particle is not active, it will be skipped. For active particles, if their life remaining is less than or equal to zero, they are deactivated. 
+ * Otherwise, their lifespan is reduced by the time step and their position is updated by adding their velocity times the time step. The rotation of the particle remains unaffected in this case.
+ *
+ * @param ts The time step over which to update the particles.
+ */
+void ParticleSystem::OnUpdate(TimeStep ts)
 	{
 		for (auto& particle : m_ParticlePool)
 		{
@@ -40,7 +56,8 @@ namespace AGE
 		}
 	}
 
-	void ParticleSystem::OnRender(const Camera& Camera, const Matrix4D& Transform)
+	"This function renders the particle system using a provided camera and transformation matrix."
+void ParticleSystem::OnRender(const Camera& Camera, const Matrix4D& Transform)
 	{
 		Renderer2D::BeginScene(Camera, Transform);
 
@@ -61,7 +78,14 @@ namespace AGE
 		Renderer2D::EndScene();
 	}
 
-	void ParticleSystem::Emit(const ParticleProps& particleProps)
+	/**
+ * @brief Emit a new particle with the given properties.
+ *
+ * This function creates a new particle and initializes its properties based on the provided ParticleProps object. The position, rotation, velocity, color, lifetime, size of the particle are set according to the values in the ParticleProps object. 
+ *
+ * @param[in] particleProps Properties for the new particle.
+ */
+void ParticleSystem::Emit(const ParticleProps& particleProps)
 	{
 		Particle& particle = m_ParticlePool[m_PoolIndex];
 		particle.Active = true;

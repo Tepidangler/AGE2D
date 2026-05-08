@@ -1,0 +1,31 @@
+--- a/C:\AGE\AGE2D\Engine\src\AGE\UI\Components\Public\VerticalBoxComponent.h
++++ b/C:\AGE\AGE2D\Engine\src\AGE\UI\Components\Public\VerticalBoxComponent.h
+@@ -15,11 +15,26 @@
+ 		void OnUpdate(TimeStep DeltaTime) override;
+ 		void OnEvent(Event& Event) override;
+ 
+-		void CallSerialize(DataWriter* Serializer) override
++		/**
++ * @brief This function serializes the VerticalBoxComponent object.
++ * 
++ * The function writes the current state of the VerticalBoxComponent object to a DataWriter instance, which can be used for further processing or storage.
++ * 
++ * @param Serializer A pointer to the DataWriter instance that will handle the serialization process.
++ * 
++ * @return void No return value is expected as this function only writes data and does not return any result.
++ */
++void CallSerialize(DataWriter* Serializer) override
+ 		{
+ 			//Serializer->WriteObject<VerticalBoxComponent>(*this);
+ 		}
+-		void CallDeserialize(DataReader* Serializer) override
++		/**
++ * @brief This function is used to deserialize data from a DataReader object. 
++ * It reads an object of type VerticalBoxComponent using the provided serializer.
++ * 
++ * @param Serializer A pointer to the DataReader object that will be used for deserialization.
++ */
++void CallDeserialize(DataReader* Serializer) override
+ 		{
+ 			//Serializer->ReadObject<VerticalBoxComponent>(*this);
+ 		}

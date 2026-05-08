@@ -1,0 +1,89 @@
+--- a/C:\AGE\AGE2D\Engine\src\AGE\Events\Public\Event.h
++++ b/C:\AGE\AGE2D\Engine\src\AGE\Events\Public\Event.h
+@@ -48,16 +48,37 @@
+ 
+ #define EVENT_CLASS_CATEGORY(category) virtual int GetCategoryFlags() const override { return category;}
+ 
+-	class AGE_API Event
++	/**
++ * @brief Abstract base class for an event.
++ *
++ * This is the abstract base class that represents a generic event in the system. It provides methods to get information about the type of the event, its category flags and whether it has been handled or not. 
++ */
++class AGE_API Event
+ 	{
+ 		friend class EventDispatcher;
+ 	public:
+ 		virtual EventType GetEventType() const = 0;
+ 		virtual const char* GetName() const = 0;
+ 		virtual int GetCategoryFlags() const = 0;
+-		virtual std::string ToString() const { return GetName(); }
++		/**
++ * @brief Returns a string representation of the object.
++ *
++ * This function returns a string that represents the current object's state. It does this by calling the `GetName` method and returning its result.
++ *
++ * @return A string representing the current object's name.
++ */
++virtual std::string ToString() const { return GetName(); }
+ 
+-		inline bool IsInCategory(EventCategory Category)
++		/**
++ * @brief Checks if an event is in a specific category.
++ *
++ * This function checks whether the provided EventCategory is set within the categories that are currently active.
++ * The comparison is done by bitwise AND operation with GetCategoryFlags() and Category.
++ * 
++ * @param Category - The category to check against.
++ * @return True if the event is in the specified category, false otherwise.
++ */
++inline bool IsInCategory(EventCategory Category)
+ 		{
+ 			return GetCategoryFlags() & Category; // Check Category flag against all flags
+ 		}
+@@ -71,12 +92,24 @@
+ 		template <typename T>
+ 		using EventFn = std::function<bool(T&)>;
+ 	public:
+-		EventDispatcher(Event& Event)
++		/**
++ * @brief Constructor for the EventDispatcher class.
++ * @param Event The event to be dispatched.
++ */
++EventDispatcher(Event& Event)
+ 			: m_Event(Event) {}
+ 
+ 
+ 		template<typename T>
+-		bool Dispatch (EventFn<T> func)
++		/**
++ * @brief Dispatches an event of type T to the provided function if its type matches the static type of T.
++ * 
++ * This function takes a function object (or lambda) that accepts an argument of type T and returns void. It checks if the event's type is equal to the static type of T, then it calls the function with the event casted to type T. The function sets the 'Handled' member variable of the event to true if the event was handled by the provided function.
++ * 
++ * @param func A function object (or lambda) that accepts an argument of type T and returns void.
++ * @return True if the event was dispatched, false otherwise.
++ */
++bool Dispatch (EventFn<T> func)
+ 		{
+ 			if (m_Event.GetEventType() == T::GetStaticType())
+ 			{
+@@ -92,7 +125,17 @@
+ 
+ 	
+ 
+-	inline std::ostream& operator<<(std::ostream& OS, const Event& E)
++	/**
++ * @brief Overloads the << operator to print an event in a human-readable format.
++ *
++ * This function overloads the << operator so that it can be used with std::ostream objects 
++ * and Event objects, printing out the details of the event in a readable format.
++ *
++ * @param OS The output stream to write to.
++ * @param E The event object to print.
++ * @return A reference to the modified output stream.
++ */
++inline std::ostream& operator<<(std::ostream& OS, const Event& E)
+ 	{
+ 		return OS << E.ToString();
+ 	}

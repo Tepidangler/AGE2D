@@ -27,7 +27,11 @@ namespace AGE
 		~Wwise();
 
 
-		inline void SetMarkerLabel(const std::string& Label) { m_MarkerLabel = Label; }
+		/**
+ * @brief Sets the marker label to a given string value.
+ * @param Label The new label for the marker.
+ */
+inline void SetMarkerLabel(const std::string& Label) { m_MarkerLabel = Label; }
 
 		virtual void Init() override;
 

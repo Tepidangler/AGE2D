@@ -30,7 +30,12 @@ namespace AGE
 	{
 	public:
 		IniReader(const std::filesystem::path &Path);
-		~IniReader() = default;
+		/**
+ * @brief Destructor for the IniReader class.
+ *
+ * This function is responsible for freeing any resources that were allocated during the lifetime of an instance of this class.
+ */
+~IniReader() = default;
 
 		std::string Read(const std::string &Section, const std::string &Key, bool& HasMultipleValues);
 

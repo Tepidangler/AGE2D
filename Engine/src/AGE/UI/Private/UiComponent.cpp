@@ -15,7 +15,17 @@
 
 namespace AGE
 {
-	Ref<UIComponent> UIComponent::Create(const std::string &Name, UIComponentType Type)
+	/**
+ * @brief Creates a new instance of a UI component based on the provided type.
+ * 
+ * This function creates and returns a reference to a newly created UIComponent, which can be one of several types such as TextComponent, TextBoxComponent, HorizontalBoxComponent, VerticalBoxComponent, ButtonComponent or ImageComponent. The specific type is determined by the 'Type' parameter. If an unsupported type is provided, it asserts false and returns nullptr.
+ * 
+ * @param Name The name of the UI component to be created.
+ * @param Type The type of the UI component to be created. This can be one of the following: TextComponent, TextBoxComponent, HorizontalBoxComponent, VerticalBoxComponent, ButtonComponent or ImageComponent.
+ * 
+ * @return A reference to a newly created UIComponent instance. If an unsupported 'Type' is provided, it returns nullptr.
+ */
+Ref<UIComponent> UIComponent::Create(const std::string &Name, UIComponentType Type)
 	{
 		// For the record I don't like this, and I don't know what else to do. Also, I'm tired of being stuck on this
 		switch (Type)
@@ -56,7 +66,17 @@ namespace AGE
 		return nullptr;
 	}
 
-	void UIComponent::DrawVec3Control(const std::string& Label, Vector3 &Values, float ResetValue, float ColumnWidth)
+	/**
+ * @brief Draws a Vector3 control with draggable sliders.
+ * 
+ * This function creates an ImGui UI component that allows the user to modify three float values (x, y, z) through draggable sliders. The labels and initial values are provided as parameters.
+ * 
+ * @param Label A string label for this control.
+ * @param Values A reference to a Vector3 object representing the current x, y, and z values. This function will modify these values when the user interacts with the sliders.
+ * @param ResetValue The value to reset each individual component of the vector to when the corresponding button is clicked.
+ * @param ColumnWidth The width of the column in which this control should be displayed.
+ */
+void UIComponent::DrawVec3Control(const std::string& Label, Vector3 &Values, float ResetValue, float ColumnWidth)
 	{
 		ImGuiIO& io = ImGui::GetIO();
 
@@ -120,12 +140,24 @@ namespace AGE
 	}
 
 	//Semi-Dummy Constructor that needs to be here so this class can become visible to RTTR
-	UIComponent::UIComponent(const std::string& Name)
+	/**
+ * @brief Constructs a UIComponent with the given name.
+ * @param Name The name of the component.
+ */
+UIComponent::UIComponent(const std::string& Name)
 	{
 		m_Name = Name;
 	}
 
-	void UIComponent::OnEvent(Event &Event)
+	/**
+ * @brief Handles an event by dispatching it to the appropriate handler.
+ *
+ * This function takes in an Event object and dispatches it to the appropriate 
+ * handler based on its type. The EventDispatcher class is used for this purpose.
+ *
+ * @param[in] Event - Reference to the Event object that needs to be handled.
+ */
+void UIComponent::OnEvent(Event &Event)
 	{
 		AGE::EventDispatcher Dispatcher(Event);
 	}

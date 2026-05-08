@@ -16,12 +16,31 @@ namespace AGE
 
 		UIImageComponent(const std::string& Name);
 
-		virtual ~UIImageComponent() = default;
+		/**
+ * @brief Virtual destructor for the UIImageComponent class.
+ *
+ * This function is responsible for releasing any resources that were acquired by the object during its lifetime. It does not take any parameters and returns no value.
+ */
+virtual ~UIImageComponent() = default;
 
-		void CallSerialize(DataWriter* Serializer) override
+		/**
+ * @brief This function is used to serialize data using a DataWriter object.
+ * 
+ * The function takes in a pointer to a DataWriter object as its parameter. It does not return anything, so the return type should be void.
+ * 
+ * @param Serializer A pointer to a DataWriter object that will handle the serialization process.
+ */
+void CallSerialize(DataWriter* Serializer) override
 		{
 		}
-		void CallDeserialize(DataReader* Serializer) override
+		/**
+ * @brief This function is used to call the deserialization process on a DataReader object.
+ * 
+ * The function takes in a pointer to a DataReader object as its parameter. It does not return anything, so it's void type.
+ * 
+ * @param Serializer A pointer to a DataReader object that will be used for the deserialization process.
+ */
+void CallDeserialize(DataReader* Serializer) override
 		{
 		}
 

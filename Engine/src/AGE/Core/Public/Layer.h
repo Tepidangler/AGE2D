@@ -8,7 +8,8 @@
 
 namespace AGE
 {
-	class AGE_API Layer
+	
+class AGE_API Layer
 	{
 	public:
 
@@ -18,19 +19,58 @@ namespace AGE
 
 		virtual void Init() {};
 
-		virtual void OnAttach() {}
+		/**
+ * @brief This function is called when the object is attached to a scene or game world.
+ * 
+ * @return void
+ */
+virtual void OnAttach() {}
 		
-		virtual void OnDetach() {}
+		/**
+ * @brief Detaches the component from its parent.
+ *
+ * This function is called when a component is detached from its parent. It provides an opportunity for any necessary cleanup or notification to be done before the component is completely removed from use.
+ * 
+ * @return void
+ */
+virtual void OnDetach() {}
 		
-		virtual void OnUpdate(TimeStep DeltaTime) {} 
+		/**
+ * @brief This function is called every frame to update the game state.
+ *
+ * @param DeltaTime The time elapsed since the last frame, used for smooth movement and animation.
+ * @return void No return value expected as this function does not have a return statement.
+ */
+virtual void OnUpdate(TimeStep DeltaTime) {} 
 
-		virtual void OnImGuiRender(TimeStep DeltaTime) {}
+		/**
+ * @brief This function is called every frame to render the ImGUI interface.
+ * 
+ * @param[in] DeltaTime The time step for the current frame, indicating how much time has passed since the last frame.
+ * @return void No return value expected as this function does not return any result.
+ */
+virtual void OnImGuiRender(TimeStep DeltaTime) {}
 		
-		virtual void OnEvent(Event& Event) {}
+		/**
+ * @brief This function is called when an event occurs.
+ *
+ * The function takes a reference to an Event object as its parameter, which contains information about the event that occurred.
+ * It does not return anything (void).
+ *
+ * @param[in] Event - A reference to an Event object containing details about the event.
+ */
+virtual void OnEvent(Event& Event) {}
 
 		float GetTime();
 
-		inline const std::string& GetName() const { return m_DebugName; }
+		/**
+ * @brief Returns the name of this object.
+ *
+ * This function returns a reference to a string that represents the name of this object. The returned value is constant and does not allow modification.
+ *
+ * @return A const reference to the debug name of this object.
+ */
+inline const std::string& GetName() const { return m_DebugName; }
 
 	protected:
 		std::string m_DebugName;

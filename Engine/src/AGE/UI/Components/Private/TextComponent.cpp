@@ -12,13 +12,25 @@
 
 namespace AGE
 {
-	TextComponent::TextComponent(const std::string& Name)
+	/**
+ * @brief Constructs a TextComponent with the given name and sets default properties.
+ * @param Name The name of the TextComponent to be created.
+ */
+TextComponent::TextComponent(const std::string& Name)
 	{
 		m_Name = Name;
 		m_Type = UIComponentType::TextComponent;
 		m_StringProperties.TextFont = AGEFont::GetDefault();
 	}
-	void TextComponent::OnUpdate(TimeStep DeltaTime)
+	/**
+ * @brief This function updates the text component based on a time step.
+ *
+ * The function checks if the component is visible and if so, it calls Renderer2D::DrawString with the string properties of the component. 
+ * It's assumed that Renderer2D::DrawString takes care of rendering the string in the correct position on screen.
+ *
+ * @param DeltaTime The time step since the last update. This is used to calculate how much time has passed and adjust the animation accordingly.
+ */
+void TextComponent::OnUpdate(TimeStep DeltaTime)
 	{
 		if (m_CompProperties.Visible)
 		{
@@ -26,11 +38,19 @@ namespace AGE
 		}
 	}
 
-	void TextComponent::OnEvent(Event &Event)
+	/**
+ * @brief Handles an event of type Event.
+ *
+ * This function takes in a reference to an object of type Event and processes it accordingly. The exact behavior depends on the specifics of the implementation.
+ *
+ * @param[in] Event - Reference to the Event object that needs processing.
+ */
+void TextComponent::OnEvent(Event &Event)
 	{
 	}
 
-	void TextComponent::DrawFontSelectionComboBox()
+	
+void TextComponent::DrawFontSelectionComboBox()
 	{
 		std::unordered_map<UUID,Ref<AGEFont>> Fonts = AssetManager::Get().GetAssetRegistry()->GetFonts();
 		std::vector<std::string> FontNames = AssetManager::Get().GetAssetRegistry()->GetFontNames();
@@ -61,7 +81,14 @@ namespace AGE
 
 	}
 
-	void TextComponent::DrawContent()
+	/**
+ * @brief Draws a TextComponent with various properties.
+ * 
+ * The function displays an interface for editing the text, font size, color, position, and rotation of a TextComponent. It uses ImGui functions to create input fields for these properties.
+ * 
+ * @return void
+ */
+void TextComponent::DrawContent()
 	{
 		ImGui::Text("String Properties");
 		ImGui::Text("Text");ImGui::SameLine();
@@ -78,7 +105,12 @@ namespace AGE
 	}
 
 	template<>
-	TextComponent* UIComponent::As()
+	/**
+ * @brief This function is used to cast the current object to a TextComponent type.
+ * 
+ * @return A pointer of type TextComponent that points to this instance of UIComponent. If the casting fails, it will return nullptr.
+ */
+TextComponent* UIComponent::As()
 	{
 		return (TextComponent*)this;
 	}

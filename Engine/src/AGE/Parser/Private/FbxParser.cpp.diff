@@ -1,0 +1,35 @@
+--- a/C:\AGE\AGE2D\Engine\src\AGE\Parser\Private\FbxParser.cpp
++++ b/C:\AGE\AGE2D\Engine\src\AGE\Parser\Private\FbxParser.cpp
+@@ -9,7 +9,15 @@
+ {
+ 	FBXParser* FBXParser::s_Instance = nullptr;
+ 
+-	ufbx_scene* FBXParser::LoadFile(const std::filesystem::path& Path)
++	/**
++ * @brief Loads a FBX file into memory and returns the loaded scene.
++ * 
++ * This function loads an FBX file from the specified path, adjusting transforms if necessary. The target axes are left-handed with Y as up, and the target unit is set to be 0.01 meters. If the loading fails for any reason, it logs an error message and returns nullptr.
++ * 
++ * @param Path The file system path of the FBX file to load.
++ * @return A pointer to the loaded ufbx_scene if successful, otherwise nullptr.
++ */
++ufbx_scene* FBXParser::LoadFile(const std::filesystem::path& Path)
+ 	{
+ 		ufbx_space_conversion Flags = ufbx_space_conversion::UFBX_SPACE_CONVERSION_ADJUST_TRANSFORMS;
+ 		ufbx_load_opts Opts{};
+@@ -29,7 +37,14 @@
+ 		
+ 		return scene;
+ 	}
+-	void FBXParser::FreeScene(ufbx_scene* scene)
++	/**
++ * @brief This function frees an allocated ufbx_scene.
++ * 
++ * @param scene Pointer to the ufbx_scene that needs to be freed.
++ * 
++ * @return None
++ */
++void FBXParser::FreeScene(ufbx_scene* scene)
+ 	{
+ 		ufbx_free_scene(scene);
+ 	}

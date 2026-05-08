@@ -6,7 +6,8 @@
 namespace AGE
 {
 
-	Scope<GraphicsContext> GraphicsContext::Create(void* Window)
+	
+Scope<GraphicsContext> GraphicsContext::Create(void* Window)
 	{
 		switch (Renderer::GetAPI())
 		{
@@ -28,7 +29,12 @@ namespace AGE
 	}
 
 	template<typename T>
-	T* GraphicsContext::As()
+	/**
+ * @brief This function is a placeholder for future use. It currently always asserts false and returns null.
+ * @param None
+ * @return T* Returns nullptr.
+ */
+T* GraphicsContext::As()
 	{
 		CoreLogger::Assert(false, "As() Failed!");
 		return nullptr;

@@ -1,0 +1,268 @@
+--- a/C:\AGE\AGE2D\Engine\src\AGE\Audio\Fmod\Private\FmodEngine.cpp
++++ b/C:\AGE\AGE2D\Engine\src\AGE\Audio\Fmod\Private\FmodEngine.cpp
+@@ -9,21 +9,43 @@
+ 	namespace Util
+ 	{
+ 		//TODO: Complete this
+-		static std::string FMOD_ErrorString(FMOD_RESULT& Code)
++		/**
++ * @brief Converts an FMOD result code to its corresponding string representation.
++ *
++ * This function takes in a reference to an FMOD_RESULT and returns the string representation of that result code.
++ * The returned string is specific to the FMOD library, providing detailed information about any errors or warnings that may have occurred during audio playback.
++ * 
++ * @param Code A reference to an FMOD_RESULT representing the error code to be converted.
++ * @return A string representation of the provided FMOD result code. If the input is not a valid FMOD result code, an empty string is returned.
++ */
++static std::string FMOD_ErrorString(FMOD_RESULT& Code)
+ 		{
+ 			return "";
+ 		}
+ 	}
+ 
+-	FmodEngine::FmodEngine()
++	/**
++ * @brief FmodEngine is a class that initializes the FMOD engine for audio playback in the game.
++ * 
++ * The constructor of this class, `FmodEngine::FmodEngine()`, calls the `Init()` function to initialize the FMOD system. This function sets up all necessary parameters and resources for audio playback.
++ * 
++ * @return An instance of the FmodEngine class with the FMOD engine initialized.
++ */
++FmodEngine::FmodEngine()
+ 	{
+ 		Init();
+ 	}
+-	FmodEngine::~FmodEngine()
++	/**
++ * @brief Destructor for the FMOD engine class.
++ * 
++ * This function is responsible for cleaning up any resources used by the FMOD engine when it's no longer needed. It calls the Shutdown() method to ensure all sounds and other resources are properly cleaned up.
++ */
++FmodEngine::~FmodEngine()
+ 	{
+ 		Shutdown();
+ 	}
+-	void FmodEngine::Init()
++	"/**\n * @brief Initialize the FMOD engine.\n * This function sets up basic settings for FMOD system.\n * It creates a new instance of FMOD Studio System,\n * checks if creation was successful, sets number of listeners to 1,\n * enables advanced settings, gets core system pointer,\n * sets output type and software format.\n * Then it initializes the FMOD system with buffer size\n * and normal priority. If any step fails, an error message is logged and program exits."
++void FmodEngine::Init()
+ 	{
+ 		FMOD_RESULT Result;
+ 		FMOD_STUDIO_ADVANCEDSETTINGS Settings{};
+@@ -54,23 +76,51 @@
+ 
+ 	}
+ 
+-	void FmodEngine::Start()
++	/**
++ * @brief Starts the current event instance.
++ * 
++ * This function starts the currently playing or paused audio event instance. It uses FMOD's start() method to do so.
++ *
++ * @return void
++ */
++void FmodEngine::Start()
+ 	{
+ 		m_CurrentEventInstance->start();
+ 
+ 	}
+ 
+-	void FmodEngine::Update()
++	/**
++ * @brief This function updates the FMOD system. 
++ * It is used to update the internal state of the FMOD engine, which includes processing any events that have occurred since the last call to this function.
++ *
++ * @return void
++ */
++void FmodEngine::Update()
+ 	{
+ 		m_System->update();
+ 	}
+ 
+-	void FmodEngine::Stop()
++	/**
++ * @brief Stops the current event instance.
++ * 
++ * This function stops the currently playing event instance with a fadeout allowing it to finish its playback before being stopped.
++ * It does not handle any exceptions or errors that might occur during the execution of this function.
++ *
++ * @return void
++ */
++void FmodEngine::Stop()
+ 	{
+ 		m_CurrentEventInstance->stop(FMOD_STUDIO_STOP_ALLOWFADEOUT);
+ 	}
+ 
+-	void FmodEngine::Shutdown()
++	/**
++ * @brief Shuts down the FMOD engine and releases all resources associated with it.
++ * 
++ * This function iterates over two maps (`m_Events`, `m_Sounds`) and three vectors (`m_Banks`), each of which contain pointers to objects that have been allocated using the FMOD API. It calls the release method on these objects to free up their resources. Finally, it releases the main system object with the release method.
++ * 
++ * @return void
++ */
++void FmodEngine::Shutdown()
+ 	{
+ 		for (auto K : m_Events)
+ 		{
+@@ -91,7 +141,16 @@
+ 		m_System->release();
+ 	}
+ 
+-	void FmodEngine::LoadBanks(const std::vector<Ref<SoundBank>>& Banks)
++	/**
++ * @brief Loads a collection of SoundBanks from the given list.
++ *
++ * This function iterates over each SoundBank in the provided vector and loads it using the 
++ * `LoadBankFromFile` method, passing the file path of each SoundBank to do so.
++ *
++ * @param Banks A constant reference to a vector of SoundBanks that need to be loaded. Each SoundBank's 
++ *              file path is used as an argument for the `LoadBankFromFile` method.
++ */
++void FmodEngine::LoadBanks(const std::vector<Ref<SoundBank>>& Banks)
+ 	{
+ 		for (auto& B : Banks)
+ 		{
+@@ -99,12 +158,20 @@
+ 		}
+ 	}
+ 
+-	void FmodEngine::LoadBank(Ref<SoundBank> Bank)
++	/**
++ * @brief Loads a sound bank into the FMOD engine.
++ * 
++ * This function takes a reference to a SoundBank object and loads its associated file into the FMOD engine using the `LoadBankFromFile` method. The path of the soundbank file is obtained from the SoundBank object's GetFilePath() method.
++ *
++ * @param Bank A reference to the SoundBank object that contains information about the bank to be loaded.
++ */
++void FmodEngine::LoadBank(Ref<SoundBank> Bank)
+ 	{
+ 		LoadBankFromFile(Bank->GetFilePath().string());
+ 	}
+ 
+-	void FmodEngine::LoadEvents()
++	
++void FmodEngine::LoadEvents()
+ 	{
+ 		for (auto KV : m_Banks)
+ 		{
+@@ -134,7 +201,12 @@
+ 		}
+ 	}
+ 
+-	void FmodEngine::SetCurrentEventName(const std::string &Name)
++	/**
++ * @brief Sets the name of the current event instance. If the provided name corresponds to an existing event, it sets the current event instance to that event.
++ * 
++ * @param Name The new name for the current event instance.
++ */
++void FmodEngine::SetCurrentEventName(const std::string &Name)
+ 	{
+ 		m_CurrentEventInstanceName = Name;
+ 
+@@ -146,24 +218,53 @@
+ 
+ 	}
+ 
+-	bool FmodEngine::IsEventValid(const std::string& EventName)
++	/**
++ * @brief Checks if the event with given name is valid.
++ * 
++ * This function takes a string parameter representing the name of an event, and returns a boolean indicating whether or not this event exists in the FMOD engine's events map.
++ * 
++ * @param EventName The name of the event to check for validity.
++ * @return True if the event is valid (exists in the m_Events map), false otherwise.
++ */
++bool FmodEngine::IsEventValid(const std::string& EventName)
+ 	{
+ 		return m_Events[EventName]->isValid();
+ 	}
+ 
+-	void FmodEngine::SetParameterByName(const std::string &Name, float Value)
++	/**
++ * @brief Sets a parameter value by its name in the FMOD engine.
++ *
++ * This function sets the value of a parameter specified by its name. The parameter is identified by its name, which must be unique within the event system. 
++ * If the parameter does not exist, this function will have no effect.
++ *
++ * @param Name A constant reference to a string representing the name of the parameter.
++ * @param Value A float representing the new value for the parameter.
++ *
++ * @return void
++ */
++void FmodEngine::SetParameterByName(const std::string &Name, float Value)
+ 	{
+ 		GetCurrentEvent()->setParameterByName(Name.c_str(),Value);
+ 	}
+ 
+-	void FmodEngine::Set3DAttributes(void *Attributes)
++	/**
++ * @brief Sets the 3D attributes for the current event.
++ * 
++ * This function sets the 3D attributes of the current FMOD event using a pointer to an instance of `FMOD_3D_ATTRIBUTES` struct. The struct contains information about the position, velocity and occlusion of the sound source in 3D space.
++ * 
++ * @param Attributes A pointer to an instance of `FMOD_3D_ATTRIBUTES` struct containing the 3D attributes for the event.
++ * 
++ * @return void
++ */
++void FmodEngine::Set3DAttributes(void *Attributes)
+ 	{
+ 		FMOD_3D_ATTRIBUTES* Attribs{};
+ 		Attribs = reinterpret_cast<FMOD_3D_ATTRIBUTES*>(Attributes);
+ 		GetCurrentEvent()->set3DAttributes(Attribs);
+ 	}
+ 
+-	void FmodEngine::LoadBankFromFile(const std::string& FileName)
++	
++void FmodEngine::LoadBankFromFile(const std::string& FileName)
+ 	{
+ 		FMOD_RESULT Result;
+ 		std::string Tmp;
+@@ -183,12 +284,29 @@
+ 
+ 	}
+ 
+-	void FmodEngine::LoadBankFromMemory(const char* Data)
++	/**
++ * @brief Loads a bank of sound effects and music from memory.
++ *
++ * This function loads a bank of sound effects and music into the FMOD engine from a block of memory. The data is expected to be in the format that FMOD can understand, such as .bank files. 
++ *
++ * @param Data A pointer to the start of the memory block containing the sound bank data.
++ * @return void
++ */
++void FmodEngine::LoadBankFromMemory(const char* Data)
+ 	{
+ 		CoreLogger::Assert(false, "Not Implemented!");
+ 	}
+ 
+-	void FmodEngine::CreateFmodEvent(const std::string &EventString)
++	/**
++ * @brief Creates a new Fmod event instance from the provided string.
++ * 
++ * The function takes an event string as input and creates a new FMOD event instance using it. It extracts the name of the event from the string, which is then used as the key for storing the event instance in a map. If the event description does not exist, no action is taken.
++ * 
++ * @param EventString The string representation of the event to be created. This should include the path and filename of the event.
++ * 
++ * @return void No return value.
++ */
++void FmodEngine::CreateFmodEvent(const std::string &EventString)
+ 	{
+ 		FMOD::Studio::EventDescription* Desc;
+ 		GetSystem()->getEvent(EventString.c_str(), &Desc);
+@@ -206,7 +324,15 @@
+ 	}
+ 
+ 	template<>
+-	FmodEngine* AudioEngine::As()
++	/**
++ * @brief This function returns a pointer to the FmodEngine object.
++ *
++ * The function is used to return an instance of the FmodEngine class as its base type, which allows for polymorphism and dynamic binding. 
++ * It does this by returning 'this' casted to the FmodEngine* type. This means that it returns a pointer to itself but with the type of FmodEngine*.
++ *
++ * @return A pointer to an instance of the FmodEngine class.
++ */
++FmodEngine* AudioEngine::As()
+ 	{
+ 		return (FmodEngine*)this;
+ 	}

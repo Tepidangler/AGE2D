@@ -20,8 +20,18 @@ namespace AGE
 	struct TextureSpecification
 	{
 	public:
-		TextureSpecification() = default;
-		virtual ~TextureSpecification() = default;
+		/**
+ * @brief Default constructor for the TextureSpecification class.
+ *
+ * This function initializes a new instance of the TextureSpecification class with default values.
+ */
+TextureSpecification() = default;
+		/**
+ * @brief Virtual destructor for the TextureSpecification class.
+ *
+ * This function is responsible for releasing any resources that were acquired by the object during its lifetime. It does not return anything and has no parameters.
+ */
+virtual ~TextureSpecification() = default;
 
 		uint32_t Width = 1;
 		uint32_t Height = 1;
@@ -34,7 +44,12 @@ namespace AGE
 	class Texture
 	{
 	public:
-		virtual ~Texture() {}
+		/**
+ * @brief Virtual destructor for the Texture class.
+ *
+ * This function is responsible for releasing any resources that were acquired by the Texture object, such as memory or file handles. It does not return anything and thus has an empty return type (void).
+ */
+virtual ~Texture() {}
 
 		virtual void Bind(uint32_t Slot = 0) const = 0;
 

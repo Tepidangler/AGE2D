@@ -4,7 +4,14 @@
 
 namespace AGE
 {
-	void SpriteSheetUtils ::SetTexCoords(const Ref<SubTexture2D> SubTex, QuadProperties& Properties, bool Reverse)
+	/**
+ * @brief Sets the texture coordinates for a quad based on a subtexture and whether to reverse the order of the tex coords.
+ * 
+ * @param SubTex A reference to the subtexture from which to get the tex coords.
+ * @param Properties The QuadProperties object that holds the texture coordinates.
+ * @param Reverse A boolean indicating whether or not to reverse the order of the tex coords.
+ */
+void SpriteSheetUtils ::SetTexCoords(const Ref<SubTexture2D> SubTex, QuadProperties& Properties, bool Reverse)
 	{
 		if (!Reverse)
 		{

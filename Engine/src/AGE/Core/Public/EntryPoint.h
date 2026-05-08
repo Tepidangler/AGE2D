@@ -8,6 +8,14 @@
 
 extern AGE::App* AGE::CreateApp(ApplicationCommandLineArgs args);
 
+/**
+ * @brief Main function of the application. Initializes logging, creates an instance of the application, runs it and deletes it before ending the program.
+ * 
+ * @param argc The number of command line arguments passed to the program.
+ * @param argv An array of pointers to the command line arguments.
+ * 
+ * @return int Returns 0 upon successful execution of the application.
+ */
 int main(int argc, char** argv)
 {
 	AGE::Log::Init();

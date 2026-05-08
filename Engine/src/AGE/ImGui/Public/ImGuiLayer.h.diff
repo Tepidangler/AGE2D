@@ -1,0 +1,26 @@
+--- a/C:\AGE\AGE2D\Engine\src\AGE\ImGui\Public\ImGuiLayer.h
++++ b/C:\AGE\AGE2D\Engine\src\AGE\ImGui\Public\ImGuiLayer.h
+@@ -13,7 +13,8 @@
+ 
+ namespace AGE
+ {
+-	class AGE_API ImGuiLayer : public Layer
++	
++class AGE_API ImGuiLayer : public Layer
+ 	{
+ 	
+ 	public:
+@@ -32,7 +33,12 @@
+ 
+ 		virtual void OnEvent(Event& E) override;
+ 
+-		inline void BlockEvents(bool block) { m_BlockEvents = block; }
++		/**
++ * @brief This function is used to set the state of event blocking in a system.
++ * @param block A boolean value indicating whether events should be blocked or not.
++ * @return None
++ */
++inline void BlockEvents(bool block) { m_BlockEvents = block; }
+ 
+ 		virtual void End();
+ 

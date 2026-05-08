@@ -10,7 +10,10 @@ namespace AGE
 	{
 	public:
 
-		JsonParser() = default;
+		/**
+ * @brief Default constructor for JsonParser class.
+ */
+JsonParser() = default;
 		JsonParser(const std::string& FilePath);
 
 		template<typename T>

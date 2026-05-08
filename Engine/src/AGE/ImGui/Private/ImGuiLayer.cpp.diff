@@ -1,0 +1,137 @@
+--- a/C:\AGE\AGE2D\Engine\src\AGE\ImGui\Private\ImGuiLayer.cpp
++++ b/C:\AGE\AGE2D\Engine\src\AGE\ImGui\Private\ImGuiLayer.cpp
+@@ -16,17 +16,24 @@
+ #include <GLFW/glfw3.h>
+ namespace AGE
+ {
+-    ImGuiLayer::ImGuiLayer()
++    /**
++ * @brief ImGuiLayer is a class representing the layer for handling user interface elements with ImGui library in our application.
++ */
++ImGuiLayer::ImGuiLayer()
+         : Layer("ImGuiLayer")
+     {
+ 
+     }
+ 
+-    ImGuiLayer::~ImGuiLayer()
+-    {
+-    }
+-
+-    void ImGuiLayer::OnAttach()
++    /**
++ * @brief Destructor for the ImGuiLayer class.
++ */
++ImGuiLayer::~ImGuiLayer()
++    {
++    }
++
++    
++void ImGuiLayer::OnAttach()
+     {
+         AppConfig Config = App::Get().GetAppConfig();
+         AGE_PROFILE_FUNCTION();
+@@ -87,7 +94,13 @@
+             }
+         }
+     }
+-    void ImGuiLayer::OnDetach()
++    /**
++ * @brief This function is called when the ImGuiLayer detaches from its attached renderer.
++ * It handles cleanup based on which rendering API was selected at runtime.
++ * 
++ * @return void
++ */
++void ImGuiLayer::OnDetach()
+     {
+ 
+         AGE_PROFILE_FUNCTION();
+@@ -115,7 +128,17 @@
+ 
+ 
+ 
+-    void ImGuiLayer::Begin()
++    /**
++ * @brief Begins the ImGui layer. This function prepares for rendering of UI elements by initializing necessary states and setting up frame data based on the current render API in use.
++ * 
++ * The function first checks the currently selected Render API using `Renderer::GetAPI()`. Depending on the result, it performs different actions:
++ * - If the API is OpenGL (0), no action is taken as there are no UI elements to initialize for this case.
++ * - If the API is DirectX or Vulkan (1), it calls ImGui's NewFrame function and sets up frame data for these APIs using `ImGui_ImplOpenGL3_NewFrame()`, `ImGui_ImplGlfw_NewFrame()`, and `ImGuizmo::BeginFrame()`.
++ * - If an invalid API is selected (anything else), it asserts false with a message "Invalid Render API Selected!" to halt execution.
++ * 
++ * @return void
++ */
++void ImGuiLayer::Begin()
+     {
+         AGE_PROFILE_FUNCTION();
+         switch (Renderer::GetAPI())
+@@ -143,7 +166,12 @@
+ 
+     }
+ 
+-    void ImGuiLayer::OnEvent(Event& E)
++    /**
++ * @brief This function is an event handler for the ImGuiLayer class. It dispatches events to their respective handlers based on the event type.
++ * 
++ * @param E Reference to the Event object that needs to be handled.
++ */
++void ImGuiLayer::OnEvent(Event& E)
+     {
+         EventDispatcher Dispatcher(E);
+ 
+@@ -158,18 +186,39 @@
+         }
+     }
+ 
+-    bool ImGuiLayer::OnWindowResized(WindowResizeEvent& E)
++    /**
++ * @brief Handles the window resize event.
++ * 
++ * This function is triggered when the user resizes the window of the application. It updates the viewport and framebuffer size accordingly.
++ * 
++ * @param E The WindowResizeEvent object containing information about the new window size.
++ * @return Returns true if the operation was successful, false otherwise. In this case, it always returns false as there are no errors to handle.
++ */
++bool ImGuiLayer::OnWindowResized(WindowResizeEvent& E)
+     {
+         return false;
+     }
+ 
+     
+ 
+-    void ImGuiLayer::OnImGuiRender(TimeStep DeltaTime)
+-    {
+-    }
+-
+-    void ImGuiLayer::End()
++    /**
++ * @brief This function is responsible for rendering the ImGui interface elements in the application.
++ * 
++ * @param[in] DeltaTime The time step representing the elapsed time since the last frame.
++ * 
++ * @return void No return value expected as this function does not explicitly return anything.
++ */
++void ImGuiLayer::OnImGuiRender(TimeStep DeltaTime)
++    {
++    }
++
++    /**
++ * @brief This function is responsible for ending the ImGui layer and rendering the GUI.
++ * It updates the display size based on the window's width and height, then renders the GUI using either OpenGL or a different API depending on the current Renderer API. 
++ * If an invalid Render API is selected, it asserts false with a message "Invalid Render API Selected!".
++ * @return void
++ */
++void ImGuiLayer::End()
+     {
+         //If we've changed renderers then that means there will be nothing there to draw so we'll simply skip this frame and start fresh
+         AGE_PROFILE_FUNCTION();
+@@ -208,7 +257,8 @@
+         }
+     }
+ 
+-    void ImGuiLayer::SetDarkThemeColors()
++    
++void ImGuiLayer::SetDarkThemeColors()
+     {
+         auto& Colors = ImGui::GetStyle().Colors;
+ 

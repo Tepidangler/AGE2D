@@ -16,7 +16,13 @@ RTTR_REGISTRATION{
 
 namespace AGE
 {
-	ButtonComponent::ButtonComponent(const std::string& Name)
+	/**
+ * @brief Constructs a ButtonComponent with the given name.
+ * 
+ * This function initializes a new instance of the ButtonComponent class, setting its name and type. It also sets up an anonymous lambda function as the onClick event handler that logs "Button Clicked!" to the console when invoked.
+ * @param Name The name for this button component.
+ */
+ButtonComponent::ButtonComponent(const std::string& Name)
 	{
 		m_Name = Name;
 		m_Type = UIComponentType::ButtonComponent;
@@ -25,7 +31,14 @@ namespace AGE
 		};
 	}
 
-	void ButtonComponent::DrawContent() {
+	/**
+ * @brief Draws the content of the ButtonComponent, including properties like position, rotation, scale and color.
+ * 
+ * This function uses ImGui to draw a series of controls for modifying the BoxProperties of the ButtonComponent. It includes fields for Screen Position, Screen Rotation, Screen Scale and Box Color. The @ref DrawVec3Control is used to handle Vector3 properties.
+ * 
+ * @return void
+ */
+void ButtonComponent::DrawContent() {
 		ImGui::Text("Box Properties");
 		DrawVec3Control("Screen Position", m_BoxProperties.Position);
 		DrawVec3Control("Screen Rotation", m_BoxProperties.Rotation);
@@ -33,7 +46,15 @@ namespace AGE
 		ImGui::ColorEdit4("Box Color", &m_BoxProperties.TintColor.x);
 	}
 
-	void ButtonComponent::OnUpdate(TimeStep DeltaTime) {
+	/**
+ * @brief Updates the ButtonComponent based on the provided TimeStep.
+ *
+ * This function updates the ButtonComponent by calling UIComponent's OnUpdate method with the given DeltaTime. 
+ * If the component is visible, it creates a QuadProperties object and sets its properties accordingly before passing it to Renderer2D::DrawQuad for rendering.
+ *
+ * @param DeltaTime The time step since the last frame.
+ */
+void ButtonComponent::OnUpdate(TimeStep DeltaTime) {
 		UIComponent::OnUpdate(DeltaTime);
 
 		if (m_CompProperties.Visible)
@@ -45,7 +66,12 @@ namespace AGE
 		}
 	}
 
-	void ButtonComponent::OnEvent(Event &Event)
+	/**
+ * @brief This function handles events related to the button component. It dispatches different types of events based on the current state of the button and the event that has occurred.
+ * 
+ * @param Event The event object which contains information about the event that has occurred.
+ */
+void ButtonComponent::OnEvent(Event &Event)
 	{
 		AGE::EventDispatcher Dispatcher(Event);
 
@@ -58,7 +84,15 @@ namespace AGE
 		}
 	}
 
-	bool ButtonComponent::IsButtonHovered()
+	/**
+ * @brief Checks if the button is hovered by the mouse cursor.
+ *
+ * This function calculates the normalized position of the mouse cursor relative to the window size, and then checks whether this position falls within the bounds defined by the button's dimensions. 
+ * The bounds are calculated as half the width and height of the button, with the center point being at (m_Bounds[0].x, m_Bounds[0].y).
+ *
+ * @return True if the mouse cursor is hovering over the button, false otherwise.
+ */
+bool ButtonComponent::IsButtonHovered()
 	{
 		Vector2 MousePos = App::Get().GetDeviceManager().GetWindow().GetMousePos();
 		Vector2 FramebufferSize = App::Get().GetFramebufferSize();
@@ -68,7 +102,15 @@ namespace AGE
 		&& NormalizedMousePos.y > (m_Bounds[0].y - m_Bounds[1].y * .5f) && NormalizedMousePos.y < (m_Bounds[0].y + m_Bounds[1].y * .5f);
 	}
 
-	bool ButtonComponent::OnKeyPressed(KeyPressedEvent &E)
+	/**
+ * @brief Handles key press events.
+ * 
+ * This function is responsible for handling the KeyPressedEvent, specifically when a certain key (currently ENTER) has been pressed. If the component is currently focused and the event's key code matches the 'ENTER', it triggers an action defined by m_OnClick().
+ * 
+ * @param E The KeyPressedEvent to be handled.
+ * @return bool Returns false if no special actions were taken, true otherwise. In this case, we only return true when ENTER is pressed and m_OnClick() is triggered, so it's always false.
+ */
+bool ButtonComponent::OnKeyPressed(KeyPressedEvent &E)
 	{
 		if (!m_CompProperties.Focused) {
 			return false;
@@ -85,7 +127,15 @@ namespace AGE
 		return false;
 	}
 
-	bool ButtonComponent::OnClicked(MouseButtonPressedEvent &E)
+	/**
+ * @brief Handles the click event of the button.
+ *
+ * This function is triggered when a mouse button is pressed on this component. It executes the callback function associated with the button.
+ *
+ * @param E A reference to the MouseButtonPressedEvent object containing information about the event.
+ * @return Always returns false, as no further action needs to be taken after clicking the button.
+ */
+bool ButtonComponent::OnClicked(MouseButtonPressedEvent &E)
 	{
 		m_OnClick();
 		return false;

@@ -1,0 +1,69 @@
+--- a/C:\AGE\AGE2D\Engine\src\AGE\Core\Private\DeviceManager.cpp
++++ b/C:\AGE\AGE2D\Engine\src\AGE\Core\Private\DeviceManager.cpp
+@@ -4,7 +4,16 @@
+ 
+ namespace AGE
+ {
+-	DeviceManager::DeviceManager(AudioEngineType AudioEngine, bool UseXInput)
++	/**
++ * @brief Constructs a DeviceManager object.
++ * 
++ * This function initializes the device manager, setting up an audio engine and window based on the provided parameters.
++ * If UseXInput is true, it also sets up XInput for controller input handling.
++ * 
++ * @param AudioEngine The type of audio engine to use (e.<｜begin▁of▁sentence｜>ound or Video).
++ * @param UseXInput A boolean indicating whether to use XInput for controller input handling.
++ */
++DeviceManager::DeviceManager(AudioEngineType AudioEngine, bool UseXInput)
+ 	{
+ 		m_Window = Scope<AGEWindow>(AGEWindow::Create());
+ 		m_AudioManager = CreateScope<AudioManager>(AudioEngine);
+@@ -18,21 +27,45 @@
+ 		CoreLogger::Info("Device Manager Initialized!");
+ 	}
+ 
+-	Scope<DeviceManager> DeviceManager::Create(AudioEngineType AudioEngine, bool UseXInput)
++	/**
++ * @brief Creates a new instance of the DeviceManager class.
++ * 
++ * This function creates and returns a new instance of the DeviceManager class, initialized with the specified AudioEngineType and UseXInput parameters.
++ * The returned object is wrapped in a Scope<DeviceManager> to ensure proper management of memory.
++ * @param AudioEngine The type of audio engine to be used by the DeviceManager.
++ * @param UseXInput A boolean flag indicating whether XInput should be used or not.
++ * @return A Scope<DeviceManager> object wrapping a pointer to the newly created DeviceManager instance.
++ */
++Scope<DeviceManager> DeviceManager::Create(AudioEngineType AudioEngine, bool UseXInput)
+ 	{
+ 		return Scope<DeviceManager>(new DeviceManager(AudioEngine));
+ 	}
+ 
+ 	//AUDIO MANAGER
+ 
+-	AudioManager::AudioManager(AudioEngineType Type)
++	/**
++ * @brief Constructs an AudioManager object with the specified audio engine type.
++ * 
++ * This constructor initializes an instance of AudioManager with a specific audio engine type. It creates an instance of AudioEngine using the provided type and assigns it to m_AudioEngine. The audio engine type is stored in m_Type for reference. A log message "Audio Manager Initialized!" is also displayed upon successful initialization.
++ * 
++ * @param Type - The type of audio engine to be used by this manager. This can be one of the values defined in the AudioEngineType enum.
++ */
++AudioManager::AudioManager(AudioEngineType Type)
+ 		:m_Type(Type)
+ 	{
+ 		m_AudioEngine = Ref<AudioEngine>(AudioEngine::Create(Type));
+ 		CoreLogger::Info("Audio Manager Initialized!");
+ 	}
+ 
+-	void AudioManager::SwitchAudioEngine(AudioEngineType Type)
++	/**
++ * @brief Switches the audio engine being used by the AudioManager.
++ *
++ * This function resets and replaces the current audio engine with a new one of the specified type.
++ * The new audio engine is created using the `AudioEngine::Create` method, which requires an argument specifying the desired type of audio engine.
++ * 
++ * @param Type - The type of audio engine to switch to. This should be a value from the AudioEngineType enum.
++ */
++void AudioManager::SwitchAudioEngine(AudioEngineType Type)
+ 	{
+ 		m_AudioEngine.reset();
+ 		m_AudioEngine = Ref<AudioEngine>(AudioEngine::Create(Type));

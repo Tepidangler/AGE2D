@@ -6,7 +6,14 @@
 
 namespace AGE
 {
-	SoundBank::SoundBank(const std::filesystem::path& FilePath, UUID ID)
+	/**
+ * @brief Constructs a SoundBank object with the given file path and UUID.
+ * @param FilePath The path to the sound bank file.
+ * @param ID The unique identifier for this sound bank.
+ * 
+ * This function initializes a new SoundBank object by setting its file path and UUID, and also sets the name of the sound bank as the filename from the given path.
+ */
+SoundBank::SoundBank(const std::filesystem::path& FilePath, UUID ID)
 		:m_FilePath(FilePath), m_AssetID(ID)
 	{
 		m_Name = m_FilePath.filename().string();

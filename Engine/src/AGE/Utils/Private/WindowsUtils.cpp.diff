@@ -1,0 +1,61 @@
+--- a/C:\AGE\AGE2D\Engine\src\AGE\Utils\Private\WindowsUtils.cpp
++++ b/C:\AGE\AGE2D\Engine\src\AGE\Utils\Private\WindowsUtils.cpp
+@@ -35,7 +35,18 @@
+ namespace AGE
+ {
+ #ifdef AG_PLATFORM_WINDOWS
+-	bool WindowsUtils::FindFileFromDirectory(const char* FileName, std::filesystem::path Path, std::string& OutPath)
++	/**
++ * @brief Searches for a file in the given directory and its subdirectories.
++ * 
++ * This function takes a filename, a path to search from, and an output parameter to store the found file's path. It returns true if it finds the file, false otherwise.
++ * 
++ * @param FileName The name of the file to be searched for.
++ * @param Path The directory to start searching from.
++ * @param OutPath An output parameter that will contain the full path of the found file.
++ * 
++ * @return Returns true if the file is found, false otherwise.
++ */
++bool WindowsUtils::FindFileFromDirectory(const char* FileName, std::filesystem::path Path, std::string& OutPath)
+ 	{
+ 		std::filesystem::path CurrentPath;
+ 
+@@ -70,7 +81,19 @@
+ #endif
+ 
+ 
+-	std::string FileDialogs::OpenFile(const std::string& Title, const std::filesystem::path& DefaultPath, std::vector<std::string> Filter)
++	/**
++ * @brief Opens a file dialog and returns the path of the selected file.
++ *
++ * This function opens an open file dialog with the given title, default path, and filter. If no file is selected, it returns an empty string. 
++ * The returned string contains the path of the first selected file.
++ *
++ * @param Title The title of the file dialog.
++ * @param DefaultPath The default path for the file dialog.
++ * @param Filter A vector of strings representing the filter for the file dialog.
++ *
++ * @return Returns a string containing the path of the selected file, or an empty string if no file is selected.
++ */
++std::string FileDialogs::OpenFile(const std::string& Title, const std::filesystem::path& DefaultPath, std::vector<std::string> Filter)
+ 	{
+ 		auto f = pfd::open_file(Title.c_str(), DefaultPath.generic_string(),
+ 			Filter);
+@@ -83,7 +106,16 @@
+ 		return {f.result().front()};
+ 	}
+ 
+-	std::string FileDialogs::SaveFile(const std::string& Title, const std::filesystem::path& DefaultPath, std::vector<std::string> Filter)
++	/**
++ * @brief This function opens a file dialog and allows the user to select a file for saving.
++ * 
++ * @param Title The title of the file dialog.
++ * @param DefaultPath The default path where the file dialog will start from.
++ * @param Filter A vector of strings representing the file types that can be selected in the dialog.
++ * 
++ * @return Returns a string containing the path to the selected file, or an empty string if no file was selected.
++ */
++std::string FileDialogs::SaveFile(const std::string& Title, const std::filesystem::path& DefaultPath, std::vector<std::string> Filter)
+ 	{
+ 		auto f = pfd::open_file(Title.c_str(), DefaultPath.generic_string(),
+ 			Filter

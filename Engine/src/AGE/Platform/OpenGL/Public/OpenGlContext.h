@@ -11,7 +11,12 @@ namespace AGE
 {
 	class OpenGLPipeline;
 
-	class AGE_API OpenGLContext : public GraphicsContext
+	/**
+ * @brief Constructor for OpenGLContext. Initializes the context with a GLFW window handle.
+ * 
+ * @param WindowHandle A pointer to an existing GLFWwindow object that this context will be bound to.
+ */
+class AGE_API OpenGLContext : public GraphicsContext
 	{
 	public:
 		OpenGLContext(GLFWwindow* WindowHandle);

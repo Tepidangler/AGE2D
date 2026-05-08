@@ -15,13 +15,27 @@
 
 namespace AGE
 {
-    Ref<World> World::Create(Ref<Scene> scene)
+    Re/**
+ * @brief Creates a new instance of the World class.
+ * 
+ * This function creates and returns a new instance of the World class, which is specialized for handling 2D scenes. The scene parameter specifies the Scene that this world will be associated with.
+ * 
+ * @param scene A reference to the Scene object that this world will be associated with.
+ * @return A reference to the newly created World instance.
+ */
+f<World> World::Create(Ref<Scene> scene)
     {
         return CreateRef<World2D>(scene);
     }
 
     template<typename T>
-    T* World::As()
+    T*/**
+ * @brief This function is currently not implemented and will always assert false.
+ * It returns a null pointer.
+ *
+ * @return nullptr Always.
+ */
+ World::As()
     {
         CoreLogger::Assert(false, "As() Failed!");
         return nullptr;

@@ -28,18 +28,43 @@ namespace AGE
 		StringProperties m_StringProperties;
 		void OnUpdate(TimeStep DeltaTime) override;
 		void OnEvent(Event& Event) override;
-		void CallSerialize(DataWriter* Serializer) override
+		/**
+ * @brief This function serializes the TextComponent object using a DataWriter.
+ * 
+ * The function writes the current instance of the TextComponent to the provided DataWriter, which can be used for further processing or storage.
+ * 
+ * @param Serializer A pointer to an instance of DataWriter that will handle the writing operation.
+ * 
+ * @return void No return value is expected as this function directly writes data using the provided DataWriter.
+ */
+void CallSerialize(DataWriter* Serializer) override
 		{
 			Serializer->WriteObject<TextComponent>(*this);
 		}
-		void CallDeserialize(DataReader* Serializer) override
+		/**
+ * @brief Deserializes the TextComponent from a DataReader.
+ * 
+ * This function reads an instance of TextComponent from the provided DataReader and assigns it to this object.
+ * The exact format in which the data is read depends on how the DataReader's ReadObject method is implemented.
+ *
+ * @param Serializer A pointer to a DataReader that provides the serialized data.
+ */
+void CallDeserialize(DataReader* Serializer) override
 		{
 			Serializer->ReadObject<TextComponent>(*this);
 		}
 		void DrawFontSelectionComboBox() override;
 		void DrawContent() override;
 
-		static void Serialize(DataWriter* Serializer, const TextComponent& Instance)
+		/**
+ * @brief This function serializes a TextComponent instance into the provided DataWriter.
+ * 
+ * The function writes several properties of the TextComponent to the DataWriter, including its name, type, string properties (text, font name), color, font size, and position/rotation.
+ * 
+ * @param Serializer A pointer to a DataWriter instance that will be used for serialization.
+ * @param Instance The TextComponent instance to be serialized.
+ */
+static void Serialize(DataWriter* Serializer, const TextComponent& Instance)
 		{
 			Serializer->WriteString(Instance.m_Name);
 			Serializer->WriteRaw<uint16_t>(Instance.m_Type);
@@ -58,7 +83,8 @@ namespace AGE
 			Serializer->WriteRaw<float>(Instance.m_StringProperties.Rotation.z);
 		}
 
-		static void Deserialize(DataReader* Serializer, TextComponent& Instance)
+		
+static void Deserialize(DataReader* Serializer, TextComponent& Instance)
 		{
 			Serializer->ReadString(Instance.m_Name);
 			uint16_t Type;

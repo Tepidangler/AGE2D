@@ -49,17 +49,41 @@ namespace AGE
 		static void Init(uint32_t Seed = 0);
 
 		//SRand-like (seed-related) methods
-		static void ResetSeed(uint32_t Seed, int Position = 0) 
+		/**
+ * @brief Resets the seed and position for a pseudo-random number generator.
+ * 
+ * This function sets the global variables `s_Seed` and `s_Position` to the provided values. The new seed is used as the starting point for generating pseudo-random numbers, while the position indicates the current position in the sequence of generated numbers.
+ *
+ * @param Seed A 32-bit unsigned integer that will be used as the new seed value.
+ * @param Position An optional parameter indicating the start position for generating pseudo-random numbers. Defaults to 0 if not provided.
+ * @return void
+ */
+static void ResetSeed(uint32_t Seed, int Position = 0) 
 		{	
 			s_Seed = Seed; 
 			s_Position = Position; 
 		}
 
-		static uint32_t GetSeed() { return s_Seed; }
+		/**
+ * @brief This function returns the current seed value used for random number generation.
+ * @return The current seed value as a uint32_t.
+ */
+static uint32_t GetSeed() { return s_Seed; }
 
-		static void SetCurrentPosition(int Position) { s_Position = Position; }
+		/**
+ * @brief Sets the current position value.
+ *
+ * This function sets the 's_Position' variable to a new integer value provided as an argument. It does not return anything, so it is void.
+ *
+ * @param Position The new integer value that will be set for 's_Position'.
+ */
+static void SetCurrentPosition(int Position) { s_Position = Position; }
 
-		static int GetCurrentPosition() { return s_Position; }
+		/**
+ * @brief This function returns the current position value stored in 's_Position'.
+ * @return The integer value of the current position. If no such variable exists, it will return a default value of 0.
+ */
+static int GetCurrentPosition() { return s_Position; }
 
 		//Rand-like (sequential random rolls) methods. Each one advances the RNG to it's next Position
 

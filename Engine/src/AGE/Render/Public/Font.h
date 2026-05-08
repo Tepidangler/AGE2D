@@ -12,8 +12,19 @@ namespace AGE
 		AGEFont(const std::filesystem::path& Font);
 		~AGEFont();
 
-		const MSDFData* GetMSDFData() const { return m_Data; }
-		Ref<Texture2D> GetAtlasTexture() const { return m_AtlasTexture; }
+		/**
+ * @brief Retrieves the MSDF data associated with this object.
+ * @return A pointer to the MSDF data, or nullptr if no data is available.
+ */
+const MSDFData* GetMSDFData() const { return m_Data; }
+		/**
+ * @brief Returns the atlas texture reference.
+ *
+ * This function returns a constant reference to the atlas texture stored in the object. The returned reference can be used to access and manipulate the atlas texture data.
+ *
+ * @return A constant reference to the atlas texture.
+ */
+Ref<Texture2D> GetAtlasTexture() const { return m_AtlasTexture; }
 
 		void SaveFont() const;
 		void LoadFont(const std::string& FontName);

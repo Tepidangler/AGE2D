@@ -17,7 +17,14 @@ namespace AGE {
 
 	class Convert {
 	public:
-		Convert() {}
+		/**
+ * @brief Converts the input into another format.
+ *
+ * This function takes an input and converts it to a different format. The exact conversion performed is not specified, as this depends on the implementation details of the Convert() function. 
+ *
+ * @return Returns void.
+ */
+Convert() {}
 #ifdef AG_PLATFORM_WINDOWS
 		static DirectX::XMFLOAT2 ToXMFloat2(Vector2 vec);
 		static DirectX::XMFLOAT3 ToXMFloat3(Vector3 vec);

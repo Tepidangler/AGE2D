@@ -1,0 +1,121 @@
+--- a/C:\AGE\AGE2D\Engine\src\AGE\Structs\Public\Functions.h
++++ b/C:\AGE\AGE2D\Engine\src\AGE\Structs\Public\Functions.h
+@@ -72,15 +72,42 @@
+ 	struct AGEFunction final
+ 	{
+ 	public:
+-		AGEFunction() = default;
+-
+-		AGEFunction(const std::string& Exec,  std::vector<rttr::variant> Arguments, E* Value = nullptr, Ref<R>& Ptr = nullptr)
++		/**
++ * @brief Default constructor for the AGEFunction class.
++ */
++AGEFunction() = default;
++
++		/**
++ * @brief Constructs an instance of the class with given parameters.
++ * @param Exec A string parameter that is used for some purpose, but not specified in this comment.
++ * @param Arguments A vector of rttr::variant objects which are used to perform various operations.
++ * @param Value Pointer to an E object, default value is nullptr.
++ * @param Ptr Reference to a R object, default value is nullptr.
++ */
++AGEFunction(const std::string& Exec,  std::vector<rttr::variant> Arguments, E* Value = nullptr, Ref<R>& Ptr = nullptr)
+ 			: Entt(Value), Val(Exec), Reference(Ptr), Args(Arguments)
+ 		{
+ 		}
+ 
+-		AGEFunction(const AGEFunction&) = default;
+-		virtual ~AGEFunction() = default;
++		COMMENT:
++/**
++ * @brief Default copy constructor for the class.
++ *
++ * This function is used to create a new instance of an object by copying another existing one. It uses the '= default' syntax, which tells the compiler to use the default implementation provided by the compiler.
++ *
++ * @param other The existing object to be copied.
++ * 
++ * @return A new instance of the class with the same state as the input parameter.
++ */
++CONFIDENCE: 1.0;
++
++AGEFunction(const AGEFunction&) = default;
++		/**
++ * @brief Virtual destructor for the AGEFunction class.
++ *
++ * This function is responsible for releasing any resources that were acquired by the object during its lifetime. It does not take any parameters and returns void.
++ */
++virtual ~AGEFunction() = default;
+ 
+ 
+ 		Ref<R> Reference;
+@@ -91,7 +118,15 @@
+ 		uint64_t EnttID;
+ 		bool bIsUtilFunction = false;
+ 
+-		rttr::variant Execute(TimeStep DeltaTime = 0.f)
++		/**
++ * @brief Executes the function stored in Reference with optional delta time as input.
++ * 
++ * The function will be executed based on whether a reference to an object is present and if DeltaTime > 0. If only Reference is provided, it assumes that no additional parameters are required for execution.
++ * 
++ * @param[in] DeltaTime Optional parameter representing time elapsed since the last frame. Defaults to 0.f.
++ * @return The return value of the function stored in Reference.
++ */
++rttr::variant Execute(TimeStep DeltaTime = 0.f)
+ 		{
+ 			if (Reference && DeltaTime > 0.f)
+ 			{
+@@ -114,7 +149,17 @@
+ 
+ 		}
+ 
+-		static void Serialize(DataWriter* Serializer, const AGEFunction& Data)
++		/**
++ * @brief This function serializes the AGEFunction data into a DataWriter object.
++ * 
++ * The function writes the RefID, bIsUtilFunction and Entt status of the AGEFunction to the DataWriter. If the Entt is present, it also writes the EnttID. It then writes the Val string of the AGEFunction.
++ * 
++ * @param Serializer Pointer to a DataWriter object where serialized data will be written into.
++ * @param Data Reference to an AGEFunction object that needs to be serialized.
++ * 
++ * @return void
++ */
++static void Serialize(DataWriter* Serializer, const AGEFunction& Data)
+ 		{
+ 			Serializer->WriteRaw<uint64_t>((uint64_t)Data.RefID);
+ 			Serializer->WriteRaw<bool>(Data.bIsUtilFunction);
+@@ -132,7 +177,16 @@
+ 			Serializer->WriteString(Data.Val);
+ 		}
+ 
+-		static void Deserialize(DataReader* Serializer, AGEFunction& Data)
++		/**
++ * @brief Deserialize function data from a DataReader into an AGEFunction object.
++ * 
++ * This function reads raw data from the provided DataReader and populates an AGEFunction object with it. The function checks if 'HasEntt' is true, in which case it also reads an EnttID. It then reads a string value for 'Val'.
++ * @param Serializer Pointer to the DataReader instance that provides raw data.
++ * @param Data Reference to the AGEFunction object where the deserialized data will be stored.
++ * 
++ * @return void
++ */
++static void Deserialize(DataReader* Serializer, AGEFunction& Data)
+ 		{
+ 			bool HasEntt = false;
+ 
+@@ -149,7 +203,15 @@
+ 
+ 	protected:
+ 
+-		rttr::variant Function(Ref<R>& Ptr, TimeStep DeltaTime = 0.f)
++		/**
++ * @brief This function is used to execute a method on an entity. It can be either a utility function or a normal method of the entity's class. 
++ * 
++ * @param Ptr Reference to the entity. If it's not valid, the function will return without doing anything.
++ * @param DeltaTime The time step for the update. Default is 0.f.
++ * 
++ * @return Returns a variant containing the result of the method execution if successful, or an invalid variant otherwise.
++ */
++rttr::variant Function(Ref<R>& Ptr, TimeStep DeltaTime = 0.f)
+ 		{
+ 			rttr::variant RetVal;
+ 			if (Val == "OnUpdate")
