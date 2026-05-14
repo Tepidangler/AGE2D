@@ -13,6 +13,9 @@ namespace AGE
 		/**
  * @brief Default constructor for JsonParser class.
  */
+/**
+ * @brief Default constructor for JsonParser class.
+ */
 JsonParser() = default;
 		JsonParser(const std::string& FilePath);
 

@@ -60,6 +60,11 @@ namespace AGE
  *
  * This function is responsible for releasing any resources that were acquired by the object during its lifetime. It does not return anything and has no parameters.
  */
+/**
+ * @brief Virtual destructor for the UIComponent class.
+ *
+ * This function is responsible for releasing any resources that were acquired by the object during its lifetime. It does not return anything and has no parameters.
+ */
 virtual ~UIComponent() = default;
 
 		virtual void OnUpdate(TimeStep DeltaTime) {};
@@ -75,6 +80,13 @@ virtual ~UIComponent() = default;
  *
  * @return A reference to the internal string holding the name.
  */
+/**
+ * @brief Gets the name of the object.
+ *
+ * This function returns a reference to the internal string that holds the name of the object. The caller can modify this string, and the changes will be reflected in the object's state.
+ * 
+ * @return A reference to the internal string holding the name.
+ */
 std::string& GetName() {return m_Name;};
 		/**
  * @brief Returns a reference to the UI properties object.
@@ -83,10 +95,18 @@ std::string& GetName() {return m_Name;};
  *
  * @return A reference to the UIProperties object.
  */
+/**
+ * @brief Gets the UI properties associated with this component.
+ * @return A reference to the UIProperties object for this component.
+ */
 UIProperties& GetProperties() {return m_CompProperties;};
 		/**
  * @brief This function returns the type of the UI component.
  * @return The type of the UI component as an enumerated value.
+ */
+/**
+ * @brief This function returns the type of the UI component.
+ * @return The type of the UI component as an enumeration value.
  */
 UIComponentType::Value GetType() {return m_Type;}
 		UIProperties m_CompProperties;
@@ -99,6 +119,11 @@ UIComponentType::Value GetType() {return m_Type;}
  * @brief This function is responsible for drawing the font selection combo box on the screen.
  * 
  * @return None
+ */
+/**
+ * @brief This function is responsible for drawing the font selection combo box on the screen.
+ * 
+ * The function does not take any parameters and returns no value. It directly interacts with the UI to display the font selection combo box.
  */
 virtual void DrawFontSelectionComboBox(){}
 		virtual void DrawContent() = 0;
@@ -114,6 +139,9 @@ virtual void DrawFontSelectionComboBox(){}
  * @brief Default constructor for the UIComponent class.
  *
  * This function initializes a new instance of the UIComponent class with default values. It does not take any parameters and returns nothing. The behavior is undefined if this function is called on an already initialized object.
+ */
+/**
+ * @brief Default constructor for the UIComponent class.
  */
 UIComponent() = default;
 

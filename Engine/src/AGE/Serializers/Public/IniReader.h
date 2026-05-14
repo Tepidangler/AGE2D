@@ -35,6 +35,13 @@ namespace AGE
  *
  * This function is responsible for freeing any resources that were allocated during the lifetime of an instance of this class.
  */
+/**
+ * @brief Destructor for the IniReader class.
+ *
+ * This function is responsible for freeing any resources that were allocated during the lifetime of an instance of this class, such as memory or file handles. It's important to ensure that all resources are properly released when they are no longer needed to prevent potential memory leaks or other issues in your program.
+ *
+ * @return void
+ */
 ~IniReader() = default;
 
 		std::string Read(const std::string &Section, const std::string &Key, bool& HasMultipleValues);

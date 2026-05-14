@@ -19,6 +19,10 @@ namespace AGE
  * @brief This function returns the file name from the member variable m_FilePath.
  * @return std::string The filename as a string. If no file path is set, it will return an empty string.
  */
+/**
+ * @brief This function returns the file name from the member variable 'm_FilePath'.
+ * @return std::string The filename as a string. If 'm_FilePath' is not set, it will return an empty string.
+ */
 std::string GetFileName() { return m_FilePath; }
 
 		/**
@@ -29,6 +33,13 @@ std::string GetFileName() { return m_FilePath; }
  *
  * @return uint32_t - Current number of frames in the video sequence.
  */
+/**
+ * @brief Gets the number of frames.
+ *
+ * This function returns the current value of the member variable 'm_NumberOfFrames'. It provides a way to access this data without directly accessing the variable itself, which could potentially expose implementation details.
+ * 
+ * @return uint32_t The current number of frames.
+ */
 uint32_t GetNumberOfFrames() { return m_NumberOfFrames; }
 		/**
  * @brief Returns the number of frames played by the player.
@@ -38,6 +49,13 @@ uint32_t GetNumberOfFrames() { return m_NumberOfFrames; }
  *
  * @return The number of frames played as an integer. If no frames have been played, it will return 0.
  */
+/**
+ * @brief Returns the number of frames played by the player.
+ *
+ * This function returns the current count of frames that have been played by the player. It does not take any parameters and does not modify anything.
+ *
+ * @return int The number of frames played. If no frames have been played, it will return 0.
+ */
 int GetNumberOfFramesPlayed() { return m_FrameCount; }
 		/**
  * @brief Returns the current frames per second value.
@@ -45,6 +63,10 @@ int GetNumberOfFramesPlayed() { return m_FrameCount; }
  * This function returns the current Frames Per Second (FPS) value that is being used by the application for rendering and updating purposes.
  *
  * @return double - The current FPS value.
+ */
+/**
+ * @brief Returns the current frames per second rate.
+ * @return The current frames per second rate as a double precision floating point number.
  */
 double GetFramesPerSecond() { return m_FramesPerSecond; }
 		/**
@@ -54,6 +76,13 @@ double GetFramesPerSecond() { return m_FramesPerSecond; }
  *
  * @return uint32_t The width of the object.
  */
+/**
+ * @brief Gets the width of an object.
+ *
+ * This function returns the current width value stored in 'm_Width'.
+ *
+ * @return The current width as a uint32_t.
+ */
 uint32_t GetWidth() { return m_Width; }
 		/**
  * @brief Returns the height of an object.
@@ -61,6 +90,14 @@ uint32_t GetWidth() { return m_Width; }
  * This function retrieves and returns the current height value stored in the 'm_Height' member variable.
  * The returned value is a uint32_t, representing the height of the object.
  *
+ * @return The current height of the object as a uint32_t.
+ */
+/**
+ * @brief Returns the height of an object.
+ *
+ * This function retrieves and returns the current height value stored in the 'm_Height' member variable.
+ * The returned value is a uint32_t, representing the height of the object.
+ * 
  * @return The current height of the object as a uint32_t.
  */
 uint32_t GetHeight() { return m_Height; }
@@ -72,11 +109,25 @@ uint32_t GetHeight() { return m_Height; }
  *
  * @return int The number of channels currently active in the system. If no channels are present, it will return 0.
  */
+/**
+ * @brief Returns the number of channels in use by the system.
+ *
+ * This function returns an integer representing the current number of channels being used by the system. It does not take any parameters and has no side effects.
+ *
+ * @return int The number of active channels.
+ */
 int GetChannels() { return m_Channels; }
 		/**
  * @brief Gets the texture object reference.
  *
  * This function returns a reference to the Texture2D object stored in member variable 'm_Texture'. It is used to access and possibly modify this data if necessary.
+ *
+ * @return A reference to the Texture2D object.
+ */
+/**
+ * @brief Gets the reference to a Texture2D object.
+ *
+ * This function returns a reference to an instance of Texture2D, which is stored in member variable 'm_Texture'. The purpose of this function is to provide access to and potentially modify the texture data that backs the 2D graphics system.
  *
  * @return A reference to the Texture2D object.
  */
@@ -96,6 +147,13 @@ Ref<Texture2D>& GetTexture() { return m_Texture; }
  * @param Data Pointer to an array of uint8_t values representing the new texture data.
  * The size of this data should be equal to the product of m_Width, m_Height and m_Channels.
  */
+/**
+ * @brief Sets the texture data.
+ *
+ * This function sets the texture data by calling SetData() on a member variable 'm_Texture'. The size of the data to be set is calculated as the product of m_Width, m_Height and m_Channels. 
+ *
+ * @param Data Pointer to the uint8_t array containing the texture data.
+ */
 void SetTextureData(uint8_t* Data)
 		{
 			m_Texture->SetData(Data, (m_Width * m_Height * m_Channels));
@@ -107,6 +165,13 @@ void SetTextureData(uint8_t* Data)
  * This function checks if both 'bLoaded' and 'm_Texture' are true, indicating that a texture has been loaded successfully.
  *
  * @return True if the texture is loaded, false otherwise.
+ */
+/**
+ * @brief Checks whether the texture is loaded.
+ *
+ * This function checks if both 'bLoaded' and 'm_Texture' are true, indicating that a texture has been loaded successfully.
+ *
+ * @return True if the texture is loaded (both 'bLoaded' and 'm_Textures' are true), false otherwise.
  */
 bool IsLoaded() { return bLoaded && m_Texture; }
 		~VideoSource();
@@ -122,6 +187,9 @@ bool IsLoaded() { return bLoaded && m_Texture; }
  */
 CONFIDENCE: 1.0;
 
+/**
+ * @brief Default constructor for the VideoSource class.
+ */
 VideoSource() = default;
 		/**
  * @brief Default copy constructor for the VideoSource class.
@@ -131,6 +199,13 @@ VideoSource() = default;
  * @param other The VideoSource object to be copied.
  * 
  * @return A new VideoSource object that is a copy of the input parameter.
+ */
+/**
+ * @brief Default copy constructor for the VideoSource class.
+ *
+ * This function is used to create a new instance of the VideoSource class by copying an existing one. It uses the '= default' syntax, which instructs the compiler to generate a default implementation for this member function.
+ *
+ * @param other The existing VideoSource object to copy from.
  */
 VideoSource(const VideoSource&) = default;
 

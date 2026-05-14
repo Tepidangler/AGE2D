@@ -25,9 +25,20 @@ namespace AGE
 
 		void InvalidateBuffer() const override;
 
-		void SetLayout(const BufferLayout& Layout) override { m_Layout = Layout; }
+		/**
+ * @brief Sets the layout for a buffer.
+ * @param Layout The new layout to be set.
+ */
+void SetLayout(const BufferLayout& Layout) override { m_Layout = Layout; }
 
-		static uint32_t GetRendererID() { return s_RendererID; }
+		/**
+ * @brief Returns the renderer ID of the current scene.
+ *
+ * This function returns the unique identifier for the renderer used by the current scene. The returned value is a uint32_t, which represents an unsigned integer type in C++. 
+ *
+ * @return A uint32_t representing the renderer ID of the current scene.
+ */
+static uint32_t GetRendererID() { return s_RendererID; }
 
 		void AddDataToBuffer(float* Verticies, uint32_t Size) override;
 
@@ -39,7 +50,11 @@ namespace AGE
 		TextVertex* CreateText(TextVertex* Target, Matrix4D Transform, Vector4* Position, Vector4 Color, Vector2* TexCoords, float TexID,int EntID) override;
 		TileVertex* CreateTile(TileVertex* Target, Vector4 Color, Vector4* Position, Vector2 Size, Matrix4D Transform, const Vector2* TexCoords, float TilingFactor, float ID, int EnttID) override;
 
-		const BufferLayout& GetLayout() const override { return m_Layout; }
+		/**
+ * @brief Returns the layout of this buffer.
+ * @return A constant reference to the buffer's layout.
+ */
+const BufferLayout& GetLayout() const override { return m_Layout; }
 	
 	private:
 
@@ -65,7 +80,11 @@ namespace AGE
 
 		void InvalidateBuffer() const override;
 
-		uint32_t GetCount() override { return m_Count; }
+		/**
+ * @brief This function returns the current count value.
+ * @return The current count value as a uint32_t.
+ */
+uint32_t GetCount() override { return m_Count; }
 
 	private:
 

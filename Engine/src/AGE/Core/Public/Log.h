@@ -55,6 +55,13 @@ namespace AGE
  * @brief This function returns a reference to the core logger used by the application.
  * @return A reference to the core logger.
  */
+/**
+ * @brief This function returns a reference to the core logger of the application.
+ * The core logger is used for logging messages that are important and should be visible in all parts of the application.
+ * It's implemented as an inline static member function of the Application class, so it can be accessed directly from anywhere 
+ * within the code without needing to create a new instance every time.
+ * @return A reference to the core logger object.
+ */
 inline static Ref<spdlog::logger>& GetCoreLogger() { return s_AGECoreLogger; }
 		/**
  * @brief This function returns a reference to the game logger object.
@@ -63,8 +70,16 @@ inline static Ref<spdlog::logger>& GetCoreLogger() { return s_AGECoreLogger; }
  *
  * @return A reference to the game logger object.
  */
+/**
+ * @brief This function returns a reference to the game logger object.
+ * @return A reference to the game logger object.
+ */
 inline static Ref<spdlog::logger>& GetGameLogger() { return s_AGEGameLogger; }
 		/**
+ * @brief This function returns a reference to the vector 's_Logs'. The purpose of this function is to provide access to the logs for other parts of the program.
+ * @return A reference to the vector 's_Logs'
+ */
+/**
  * @brief This function returns a reference to the vector 's_Logs'. The purpose of this function is to provide access to the logs for other parts of the program.
  * @return A reference to the vector 's_Logs'
  */
@@ -73,10 +88,18 @@ inline static std::vector<char>& GetLogs() { return s_Logs; }
  * @brief This function returns a reference to the vector `s_Offsets` which is used for storing offset values.
  * @return A reference to the vector `s_Offsets`.
  */
+/**
+ * @brief This function returns a reference to the vector 's_Offsets'. It is used for storing offset values.
+ * @return A reference to the vector 's_Offsets'
+ */
 inline static std::vector<size_t>& GetOffsets() { return s_Offsets; }
 		/**
  * @brief Returns a reference to the internal vector of LogTypes.
  * @return Reference to the internal vector of LogTypes.
+ */
+/**
+ * @brief This function returns a reference to the vector `s_Type` which holds all possible log types.
+ * @return A reference to the vector of LogTypes.
  */
 inline static std::vector<LogType>& GetTypes() { return s_Type; }
 
@@ -104,6 +127,14 @@ inline static std::vector<LogType>& GetTypes() { return s_Type; }
  * 
  * @return void
  */
+/**
+ * @brief This function logs a trace message to the system's debug output and also stores it in the log buffer for later retrieval.
+ * 
+ * @param fmt The format string used to create the logged message. It should follow the same syntax as printf/scanf functions.
+ * @param args Variadic arguments that correspond to the placeholders in the format string.
+ * 
+ * @return void
+ */
 void Trace(std::string_view fmt, Args&& ... args)
 		{
 			std::string Line = "[AGECORE] " + std::vformat(fmt, std::make_format_args(args...)) + "\n";
@@ -124,6 +155,14 @@ void Trace(std::string_view fmt, Args&& ... args)
 		}
 		template<typename ... Args>
 		
+/**
+ * @brief This function logs informational messages to the console and a debug log file.
+ * 
+ * @param fmt A format string that specifies how subsequent arguments are converted for output.
+ * @param args Arguments referenced by the format specifiers in the format string.
+ * 
+ * @return void
+ */
 void Info(std::string_view fmt, Args&& ... args)
 		{
 			std::string Line = "[AGECORE] " + std::vformat(fmt, std::make_format_args(args...)) + "\n";
@@ -152,6 +191,14 @@ void Info(std::string_view fmt, Args&& ... args)
  * @param args The arguments that will be substituted into the format string.
  * 
  * @return None
+ */
+/**
+ * @brief This function logs a warning message to the console and stores it for later retrieval.
+ * 
+ * @param fmt The format string used to create the warning message. It should follow the same syntax as printf/scanf functions in C++.
+ * @param args Variadic arguments that correspond to the placeholders in the format string.
+ * 
+ * @return void
  */
 void Warn(std::string_view fmt, Args&& ... args)
 		{
@@ -183,6 +230,14 @@ void Warn(std::string_view fmt, Args&& ... args)
  * 
  * @return void This function does not return a value.
  */
+/**
+ * @brief This function logs an error message to the core logger, appending "[AGECORE]" before it. 
+ *        It also pushes each character of the logged string into Log::GetLogs() and updates Log::GetOffsets().
+ *        The log type is set as Error using LogType::Error. If AG_PLATFORM_WINDOWS is defined, 
+ *        it uses OutputDebugString to output the error message; if not, printf is used instead.
+ * @param fmt A string_view representing the format of the error message.
+ * @param args Variadic arguments for the format string.
+ */
 void Error(std::string_view fmt, Args&& ... args)
 		{
 			std::string Line = "[AGECORE] " + std::vformat(fmt, std::make_format_args(args...)) + "\n";
@@ -212,6 +267,15 @@ void Error(std::string_view fmt, Args&& ... args)
  * @param args Variadic arguments representing the values to be formatted into the message.
  * @return void
  */
+/**
+ * @brief This function logs a critical message to the system. The log includes the formatted string and arguments, 
+ *        along with additional information such as timestamp and log level. It also pushes each character of the log line into Log::GetLogs().
+ * 
+ * @param fmt A std::string_view representing the format string for the message to be logged.
+ * @param args Variadic arguments representing the values to be formatted into the message.
+ * 
+ * @return void
+ */
 void Critical(std::string_view fmt, Args&& ... args)
 		{
 			std::string Line = "[AGECORE] " + std::vformat(fmt, std::make_format_args(args...)) + "\n";
@@ -235,6 +299,13 @@ void Critical(std::string_view fmt, Args&& ... args)
 #if defined(AGE_ENABLE_ASSERTS)
 		template<typename ... Args> // CoreLogger->Assert(true ==  false, "True does not equal false")
 		"This function is a critical part of debugging and should only be used when you know what you're doing."
+/**
+ * @brief This function is used for asserting a condition. If the condition is not met, it logs an error message and triggers a debug breakpoint.
+ * 
+ * @param Condition The condition to be checked. It should evaluate to true if the program state is valid.
+ * @param fmt A format string that describes how the output will be formatted.
+ * @param args Arguments for the format string.
+ */
 void Assert(bool Condition, std::string_view fmt, Args&& ... args)
 		{
 			if (!(Condition)) {
@@ -272,6 +343,12 @@ void Assert(bool Condition, std::string_view fmt, Args&& ... args)
  * @param args Variadic arguments representing values to include in the error message.
  * @return void This function does not return a value. It throws an exception if the condition is false.
  */
+/**
+ * @brief This function is used for asserting a condition in the code. If the condition is not met, it throws an exception with a formatted message.
+ * @param Condition The boolean condition to be checked.
+ * @param fmt A format string that will be used to create the error message if the condition is false.
+ * @param args Arguments for the format string.
+ */
 void Assert(bool Condition, std::string_view fmt, Args&& ... args){}
 #endif
 
@@ -289,6 +366,18 @@ void Assert(bool Condition, std::string_view fmt, Args&& ... args){}
  * @param fmt A std::string_view representing the format string.
  * @param args Variable arguments representing values to be inserted into the format string.
  * 
+ * @return void
+ */
+/**
+ * @brief This function traces a message to the game logger and various other logging systems.
+ * 
+ * The function takes a format string and variable arguments, formats them into a string with prefix "[AGEGAME] ",
+ * then logs this string to the game logger and various other logging systems. It also pushes each character of the
+ * logged string onto another log for later analysis. The offsets are updated accordingly. 
+ *
+ * @param fmt A std::string_view representing the format string.
+ * @param args Variable arguments representing values to be formatted into the format string.
+ *
  * @return void
  */
 void Trace(std::string_view fmt, Args&& ... args)
@@ -320,6 +409,14 @@ void Trace(std::string_view fmt, Args&& ... args)
  * 
  * @return None
  */
+/**
+ * @brief This function logs informational messages to the game logger and various other logging systems.
+ * 
+ * @param fmt A format string that specifies how subsequent arguments are converted for output.
+ * @param args Arguments referenced by the format specifiers in the format string.
+ * 
+ * @return void
+ */
 void Info(std::string_view fmt, Args&& ... args)
 		{
 			std::string Line = "[AGEGAME] " + std::vformat(fmt, std::make_format_args(args...)) + "\n";
@@ -348,6 +445,16 @@ void Info(std::string_view fmt, Args&& ... args)
  * @param fmt A format string that specifies how the remaining arguments are converted to strings.
  * @param ...args Variable number of arguments, which will be formatted according to the provided format string.
  * @return void
+ */
+/**
+ * @brief This function logs a warning message with the given format string and arguments.
+ * 
+ * The formatted message is prefixed with "[AGEGAME] " and logged to various outputs based on the platform.
+ * 
+ * @param fmt A std::string_view representing the format string for the warning message.
+ * @param args Variadic parameters representing the arguments for the format string.
+ * 
+ * @return void This function does not return a value.
  */
 void Warn(std::string_view fmt, Args&& ... args)
 		{
@@ -379,6 +486,14 @@ void Warn(std::string_view fmt, Args&& ... args)
  *
  * @return void No return value is expected as this function only logs errors and does not handle them.
  */
+/**
+ * @brief This function logs an error message to the game logger and various other logging systems.
+ * 
+ * @param fmt A format string for the error message, which can include placeholders for variable arguments.
+ * @param args The variable arguments that will be substituted into the format string.
+ * 
+ * @return void
+ */
 void Error(std::string_view fmt, Args&& ... args)
 		{
 			std::string Line = "[AGEGAME] " + std::vformat(fmt, std::make_format_args(args...)) + "\n";
@@ -401,6 +516,14 @@ void Error(std::string_view fmt, Args&& ... args)
 		}
 		template<typename ... Args>
 		
+/**
+ * @brief This function logs a critical message to the game logger and various other logging systems.
+ * 
+ * @param fmt The format string for the log message.
+ * @param args Variadic arguments used to fill in placeholders in the format string.
+ * 
+ * @return None
+ */
 void Critical(std::string_view fmt, Args&& ... args)
 		{
 			std::string Line = "[AGEGAME] " + std::vformat(fmt, std::make_format_args(args...)) + "\n";
@@ -424,6 +547,7 @@ void Critical(std::string_view fmt, Args&& ... args)
 #ifdef AGE_ENABLE_ASSERTS
 		template<typename ... Args>
 		"This function is used for asserting conditions in the code. If a condition fails, it logs a critical message and triggers a debug breakpoint."
+"This function serves as an assertion mechanism, checking if a certain condition is met. If not, it logs a critical message and triggers a debug breakpoint."
 void Assert(bool Condition, std::string_view fmt, Args&& ... args)
 		{
 			if (!(Condition)) {
@@ -460,6 +584,13 @@ void Assert(bool Condition, std::string_view fmt, Args&& ... args)
  * @param Condition The condition that needs to be checked.
  * @param fmt A format string for the error message.
  * @param args Arguments for the format string.
+ */
+/**
+ * @brief This function is used for asserting a condition in the code. If the condition is not met, it throws an exception with a formatted message.
+ * @param Condition The boolean condition to be checked.
+ * @param fmt A format string that describes what happened.
+ * @param args Variadic arguments providing additional information about the event.
+ * @return void This function does not return any value. It only throws exceptions in case of failure.
  */
 void Assert(bool Condition, std::string_view fmt, Args&& ... args){}
 #endif

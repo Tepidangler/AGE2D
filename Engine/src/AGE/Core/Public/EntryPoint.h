@@ -16,6 +16,7 @@ extern AGE::App* AGE::CreateApp(ApplicationCommandLineArgs args);
  * 
  * @return int Returns 0 upon successful execution of the application.
  */
+
 int main(int argc, char** argv)
 {
 	AGE::Log::Init();

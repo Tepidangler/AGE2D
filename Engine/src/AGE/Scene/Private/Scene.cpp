@@ -24,6 +24,7 @@ namespace AGE
 {
 	template<typename Component>
 	"Copies a Component from one entt::registry to another based on UUID mapping."
+
 static void CopyComponent(entt::registry& dst, entt::registry& src, const std::unordered_map<UUID, entt::entity>& enttMap)
 	{
 		auto View = src.view<Component>();
@@ -58,6 +59,16 @@ static void CopyComponent(entt::registry& dst, entt::registry& src, const std::u
  * 
  * @return void
  */
+/**
+ * @brief Copies a component from one entity to another if the source entity has that component.
+ * 
+ * This function checks if the source entity (`src`) has a specific component, and if it does, adds or replaces that component on the destination entity (`dst`).
+ * 
+ * @param dst The destination entity to which we want to copy the component.
+ * @param src The source entity from where we want to copy the component.
+ * 
+ * @return void
+ */
 static void CopyComponentIfExists(Entity dst, Entity src)
 	{
 		if (src.HasComponent<Component>())
@@ -73,6 +84,12 @@ static void CopyComponentIfExists(Entity dst, Entity src)
  * 
  * @return A new Scene object.
  */
+COMMENT:
+/**
+ * @brief Constructs a Scene object with a Physics2D instance.
+ */
+CONFIDENCE: 1.0;
+
 Scene::Scene()
 	{
 		m_Physics = CreateRef<Physics2D>();
@@ -85,6 +102,11 @@ Scene::Scene()
  *
  * @return void
  */
+/**
+ * @brief Destructor for the Scene class.
+ * 
+ * This function is responsible for cleaning up any resources that were allocated during the lifetime of a Scene object, such as memory or file handles. It does not return anything and has no parameters.
+ */
 Scene::~Scene()
 	{
 
@@ -95,6 +117,15 @@ Scene::~Scene()
  * This function creates an Entity object with the provided name, generates a unique UUID for it using the `UUID()` function, and then adds this new entity to the scene's list of entities. The newly created entity is returned by the function.
  * 
  * @param Name A string representing the name of the entity to be created.
+ * @return An Entity object with a UUID that has been assigned.
+ */
+/**
+ * @brief Creates an entity with a given name and assigns it a UUID.
+ * 
+ * This function creates an Entity object with the provided name, generates a unique UUID for it using the `UUID()` function, and then adds this new entity to the scene's list of entities. The newly created entity is returned by the function.
+ *
+ * @param Name A string representing the name of the entity to be created.
+ * 
  * @return An Entity object with a UUID that has been assigned.
  */
 Entity Scene::CreateEntity(const std::string Name)
@@ -111,6 +142,16 @@ Entity Scene::CreateEntity(const std::string Name)
  * @param uuid The UUID for the new entity.
  * @param Name The optional name of the new entity. If not provided, it will default to "UnnamedEntity".
  * @return Entity The newly created entity.
+ */
+/**
+ * @brief Creates an entity with a specific UUID and name.
+ * 
+ * This function creates an Entity object, adds IDComponent, TransformComponent, and TagComponent to it, sets the UUID of the IDComponent, initializes the tag of the TagComponent using the provided Name parameter (or "UnnamedEntity" if the Name is empty), and returns the created entity.
+ * 
+ * @param uuid The UUID for the new Entity.
+ * @param Name The name for the new Entity. If this is an empty string, the tag of the TagComponent will be set to "UnnamedEntity".
+ * 
+ * @return An Entity object representing the newly created entity.
  */
 Entity Scene::CreateEntityWithUUID(UUID uuid, const std::string& Name)
 	{
@@ -130,6 +171,13 @@ Entity Scene::CreateEntityWithUUID(UUID uuid, const std::string& Name)
  *
  * @param uuid The UUID of the entity to retrieve.
  * @return An Entity object representing the entity with the given UUID, or an empty Entity if no such entity exists in the scene.
+ */
+/**
+ * @brief Retrieves an entity from the scene using its UUID.
+ * 
+ * This function iterates over all entities in the scene and checks if their IDComponent has the same UUID as the input parameter 'uuid'. If a match is found, it returns that entity. Otherwise, it returns an empty entity.
+ * @param uuid The UUID of the entity to retrieve.
+ * @return Entity The matching entity or an empty entity if no match was found.
  */
 Entity Scene::GetEntityFromUUID(const uint64_t uuid)
 	{
@@ -157,6 +205,7 @@ Entity Scene::GetEntityFromUUID(const uint64_t uuid)
  * @param Other A reference to the source scene that is being copied.
  * @return A new instance of Scene with all components except IDComponent and TagComponent copied from the source scene.
  */
+"Copies a scene from another, creating a new one while preserving entity UUIDs."
 Ref<Scene> Scene::Copy(Ref<Scene> Other)
 	{
 		Ref<Scene> NewScene = CreateRef<Scene>();
@@ -205,6 +254,14 @@ Ref<Scene> Scene::Copy(Ref<Scene> Other)
  * 
  * @param entity The Entity to be duplicated.
  */
+/**
+ * @brief Duplicates an Entity in the Scene.
+ * 
+ * This function duplicates an existing Entity by creating a new one with the same name and copying all its components from the original Entity.
+ * The copied components include TransformComponent, SpriteRendererComponent, TileMapRendererComponent, CircleRendererComponent, AudioComponent, CameraComponent, NativeScriptComponent, RigidBody2DComponent, BoxCollider2DComponent, SegmentCollider2DComponent and CapsuleCollider2DComponent.
+ * 
+ * @param entity The Entity to be duplicated.
+ */
 void Scene::DuplicateEntity(Entity entity)
 	{
 		std::string Name = entity.GetName();
@@ -230,6 +287,13 @@ void Scene::DuplicateEntity(Entity entity)
  * 
  * @return Entity - The primary camera entity in the scene. Returns an empty entity if no primary camera exists.
  */
+/**
+ * @brief This function returns the primary camera entity in the scene.
+ * 
+ * The function iterates over all entities with a CameraComponent and checks if any of them is marked as primary. If it finds one, it returns that entity. Otherwise, it returns an empty entity.
+ * 
+ * @return Entity - The primary camera entity in the scene. Returns an empty entity if no primary camera exists.
+ */
 Entity Scene::GetPrimaryCameraEntity()
 	{
 		auto View = m_Registry.view<CameraComponent>();
@@ -245,6 +309,7 @@ Entity Scene::GetPrimaryCameraEntity()
 	}
 
 	
+
 void Scene::OnRuntimeStart()
 	{
 
@@ -316,6 +381,13 @@ void Scene::OnRuntimeStart()
  * 
  * @return void
  */
+/**
+ * @brief This function is called when the runtime of the application stops. It unloads sounds, destroys the physics world and resets all native script instances.
+ * 
+ * @param None
+ * 
+ * @return void
+ */
 void Scene::OnRuntimeStop()
 	{
 		//TODO: UnloadSounds
@@ -338,6 +410,7 @@ void Scene::OnRuntimeStop()
 	}
 
 	
+
 void Scene::OnRuntimeUpdate(TimeStep DeltaTime)
 	{
 		m_Physics->Step(DeltaTime);
@@ -578,6 +651,7 @@ void Scene::OnRuntimeUpdate(TimeStep DeltaTime)
 	}
 
 	
+
 void Scene::OnEditorUpdate(TimeStep DeltaTime, EditorCamera& Camera)
 	{
 		AGE_PROFILE_FUNCTION();
@@ -673,6 +747,12 @@ void Scene::OnEditorUpdate(TimeStep DeltaTime, EditorCamera& Camera)
  * 
  * @return None
  */
+/**
+ * @brief This function is called when the viewport size changes. It updates all camera components with a fixed aspect ratio to match the new viewport size.
+ * 
+ * @param Width The new width of the viewport.
+ * @param Height The new height of the viewport.
+ */
 void Scene::OnViewportResize(uint32_t Width, uint32_t Height)
 	{
 		m_ViewportWidth = Width;
@@ -699,6 +779,10 @@ void Scene::OnViewportResize(uint32_t Width, uint32_t Height)
  * @param E A reference to the Entity that is to be destroyed.
  * @return void
  */
+/** 
+ * @brief Destroys an entity from the scene's registry.
+ * @param E The Entity to be destroyed.
+ */
 void Scene::DestoryEntity(Entity E)
 	{
 		m_Registry.destroy(E);
@@ -710,6 +794,11 @@ void Scene::DestoryEntity(Entity E)
  * Checks if the "BuiltScenes" directory exists at the parent path of the project path. If not, creates this directory. Then writes the current scene object to a file with name equal to the scene's name and extension ".abs". Finally logs an info message indicating that the scene has been successfully built.
  * 
  * @param ProjectPath The path of the project used to determine where to save the built scene files.
+ */
+/**
+ * @brief Builds the scene and saves it to a file in the "BuiltScenes" directory.
+ * 
+ * The function builds the current scene by writing its data into an abstract syntax tree (AST) format. The AST is saved as a file with the name of the scene, followed by ".abs". If the "BuiltScenes" directory does not exist, it will be created.
  */
 void Scene::BuildScene(const std::filesystem::path& ProjectPath)
 	{
@@ -743,6 +832,14 @@ void Scene::BuildScene(const std::filesystem::path& ProjectPath)
  * @param Path The filesystem path to the JSON file containing the serialized scene data.
  * @return A reference to the loaded scene.
  */
+/**
+ * @brief Loads a scene from the specified file path.
+ * 
+ * This function deserializes a scene from a JSON file located at the provided path and returns it as a `Ref<Scene>` object. The returned reference can be used to access and manipulate the loaded scene.
+ * 
+ * @param Path The filesystem path of the scene file to load.
+ * @return A reference to the loaded scene.
+ */
 Ref<Scene> Scene::LoadScene(const std::filesystem::path& Path)
 	{
 		Ref<Scene> File = CreateRef<Scene>();
@@ -754,6 +851,7 @@ Ref<Scene> Scene::LoadScene(const std::filesystem::path& Path)
 	}
 
 	
+
 void Scene::BuildAllScenes()
 	{
 		AppConfig Config = App::Get().GetAppConfig();
@@ -786,6 +884,12 @@ void Scene::BuildAllScenes()
  * 
  * @return void
  */
+/** 
+ * @brief This function is called when a new component is added to an entity.
+ * 
+ * @param E The Entity that the component was added to.
+ * @param Component A reference to the newly added component.
+ */
 void Scene::OnComponentAdded(Entity E, T& Component)
 	{
 		//static_assert(false);
@@ -798,12 +902,24 @@ void Scene::OnComponentAdded(Entity E, T& Component)
  * @param E The Entity that the new component was added to.
  * @param Component A reference to the newly added TagComponent.
  */
+/**
+ * @brief This function is called when a new component of type `TagComponent` is added to an entity.
+ * 
+ * @param E The Entity that the new component was added to.
+ * @param Component A reference to the newly added TagComponent.
+ */
 void Scene::OnComponentAdded<TagComponent>(Entity E, TagComponent& Component)
 	{
 
 	}
 	template<>
 	/**
+ * @brief This function is called when a new component of type TransformComponent is added to an entity.
+ * 
+ * @param E The Entity that the new component has been added to.
+ * @param Component A reference to the newly added TransformComponent.
+ */
+/** 
  * @brief This function is called when a new component of type TransformComponent is added to an entity.
  * 
  * @param E The Entity that the new component has been added to.
@@ -821,6 +937,13 @@ void Scene::OnComponentAdded<TransformComponent>(Entity E, TransformComponent& C
  * @param E The Entity that the CameraComponent belongs to.
  * @param Component A reference to the newly added CameraComponent.
  */
+/**
+ * @brief This function is called when a new CameraComponent is added to an Entity in the Scene. 
+ * It sets the viewport size of the camera component's camera to match the current scene's viewport dimensions.
+ * 
+ * @param E The Entity that the CameraComponent belongs to.
+ * @param Component A reference to the newly added CameraComponent.
+ */
 void Scene::OnComponentAdded<CameraComponent>(Entity E, CameraComponent& Component)
 	{
 		Component.Cam.SetViewportSize(m_ViewportWidth, m_ViewportHeight);
@@ -831,6 +954,12 @@ void Scene::OnComponentAdded<CameraComponent>(Entity E, CameraComponent& Compone
  * 
  * @param E The Entity that the component was added to.
  * @param Component A reference to the newly-added SpriteRendererComponent.
+ */
+/** 
+ * @brief This function is called when a new component of type `SpriteRendererComponent` is added to an entity.
+ * 
+ * @param[in] E The Entity that the new SpriteRendererComponent has been added to.
+ * @param[in,out] Component A reference to the newly created SpriteRendererComponent.
  */
 void Scene::OnComponentAdded<SpriteRendererComponent>(Entity E, SpriteRendererComponent& Component)
 	{
@@ -845,6 +974,12 @@ void Scene::OnComponentAdded<SpriteRendererComponent>(Entity E, SpriteRendererCo
  * 
  * @return void
  */
+/** 
+ * @brief This function is called when a new component of type `TileMapRendererComponent` is added to an entity.
+ * 
+ * @param E The Entity that the TileMapRendererComponent has been added to.
+ * @param Component A reference to the newly added TileMapRendererComponent.
+ */
 void Scene::OnComponentAdded<TileMapRendererComponent>(Entity E, TileMapRendererComponent& Component)
 	{
 
@@ -856,12 +991,26 @@ void Scene::OnComponentAdded<TileMapRendererComponent>(Entity E, TileMapRenderer
  * @param E The Entity that the new component was added to.
  * @param Component A reference to the newly added CircleRendererComponent.
  */
+/** 
+ * @brief This function is called when a new component of type `CircleRendererComponent` is added to an entity.
+ * 
+ * @param E The Entity that the CircleRendererComponent has been added to.
+ * @param Component A reference to the newly-added CircleRendererComponent.
+ */
 void Scene::OnComponentAdded<CircleRendererComponent>(Entity E, CircleRendererComponent& Component)
 	{
 
 	}
 	template<>
 	/**
+ * @brief This function is called when a NativeScriptComponent is added to an Entity in the scene.
+ * 
+ * @param E The Entity that the NativeScriptComponent has been added to.
+ * @param Component A reference to the NativeScriptComponent that was just added.
+ * 
+ * @return void
+ */
+/** 
  * @brief This function is called when a NativeScriptComponent is added to an Entity in the scene.
  * 
  * @param E The Entity that the NativeScriptComponent has been added to.
@@ -880,12 +1029,24 @@ void Scene::OnComponentAdded<NativeScriptComponent>(Entity E, NativeScriptCompon
  * @param E The Entity that has been given the new BoxComponent.
  * @param Component A reference to the newly created BoxComponent.
  */
+/** 
+ * @brief This function is called when a new BoxComponent is added to an Entity in the scene.
+ * 
+ * @param[in] E The Entity that has been modified.
+ * @param[in,out] Component The newly added BoxComponent.
+ */
 void Scene::OnComponentAdded<BoxComponent>(Entity E, BoxComponent& Component)
 	{
 
 	}
 	template<>
 	/**
+ * @brief This function is called when an AudioComponent is added to a specific Entity in the scene.
+ * 
+ * @param E The entity that the AudioComponent has been added to.
+ * @param Component A reference to the AudioComponent that was just added.
+ */
+/** 
  * @brief This function is called when an AudioComponent is added to a specific Entity in the scene.
  * 
  * @param E The entity that the AudioComponent has been added to.
@@ -904,12 +1065,24 @@ void Scene::OnComponentAdded<AudioComponent>(Entity E, AudioComponent& Component
  * 
  * @return void
  */
+/** 
+ * @brief This function is called when a new RigidBody2DComponent is added to an Entity in the Scene.
+ * 
+ * @param E The Entity that has been modified.
+ * @param Component A reference to the newly added RigidBody2DComponent.
+ */
 void Scene::OnComponentAdded<RigidBody2DComponent>(Entity E, RigidBody2DComponent& Component)
 	{
 
 	}
 	template<>
 	/** 
+ * @brief This function is called when a new BoxCollider2DComponent is added to an Entity.
+ * 
+ * @param E The Entity that the component was added to.
+ * @param Component A reference to the newly added BoxCollider2DComponent.
+ */
+/** 
  * @brief This function is called when a new BoxCollider2DComponent is added to an Entity.
  * 
  * @param E The Entity that the component was added to.
@@ -926,6 +1099,14 @@ void Scene::OnComponentAdded<BoxCollider2DComponent>(Entity E, BoxCollider2DComp
  * @param E The Entity that the component was added to.
  * @param Component A reference to the newly added CapsuleCollider2DComponent.
  */
+/** 
+ * @brief This function is called when a new CapsuleCollider2DComponent has been added to the given Entity.
+ * 
+ * @param E The entity that the component was added to.
+ * @param Component A reference to the newly added CapsuleCollider2DComponent.
+ * 
+ * @return void
+ */
 void Scene::OnComponentAdded<CapsuleCollider2DComponent>(Entity E, CapsuleCollider2DComponent& Component)
 	{
 
@@ -936,6 +1117,14 @@ void Scene::OnComponentAdded<CapsuleCollider2DComponent>(Entity E, CapsuleCollid
  * 
  * @param E The Entity that the new component was added to.
  * @param Component A reference to the newly added SegmentCollider2DComponent.
+ */
+/** 
+ * @brief This function is called when a new component of type `SegmentCollider2DComponent` is added to an entity.
+ * 
+ * @param E The Entity that the new component has been added to.
+ * @param Component A reference to the newly added `SegmentCollider2DComponent`.
+ * 
+ * @return void
  */
 void Scene::OnComponentAdded<SegmentCollider2DComponent>(Entity E, SegmentCollider2DComponent& Component)
 	{
@@ -948,12 +1137,24 @@ void Scene::OnComponentAdded<SegmentCollider2DComponent>(Entity E, SegmentCollid
  * @param E The Entity that the new component was added to.
  * @param Component A reference to the newly added IDComponent.
  */
+/** 
+ * @brief This function is called when a new component of type IDComponent is added to an entity.
+ * 
+ * @param E The Entity that the new component has been added to.
+ * @param Component A reference to the newly added IDComponent.
+ */
 void Scene::OnComponentAdded<IDComponent>(Entity E, IDComponent& Component)
 	{
 
 	}
 	template<>
 	/**
+ * @brief This function is called when a new component of type `MovementComponent` is added to an entity.
+ * 
+ * @param E The Entity that the new component has been added to.
+ * @param Component A reference to the newly added MovementComponent.
+ */
+/** 
  * @brief This function is called when a new component of type `MovementComponent` is added to an entity.
  * 
  * @param E The Entity that the new component has been added to.
@@ -971,6 +1172,14 @@ void Scene::OnComponentAdded<MovementComponent>(Entity E, MovementComponent& Com
  * 
  * @param Serializer Pointer to the DataWriter where the serialized data will be written.
  * @param Data Const reference to the Scene object that is being serialized.
+ */
+/**
+ * @brief This function serializes a Scene object into a DataWriter.
+ * 
+ * The function writes the size of the scene name, the scene name itself, the viewport width and height, and the scene info to the provided DataWriter.
+ * 
+ * @param Serializer Pointer to the DataWriter where the serialized data will be written.
+ * @param Data Const reference to the Scene object that needs to be serialized.
  */
 void Scene::Serialize(DataWriter* Serializer, const Scene& Data)
 	{
@@ -991,6 +1200,14 @@ void Scene::Serialize(DataWriter* Serializer, const Scene& Data)
  * 
  * @return void
  */
+/**
+ * @brief Deserialize a Scene object from a DataReader.
+ * 
+ * This function reads the necessary data to reconstruct a Scene object from a DataReader. The Scene object's name, viewport width and height as well as its SceneInfo are read.
+ * 
+ * @param Deserializer A pointer to the DataReader that provides the serialized data.
+ * @param Data The Scene object to be deserialized.
+ */
 void Scene::Deserialize(DataReader* Deserializer, Scene& Data)
 	{
 		Deserializer->ReadString(Data.m_Name);
@@ -1007,6 +1224,12 @@ void Scene::Deserialize(DataReader* Deserializer, Scene& Data)
  * @param[in] Serializer The DataWriter object where the serialized data will be written into.
  * @param[in] Data The SceneInfo instance that contains the data to be serialized.
  */
+/**
+ * @brief This function serializes the SceneInfo object into a DataWriter.
+ * 
+ * @param Serializer Pointer to the DataWriter that will be used for serialization.
+ * @param Data The SceneInfo object that is being serialized.
+ */
 void SceneInfo::Serialize(DataWriter* Serializer, const SceneInfo& Data)
 	{
 		Serializer->WriteRaw<size_t>(sizeof(*Data.AssetMap));
@@ -1015,6 +1238,14 @@ void SceneInfo::Serialize(DataWriter* Serializer, const SceneInfo& Data)
 	}
 
 	/**
+ * @brief Deserialize function for SceneInfo class.
+ * 
+ * This function reads raw data from a DataReader object and populates the provided SceneInfo object with it.
+ * 
+ * @param Deserializer Pointer to the DataReader object that provides the serialized data.
+ * @param Data Reference to the SceneInfo object where the deserialized data will be stored.
+ */
+/**
  * @brief Deserialize function for SceneInfo class.
  * 
  * This function reads raw data from a DataReader object and populates the provided SceneInfo object with it.

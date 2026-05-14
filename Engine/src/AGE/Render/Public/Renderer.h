@@ -26,6 +26,10 @@ namespace AGE
  * @brief This function returns the current API being used by the renderer.
  * @return The enum value representing the currently active API (RendererAPI::OpenGL, RendererAPI::Vulkan, etc.).
  */
+/**
+ * @brief This function returns the current API being used by the renderer.
+ * @return The enum value representing the current API, which can be either RendererAPI::None, RendererAPI::OpenGL, or RendererAPI::DirectX. 
+ */
 static inline RendererAPI::API GetAPI() { return RendererAPI::GetAPI(); }
 			/**
  * @brief Sets the rendering API to be used by the application.
@@ -35,6 +39,13 @@ static inline RendererAPI::API GetAPI() { return RendererAPI::GetAPI(); }
  *
  * @param Renderer The API to be set for rendering operations. It can be either RendererAPI::API::OPENGL, RendererAPI::API::DIRECTX or RendererAPI::API::VULKAN.
  */
+COMMENT:
+/**
+ * @brief Sets the rendering API to be used by the application.
+ * @param Renderer The type of renderer API to use (e.g., OpenGL, DirectX).
+ */
+CONFIDENCE: 1.0;
+
 static inline void SetAPI(RendererAPI::API Renderer) { RendererAPI::SetAPI(Renderer); }
 		private:
 			struct SceneData

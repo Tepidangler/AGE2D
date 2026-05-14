@@ -16,6 +16,11 @@ namespace AGE
  * The pattern used is "[TIME] NAME: MESSAGE", where TIME represents the time at which the message was logged, NAME is the name of the logger instance that produced the message, and MESSAGE is the actual log message.
  * @return void
  */
+/**
+ * @brief Initializes the logging system with specific format and log levels for two different logger instances, "AGECORE" and "AGEGAME". 
+ * The pattern set is "%^[%T] %n: %v%$", which includes timestamp, logger name, and message in color. Both loggers are set to trace level.
+ * @return void
+ */
 void Log::Init()
 	{
 		spdlog::set_pattern("%^[%T] %n: %v%$");

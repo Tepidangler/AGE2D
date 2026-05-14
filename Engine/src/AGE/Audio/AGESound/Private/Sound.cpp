@@ -12,6 +12,7 @@
 namespace AGE
 {
 	
+
 AudioSource::AudioSource(const std::string& FilePath)
 	{
 		AudioSource Tmp = LoadFromFile(FilePath);
@@ -40,6 +41,15 @@ AudioSource::AudioSource(const std::string& FilePath)
  *  @param Loaded A boolean indicating whether or not the audio data is loaded.
  *  @param Length The total duration of the audio in seconds.
  */
+/**
+ *  @brief Constructor for the AudioSource class.
+ *  
+ *  This constructor initializes an instance of the AudioSource class with a buffer handle, a boolean indicating whether the audio is loaded or not, and the total duration of the audio in seconds.
+ *  
+ *  @param Handle A uint32_t representing the buffer handle for the audio data.
+ *  @param Loaded A bool indicating if the audio data is loaded (true) or not (false).
+ *  @param Length A double representing the total duration of the audio in seconds.
+ */
 AudioSource::AudioSource(uint32_t Handle, bool Loaded, double Length)
 		: m_BufferHandle(Handle), bLoaded(Loaded), m_TotalDuration(Length)
 	{
@@ -54,6 +64,14 @@ AudioSource::AudioSource(uint32_t Handle, bool Loaded, double Length)
  * @param Loaded A bool indicating whether or not the audio data is loaded.
  * @param Length A double representing the total duration of the audio in seconds.
  * @param Data A vector of chars containing the raw sound data.
+ */
+/**
+ * @brief Constructs an AudioSource object with the given parameters.
+ * 
+ * @param Handle A unique identifier for the audio buffer.
+ * @param Loaded Indicates whether or not the audio data is loaded.
+ * @param Length The total duration of the audio in seconds.
+ * @param Data The raw sound data as a vector of characters.
  */
 AudioSource::AudioSource(uint32_t Handle, bool Loaded, double Length, std::vector<char> Data)
 		: m_BufferHandle(Handle), bLoaded(Loaded), m_TotalDuration(Length), m_SoundData(Data)
@@ -70,6 +88,12 @@ AudioSource::AudioSource(uint32_t Handle, bool Loaded, double Length, std::vecto
  * 
  * @param P A const reference to a Vector3 object representing the new position for the audio source.
  */
+/**
+ * @brief Sets the position of the audio source in 3D space.
+ * 
+ * This function sets the position of the audio source to a specified Vector3 value P. The actual OpenAL call is made within this function, setting the position of the source using alSourcefv with AL_POSITION as the parameter and &m_Position.x as the argument.
+ * @param P A const reference to a Vector3 object representing the new position for the audio source.
+ */
 void AudioSource::SetPosition(const Vector3& P)
 	{
 		m_Position = P;
@@ -83,6 +107,15 @@ void AudioSource::SetPosition(const Vector3& P)
  * @param x The x coordinate of the new position.
  * @param y The y coordinate of the new position.
  * @param z The z coordinate of the new position.
+ */
+/**
+ * @brief Sets the position of the audio source in a 3D space.
+ *
+ * This function sets the position of the audio source by updating its internal position vector and then applying this change to the OpenAL source represented by m_SourceHandle.
+ *
+ * @param x The new X coordinate for the position.
+ * @param y The new Y coordinate for the position.
+ * @param z The new Z coordinate for the position.
  */
 void AudioSource::SetPosition(float x, float y, float z)
 	{
@@ -99,6 +132,14 @@ void AudioSource::SetPosition(float x, float y, float z)
  *
  * @param Gain A float representing the desired gain level. Must be between 0.0 and 1.0.
  */
+/**
+ * @brief This function sets the gain of an audio source.
+ *
+ * The function takes a float parameter representing the desired gain level for the audio source. 
+ * It then updates the member variable m_Gain with this value and applies it to the OpenAL source handle using alSourcef().
+ *
+ * @param Gain A floating-point number representing the desired gain level (0.0 - 1.0).
+ */
 void AudioSource::SetGain(float Gain)
 	{
 		m_Gain = Gain;
@@ -114,6 +155,17 @@ void AudioSource::SetGain(float Gain)
  *
  * @param Pitch The new pitch value for the audio source.
  */
+/**
+ * @brief Set the pitch of the audio source.
+ *
+ * This function sets the pitch of the audio source by adjusting its pitch factor in the OpenAL context. 
+ * The pitch is a value that affects the speed at which the sound wave repeats, affecting both frequency and duration.
+ * A higher pitch will result in faster playback for sounds with a lower fundamental frequency (like musical notes).
+ * Conversely, a lower pitch will slow down the playback of high-frequency sounds. 
+ * The function takes as input a float value representing the new pitch to be set.
+ *
+ * @param Pitch The new pitch value to be set. Must be greater than or equal to 0.0 for no change in pitch.
+ */
 void AudioSource::SetPitch(float Pitch)
 	{
 		m_Pitch = Pitch;
@@ -126,6 +178,14 @@ void AudioSource::SetPitch(float Pitch)
  * It also sets the distance model to AL_INVERSE_DISTANCE_CLAMPED for proper spatialization behavior.
  *
  * @param Spatial The new spatialization state. If true, spatialization is enabled; if false, it's disabled.
+ */
+/**
+ * @brief Sets the spatialization state of this audio source.
+ *
+ * This function sets the `bSpatial` member variable to the provided value and then updates the OpenAL source with the new setting for spatialization. 
+ * If Spatial is true, it enables spatialization; if false, it disables spatialization.
+ *
+ * @param Spatial The new state of spatialization.
  */
 void AudioSource::SetSpatial(bool Spatial)
 	{
@@ -142,6 +202,15 @@ void AudioSource::SetSpatial(bool Spatial)
  *
  * @param Loop A boolean value indicating whether or not the source should loop.
  */
+/**
+ * @brief Sets the looping state of the audio source.
+ *
+ * This function sets the looping state of the audio source by modifying the OpenAL source parameter for looping.
+ * If Loop is true, the source will play in a loop until explicitly stopped or the end of the sound data is reached. 
+ * If Loop is false, the source will stop playing when the end of the sound data is reached.
+ *
+ * @param Loop The new state for looping (true = loop, false = no loop).
+ */
 void AudioSource::SetLoop(bool Loop)
 	{
 		bLoop = Loop;
@@ -152,6 +221,10 @@ void AudioSource::SetLoop(bool Loop)
 	/**
  * @brief This function returns the total duration of the audio source in minutes and seconds.
  * @return A pair where the first element is the number of minutes, and the second element is the number of seconds.
+ */
+/**
+ * @brief This function returns the total duration of the audio source in minutes and seconds.
+ * @return A pair of unsigned 32-bit integers representing the length of the audio in minutes and seconds respectively.
  */
 std::pair<uint32_t, uint32_t> AudioSource::GetLengthMinutesAndSeconds() const
 	{
@@ -166,6 +239,16 @@ std::pair<uint32_t, uint32_t> AudioSource::GetLengthMinutesAndSeconds() const
  * @param Spatial A boolean indicating whether or not the audio should be spatialized.
  * 
  * @return An AudioSource object loaded from the specified file and with its spatial property set according to the provided value.
+ */
+/**
+ * @brief Loads an audio source from a file and sets its spatial property.
+ * 
+ * This function loads an audio source from the specified file path using AGESound's `LoadAudioSource` method, then it sets the spatial property of the loaded audio source to the provided value. The file path is also stored in the resultant AudioSource object for future reference.
+ * 
+ * @param File A string representing the file path from which to load the audio source.
+ * @param Spatial A boolean indicating whether or not the loaded audio source should be spatialized.
+ * 
+ * @return An instance of `AudioSource` containing the loaded audio data and its properties set as per the provided parameters.
  */
 AudioSource AudioSource::LoadFromFile(const std::string& File, bool Spatial)
 	{

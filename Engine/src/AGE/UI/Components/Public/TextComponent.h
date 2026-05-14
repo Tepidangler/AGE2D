@@ -39,6 +39,13 @@ namespace AGE
  * 
  * @return void No return value is expected as this function directly writes data using the provided DataWriter.
  */
+/** 
+ * @brief This function serializes the TextComponent object using a DataWriter.
+ * 
+ * @param[in] Serializer A pointer to an instance of DataWriter that is used for writing data.
+ * 
+ * @return void
+ */
 void CallSerialize(DataWriter* Serializer) override
 		{
 			Serializer->WriteObject<TextComponent>(*this);
@@ -50,6 +57,14 @@ void CallSerialize(DataWriter* Serializer) override
  * The exact format in which the data is read depends on how the DataReader's ReadObject method is implemented.
  *
  * @param Serializer A pointer to a DataReader that provides the serialized data.
+ */
+/**
+ * @brief Deserializes the TextComponent from a DataReader.
+ * 
+ * This function reads an object of type TextComponent from the provided DataReader and assigns it to this instance.
+ * The exact nature of deserialization is determined by the specific implementation of the DataReader class.
+ *
+ * @param Serializer A pointer to the DataReader that provides the serialized data.
  */
 void CallDeserialize(DataReader* Serializer) override
 		{
@@ -64,6 +79,12 @@ void CallDeserialize(DataReader* Serializer) override
  * The function writes several properties of the TextComponent to the DataWriter, including its name, type, string properties (text, font name), color, font size, and position/rotation.
  * 
  * @param Serializer A pointer to a DataWriter instance that will be used for serialization.
+ * @param Instance The TextComponent instance to be serialized.
+ */
+/**
+ * @brief This function serializes a TextComponent instance into the provided DataWriter.
+ * 
+ * @param Serializer Pointer to an instance of DataWriter that will be used for writing data.
  * @param Instance The TextComponent instance to be serialized.
  */
 static void Serialize(DataWriter* Serializer, const TextComponent& Instance)
@@ -86,6 +107,16 @@ static void Serialize(DataWriter* Serializer, const TextComponent& Instance)
 		}
 
 		
+/**
+ * @brief Deserialize function for TextComponent.
+ * 
+ * This function reads data from a DataReader object and populates the TextComponent instance with it. It reads the name of the component, its type, text properties (text, font name, color, font size), and position and rotation values.
+ * 
+ * @param Serializer Pointer to the DataReader object that provides serialized data.
+ * @param Instance Reference to the TextComponent instance where the deserialized data will be stored.
+ * 
+ * @return void
+ */
 static void Deserialize(DataReader* Serializer, TextComponent& Instance)
 		{
 			Serializer->ReadString(Instance.m_Name);

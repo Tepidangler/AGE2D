@@ -9,6 +9,10 @@ namespace AGE
  * 
  * This class is used to represent a window resize event, which includes the width and height of the resized window.
  */
+/**
+ * @brief This class represents a window resize event. 
+ * It is triggered when the size of an application's window changes.
+ */
 class AGE_API WindowResizeEvent : public Event
 	{
 	public:
@@ -23,6 +27,10 @@ class AGE_API WindowResizeEvent : public Event
  *
  * @return unsigned int The current width of the object. If no width is set, it will return 0.
  */
+/**
+ * @brief Returns the width of the object.
+ * @return The width as an unsigned integer value.
+ */
 inline unsigned int GetWidth() const { return m_Width; }
 		/**
  * @brief Returns the height of an object.
@@ -31,6 +39,13 @@ inline unsigned int GetWidth() const { return m_Width; }
  *
  * @return The current height of the object as an unsigned int. If no height has been set, it will return 0.
  */
+/**
+ * @brief Returns the height of an object.
+ *
+ * This function returns the current value of the member variable 'm_Height'. It is a getter method for this variable.
+ *
+ * @return The current height as an unsigned integer.
+ */
 inline unsigned int GetHeight() const { return m_Height; }
 
 		/**
@@ -38,6 +53,14 @@ inline unsigned int GetHeight() const { return m_Height; }
  * The returned string includes the width and height of the window that was resized.
  * 
  * @return A string containing the details about the event, such as the new width and height of the window.
+ */
+/**
+ * @brief Converts the WindowResizeEvent object into a string format.
+ *
+ * The function constructs and returns a string that represents the current state of the WindowResizeEvent object. 
+ * This includes details about the width and height of the window.
+ *
+ * @return A string representation of the WindowResizeEvent object, including its width and height.
  */
 std::string ToString() const override
 		{
@@ -58,6 +81,7 @@ std::string ToString() const override
  * 
  * This class is used to represent a framebuffer resize event, which occurs when the size of the framebuffer changes. It contains two parameters - width and height that specify the new dimensions of the framebuffer.
  */
+
 class AGE_API FramebufferResizeEvent : public Event
 	{
 	public:
@@ -69,6 +93,10 @@ class AGE_API FramebufferResizeEvent : public Event
  * @brief Returns the width of the object.
  * @return The width as an unsigned integer.
  */
+/**
+ * @brief Returns the width of the object.
+ * @return The width as an unsigned integer.
+ */
 inline unsigned int GetWidth() const { return m_Width; }
 		/**
  * @brief Returns the height of an object.
@@ -76,6 +104,13 @@ inline unsigned int GetWidth() const { return m_Width; }
  * This function is used to get the current height value of an object. It returns an unsigned integer representing the height.
  *
  * @return The current height of the object as an unsigned int.
+ */
+/**
+ * @brief Returns the height of an object.
+ *
+ * This function returns the current value of the member variable 'm_Height'. It is a getter method for this variable.
+ *
+ * @return The current height as an unsigned integer.
  */
 inline unsigned int GetHeight() const { return m_Height; }
 
@@ -86,6 +121,12 @@ inline unsigned int GetHeight() const { return m_Height; }
  * which includes the width and height of the framebuffer that was resized.
  *
  * @return A string containing the details about the event.
+ */
+/**
+ * @brief This function returns a string representation of the FramebufferResizeEvent object.
+ * The returned string includes the width and height of the framebuffer that was resized.
+ * 
+ * @return A string containing the details about the event, in the format "FramebufferResizeEvent: <width>, <height>".
  */
 std::string ToString() const override
 		{
@@ -174,6 +215,11 @@ std::string ToString() const override
  * 
  * @param String The string that was copied.
  */
+/**
+ *  @brief This class represents an event that occurs when a string is copied.
+ *  
+ *  It contains the string that was copied and provides methods to access this string and get a string representation of the event.
+ */
 class AGE_API StringCopyEvent : public Event
 	{
 	public:
@@ -185,11 +231,22 @@ class AGE_API StringCopyEvent : public Event
  * @brief This function returns a pointer to the string stored in the object.
  * @return A constant character pointer to the internal string of this object.
  */
+/**
+ * @brief This function returns a pointer to the string stored in member variable `m_String`.
+ * @return A constant pointer to the string stored in `m_String`. If no such string exists, it will return nullptr.
+ */
 inline const char* GetString() { return m_String; }
 
 		/**
  * @brief This function returns a string representation of the event.
  * The returned string includes details about what string was copied to the clipboard, and is formatted as such.
+ * 
+ * @return A string containing information about the copy event.
+ */
+/**
+ * @brief Converts the event into a string format.
+ *
+ * This function converts the event into a human-readable string format, which includes details about what string was copied to the clipboard and when it happened.
  * 
  * @return A string containing information about the copy event.
  */
@@ -212,6 +269,9 @@ std::string ToString() const override
  * 
  * @param String The string that was pasted.
  */
+/**
+ *  @brief This class represents a string paste event. It is an application event that includes details about what string was pasted and from where (clipboard).
+ */
 class AGE_API StringPasteEvent : public Event
 	{
 	public:
@@ -223,6 +283,10 @@ class AGE_API StringPasteEvent : public Event
  * @brief This function returns a pointer to the string stored in the object.
  * @return A constant character pointer pointing to the internal string of the object. If no string is set, it will return nullptr.
  */
+/**
+ * @brief This function returns a pointer to the string stored in the object.
+ * @return A pointer to the internal string of this object.
+ */
 inline const char* GetString() { return m_String; }
 
 		/**
@@ -230,6 +294,12 @@ inline const char* GetString() { return m_String; }
  * The returned string includes details about what string was pasted and from where (clipboard).
  * 
  * @return std::string A string containing information about the paste event.
+ */
+/**
+ * @brief This function returns a string representation of the event.
+ * The returned string includes details about what string was pasted and where it came from (clipboard).
+ * 
+ * @return A string containing information about the paste event.
  */
 std::string ToString() const override
 		{
@@ -250,6 +320,9 @@ std::string ToString() const override
 		/**
  * @brief Default constructor for ProjectCreatedEvent class.
  */
+/**
+ * @brief Default constructor for the ProjectCreatedEvent class.
+ */
 ProjectCreatedEvent(){}
 
 		EVENT_CLASS_TYPE(ProjectCreated)
@@ -259,6 +332,9 @@ ProjectCreatedEvent(){}
 	{
 	public:
 		/**
+ * @brief Default constructor for ProjectLoadedEvent class.
+ */
+/**
  * @brief Default constructor for ProjectLoadedEvent class.
  */
 ProjectLoadedEvent(){}

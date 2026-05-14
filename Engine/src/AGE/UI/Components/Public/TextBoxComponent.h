@@ -32,6 +32,11 @@ namespace AGE
  * 
  * @param[in] Serializer A pointer to an instance of DataWriter that is used for writing data.
  */
+/**
+ * @brief This function serializes the TextBoxComponent object into a DataWriter.
+ * 
+ * @param[in] Serializer A pointer to the DataWriter instance where the object will be written.
+ */
 void CallSerialize(DataWriter* Serializer) override
 		{
 			Serializer->WriteObject<TextBoxComponent>(*this);
@@ -44,6 +49,12 @@ void CallSerialize(DataWriter* Serializer) override
  *
  * @param Serializer A pointer to a DataReader that provides the serialized data.
  */
+/** 
+ * @brief This function is used to deserialize a TextBoxComponent from the provided DataReader.
+ * 
+ * @param Serializer A pointer to an instance of DataReader, which provides the serialized data.
+ * @return void No return value as it directly modifies the state of the current object (TextBoxComponent).
+ */
 void CallDeserialize(DataReader* Serializer) override
 		{
 			Serializer->ReadObject<TextBoxComponent>(*this);
@@ -55,6 +66,16 @@ void CallDeserialize(DataReader* Serializer) override
  * This function writes various properties of the TextBoxComponent to the provided DataWriter, including its name, type, string properties (text, font name, color and size), and position and rotation data.
  * 
  * @param Serializer Pointer to the DataWriter instance where serialization will be performed.
+ * @param Instance The TextBoxComponent instance that needs to be serialized.
+ * 
+ * @return void
+ */
+/**
+ * @brief This function serializes the TextBoxComponent instance into a DataWriter object.
+ * 
+ * The function writes various properties of the TextBoxComponent, such as its name, type, string properties (text, font name, color and size), and position and rotation data.
+ * 
+ * @param Serializer Pointer to the DataWriter object where serialized data will be written into.
  * @param Instance The TextBoxComponent instance that needs to be serialized.
  * 
  * @return void
@@ -86,6 +107,7 @@ static void Serialize(DataWriter* Serializer, const TextBoxComponent& Instance)
  * @param[in] Serializer A pointer to a DataReader object that provides the serialized data.
  * @param[out] Instance The TextBoxComponent instance to be deserialized.
  */
+
 static void Deserialize(DataReader* Serializer, TextBoxComponent& Instance)
 		{
 			Serializer->ReadString(Instance.m_Name);

@@ -20,6 +20,14 @@ namespace AGE
  * 
  * @param Name The name for this component.
  */
+/**
+ * @brief Constructs a VerticalBoxComponent with the given name.
+ * 
+ * This constructor initializes the component's name and type to represent a vertical box component.
+ * The name of the component is set by the parameter 'Name'.
+ * 
+ * @param Name A string representing the name of the component.
+ */
 VerticalBoxComponent::VerticalBoxComponent(const std::string &Name) {
         m_Name = Name;
         m_Type = UIComponentType::VerticalBoxComponent;
@@ -31,6 +39,13 @@ VerticalBoxComponent::VerticalBoxComponent(const std::string &Name) {
  * The function first calls the base class's OnUpdate() method with the provided delta time, which allows for any necessary cleanup or other tasks to be performed before the update process begins. It then continues with its own specific update logic.
  * 
  * @param DeltaTime - A TimeStep object representing the amount of time that has passed since the last frame.
+ */
+/** 
+ * @brief This function updates the component based on a time step.
+ * 
+ * The function first calls the OnUpdate method of its base class, UIComponent, to handle any general updates that might be necessary. Then it performs any specific updates related to this VerticalBoxComponent itself.
+ * 
+ * @param DeltaTime The amount of time that has passed since the last update.
  */
 void VerticalBoxComponent::OnUpdate(TimeStep DeltaTime)
     {
@@ -44,6 +59,13 @@ void VerticalBoxComponent::OnUpdate(TimeStep DeltaTime)
  *
  * @param Event A reference to the Event object that needs to be processed.
  */
+/**
+ * @brief Handles an event of type Event.
+ *
+ * This function is responsible for processing the incoming events and updating the state of the VerticalBoxComponent accordingly.
+ *
+ * @param[in] Event The event to be processed.
+ */
 void VerticalBoxComponent::OnEvent(Event &Event) {
     }
 
@@ -52,6 +74,14 @@ void VerticalBoxComponent::OnEvent(Event &Event) {
  *
  * This function is responsible for drawing the content of the component in a vertical layout, which means that it will draw all its child components one after another vertically. 
  * It does not handle any specific styling or positioning of these child components. These are handled by their respective Draw methods.
+ *
+ * @return void
+ */
+/**
+ * @brief Draw the content of this component in a vertical layout.
+ *
+ * This function draws the content of this component in a vertical layout, which means that all child components are drawn one after another vertically.
+ * The exact behavior depends on the specific implementation of the VerticalBoxComponent class and its subclasses.
  *
  * @return void
  */

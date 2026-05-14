@@ -19,7 +19,12 @@ namespace AGE
 		template<typename T>
 		T* As();
 
-		virtual ~AudioEngine() = default;
+		/**
+ * @brief Virtual destructor for the AudioEngine class.
+ *
+ * This function is responsible for releasing any resources that were acquired by the AudioEngine instance, such as memory or file handles. It does not return anything (void) and thus it doesn't need a Doxygen comment to specify its return type.
+ */
+virtual ~AudioEngine() = default;
 		static Ref<AudioEngine> Create(AudioEngineType Type);
 
 		virtual void Init() = 0;

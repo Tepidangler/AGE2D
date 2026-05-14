@@ -15,6 +15,14 @@ namespace AGE
  * @param Type The string to convert into an OpenGL Shader type.
  * @return The corresponding GLenum value for the input string.
  */
+/**
+ * @brief Converts a string to its corresponding OpenGL shader type.
+ * 
+ * This function takes in a string and returns the equivalent OpenGL shader type. It supports four types of shaders: vertex, fragment (or pixel), geometry, and others. If the input string does not match any of these, it returns GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR.
+ * 
+ * @param Type The string to convert. Can be "Vertex", "vertex", "Fragment", "fragment", "pixel", "Pixel", "Geometry", "geometry", "Geo", or "geo".
+ * @return GLenum The corresponding OpenGL shader type, or GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR if the input string does not match any of these.
+ */
 static GLenum ShaderTypeFromString(const std::string& Type)
 	{
 		if (Type == "Vertex" || Type == "vertex")
@@ -39,6 +47,12 @@ static GLenum ShaderTypeFromString(const std::string& Type)
  * Constructor for OpenGLShader class. It takes a file path as input and reads the shader source code from it. The source code is then preprocessed and compiled into separate shaders. 
  * @param FilePath A string representing the file path of the shader source code. This should be in the format "Assets/Shaders/Something.vsfs".
  */
+/**
+ * @brief Constructs an OpenGLShader object from a file path.
+ * 
+ * This constructor reads and preprocesses the shader source code, compiles each type of shader, links them together, and extracts the name of the shader from the file path.
+ * @param FilePath The path to the shader source code file.
+ */
 OpenGLShader::OpenGLShader(const std::string& FilePath)
 	{
 		AGE_PROFILE_FUNCTION();
@@ -61,6 +75,14 @@ OpenGLShader::OpenGLShader(const std::string& FilePath)
  * 
  * @param VertexSrcPath The path to the vertex shader source file.
  * @param FragmentSrcPath The path to the fragment shader source file.
+ */
+/**
+ * @brief Constructor for OpenGLShader class.
+ * 
+ * This constructor takes in two strings representing the file paths of vertex and fragment shaders respectively. It reads these files into an unordered map with keys GL_VERTEX_SHADER and GL_FRAGMENT_SHADER, then compiles them using the Compile function. The name of the shader is extracted from the input file path and stored in m_ShaderName.
+ * 
+ * @param VertexSrcPath File path to vertex shader source code.
+ * @param FragmentSrcPath File path to fragment shader source code.
  */
 OpenGLShader::OpenGLShader(const std::string& VertexSrcPath, const std::string& FragmentSrcPath)
 	{
@@ -87,6 +109,16 @@ OpenGLShader::OpenGLShader(const std::string& VertexSrcPath, const std::string& 
  * @param VertexSrc A string containing the source code for the vertex shader stage.
  * @param FragmentSrc A string containing the source code for the fragment shader stage.
  */
+/**
+ * @brief Constructs an OpenGLShader object with the given name, vertex source code and fragment source code.
+ * 
+ * This function initializes an instance of OpenGLShader by setting its shader name to the provided name, and compiling both a vertex and a fragment shader from the provided source codes.
+ * The sources are expected to be strings containing GLSL (OpenGL Shading Language) code.
+ * 
+ * @param Name The name of the shader program.
+ * @param VertexSrc A string containing the GLSL code for the vertex shader.
+ * @param FragmentSrc A string containing the GLSL code for the fragment shader.
+ */
 OpenGLShader::OpenGLShader(const std::string& Name, const std::string& VertexSrc, const std::string& FragmentSrc)
 		:m_ShaderName(Name)
 	{
@@ -102,6 +134,11 @@ OpenGLShader::OpenGLShader(const std::string& Name, const std::string& VertexSrc
  * 
  * This function deletes a shader program from the GPU using glDeleteProgram(). The ID of the shader program to delete is stored in m_RendererID.
  */
+/**
+ * @brief Destructor for the OpenGLShader class.
+ * 
+ * This function deletes a shader program from the GPU using glDeleteProgram(). The ID of the shader program to delete is stored in m_RendererID.
+ */
 OpenGLShader::~OpenGLShader()
 	{
 		AGE_PROFILE_FUNCTION();
@@ -111,6 +148,12 @@ OpenGLShader::~OpenGLShader()
  * @brief This function binds the OpenGL shader program.
  * 
  * It uses the `glUseProgram` function to bind the shader program with the given renderer ID. The function does not return any value, so it is a void function.
+ */
+/** 
+ * @brief This function binds the OpenGL shader program.
+ * 
+ * It uses the glUseProgram function to bind this shader program, setting it as the current active program in the OpenGL context.
+ * The m_RendererID member variable is used as an argument for this function call.
  */
 void OpenGLShader::Bind() const
 	{
@@ -122,6 +165,10 @@ void OpenGLShader::Bind() const
 	/**
  * @brief This function unbinds the current shader program from use, setting the context to that of the default OpenGL state.
  * 
+ * @return void
+ */
+/**
+ * @brief This function unbinds the current shader program from use by binding to 0 (the null program).
  * @return void
  */
 void OpenGLShader::Unbind() const
@@ -136,12 +183,26 @@ void OpenGLShader::Unbind() const
  * 
  * @return None
  */
+/** 
+ * @brief This function sets a single floating-point value with the given name.
+ * @param Name The name of the float variable to set.
+ * @param Values The new value for the float variable.
+ * @return void
+ */
 void OpenGLShader::SetFloat(const char* Name, float Values) const
 	{
 		AGE_PROFILE_FUNCTION();
 		UploadFloat(Name, Values);
 	}
 	/** 
+ * @brief This function sets a float vector of two elements with the given name.
+ * 
+ * @param Name The name of the uniform variable to set.
+ * @param Values A Vector2 object containing the values to be set for the uniform variable.
+ * 
+ * @return void
+ */
+/**
  * @brief This function sets a float vector of two elements with the given name.
  * 
  * @param Name The name of the uniform variable to set.
@@ -162,6 +223,14 @@ void OpenGLShader::SetFloat2(const char* Name, const Vector2& Values) const
  * 
  * @return void
  */
+/** 
+ * @brief This function sets a float vector of length 3.
+ * 
+ * @param Name The name of the uniform variable to set.
+ * @param Values The Vector3 object containing the new values for the uniform variable.
+ * 
+ * @return void
+ */
 void OpenGLShader::SetFloat3(const char* Name, const Vector3& Values) const
 	{
 		AGE_PROFILE_FUNCTION();
@@ -175,6 +244,14 @@ void OpenGLShader::SetFloat3(const char* Name, const Vector3& Values) const
  * 
  * @return void
  */
+/** 
+ * @brief This function sets a float vector of size 4 in the OpenGLShader object.
+ * 
+ * @param Name The name of the uniform variable to set.
+ * @param Value The Vector4 value to be set for the uniform variable.
+ * 
+ * @return void
+ */
 void OpenGLShader::SetFloat4(const char* Name, const Vector4 Value) const
 	{
 		AGE_PROFILE_FUNCTION();
@@ -182,6 +259,14 @@ void OpenGLShader::SetFloat4(const char* Name, const Vector4 Value) const
 	}
 	/** 
  * @brief This function sets a 3x3 matrix with the given name.
+ * 
+ * @param Name The name of the uniform variable to set in the shader program.
+ * @param Matrix The 3x3 matrix to be uploaded.
+ * 
+ * @return void
+ */
+/** 
+ * @brief This function sets a 3x3 matrix with the given name and value.
  * 
  * @param Name The name of the uniform variable to set in the shader program.
  * @param Matrix The 3x3 matrix to be uploaded.
@@ -203,6 +288,12 @@ void OpenGLShader::SetMat3(const char* Name, const Matrix3D& Matrix) const
  *
  * @return void
  */
+/** 
+ * @brief This function sets a matrix of type Matrix4D with the given name.
+ * @param Name The name of the uniform variable to set in the shader program.
+ * @param Matrix The Matrix4D object that will be uploaded to the GPU.
+ * @return void
+ */
 void OpenGLShader::SetMat4(const char* Name, const Matrix4D Matrix) const
 	{
 		AGE_PROFILE_FUNCTION();
@@ -217,6 +308,14 @@ void OpenGLShader::SetMat4(const char* Name, const Matrix4D Matrix) const
  * @param Count Number of elements in the TexturePtr array.
  * 
  * @return void
+ */
+/**
+ * @brief This function sets an integer uniform in the OpenGL shader.
+ * 
+ * @param Name The name of the uniform variable to set.
+ * @param Texture The texture unit number to bind.
+ * @param TexturePtr Pointer to the array of texture units to bind.
+ * @param Count Number of elements in the TexturePtr array.
  */
 void OpenGLShader::SetInt(const char* Name, const int Texture, const int* TexturePtr, const int Count) const
 	{
@@ -233,6 +332,14 @@ void OpenGLShader::SetInt(const char* Name, const int Texture, const int* Textur
  * 
  * @return void
  */
+/**
+ * @brief Uploads a single floating-point value to the GPU.
+ * 
+ * This function uploads a single float value to the GPU using OpenGL's glUniform1f function. The location of the uniform variable is determined by calling glGetUniformLocation with the shader program and the name of the uniform variable as arguments.
+ *
+ * @param Name A string representing the name of the uniform variable in the shader program.
+ * @param Values The float value to be uploaded to the GPU.
+ */
 void OpenGLShader::UploadFloat(const char* Name, float Values) const
 	{
 		glUniform1f(glGetUniformLocation(m_RendererID, Name), Values);
@@ -244,6 +351,14 @@ void OpenGLShader::UploadFloat(const char* Name, float Values) const
  *
  * @param Name A string representing the name of the uniform variable in the shader program.
  * @param Values A Vector2 object containing the 2D float values to be uploaded.
+ */
+/**
+ * @brief Uploads a 2-component float vector to the GPU.
+ *
+ * This function uploads a two component floating point vector to the GPU at the location specified by Name. The values of the vector are passed as separate arguments, Values[0] and Values[1].
+ *
+ * @param Name The name of the uniform variable in the shader program.
+ * @param Values A 2-component float vector containing the new value for the uniform variable.
  */
 void OpenGLShader::UploadFloat2(const char* Name, const Vector2& Values) const
 	{
@@ -257,6 +372,14 @@ void OpenGLShader::UploadFloat2(const char* Name, const Vector2& Values) const
  * @param Name A string representing the name of the uniform variable in the shader program.
  * @param Values A 3-component floating point vector containing the values to be uploaded.
  */
+/**
+ * @brief Uploads a 3-component floating point vector to the GPU.
+ *
+ * This function uploads a three component floating point vector to the GPU, which can be used for various shader operations such as light positioning or material properties.
+ *
+ * @param Name The name of the uniform variable in the shader program.
+ * @param Values A 3-component floating point vector containing the values to upload.
+ */
 void OpenGLShader::UploadFloat3(const char* Name, const Vector3& Values) const
 	{
 		glUniform3f(glGetUniformLocation(m_RendererID, Name), Values[0], Values[1], Values[2]);
@@ -269,6 +392,14 @@ void OpenGLShader::UploadFloat3(const char* Name, const Vector3& Values) const
  * @param Name A pointer to a null-terminated string representing the name of the uniform variable in the shader program.
  * @param Values A constant reference to a Vector4 object containing the 4 components of the vector to be uploaded.
  */
+/**
+ * @brief Uploads a 4-component vector to the GPU as a uniform variable.
+ *
+ * This function uploads a 4-component vector (x, y, z, w) to the GPU as a uniform variable with the specified name. The location of this uniform is obtained using `glGetUniformLocation`.
+ *
+ * @param Name A string representing the name of the uniform variable on the GPU.
+ * @param Values A 4-component vector containing the values to be uploaded.
+ */
 void OpenGLShader::UploadFloat4(const char* Name, const Vector4& Values) const
 	{
 		glUniform4f(glGetUniformLocation(m_RendererID, Name), Values[0], Values[1], Values[2], Values[3]);
@@ -278,6 +409,14 @@ void OpenGLShader::UploadFloat4(const char* Name, const Vector4& Values) const
  * @brief Uploads a 3x3 matrix to the GPU shader program.
  *
  * This function uploads a 3x3 matrix to the GPU shader program using OpenGL's glUniformMatrix3fv function. The location of the uniform variable in the shader is determined by calling glGetUniformLocation with the name of the uniform and the ID of the shader program.
+ *
+ * @param Name A string representing the name of the uniform variable in the shader program.
+ * @param Matrix A 3x3 matrix to be uploaded to the GPU.
+ */
+/**
+ * @brief Uploads a 3x3 matrix to the GPU shader program.
+ *
+ * This function uploads a 3x3 matrix to the GPU shader program using OpenGL's glUniformMatrix3fv function. The location of the uniform variable in the shader program is obtained by calling glGetUniformLocation with the name of the uniform and the ID of the shader program.
  *
  * @param Name A string representing the name of the uniform variable in the shader program.
  * @param Matrix A 3x3 matrix to be uploaded to the GPU.
@@ -293,6 +432,15 @@ void OpenGLShader::UploadMat3(const char* Name, const Matrix3D& Matrix) const
  * This function uploads a Matrix4D to an OpenGL shader by first getting the location of the uniform variable in the shader using glGetUniformLocation, then passing the matrix data to this location with glUniformMatrix4fv. 
  *
  * @param Name The name of the uniform variable in the shader.
+ * @param Matrix The Matrix4D to be uploaded.
+ */
+/**
+ * @brief Uploads a Matrix4D to the OpenGL shader.
+ *
+ * This function uploads a Matrix4D to an OpenGL shader by first getting the uniform location of the variable in the shader, 
+ * and then using glUniformMatrix4fv to set the value of that variable. The matrix is uploaded as a raw float array.
+ *
+ * @param Name The name of the Matrix4D variable in the shader.
  * @param Matrix The Matrix4D to be uploaded.
  */
 void OpenGLShader::UploadMat4(const char* Name, const Matrix4D& Matrix) const
@@ -324,6 +472,18 @@ void OpenGLShader::UploadMat4(const char* Name, const Matrix4D& Matrix) const
  * @param TexturePtr Pointer to an array of integers to be uploaded as uniforms. If this is null, `Texture` will be used instead.
  * @param Count The number of elements in the `TexturePtr` array if it's not null. This parameter is ignored if `TexturePtr` is null.
  */
+/**
+ * @brief Uploads an integer uniform to the OpenGL shader.
+ * 
+ * This function uploads a single integer or an array of integers to the specified uniform variable in the OpenGL shader.
+ * The location of the uniform is determined by its name, which must be valid and existent within the shader program.
+ * If TexturePtr is not null, it will use glUniform1iv to upload Count number of integer values from TexturePtr array. 
+ * Otherwise, it will simply upload a single integer value using glUniform1i.
+ * @param Name The name of the uniform variable in the shader program.
+ * @param Texture A single integer value to be uploaded.
+ * @param TexturePtr Pointer to an array of integers to be uploaded. If this is null, only a single integer will be uploaded.
+ * @param Count Number of elements in the TexturePtr array if it's not null. This parameter has no effect if TexturePtr is null.
+ */
 void OpenGLShader::UploadInt(const char* Name, const int Texture, const int* TexturePtr, const int Count) const
 	{
 		if (TexturePtr)
@@ -343,6 +503,13 @@ void OpenGLShader::UploadInt(const char* Name, const int Texture, const int* Tex
  *
  * @param FilePath The path of the file to read.
  * @return A string containing the contents of the file, or "Unknown" if the file could not be opened.
+ */
+/**
+ * @brief Reads a file from the disk and returns its content as a string.
+ * 
+ * This function opens a file at the given path, reads its entire contents into a string, and then closes the file. If the file cannot be opened for any reason (e.g., it does not exist), an error message is logged to the console.
+ * @param FilePath The path of the file to read from.
+ * @return A string containing the content of the file. If the file could not be opened, this will be an empty string.
  */
 std::string OpenGLShader::ReadFile(const std::string FilePath)
 	{
@@ -370,6 +537,12 @@ std::string OpenGLShader::ReadFile(const std::string FilePath)
  * Preprocesses an OpenGL shader source code, separating it into different sections based on type (vertex, fragment, etc.).
  * The function takes in a string of source code and returns an unordered map where each key is a GLenum representing the shader type 
  * and each value is the corresponding shader source code. It uses a specific token (#type) to identify different sections within the source code.
+ */
+/**
+ * @brief Preprocesses OpenGL shader source code to separate different types of shaders based on specific token.
+ * 
+ * @param Source Original source code of the shader program.
+ * @return Unordered map where keys are GLenum representing shader types and values are strings containing corresponding shader sources.
  */
 std::unordered_map<GLenum, std::string> OpenGLShader::PreProcess(const std::string& Source)
 	{
@@ -401,6 +574,7 @@ std::unordered_map<GLenum, std::string> OpenGLShader::PreProcess(const std::stri
  * If any compilation errors occur, they are logged and the function returns without further action.
  * @param ShaderSources A dictionary mapping GLenum (representing shader type) to string (source code). Maximum 4 shaders supported.
  */
+
 void OpenGLShader::Compile(const std::unordered_map<GLenum, std::string>& ShaderSources)
 	{
 		AGE_PROFILE_FUNCTION();

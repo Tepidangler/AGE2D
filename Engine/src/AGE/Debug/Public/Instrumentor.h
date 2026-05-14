@@ -38,6 +38,11 @@ namespace AGE {
  * It's a good practice to avoid unnecessary copying and duplication in our code, which can lead to performance issues or memory leaks. 
  * The copy constructor for the Instrumentor class has been set to private to prevent its use.
  */
+/**
+ * @brief Deleted copy constructor for the Instrumentor class.
+ *
+ * This function is marked as deleted to prevent copying of an instance of this class, which would not make sense in the context of our application.
+ */
 Instrumentor(const Instrumentor&) = delete;
 		/**
  * @brief Instrumentor move constructor is deleted to prevent copying of the instrumentor object.
@@ -47,6 +52,10 @@ Instrumentor(const Instrumentor&) = delete;
  *
  * @return The move constructor is implicitly declared as deleted by the compiler if any non-static data member 
  *         or base class has a user-declared destructor, copy assignment operator, or move assignment operator.
+ */
+/**
+ * @brief Move constructor for the Instrumentor class. Deleted to prevent copying of objects.
+ * @param other The object to be moved from.
  */
 Instrumentor(Instrumentor&&) = delete;
 
@@ -58,6 +67,15 @@ Instrumentor(Instrumentor&&) = delete;
  * @param[in] filepath The path to the output JSON file. Defaults to "results.json".
  * 
  * @return void
+ */
+/**
+ * @brief Starts a new profiling session.
+ *
+ * This function starts a new profiling session with the given name and writes the header to the output stream. If there is already an active session, it will be closed before starting the new one. 
+ * The results of any profiling data meant for the original session will instead go into the newly started session.
+ *
+ * @param[in] name     The name of the new session. This should ideally represent what the session is measuring or recording.
+ * @param[in] filepath Optional parameter specifying where to write the profiling data. Defaults to "results.json".
  */
 void BeginSession(const std::string& name, const std::string& filepath = "results.json")
 		{
@@ -95,6 +113,11 @@ void BeginSession(const std::string& name, const std::string& filepath = "result
  * 
  * @return void
  */
+/**
+ * @brief This function is used to end the session. It ensures thread safety by using a std::lock_guard on m_Mutex. 
+ *        The actual work of ending the session is done by calling InternalEndSession().
+ * @return void
+ */
 void EndSession()
 		{
 			std::lock_guard lock(m_Mutex);
@@ -107,6 +130,17 @@ void EndSession()
  * This function takes a ProfileResult object and writes it as a JSON string to the output stream. The JSON string includes details about the elapsed time, name of the operation, thread ID, and start timestamp. It also locks the mutex for thread safety. If the current session is active (m_CurrentSession == true), the function writes the JSON string to the output stream and flushes it.
  *
  * @param result The ProfileResult object to be written.
+ */
+/**
+ * @brief Writes a profile result to the output stream in JSON format.
+ *
+ * This function takes a ProfileResult object and writes its data into an output 
+ * stream in JSON format. The data includes the category, duration, name, phase (X for unknown), 
+ * process ID (0 as it's not applicable here), thread ID, and timestamp. It also locks a mutex to ensure 
+ * thread safety when writing to the output stream. If the current session is active, the function writes 
+ * the JSON string into the output stream and flushes it.
+ *
+ * @param result The ProfileResult object containing data about the profile.
  */
 void WriteProfile(const ProfileResult& result)
 		{
@@ -138,6 +172,14 @@ void WriteProfile(const ProfileResult& result)
  * 
  * @return A reference to the singleton instance of the Instrumentor class.
  */
+/**
+ * @brief Returns a reference to the singleton instance of the Instrumentor class.
+ * 
+ * This function creates and returns a static instance of the Instrumentor class, ensuring that only one instance exists throughout the program's execution.
+ * The instance is returned as a reference, allowing for easy access and manipulation of its properties or methods.
+ * 
+ * @return A reference to the singleton instance of the Instrumentor class.
+ */
 static Instrumentor& Get()
 		{
 			static Instrumentor instance;
@@ -146,6 +188,9 @@ static Instrumentor& Get()
 	private:
 		/**
  * @brief Constructor for the Instrumentor class.
+ */
+/**
+ * @brief Constructs an Instrumentor object with a null current session pointer.
  */
 Instrumentor()
 			: m_CurrentSession(nullptr)
@@ -159,6 +204,11 @@ Instrumentor()
  * 
  * @return void
  */
+/**
+ * @brief Destructor for the Instrumentor class.
+ * 
+ * This function ends the current session and writes any remaining profiling data to disk. It is called automatically when the Instrumentor object goes out of scope, ensuring that all profiling data is written before the program exits.
+ */
 ~Instrumentor()
 		{
 			EndSession();
@@ -170,6 +220,11 @@ Instrumentor()
  * After calling this function, the output stream will be flushed immediately.
  *
  * @return void
+ */
+/**
+ * @brief This function writes a JSON header to the output stream.
+ * The header includes an object "otherData" and an array "traceEvents". 
+ * After calling this function, the stream is ready for writing trace events.
  */
 void WriteHeader()
 		{
@@ -185,6 +240,13 @@ void WriteHeader()
  *
  * @return void
  */
+/**
+ * @brief Writes the footer to the output stream.
+ *
+ * This function writes a closing bracket and flushes the output stream, which is typically used in JSON or similar formats where data is written out as a series of key-value pairs enclosed within curly braces {}. 
+ *
+ * @return void
+ */
 void WriteFooter()
 		{
 			m_OutputStream << "]}";
@@ -194,6 +256,12 @@ void WriteFooter()
 		// Note: you must already own lock on m_Mutex before
 		// calling InternalEndSession()
 		/**
+ * @brief This function is used to end the current session and clean up resources.
+ * It writes a footer, closes the output stream, deletes the current session object, and sets m_CurrentSession to nullptr.
+ * 
+ * @return void
+ */
+/**
  * @brief This function is used to end the current session and clean up resources.
  * It writes a footer, closes the output stream, deletes the current session object, and sets m_CurrentSession to nullptr.
  * 
@@ -224,6 +292,12 @@ void InternalEndSession()
  * The constructor initializes the timer with the provided name and sets m_Stopped to false. It also records the current time point using std::chrono::steady_clock::now() and stores it in m_StartTimepoint.
  * @param name A string representing the name of the instrumentation timer.
  */
+/**
+ * @brief Constructs an InstrumentationTimer object with a given name.
+ * @param name The name to be associated with the timer.
+ * 
+ * This constructor initializes the timer with the provided name and sets m_Stopped to false, indicating that the timer is not stopped yet. It also records the current time point using std::chrono::steady_clock::now() and stores it in m_StartTimepoint.
+ */
 InstrumentationTimer(const char* name)
 			: m_Name(name), m_Stopped(false)
 		{
@@ -232,6 +306,9 @@ InstrumentationTimer(const char* name)
 
 		/**
  * @brief Destructor for the InstrumentationTimer class. Stops the timer if it has not been stopped already.
+ */
+/**
+ * @brief Destructor for the InstrumentationTimer class. Stops the timer if it hasn't been stopped already.
  */
 ~InstrumentationTimer()
 		{
@@ -243,6 +320,13 @@ InstrumentationTimer(const char* name)
  * @brief Stops the timer and writes a profile to the instrumentor.
  * 
  * This function stops the timer by capturing the current time point using `std::chrono::steady_clock::now()`, calculates the elapsed time since the start timepoint was set in microseconds, then writes this information along with other details such as the name of the timer and the ID of the thread to the instrumentor.
+ * 
+ * @return void
+ */
+/**
+ * @brief Stops the timer and writes a profile to the instrumentor.
+ * 
+ * This function measures the time elapsed since the start of the timer, writes this information to the Instrumentor, and then resets the timer. The profile includes the name of the timer, the start time, the elapsed time, and the ID of the thread that executed the code.
  * 
  * @return void
  */
@@ -272,7 +356,8 @@ void Stop()
 
 		template <size_t N, size_t K>
 		"This function cleans up an input string by removing a specified substring."
-constexpr auto CleanupOutputString(const char(&expr)[N], const char(&remove)[K])
+constexpr 
+auto CleanupOutputString(const char(&expr)[N], const char(&remove)[K])
 		{
 			ChangeResult<N> result = {};
 

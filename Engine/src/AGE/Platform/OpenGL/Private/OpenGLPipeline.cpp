@@ -16,6 +16,10 @@ namespace AGE
  */
 CONFIDENCE: 1.0;
 
+/**
+ * @brief OpenGLPipeline is a class that represents an OpenGL pipeline. 
+ * It provides methods for setting up and managing the rendering process in an OpenGL context.
+ */
 OpenGLPipeline::OpenGLPipeline()
 	{
 	}
@@ -25,6 +29,11 @@ OpenGLPipeline::OpenGLPipeline()
  * This function is responsible for cleaning up memory that was dynamically allocated during the lifetime of an instance of this class. It deletes four arrays (QuadVertexBufferBase, CircleVertexBufferBase, LineVertexBufferBase, TextVertexBufferBase) and clears a vector (TileVertexBufferBases).
  * 
  * @return void
+ */
+/**
+ * @brief Destructor for the OpenGLPipeline class. It is responsible for freeing up memory that was allocated dynamically during its lifetime.
+ * 
+ * This destructor deletes four arrays (QuadVertexBufferBase, CircleVertexBufferBase, LineVertexBufferBase and TextVertexBufferBase) which were previously allocated using new[]. Additionally, it clears the TileVertexBufferBases vector to free up memory.
  */
 OpenGLPipeline::~OpenGLPipeline()
 	{
@@ -37,6 +46,7 @@ OpenGLPipeline::~OpenGLPipeline()
 		m_Data.TileVertexBufferBases.clear();
 	}
 	
+
 void OpenGLPipeline::Init()
 	{
 		//2D Init
@@ -167,6 +177,13 @@ void OpenGLPipeline::Init()
 		m_Data.QuadVertexPositions[3] = { -.5f, .5f, 0.f, 1.f };
 	}
 	
+/**
+ * @brief Resets the buffers for rendering operations in the OpenGLPipeline class.
+ * 
+ * @param None
+ * 
+ * @return None
+ */
 void OpenGLPipeline::StartBatch2D()
 	{
 		m_Data.QuadIndexCount = 0;
@@ -198,12 +215,18 @@ void OpenGLPipeline::StartBatch2D()
  * 
  * @return void
  */
+/** 
+ * @brief This function is used to prepare for the next batch of 2D rendering. It first flushes any existing 2D data by calling Flush2D(), and then starts a new batch with StartBatch2D().
+ * 
+ * @return void
+ */
 void OpenGLPipeline::NextBatch2D()
 	{
 		Flush2D();
 		StartBatch2D();
 	}
 	
+
 void OpenGLPipeline::Flush2D()
 	{
 		if (m_Data.QuadIndexCount)
@@ -298,6 +321,13 @@ void OpenGLPipeline::Flush2D()
  *
  * @return A reference to the Renderer2DData object for this pipeline instance.
  */
+COMMENT:
+/** 
+ * @brief This function returns a reference to the Renderer2DData object used by this class.
+ * @return A reference to the Renderer2DData object.
+ */
+CONFIDENCE: 1.0;
+
 Renderer2DData& OpenGLPipeline::GetData()
 	{
 		return m_Data;
@@ -308,6 +338,13 @@ Renderer2DData& OpenGLPipeline::GetData()
  * This function sets all fields in the Statistics structure to zero using memset(). It effectively resets the counters for various 
  * statistics tracked by the OpenGL pipeline.
  *
+ * @return void
+ */
+/**
+ * @brief Resets the statistics of the OpenGL pipeline.
+ *
+ * This function sets all fields in the Statistics structure to zero using memset(). It effectively resets the counters and other statistics that track performance over time.
+ * 
  * @return void
  */
 void OpenGLPipeline::ResetStats()
@@ -322,6 +359,13 @@ void OpenGLPipeline::ResetStats()
  *
  * @return A reference to the Statistics object.
  */
+/**
+ * @brief Get the statistics of the OpenGL Pipeline.
+ * 
+ * This function returns a reference to the statistics object that holds information about the performance and usage of the OpenGL pipeline.
+ * 
+ * @return A reference to the Statistics object.
+ */
 Statistics& OpenGLPipeline::GetStats()
 	{
 		return m_Data.Stats;
@@ -331,6 +375,13 @@ Statistics& OpenGLPipeline::GetStats()
  * @brief GenerateDefaultTextures is a function that creates and initializes default textures for the OpenGLPipeline object.
  * 
  * This function generates a white texture with full alpha channel (0xffffffff) and sets it as the WhiteTexture member of the m_Data struct. The Texture2D::Create() function is used to create the texture, and the SetData() method is called on the created texture to initialize its data.
+ * 
+ * @return void No return value.
+ */
+/**
+ * @brief GenerateDefaultTextures is a function that generates default textures for the OpenGLPipeline class.
+ * 
+ * This function creates a white texture and sets it as the default texture data member of the OpenGLPipeline object. The white texture is represented by a 32-bit unsigned integer with all its bits set to 1, which corresponds to color (255, 255, 255, 255) in RGBA format.
  * 
  * @return void No return value.
  */
@@ -349,6 +400,13 @@ void OpenGLPipeline::GenerateDefaultTextures()
  * This allows for polymorphism in OpenGL operations where different types of objects can respond differently to the same function calls.
  *
  * @return A pointer to the OpenGLPipeline object. If no such object exists, returns nullptr.
+ */
+/**
+ * @brief This function returns a pointer to an OpenGLPipeline object.
+ *
+ * The function is used to convert the current object into an OpenGLPipeline type. It does this by returning 'this' casted as an OpenGLPipeline*. 
+ *
+ * @return An instance of OpenGLPipeline.
  */
 OpenGLPipeline* Pipeline::As()
 	{

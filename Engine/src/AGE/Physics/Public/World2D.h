@@ -28,6 +28,10 @@ namespace AGE
  * @brief Returns a reference to the query filter object used by this class.
  * @return A reference to the b2QueryFilter object.
  */
+/**
+ * @brief Returns a reference to the query filter object used by this class.
+ * @return A reference to the b2QueryFilter object.
+ */
 b2QueryFilter& GetQueryFilter() { return m_QueryFilter; }
 
         b2BodyDef MakeBodyDefinition(const BodyType& Type, const Vector3& Translation, const Vector3& Rotation, bool IsRotationFixed, void* UserData);

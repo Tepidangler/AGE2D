@@ -12,6 +12,13 @@ namespace AGE
  * @param Spec The specification for the FrameBuffer to be created. This includes things like width, height and color attachments.
  * @return A reference to the newly created FrameBuffer. If the RendererAPI in use does not support a FrameBuffer of that type, nullptr is returned instead.
  */
+/**
+ * @brief Creates a new frame buffer based on the given specification.
+ * The type of FrameBuffer to create is determined by the current RendererAPI in use.
+ * 
+ * @param Spec The specification for the new frame buffer. This includes things like width, height and color attachments.
+ * @return A reference to the newly created FrameBuffer. If no suitable FrameBuffer could be created (e.g., due to unsupported RendererAPI), nullptr is returned instead.
+ */
 Ref<FrameBuffer> FrameBuffer::Create(const FrameBufferSpecification& Spec)
 	{
 			switch (Renderer::GetAPI())
@@ -35,6 +42,12 @@ Ref<FrameBuffer> FrameBuffer::Create(const FrameBufferSpecification& Spec)
 	template<typename T>
 	/**
  * @brief This function is currently not implemented and will always throw an assertion.
+ * It returns a null pointer of type T*. The purpose of this function is unknown.
+ * 
+ * @return A null pointer of type T*
+ */
+/**
+ * @brief This function is currently not implemented and will always throw an assertion error.
  * It returns a null pointer of type T*. The purpose of this function is unknown.
  * 
  * @return A null pointer of type T*

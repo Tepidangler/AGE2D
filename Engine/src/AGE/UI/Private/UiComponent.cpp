@@ -25,6 +25,16 @@ namespace AGE
  * 
  * @return A reference to a newly created UIComponent instance. If an unsupported 'Type' is provided, it returns nullptr.
  */
+/**
+ * @brief Creates a new instance of a UI component based on the provided type.
+ * 
+ * This function creates and returns a reference to a newly created UIComponent, which can be one of several types such as TextComponent, TextBoxComponent, HorizontalBoxComponent, VerticalBoxComponent, ButtonComponent or ImageComponent. The specific type is determined by the 'Type' parameter. If an unsupported type is provided, it asserts false and returns nullptr.
+ * 
+ * @param Name The name of the UI component to be created.
+ * @param Type The type of the UI component to be created. This can be one of the following: TextComponent, TextBoxComponent, HorizontalBoxComponent, VerticalBoxComponent, ButtonComponent or ImageComponent.
+ * 
+ * @return A reference to a newly created UIComponent instance. If an unsupported 'Type' is provided, it returns nullptr.
+ */
 Ref<UIComponent> UIComponent::Create(const std::string &Name, UIComponentType Type)
 	{
 		// For the record I don't like this, and I don't know what else to do. Also, I'm tired of being stuck on this
@@ -75,6 +85,18 @@ Ref<UIComponent> UIComponent::Create(const std::string &Name, UIComponentType Ty
  * @param Values A reference to a Vector3 object representing the current x, y, and z values. This function will modify these values when the user interacts with the sliders.
  * @param ResetValue The value to reset each individual component of the vector to when the corresponding button is clicked.
  * @param ColumnWidth The width of the column in which this control should be displayed.
+ */
+/**
+ * @brief Draws a 3D vector control with draggable sliders for X, Y and Z values.
+ * 
+ * This function is used to create an ImGui UI component that allows the user to manipulate three-dimensional vectors (X, Y, Z). The labels, initial vector values, reset value, and column width are all parameters of this function.
+ * 
+ * @param Label A string representing the label for the control.
+ * @param Values A reference to a Vector3 object that holds the current X, Y, and Z values.
+ * @param ResetValue The value to which each component (X, Y, Z) of the vector will be reset when its corresponding button is clicked.
+ * @param ColumnWidth The width of the column in which the control will be displayed.
+ * 
+ * @return void
  */
 void UIComponent::DrawVec3Control(const std::string& Label, Vector3 &Values, float ResetValue, float ColumnWidth)
 	{
@@ -144,6 +166,10 @@ void UIComponent::DrawVec3Control(const std::string& Label, Vector3 &Values, flo
  * @brief Constructs a UIComponent with the given name.
  * @param Name The name of the component.
  */
+/**
+ * @brief Constructs a UIComponent with the given name.
+ * @param Name The name of the component.
+ */
 UIComponent::UIComponent(const std::string& Name)
 	{
 		m_Name = Name;
@@ -156,6 +182,11 @@ UIComponent::UIComponent(const std::string& Name)
  * handler based on its type. The EventDispatcher class is used for this purpose.
  *
  * @param[in] Event - Reference to the Event object that needs to be handled.
+ */
+/**
+ * @brief This function is used to handle events in the UIComponent class.
+ * 
+ * @param Event The event object that needs to be handled by the UIComponent.
  */
 void UIComponent::OnEvent(Event &Event)
 	{

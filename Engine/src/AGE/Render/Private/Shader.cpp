@@ -18,6 +18,16 @@ namespace AGE
  * 
  * @return A reference to a Shader object, which can be either an OpenGLShader or another type of shader depending on the current renderer's API. If no supported API is detected, it returns nullptr.
  */
+/**
+ * @brief Creates a new shader object based on the current renderer's API.
+ * 
+ * The function checks the current renderer's API and creates an appropriate shader object accordingly. If no supported API is found, it asserts false and returns nullptr.
+ * 
+ * @param VertexSrcPath A string representing the path to the vertex shader source code file.
+ * @param FragmentSrcPath A string representing the path to the fragment shader source code file.
+ * 
+ * @return A reference to a Shader object, or nullptr if no supported API is found.
+ */
 Ref<Shader> Shader::Create(const std::string& VertexSrcPath, const std::string& FragmentSrcPath)
 	{
 		switch (Renderer::GetAPI())
@@ -50,6 +60,14 @@ Ref<Shader> Shader::Create(const std::string& VertexSrcPath, const std::string& 
  * @param FilePath The path to the shader file.
  * 
  * @return A smart pointer (Ref<Shader>) pointing to the newly created Shader object, or nullptr if an unsupported RendererAPI enum value was passed.
+ */
+/**
+ * @brief Creates a shader object based on the current renderer API.
+ * 
+ * This function creates and returns a shader object of the appropriate type for the current renderer API. If the RendererAPI is OpenGL, it will create an OpenGLShader object. Otherwise, if the RendererAPI is unknown or not supported, it will assert false and return nullptr.
+ * 
+ * @param FilePath The path to the shader file. This parameter is currently unused in this function as all shaders are hardcoded into the executable.
+ * @return A reference to a Shader object if successful, otherwise nullptr.
  */
 Ref<Shader> Shader::Create(const std::string& FilePath)
 	{
@@ -88,6 +106,17 @@ Ref<Shader> Shader::Create(const std::string& FilePath)
  * 
  * @return A reference to a Shader object, or nullptr if an unsupported RendererAPI is in use.
  */
+/**
+ * @brief Creates a new shader object.
+ * 
+ * This function creates and returns a new Shader object based on the current RendererAPI in use. It supports OpenGL for now, but more APIs may be added in future. If an unsupported or unknown API is detected, it will assert and return nullptr.
+ * 
+ * @param Name The name of the shader. This is used to identify the shader during debugging.
+ * @param VertexSrc The source code for the vertex shader.
+ * @param FragmentSrc The source code for the fragment shader.
+ * 
+ * @return A reference to a Shader object if successful, nullptr otherwise.
+ */
 Ref<Shader> Shader::Create(const std::string& Name, const std::string& VertexSrc, const std::string& FragmentSrc)
 	{
 		switch (Renderer::GetAPI())
@@ -122,6 +151,14 @@ Ref<Shader> Shader::Create(const std::string& Name, const std::string& VertexSrc
  * @param Name The name of the shader to add.
  * @param Shader A reference to the shader object to be added.
  */
+/**
+ * @brief Adds a shader to the library with a given name and reference.
+ *
+ * This function adds a new shader to the library if it does not already exist. If a shader with the same name exists, a warning is logged and the function returns without adding anything.
+ *
+ * @param Name The name of the shader to add.
+ * @param Shader A reference to the shader object to be added.
+ */
 void ShaderLibrary::Add(const std::string& Name, const Ref<Shader>& Shader)
 	{
 		if (Exists(Name))
@@ -138,6 +175,15 @@ void ShaderLibrary::Add(const std::string& Name, const Ref<Shader>& Shader)
  *
  * @param[in] Shader A reference to the shader object that needs to be added.
  */
+/**
+ * @brief Adds a shader to the library.
+ *
+ * This function adds a reference to a shader object to the library. The name of the 
+ * shader is obtained from the GetShaderName() method of the Shader object. If the 
+ * shader with the same name already exists, it will be replaced by the new one.
+ *
+ * @param[in] Shader A reference to a Shader object that needs to be added to the library.
+ */
 void ShaderLibrary::Add(Ref<Shader>& Shader)
 	{
 		std::string Name = Shader->GetShaderName();
@@ -151,6 +197,12 @@ void ShaderLibrary::Add(Ref<Shader>& Shader)
  * @param Name An integer representing the type of shader to be loaded.
  * @param Source A string containing the source code for the shader.
  * @return Returns a reference to the newly loaded Shader object.
+ */
+/**
+ * @brief Loads a shader into the library. The type of shader is determined by the Name parameter, where 1 represents "Vertex" and any other value represents "Pixel".
+ * @param[in] Name An integer representing the type of shader to be loaded (1 for Vertex, anything else for Pixel).
+ * @param[in] Source A string containing the source code of the shader.
+ * @return Returns a reference to the newly created Shader object.
  */
 Ref<Shader> ShaderLibrary::Load(const int Name, const std::string& Source)
 	{
@@ -172,6 +224,11 @@ Ref<Shader> ShaderLibrary::Load(const int Name, const std::string& Source)
  * @param FilePath The path of the shader file.
  * @return A reference to the loaded shader.
  */
+/**
+ * @brief Loads a shader from the given file path and adds it to the library.
+ * @param FilePath The path of the shader file.
+ * @return A reference to the loaded shader.
+ */
 Ref<Shader> ShaderLibrary::Load(const std::string& FilePath)
 	{
 		auto Shader = Shader::Create(FilePath);
@@ -189,6 +246,15 @@ Ref<Shader> ShaderLibrary::Load(const std::string& FilePath)
  * 
  * @return A reference to the loaded shader object.
  */
+/**
+ * @brief Loads a shader from the given file paths and adds it to the library.
+ * 
+ * The function creates a new shader object using `Shader::Create` with the provided file paths, then adds this shader to the library using `Add` method. Finally, it returns the created shader.
+ * 
+ * @param FilePath1 The path of the first shader file.
+ * @param FilePath2 The path of the second shader file (optional).
+ * @return A reference to the loaded shader object.
+ */
 Ref<Shader> ShaderLibrary::Load(const std::string& FilePath1, const std::string& FilePath2)
 	{
 		auto Shader = Shader::Create(FilePath1, FilePath2);
@@ -201,6 +267,11 @@ Ref<Shader> ShaderLibrary::Load(const std::string& FilePath1, const std::string&
  * @param Name The name of the shader to retrieve.
  * @return A reference to the requested shader, or an empty Ref if no such shader exists in the library.
  */
+/**
+ * @brief Retrieves a shader from the library by name.
+ * @param Name The name of the shader to retrieve.
+ * @return A reference to the requested shader. If the shader does not exist, an assertion will be triggered and the program will terminate.
+ */
 Ref<Shader> ShaderLibrary::Get(const std::string& Name)
 	{
 		CoreLogger::Assert(Exists(Name), "Shader Not Found!");
@@ -212,6 +283,15 @@ Ref<Shader> ShaderLibrary::Get(const std::string& Name)
  *
  * This function checks whether there is an entry for a shader with the specified name in the ShaderLibrary's internal map of shaders. 
  * It returns true if such an entry exists, and false otherwise.
+ *
+ * @param Name The name of the shader to check for.
+ * @return True if a shader with the given name exists, false otherwise.
+ */
+/**
+ * @brief Checks if a shader with the given name exists in the library.
+ *
+ * This function checks whether there is an entry for a shader with the provided name in the ShaderLibrary's internal map of shaders. 
+ * It returns true if such an entry exists and false otherwise.
  *
  * @param Name The name of the shader to check for.
  * @return True if a shader with the given name exists, false otherwise.

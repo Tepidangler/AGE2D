@@ -12,6 +12,11 @@ namespace AGE
  * @param Path The path to the image file for the texture.
  * @return A reference to a Texture2D object, or nullptr if an unsupported RendererAPI is used.
  */
+/**
+ * @brief Creates a reference to a Texture2D object. The type of the texture is determined by the current renderer API.
+ * @param Path The path to the image file for the texture.
+ * @return A reference to a Texture2D object, or nullptr if an unsupported RendererAPI is used.
+ */
 Ref<Texture2D> Texture2D::Create(const std::string& Path)
 	{
 		switch (Renderer::GetAPI())
@@ -43,6 +48,7 @@ Ref<Texture2D> Texture2D::Create(const std::string& Path)
  * 
  * @return A reference to a Texture2D object of the appropriate type for the current RendererAPI in use. If no supported API is found, it returns nullptr.
  */
+
 Ref<Texture2D> Texture2D::Create(const tmx_image* Image)
 	{
 		switch (Renderer::GetAPI())
@@ -67,6 +73,12 @@ Ref<Texture2D> Texture2D::Create(const tmx_image* Image)
  * @brief Creates a reference to a Texture2D object. The type of texture is determined by the current renderer API.
  * @param Paths A vector of strings representing the paths to the textures.
  * @return A reference to a Texture2D object, or nullptr if an unsupported RendererAPI is encountered.
+ */
+/**
+ * @brief Creates a texture from file path(s). The type of the texture depends on the current renderer API.
+ * 
+ * @param Paths A vector of strings representing the paths to the textures.
+ * @return Ref<Texture2D> A reference to the created Texture2D object. Returns nullptr if the RendererAPI::API is None or Unknown.
  */
 Ref<Texture2D> Texture2D::Create(const std::vector<std::string>& Paths)
 	{
@@ -94,6 +106,15 @@ Ref<Texture2D> Texture2D::Create(const std::vector<std::string>& Paths)
  * 
  * @param Spec The specification for the texture to be created. This includes things like width, height, format etc.
  * @return A reference to the newly created Texture2D object. If no suitable RendererAPI is found or an error occurs during creation, a null reference is returned.
+ */
+/**
+ * @brief Creates a new Texture2D based on the specified specification.
+ * 
+ * The type of texture is determined by the current Renderer API in use.
+ * If no supported API is found, an assertion error will be thrown.
+ * 
+ * @param Spec The specification for the texture to be created. This includes details like width, height, format etc.
+ * @return A reference to the newly created Texture2D instance.
  */
 Ref<Texture2D> Texture2D::Create(const TextureSpecification& Spec)
 	{
@@ -123,6 +144,17 @@ Ref<Texture2D> Texture2D::Create(const TextureSpecification& Spec)
  * @param Size Total size of the image data in bytes.
  * @return A reference to a Texture2D object, or nullptr if an unsupported Renderer API is used.
  */
+/**
+ * @brief Creates a new Texture2D object. The type of texture to be created is determined by the current renderer API in use.
+ * 
+ * @param Img Pointer to an Image object, which may contain pixel data for initializing the texture. Can be nullptr if no image data is provided.
+ * @param Width Width of the texture in pixels.
+ * @param Height Height of the texture in pixels.
+ * @param Channels Number of color channels in the texture (e.g., 3 for RGB, 4 for RGBA).
+ * @param Size Total size of the image data in bytes.
+ * 
+ * @return A reference to a Texture2D object that has been created based on the current Renderer API. If an unsupported or unknown Renderer API is detected, nullptr is returned instead.
+ */
 Ref<Texture2D> Texture2D::Create(const Image* Img, uint32_t Width, uint32_t Height, int Channels, size_t Size)
 	{
 		switch (Renderer::GetAPI())
@@ -150,6 +182,11 @@ Ref<Texture2D> Texture2D::Create(const Image* Img, uint32_t Width, uint32_t Heig
  * 
  * @return nullptr Always returns nullptr.
  */
+/**
+ * @brief This function is currently not implemented. It will return a pointer to an object of type T. If this function is called, it will assert and crash the program with the message "As() Failed!".
+ * 
+ * @return nullptr Always returns nullptr.
+ */
 T* Texture2D::As()
 	{
 		CoreLogger::Assert(false, "As() Failed!");
@@ -163,6 +200,12 @@ T* Texture2D::As()
  * @param Instance The TextureSpecification instance to be serialized.
  * 
  * @return void
+ */
+/**
+ * @brief This function serializes a TextureSpecification instance into the provided DataWriter.
+ * 
+ * @param Serializer Pointer to an instance of DataWriter that will be used for writing data.
+ * @param Instance The TextureSpecification instance to be serialized.
  */
 void TextureSpecification::Serialize(DataWriter* Serializer, const TextureSpecification& Instance)
 	{
@@ -179,6 +222,14 @@ void TextureSpecification::Serialize(DataWriter* Serializer, const TextureSpecif
  * The Format field is read as an uint8_t and then cast to ImageFormat.
  * @param Serializer A pointer to the DataReader that provides the serialized data.
  * @param Instance The TextureSpecification object to be deserialized.
+ */
+/**
+ * @brief Deserialize a TextureSpecification from a DataReader.
+ * 
+ * This function reads the Width, Height, Format and GenerateMips fields of a TextureSpecification from a DataReader.
+ * The format is read as an uint8_t and then cast to ImageFormat.
+ * @param Serializer A pointer to the DataReader that provides the serialized data.
+ * @param Instance The TextureSpecification instance to populate with deserialized data.
  */
 void TextureSpecification::Deserialize(DataReader* Serializer, TextureSpecification& Instance)
 	{

@@ -14,6 +14,11 @@
 namespace AGE
 {
 	
+/**
+ * @brief This class represents the ImGui layer in a system. It is responsible for rendering and handling user interface events.
+ * 
+ * The ImGuiLayer class provides methods to attach, detach, render GUI elements using ImGui, block or unblock events, start and end the GUI session respectively.
+ */
 class AGE_API ImGuiLayer : public Layer
 	{
 	
@@ -34,6 +39,11 @@ class AGE_API ImGuiLayer : public Layer
 		virtual void OnEvent(Event& E) override;
 
 		/**
+ * @brief This function is used to set the state of event blocking in a system.
+ * @param block A boolean value indicating whether events should be blocked or not.
+ * @return None
+ */
+/**
  * @brief This function is used to set the state of event blocking in a system.
  * @param block A boolean value indicating whether events should be blocked or not.
  * @return None

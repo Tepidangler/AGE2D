@@ -12,6 +12,13 @@ namespace AGE
  * 
  * @return Ref<VertexArray> A reference to the newly created VertexArray object.
  */
+/**
+ * @brief Creates a new VertexArray based on the current RendererAPI.
+ * 
+ * This function creates and returns a reference to a new VertexArray object, which is specific to the currently used RendererAPI. If no supported API is found, it asserts false and returns nullptr.
+ * 
+ * @return Ref<VertexArray> A reference to the newly created VertexArray.
+ */
 Ref<VertexArray> VertexArray::Create()
 	{
 		switch (Renderer::GetAPI())

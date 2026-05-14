@@ -17,6 +17,11 @@ namespace AGE
  * @param Path The file system path of the FBX file to load.
  * @return A pointer to the loaded ufbx_scene if successful, otherwise nullptr.
  */
+/**
+ * @brief Loads an FBX file into a ufbx_scene object.
+ * 
+ * If the file cannot be loaded for any reason (e.g., it does not exist or is corrupt), an error message will be logged and nullptr will be returned.
+ */
 ufbx_scene* FBXParser::LoadFile(const std::filesystem::path& Path)
 	{
 		ufbx_space_conversion Flags = ufbx_space_conversion::UFBX_SPACE_CONVERSION_ADJUST_TRANSFORMS;
@@ -42,6 +47,11 @@ ufbx_scene* FBXParser::LoadFile(const std::filesystem::path& Path)
  * 
  * @param scene Pointer to the ufbx_scene that needs to be freed.
  * 
+ * @return None
+ */
+/** 
+ * @brief This function frees an allocated ufbx_scene.
+ * @param[in] scene Pointer to the ufbx_scene that needs to be freed.
  * @return None
  */
 void FBXParser::FreeScene(ufbx_scene* scene)

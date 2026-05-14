@@ -76,6 +76,13 @@ namespace AGE
  * The logged information includes the device name, sample rate, maximum number of sources that can be played simultaneously, 
  * and the number of mono and stereo sources currently playing.
  */
+/**
+ * @brief Prints information about the audio device.
+ *
+ * This function logs various details about the current audio device to the console using CoreLogger::Info(). 
+ * The logged info includes the device name, sample rate, maximum number of sources that can be played simultaneously, 
+ * and the number of mono and stereo sources currently playing.
+ */
 static void PrintAudioDeviceInfo()
 	{
 		CoreLogger::Info("Audio Device Info:");
@@ -94,6 +101,11 @@ static void PrintAudioDeviceInfo()
  * @param FileName A string containing the name (and possibly path) of the file to be examined.
  * @return An enumeration value representing the format of the audio file. Possible values are Wav, Mp3 and None.
  */
+/**
+ * @brief Determines the file format based on its extension.
+ * @param FileName The name of the file to determine the format for.
+ * @return An enum value representing the audio file format (Wav, Mp3 or None if not recognized).
+ */
 static AudioFileFormat GetFileFormat(const std::string& FileName)
 	{
 		std::filesystem::path Path = FileName;
@@ -110,6 +122,14 @@ static AudioFileFormat GetFileFormat(const std::string& FileName)
  * @param BitsPerSample The number of bits per sample (8 or 16).
  * 
  * @return ALenum The corresponding OpenAL format code. If the inputs are not recognized, it logs an error and returns a null value.
+ */
+/**
+ * @brief Determines the audio format based on number of channels and bits per sample.
+ * 
+ * @param Channels Number of audio channels (1 for mono, 2 for stereo).
+ * @param BitsPerSample Bit depth of the samples.
+ * 
+ * @return ALenum Corresponding OpenAL format. Returns 0x0 if unrecognized Wave format.
  */
 static ALenum GetFormat(uint8_t Channels, uint8_t BitsPerSample)
 	{
@@ -144,12 +164,16 @@ static ALenum GetFormat(uint8_t Channels, uint8_t BitsPerSample)
  * 
  * @return void
  */
+/**
+ * @brief Constructor for the AGESound class. Initializes a new instance of the sound object with default values.
+ */
 AGESound::AGESound()
 	{
 		Init();
 	}
 
 	
+
 void AGESound::Init()
 	{
 		s_Device = al::Device::Create(DeviceType::Playback);
@@ -181,6 +205,14 @@ void AGESound::Init()
  *
  * @return void
  */
+/**
+ * @brief Starts the sound playback.
+ *
+ * This function initiates the sound playback by starting to play the audio data from the beginning of the buffer. 
+ * It does not reset or rewind the sound, it simply starts playing from where it left off.
+ *
+ * @return void
+ */
 void AGESound::Start()
 	{
 	}
@@ -193,6 +225,14 @@ void AGESound::Start()
  *
  * @return None
  */
+/**
+ * @brief Updates the sound object.
+ *
+ * This function is responsible for updating the state of the sound object. It may involve processing audio data, 
+ * updating sound properties or triggering any other necessary actions based on its current state.
+ *
+ * @return void
+ */
 void AGESound::Update()
 	{
 	}
@@ -202,6 +242,14 @@ void AGESound::Update()
  *
  * This function is used to stop the sound that was previously started using the Play() method. 
  * It will halt any ongoing playback and reset the position of the sound source back to its initial state.
+ *
+ * @return void
+ */
+/**
+ * @brief Stops the sound from playing.
+ *
+ * This function is used to stop the sound that was previously started using the Play() method. 
+ * It should be called when you want to halt the playback of the sound.
  *
  * @return void
  */
@@ -217,6 +265,13 @@ void AGESound::Stop()
  * 
  * @param[in] Banks A vector of references to Sound Bank objects.
  */
+/**
+ * @brief Loads a collection of Sound Banks into the system.
+ *
+ * This function takes in a vector of references to Sound Bank objects and loads them into the system. It does not return anything, so it is void.
+ * 
+ * @param[in] Banks - A constant reference to a vector of SoundBank references. Each SoundBank object represents a bank of sounds that can be played by the system.
+ */
 void AGESound::LoadBanks(const std::vector<Ref<SoundBank>> &Banks)
 	{
 	}
@@ -227,6 +282,14 @@ void AGESound::LoadBanks(const std::vector<Ref<SoundBank>> &Banks)
  * This function takes in a reference to a SoundBank object and loads it into the system. It does not return anything, so use void as the return type.
  *
  * @param Bank A reference to the SoundBank object that you want to load.
+ */
+/**
+ * @brief Loads a sound bank into the system.
+ * 
+ * This function takes in a reference to a SoundBank object and loads it into the system for use by the AGESound class.
+ * The exact behavior of this function depends on its implementation, which is not provided here.
+ * 
+ * @param Bank A reference to the SoundBank object to be loaded.
  */
 void AGESound::LoadBank(Ref<SoundBank> Bank)
 	{
@@ -240,6 +303,10 @@ void AGESound::LoadBank(Ref<SoundBank> Bank)
  *
  * @return A reference to the string holding the name of the current event
  */
+/**
+ * @brief Get the name of the current event
+ * @return A reference to a string containing the name of the current event
+ */
 std::string & AGESound::GetCurrentEventName()
 	{
 		return m_EventName;
@@ -248,6 +315,13 @@ std::string & AGESound::GetCurrentEventName()
 	/**
  * @brief Set the name of the current event
  * @param Name The new name for the current event
+ */
+/**
+ * @brief Sets the name of the current event.
+ *
+ * This function sets the name of the current event in the AGESound object. The new name is passed as a const reference to avoid unnecessary copying. 
+ *
+ * @param Name A constant reference to the string that will be used as the new name for the current event.
  */
 void AGESound::SetCurrentEventName(const std::string &Name)
 	{
@@ -260,6 +334,11 @@ void AGESound::SetCurrentEventName(const std::string &Name)
  *
  * @return void
  */
+/**
+ * @brief Shuts down the AGESound object.
+ * 
+ * This function is used to clean up any resources that were allocated during the initialization of the AGESound object, such as memory or file handles. It prepares the object for deletion or reuse.
+ */
 void AGESound::Shutdown()
 	{
 	}
@@ -271,6 +350,14 @@ void AGESound::Shutdown()
  *  
  *  @param EventName A string representing the name of the event to validate.
  *  @return Returns true if the event is valid, false otherwise.
+ */
+/**
+ * @brief Checks whether the given event name is valid or not.
+ * 
+ * This function takes an event name as input and checks if it's a valid event by comparing it with a list of known events. If the event name matches any of these, the function returns true; otherwise, it returns false.
+ * 
+ * @param EventName The name of the event to be checked.
+ * @return True if the event is valid, False otherwise.
  */
 bool AGESound::IsEventValid(const std::string& EventName)
 	{
@@ -288,6 +375,11 @@ bool AGESound::IsEventValid(const std::string& EventName)
  *
  * @return None
  */
+/**
+ * @brief Set the parameter value by its name
+ * @param Name The name of the parameter to set
+ * @param Value The new value for the parameter
+ */
 void AGESound::SetParameterByName(const std::string &Name, float Value)
 	{
 	}
@@ -299,6 +391,13 @@ void AGESound::SetParameterByName(const std::string &Name, float Value)
  *
  * @param Attributes A void pointer to the Attributes structure.
  */
+/**
+ * @brief Sets the 3D attributes for the sound object.
+ *
+ * This function sets the 3D attributes of the sound object using a void pointer to the Attributes structure. The exact nature and format of this data is not specified in the documentation, so it's assumed to be opaque to Doxygen.
+ *
+ * @param Attributes A void pointer to the Attributes structure. This parameter is expected to contain specific 3D attributes for the sound object but its content is not defined by this function.
+ */
 void AGESound::Set3DAttributes(void *Attributes)
 	{
 	}
@@ -308,6 +407,11 @@ void AGESound::Set3DAttributes(void *Attributes)
  *
  * This function is used to stop any currently playing sounds in the game. 
  * It does not take any parameters and returns void.
+ */
+/**
+ * @brief Stops the sound from playing.
+ * 
+ * This function is used to stop any currently playing sounds in the game. It does not take any parameters and has no return value.
  */
 void AGESound::StopSound()
 	{
@@ -321,6 +425,13 @@ void AGESound::StopSound()
  * buffers (i.e., those that are ready to be played) from the source, then unqueues them if there are any.
  *
  * @param Source A reference to the AudioSource object whose sound is to be unloaded.
+ */
+/**
+ * @brief Unloads a sound from an audio source.
+ *
+ * This function is used to unload or remove a sound from an audio source. It does this by checking if there are any buffers that have been processed and if so, it removes them using the alSourceUnqueueBuffers function. 
+ *
+ * @param Source A reference to the AudioSource object from which the sound is being removed.
  */
 void AGESound::UnloadSound(const Ref<AudioSource>& Source)
 	{
@@ -403,6 +514,17 @@ void AGESound::UnloadSound(const Ref<AudioSource>& Source)
  * 
  * @return Returns true if devices are found, false otherwise. In this implementation, it always returns true as there is no way to fail in retrieving available devices.
  */
+/**
+ * @brief Finds available devices for the given ALCdevice.
+ *
+ * This function retrieves a list of available audio devices using the OpenAL context provided by the Device parameter. 
+ * The retrieved device names are stored in the DevicesArray vector.
+ *
+ * @param[out] DevicesArray A reference to a std::vector<std::string> where the device names will be stored.
+ * @param[in] Device Pointer to an ALCdevice that represents the OpenAL context for which available devices should be found.
+ * 
+ * @return Returns true if at least one device is available, false otherwise. This function does not differentiate between no devices and devices with specific names.
+ */
 bool AGESound::FindAvailableDevices(std::vector<std::string>& DevicesArray, ALCdevice* Device)
 	{
 		//const ALchar* Devices;
@@ -426,6 +548,17 @@ bool AGESound::FindAvailableDevices(std::vector<std::string>& DevicesArray, ALCd
 
 	/**
  * This function takes as input a filename and a line number along with an OpenAL error code. It then logs the appropriate error message to the console using CoreLogger::Error() and asserts that the condition is false. The function returns true if no errors are encountered, otherwise it returns false.
+ */
+/**
+ * @brief Displays OpenAL error codes.
+ * 
+ * This function takes in three parameters - the file name where the error occurred, the line number and the type of error that was encountered. It logs appropriate messages for each type of error using CoreLogger::Error() and CoreLogger::Assert(). If an unknown error is detected, it simply returns false.
+ * 
+ * @param FN The name of the file where the error occurred.
+ * @param line The line number in the file where the error occurred.
+ * @param Error The type of error that was encountered.
+ * 
+ * @return Returns true if an error is found, false otherwise.
  */
 bool AGESound::DisplayErrorCode(const std::string& FN, const uint32_t line, ALenum Error)
 	{
@@ -490,6 +623,14 @@ bool AGESound::DisplayErrorCode(const std::string& FN, const uint32_t line, ALen
  * @param FileName The name of the file to load from.
  * @return An AudioSource object representing the loaded audio data.
  */
+/**
+ * @brief Loads an audio source from a file.
+ * 
+ * This function loads an audio source based on the format of the provided filename. It supports WAV and MP3 formats. If the format is not supported, it logs an error message and returns an invalid AudioSource object.
+ * 
+ * @param FileName The name of the file to load from.
+ * @return An AudioSource object representing the loaded audio data.
+ */
 AudioSource AGESound::LoadAudioSource(const std::string& FileName)
 	{
 		auto Format = GetFileFormat(FileName);
@@ -520,6 +661,14 @@ AudioSource AGESound::LoadAudioSource(const std::string& FileName)
  * 
  * @param Source A reference to the AudioSource that is to be played.
  */
+/** 
+ * @brief Plays an audio source.
+ * 
+ * This function plays the provided AudioSource using OpenAL's alSourcePlay function.
+ * The function takes a reference to an AudioSource object which is played by this method.
+ * 
+ * @param Source A const reference to an AudioSource object that needs to be played.
+ */
 void AGESound::Play(const Ref<AudioSource>& Source)
 	{
 		alSourcePlay(Source->m_SourceHandle);
@@ -532,6 +681,13 @@ void AGESound::Play(const Ref<AudioSource>& Source)
  * 
  * @param Source A reference to the AudioSource object whose source should be stopped.
  */
+/** 
+ * @brief Stops an audio source from playing.
+ * 
+ * This function stops the audio source specified by the handle provided. It does not check if the source is actually playing, so it should be used with caution.
+ * 
+ * @param Source A reference to the AudioSource object that you want to stop.
+ */
 void AGESound::Stop(const Ref<AudioSource>& Source)
 	{
 		alSourceStop(Source->m_SourceHandle);
@@ -543,6 +699,13 @@ void AGESound::Stop(const Ref<AudioSource>& Source)
  * 
  * @param Sources A constant reference to a vector of Ref<AudioSource> objects representing the audio sources to be stopped.
  * @return void No return value is expected as all operations are performed in-place.
+ */
+/**
+ * @brief Stops all audio sources in the given vector.
+ *
+ * This function iterates over each element of the provided vector and calls the Stop() function on it, effectively stopping any ongoing sound playback for that source.
+ * 
+ * @param Sources A constant reference to a vector of AudioSource references. Each element represents an individual audio source which will have its playback stopped.
  */
 void AGESound::Stop(const std::vector<Ref<AudioSource>>& Sources)
 	{
@@ -559,6 +722,13 @@ void AGESound::Stop(const std::vector<Ref<AudioSource>>& Sources)
  * @param Log A boolean value indicating whether to enable (true) or disable (false) debug logging.
  * @return void
  */
+/**
+ * @brief Set the Debug Logging flag for the AGESound object
+ * 
+ * This function sets a boolean value that determines whether debug logging is enabled or disabled.
+ * 
+ * @param Log A boolean indicating if debug logging should be enabled (true) or disabled (false).
+ */
 void AGESound::SetDebugLogging(bool Log)
 	{
 	}
@@ -573,6 +743,17 @@ void AGESound::SetDebugLogging(bool Log)
  * @param Length The length of the buffer.
  * 
  * @return An integer representation of the input buffer.
+ */
+/**
+ * @brief Converts a buffer of bytes to an integer.
+ *
+ * This function takes in a buffer and its length, converts the content of the buffer into an integer based on the endianness of the system. 
+ * If the system is little-endian, it directly copies the buffer's content into the integer. If the system is big-endian, it reverses the order of bytes in the buffer and stores them into the integer.
+ *
+ * @param Buffer Pointer to the buffer containing the data to be converted.
+ * @param Length The length of the buffer.
+ * 
+ * @return An integer representation of the content of the buffer.
  */
 int32_t AGESound::ConvertToInt(char* Buffer, size_t Length)
 	{
@@ -597,6 +778,12 @@ int32_t AGESound::ConvertToInt(char* Buffer, size_t Length)
 * @return An AudioSource struct containing information about loaded audio source.\n \
 * @note Assumes mp3dec library is already initialized and ready for use.\n \
 */"
+/**
+ * @brief Loads an audio source from an MP3 file.
+ * 
+ * @param FileName The name of the MP3 file to load.
+ * @return An instance of the `AudioSource` struct containing the handle to the OpenAL buffer and source, or an empty `AudioSource` if the file cannot be loaded.
+ */
 AudioSource AGESound::LoadAudioSourceMP3(const std::string& FileName)
 	{
 
@@ -640,6 +827,14 @@ AudioSource AGESound::LoadAudioSourceMP3(const std::string& FileName)
  * @param FileName Name of the WAV file to load.
  * @return An AudioSource object with loaded audio data or empty if loading failed.
  */
+/**
+ * @brief Loads a WAV file and returns an AudioSource object with the sound data.
+ * 
+ * This function opens a binary file to get information about the audio format (channels, sample rate, bits per sample, size), allocates memory for the sound data buffer and reads the actual sound data into this buffer. It then creates an AudioSource object from the loaded data and returns it.
+ * 
+ * @param FileName The name of the WAV file to load.
+ * @return An AudioSource object with the sound data, or an empty AudioSource if the file could not be opened or its header could not be read.
+ */
 AudioSource AGESound::LoadWav(const std::string& FileName)
 	{
 		uint8_t Channels;
@@ -670,6 +865,20 @@ AudioSource AGESound::LoadWav(const std::string& FileName)
 		return Audio;
 	}
 	<doxygen comment>
+/**
+ * @brief Loads the header of a WAV file.
+ * 
+ * This function reads from an input stream to extract key information about the audio data in the WAV file such as number of channels, sample rate, bits per sample and size of data.
+ * The extracted information is stored in output parameters provided by reference.
+ * 
+ * @param File The input file stream to read from.
+ * @param Channels Output parameter for the number of audio channels in the WAV file (1 for mono, 2 for stereo, etc.).
+ * @param SampleRate Output parameter for the sample rate of the audio data in the WAV file.
+ * @param BitsPerSample Output parameter for the number of bits per sample in the WAV file.
+ * @param Size Output parameter for the size of the audio data in the WAV file, measured in bytes.
+ * 
+ * @return True if the header was successfully loaded and parsed, false otherwise.
+ */
 bool AGESound::LoadWavFileHeader(std::ifstream& File, uint8_t& Channels, int32_t& SampleRate, uint8_t& BitsPerSample, ALsizei& Size)
 	{
 		char Buffer[4];
@@ -809,6 +1018,10 @@ bool AGESound::LoadWavFileHeader(std::ifstream& File, uint8_t& Channels, int32_t
  * It does this by returning 'this' as a pointer to AGESound, which allows it to be treated as if it were an instance of the AGESound class.
  *
  * @return A pointer to the AGESound object.
+ */
+/**
+ * @brief This function returns a pointer to AGESound object casted from the current instance of AudioEngine.
+ * @return A pointer to an AGESound object, or nullptr if this is not an AGESound instance.
  */
 AGESound* AudioEngine::As()
 	{

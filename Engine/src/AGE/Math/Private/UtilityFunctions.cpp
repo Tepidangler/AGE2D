@@ -11,6 +11,14 @@ namespace AGE {
  * @param vec A Vector2 object to be converted.
  * @return DirectX::XMFLOAT2 An equivalent XMFLOAT2 object with same x and y values as input Vector2.
  */
+/** 
+ * @brief Converts a Vector2 object to an XMFLOAT2 object.
+ * 
+ * This function takes a Vector2 object and returns an XMFLOAT2 object with the same x and y values.
+ * The conversion is done by simply copying the x and y values from the input Vector2 object into the new XMFLOAT2 object.
+ * @param vec A Vector2 object to be converted.
+ * @return An XMFLOAT2 object with the same x and y values as the input Vector2 object.
+ */
 DirectX::XMFLOAT2 Convert::ToXMFloat2(Vector2 vec)
 	{
 		return DirectX::XMFLOAT2(vec.x, vec.y);
@@ -25,6 +33,13 @@ DirectX::XMFLOAT2 Convert::ToXMFloat2(Vector2 vec)
  * @param vec A Vector3 object to be converted.
  * @return An XMFLOAT3 object with the same x, y, and z values as the input Vector3 object.
  */
+/** 
+ * @brief Converts a Vector3 object to an XMFLOAT3 object.
+ * 
+ * This function takes in a Vector3 object and returns its equivalent XMFLOAT3 representation. The Vector3 object's x, y, and z values are used to initialize the XMFLOAT3 object.
+ * @param vec A Vector3 object to be converted.
+ * @return DirectX::XMFLOAT3 An XMFLOAT3 object with the same coordinates as the input Vector3 object.
+ */
 DirectX::XMFLOAT3 Convert::ToXMFloat3(Vector3 vec)
 	{
 		return DirectX::XMFLOAT3(vec.x, vec.y, vec.z);
@@ -37,6 +52,14 @@ DirectX::XMFLOAT3 Convert::ToXMFloat3(Vector3 vec)
  *  
  *  @param vec The Vector4 to be converted.
  *  @return A new XMFLOAT4 object representing the input Vector4.
+ */
+/**
+ * @brief Converts a Vector4 to an XMFLOAT4.
+ * 
+ * This function takes in a Vector4 and returns an XMFLOAT4 with the same values. The order of the elements is (x, y, z, w).
+ *
+ * @param vec A Vector4 to be converted.
+ * @return An XMFLOAT4 with the same values as the input Vector4.
  */
 DirectX::XMFLOAT4 Convert::ToXMFloat4(Vector4 vec)
 	{
@@ -52,6 +75,15 @@ DirectX::XMFLOAT4 Convert::ToXMFloat4(Vector4 vec)
  * @param vec A Vector2 object to be converted.
  * @return An XMVECTOR with the same x and y values as the input Vector2, but z and w set to 1.0f.
  */
+/**
+ * @brief Converts a Vector2 to an XMVECTOR.
+ *
+ * This function takes in a Vector2 object and converts it into an XMVECTOR, which is used extensively in DirectX math operations. 
+ * The Vector2's x and y values are set as the first two components of the resulting XMVECTOR. The remaining components are filled with 1.0f to represent a homogeneous coordinate system.
+ *
+ * @param vec A Vector2 object to be converted into an XMVECTOR.
+ * @return An XMVECTOR that has been constructed from the input Vector2.
+ */
 DirectX::XMVECTOR Convert::ToXMVec(Vector2 vec)
 	{
 		DirectX::XMVECTOR DXXMVec = DirectX::XMVectorSet(vec.x, vec.y, 1.f, 1.f);
@@ -64,6 +96,15 @@ DirectX::XMVECTOR Convert::ToXMVec(Vector2 vec)
  * This function takes in a Vector3 object and converts it into an XMVECTOR object by setting the x, y, z components of the vector. The w component is set to 1.0f as per the standard convention for homogeneous coordinates.
  * @param vec A Vector3 object containing the x, y, and z components to be converted.
  * @return An XMVECTOR object with the same x, y, and z values as in the input Vector3 object, but with w set to 1.0f.
+ */
+/**
+ * @brief Converts a Vector3 to an XMVECTOR.
+ *
+ * This function takes in a Vector3 object and converts it into an XMVECTOR, which is used extensively in the DirectX Math library. 
+ * The Vector3's x, y, and z values are set as the components of the resulting XMVECTOR.
+ *
+ * @param vec A Vector3 to be converted.
+ * @return An XMVECTOR with the same coordinates as the input Vector3.
  */
 DirectX::XMVECTOR Convert::ToXMVec(Vector3 vec)
 	{
@@ -78,6 +119,14 @@ DirectX::XMVECTOR Convert::ToXMVec(Vector3 vec)
  * The Vector4's x, y, z, w values are set as the components of the resulting XMVECTOR.
  * 
  * @param vec A Vector4 object to be converted.
+ * @return An XMVECTOR with the same components as the input Vector4.
+ */
+/**
+ * @brief Converts a Vector4 to an XMVECTOR.
+ * 
+ * This function takes in a Vector4 object and converts it into an XMVECTOR, which is used extensively in DirectX programming.
+ * The Vector4's x, y, z, and w values are set as the components of the resulting XMVECTOR.
+ * @param vec A Vector4 to be converted.
  * @return An XMVECTOR with the same components as the input Vector4.
  */
 DirectX::XMVECTOR Convert::ToXMVec(Vector4 vec)
@@ -95,6 +144,15 @@ DirectX::XMVECTOR Convert::ToXMVec(Vector4 vec)
  * @param vec The Vector3 object to be converted.
  * @return A glm::vec3 object with the same values as the input Vector3.
  */
+/**
+ * @brief Converts a Vector3 object to a GLM vec3 object.
+ *
+ * This function takes in a Vector3 object and returns its equivalent glm::vec3 representation. 
+ * The conversion is done by simply copying the x, y, and z values from the input Vector3 object into the new glm::vec3 object.
+ *
+ * @param vec The Vector3 object to be converted.
+ * @return A glm::vec3 object with the same x, y, and z values as the input Vector3 object.
+ */
 glm::vec3 Convert::ToGLM(Vector3 vec) {
 		return glm::vec3(vec.x, vec.y, vec.z);
 	}
@@ -106,6 +164,16 @@ glm::vec3 Convert::ToGLM(Vector3 vec) {
  * 
  * @param vec The Vector4 to be converted.
  * @return A glm::vec4 with the same x, y, z, and w values as the input Vector4.
+ */
+/**
+ * @brief Converts a Vector4 to a GLM vec4.
+ * 
+ * This function takes in a Vector4 and returns a glm::vec4 with the same x, y, z, w values.
+ * The conversion is done by directly copying the values from the input Vector4 to the output glm::vec4.
+ *
+ * @param vec The Vector4 to be converted.
+ * 
+ * @return A GLM vector with the same x, y, z, w values as the input Vector4.
  */
 glm::vec4 Convert::ToGLM(Vector4 vec) {
 		return glm::vec4(vec.x, vec.y, vec.z, vec.w);

@@ -13,11 +13,18 @@ namespace AGE
  * 
  * It provides methods for creating, deleting and updating nodes. The manager also keeps track of all active nodes.
  */
+COMMENT:
+/**
+ * @brief NodeEditorManager is a class that manages the editing of nodes in a graph-based system.
+ */
+CONFIDENCE: 1.0;
+
 NodeEditorManager::NodeEditorManager()
 	{
 	}
 
 	Unknown
+Unknown
 void NodeEditorManager::CreateContextAndWindow(const std::filesystem::path& Filepath, const std::string& WindowName, void* Target)
 	{
 		AppConfig appConfig = App::Get().GetAppConfig();
@@ -118,6 +125,16 @@ void NodeEditorManager::CreateContextAndWindow(const std::filesystem::path& File
  * 
  * @return None
  */
+/**
+ * @brief This function creates a new window and adds it to the list of active windows.
+ * 
+ * @param WindowName The name of the window to be created.
+ * @param Context Pointer to the editor context which is used for creating the window.
+ * @param Target Pointer to the target object that the window will interact with.
+ * @param LoadingExisting A boolean flag indicating whether or not an existing file should be loaded when creating the new window.
+ * 
+ * @return void
+ */
 void NodeEditorManager::CreateNewWindow(const std::string& WindowName, ax::NodeEditor::EditorContext* Context, void* Target, bool LoadingExisting)
 	{
 		m_ActiveWindows.push_back({ CreateRef<NodeEditorWindow>(WindowName, Context, Target, LoadingExisting), Context});
@@ -128,6 +145,11 @@ void NodeEditorManager::CreateNewWindow(const std::string& WindowName, ax::NodeE
  * @brief Rebuilds a window with the given name. If no such window exists, this function does nothing.
  * 
  * This function iterates over all active windows and checks if their names match the provided one. When it finds a match, it calls the `RebuildWindow` method on that window object to rebuild it.
+ * 
+ * @param WindowName The name of the window to be rebuilt.
+ */
+/**
+ * @brief Rebuilds a window with the given name. If no such window exists, this function does nothing.
  * 
  * @param WindowName The name of the window to be rebuilt.
  */
@@ -151,6 +173,14 @@ void NodeEditorManager::RebuildWindow(const std::string& WindowName)
  * @param Config The configuration to check for.
  * @return True if the config file is stored, False otherwise.
  */
+/**
+ * @brief Checks if a configuration file is stored in the NodeEditorManager instance.
+ *
+ * This function iterates over all stored configurations and checks if any of them have the same settings file as the provided one.
+ * 
+ * @param Config The configuration to check for.
+ * @return True if the configuration file is found, false otherwise.
+ */
 bool NodeEditorManager::IsConfigFileStored(ax::NodeEditor::Config Config)
 	{
 		for (auto& C : m_Configs)
@@ -170,6 +200,14 @@ bool NodeEditorManager::IsConfigFileStored(ax::NodeEditor::Config Config)
  * 
  * @param DeltaTime The time step for rendering and updating the windows.
  */
+/**
+ * @brief Renders all active windows in the NodeEditorManager.
+ * 
+ * This function iterates over each window stored in m_ActiveWindows and calls OnImGuiRender on it, passing DeltaTime as an argument.
+ * It is used to update and render all GUI elements associated with the windows.
+ * 
+ * @param DeltaTime The time step for rendering.
+ */
 void NodeEditorManager::RenderWindows(TimeStep DeltaTime)
 	{
 		for (auto& W : m_ActiveWindows)
@@ -180,6 +218,11 @@ void NodeEditorManager::RenderWindows(TimeStep DeltaTime)
 	}
 
 	/**
+ * @brief Destructor for NodeEditorManager class. It iterates over all active windows and destroys each editor instance using ax::NodeEditor::DestroyEditor function.
+ * 
+ * @return None
+ */
+/**
  * @brief Destructor for NodeEditorManager class. It iterates over all active windows and destroys each editor instance using ax::NodeEditor::DestroyEditor function.
  * 
  * @return None
@@ -198,6 +241,14 @@ NodeEditorManager::~NodeEditorManager()
  * and calls RegisterFunctions() on the Window object pointed to by the first element of the pair.
  * @return void
  */
+/**
+ * @brief This function registers functions for all active windows in the NodeEditorManager.
+ * 
+ * The function iterates over each window (pair of a pointer to a Window and its name) stored in m_ActiveWindows, 
+ * and calls the RegisterFunctions() method on that window's node editor. It does not return anything.
+ * 
+ * @return void
+ */
 void NodeEditorManager::RegisterFunctions()
 	{
 		for (auto& W : m_ActiveWindows)
@@ -213,6 +264,13 @@ void NodeEditorManager::RegisterFunctions()
  * any registered functions that are no longer needed or relevant.
  *
  * @return void
+ */
+/**
+ * @brief Deregisters all functions from the active windows.
+ *
+ * This function iterates over each active window and calls the 
+ * `DeregisterFunctions` method on that window's node editor instance. 
+ * It does not return anything, so it has a void return type.
  */
 void NodeEditorManager::DeregisterFunctions()
 	{

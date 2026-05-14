@@ -15,6 +15,11 @@ namespace AGE
  *
  * This function is responsible for releasing any resources that were acquired by the object during its lifetime, such as memory or GPU handles. It does not return anything and thus has an empty return type (void).
  */
+/**
+ * @brief Virtual destructor for the GraphicsContext class.
+ *
+ * This function is responsible for releasing any resources that were acquired by the object during its lifetime, such as memory or graphics contexts. It does not return anything and thus has an empty return type (void).
+ */
 virtual ~GraphicsContext() {}
 		virtual void Init() = 0;
 

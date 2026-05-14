@@ -17,6 +17,11 @@ namespace AGE
  *
  * This function is responsible for freeing any resources that were allocated during the lifetime of the object, such as GPU memory or shaders. It does not return anything and thus has an empty return type (void).
  */
+/**
+ * @brief Virtual destructor for the Shader class.
+ *
+ * This function is responsible for releasing any resources that were acquired by the Shader object during its lifetime. It does not return anything and has no parameters.
+ */
 virtual ~Shader() {};
 
 		virtual void Bind() const = 0;
@@ -62,6 +67,13 @@ virtual ~Shader() {};
  * This function returns an unordered map where keys are strings and values are references to Shader objects. The purpose of this function is to provide access to all currently loaded shaders in the system. 
  *
  * @return An unordered_map containing string-Shader pairs representing the names and corresponding shaders of all loaded shaders.
+ */
+/**
+ * @brief Returns a reference to the shader library.
+ *
+ * This function returns an unordered map that contains all the shaders in the library. The keys are the names of the shaders and the values are references to the actual Shader objects. 
+ *
+ * @return An unordered_map containing string-Shader pairs representing the shader library.
  */
 std::unordered_map<std::string, Ref<Shader>> GetLibrary() { return m_Shaders; }
 

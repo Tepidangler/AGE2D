@@ -58,6 +58,14 @@ namespace AGE
  * @param Position An optional parameter indicating the start position for generating pseudo-random numbers. Defaults to 0 if not provided.
  * @return void
  */
+/**
+ * @brief Resets the seed value and position for a pseudo-random number generator.
+ * 
+ * This function sets the global variables `s_Seed` and `s_Position` to the provided values, which are used by other functions in this class for generating pseudo-random numbers.
+ * 
+ * @param Seed The new seed value to use.
+ * @param Position The new position value to use (default is 0).
+ */
 static void ResetSeed(uint32_t Seed, int Position = 0) 
 		{	
 			s_Seed = Seed; 
@@ -65,6 +73,10 @@ static void ResetSeed(uint32_t Seed, int Position = 0)
 		}
 
 		/**
+ * @brief This function returns the current seed value used for random number generation.
+ * @return The current seed value as a uint32_t.
+ */
+/**
  * @brief This function returns the current seed value used for random number generation.
  * @return The current seed value as a uint32_t.
  */
@@ -77,11 +89,23 @@ static uint32_t GetSeed() { return s_Seed; }
  *
  * @param Position The new integer value that will be set for 's_Position'.
  */
+/**
+ * @brief Sets the current position to a given integer value.
+ *
+ * This function sets the static variable 's_Position' to the input parameter 'Position'. It does not return anything, so it is void type.
+ *
+ * @param Position The new position to be set for s_Position.
+ */
 static void SetCurrentPosition(int Position) { s_Position = Position; }
 
 		/**
  * @brief This function returns the current position value stored in 's_Position'.
  * @return The integer value of the current position. If no such variable exists, it will return a default value of 0.
+ */
+/**
+ * @brief This function returns the current position.
+ *
+ * @return The integer value of the current position. If there is no such position, it will return -1.
  */
 static int GetCurrentPosition() { return s_Position; }
 

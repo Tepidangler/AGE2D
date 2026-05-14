@@ -8,6 +8,7 @@
 namespace AGE
 {
     
+
 Ref<AudioEngine> AudioEngine::Create(AudioEngineType Type)
     {
 
@@ -47,6 +48,10 @@ Ref<AudioEngine> AudioEngine::Create(AudioEngineType Type)
     template<typename T>
     /**
  * @brief This function is a placeholder and will always fail an assertion. It's used as a stub for future development.
+ * @return Unknown
+ */
+/**
+ * @brief This function is a placeholder and should not be called directly. It always asserts false with an error message indicating that the As() function has failed.
  * @return Unknown
  */
 T* AudioEngine::As()

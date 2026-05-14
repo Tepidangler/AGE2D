@@ -13,7 +13,12 @@ namespace AGE
 	{
 	public:
 		AGESound();
-		~AGESound() override = default;
+		/**
+ * @brief Destructor for AGESound class.
+ *
+ * This function is responsible for releasing any resources that the AGESound object may have acquired during its lifetime, such as memory or file handles. It does not return anything and has no parameters.
+ */
+~AGESound() override = default;
 		virtual void Init() override;
 		virtual void Start() override;
 		virtual void Update() override;
@@ -61,6 +66,14 @@ namespace AGE
  * This function returns a vector containing all the currently available sound devices. The devices are returned in no particular order.
  *
  * @return A std::vector<std::string> containing the names of all available sound devices. If there are no available sound devices, an empty vector is returned.
+ */
+/**
+ * @brief Retrieves the list of available sound devices.
+ *
+ * This function returns a vector containing all the currently available sound devices in the system.
+ * The returned data is populated from internal storage and may not always be up-to-date with the current state of the system.
+ * 
+ * @return A std::vector<std::string> containing the names of all available sound devices. If no sound devices are available, an empty vector is returned.
  */
 std::vector<std::string> GetAvailableSoundDevices() { return m_AvailableSoundDevices; }
 

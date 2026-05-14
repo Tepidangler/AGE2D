@@ -97,6 +97,11 @@ Image::Image(ImageSpecification& Spec, bool FlipVerticallyOnLoad)
  *
  * @return void
  */
+/**
+ * @brief Destructor for the Image class.
+ *
+ * This destructor is responsible for releasing any resources that were acquired by the Image object, such as memory allocated for its pixels. 
+ */
 Image::~Image()
 	{
 	}
@@ -110,6 +115,18 @@ Image::~Image()
  * @param y The y-coordinate of the line.
  * @param x2 The end x-coordinate of the line.
  * @param Color The color of the line, represented as a Vector4 object.
+ * 
+ * @return void
+ */
+/**
+ * @brief Draws a horizontal line on the image.
+ *
+ * This function draws a horizontal line on the image starting from (x1, y) to (x2, y). The color of the line is specified by the Vector4 Color parameter.
+ * 
+ * @param x1 The start x-coordinate of the line.
+ * @param y The y-coordinate of the line.
+ * @param x2 The end x-coordinate of the line.
+ * @param Color The color of the line, represented as a Vector4.
  * 
  * @return void
  */
@@ -132,6 +149,16 @@ void Image::DrawHorizontalLine(int x1, int y, int x2, Vector4 Color)
  * 
  * @return void
  */
+/**
+ * @brief Fills a rectangle with the specified color.
+ *
+ * This function fills a rectangle defined by two points (x1, y1) and (x2, y2) with the provided color. 
+ * The rectangle is filled from left to right for each row starting from y1 to y2.
+ *
+ * @param x1,y1 Coordinates of one corner of the rectangle.
+ * @param x2,y2 Coordinates of another corner of the rectangle.
+ * @param Color Vector4 representing the color to fill with.
+ */
 void Image::FillRect(int x1, int y1, int x2, int y2, Vector4 Color)
 	{
 
@@ -152,6 +179,14 @@ void Image::FillRect(int x1, int y1, int x2, int y2, Vector4 Color)
  * 
  * @return A pair of integers representing the x and y coordinates of a pixel.
  */
+/**
+ * @brief Get the pixel location of an image
+ * 
+ * This function returns a pair of integers representing the x and y coordinates of a pixel in the image.
+ * The values are not meaningful by themselves but can be used to locate the pixel in the context of the image.
+ *
+ * @return A pair of integers representing the x and y coordinates of a pixel
+ */
 std::pair<int, int> Image::GetPixelLocation()
 	{
 		return std::pair<int, int>();
@@ -166,6 +201,15 @@ std::pair<int, int> Image::GetPixelLocation()
  * @param y An integer representing the vertical position of the pixel in the image.
  * @param Data An unsigned 32-bit integer representing the new RGB data for the pixel.
  */
+/**
+ * @brief Sets the pixel data at a specific location in the image.
+ *
+ * This function sets the pixel data at a specified (x, y) coordinate to a given RGB value. The coordinates are expected to be within the bounds of the image. 
+ *
+ * @param x The x-coordinate of the pixel to set.
+ * @param y The y-coordinate of the pixel to set.
+ * @param Data The new RGB data for the pixel.
+ */
 void Image::SetPixel(int x, int y, uint32_t Data)
 	{
 		*GetRGBAddress((uint32_t)x, (uint32_t)y) = Data;
@@ -176,6 +220,14 @@ void Image::SetPixel(int x, int y, uint32_t Data)
  *
  * This function iterates over each pixel in the image and sets its color to the provided Color parameter. 
  * The color is represented as a Vector4, where x, y, z, w represent red, green, blue, and alpha respectively.
+ *
+ * @param Color A Vector4 representing the color to clear the image with.
+ */
+/**
+ * @brief Clears the image with a specified color.
+ *
+ * This function iterates over each pixel in the image and sets its color to the provided Color parameter. 
+ * The color is represented as a Vector4, where each component (x, y, z, w) represents the red, green, blue, and alpha components of the color respectively.
  *
  * @param Color A Vector4 representing the color to clear the image with.
  */
@@ -198,6 +250,14 @@ void Image::ClearImage(Vector4 Color)
  * 
  * @note The returned pointer should not be deleted or modified directly, as it points into internal memory owned by the Image object.
  */
+/** 
+ * @brief Get the RGB line address at a specific row.
+ * 
+ * This function returns the pointer to an array representing a single row of pixels in the image. The returned pointer can be used for direct manipulation or read-only access to this data.
+ * 
+ * @param y The row index, starting from 0.
+ * @return Pointer to the RGB line at the specified row.
+ */
 uint32_t* Image::GetRGBLineAddress(uint32_t y)
 	{
 		return m_RGBRows[y];
@@ -212,6 +272,14 @@ uint32_t* Image::GetRGBLineAddress(uint32_t y)
  * @param y The vertical position of the line in the image, starting from 0 at the top.
  * @return Pointer to the start of the grayscale data for the specified line 'y'.
  */
+/** 
+ * @brief Get the address of a grayscale line in the image.
+ * 
+ * This function returns the pointer to the start of the specified grayscale line in the image data. The y parameter should be within the range [0, height - 1].
+ * 
+ * @param y The vertical position of the line in the image.
+ * @return A pointer to the start of the specified grayscale line.
+ */
 uint16_t* Image::GetGSLineAddress(uint16_t y)
 	{
 		return m_GSRows[y];
@@ -220,6 +288,15 @@ uint16_t* Image::GetGSLineAddress(uint16_t y)
 
 	/**
  * @brief Returns the address of a pixel in the image.
+ *
+ * This function returns the memory address of a specific pixel in the image. The pixel is specified by its x and y coordinates.
+ *
+ * @param x The x-coordinate of the pixel, starting from 0 at the leftmost position.
+ * @param y The y-coordinate of the pixel, starting from 0 at the top.
+ * @return A pointer to the memory address of the specified pixel.
+ */
+/**
+ * @brief Gets the address of a pixel in the image.
  *
  * This function returns the memory address of a specific pixel in the image. The pixel is specified by its x and y coordinates.
  *
@@ -243,6 +320,17 @@ uint32_t* Image::GetRGBAddress(uint32_t x, uint32_t y)
  *
  * @return A pointer to the grayscale value of the specified pixel.
  */
+/**
+ * @brief This function returns the address of a pixel in the grayscale image.
+ *
+ * The function takes two parameters, x and y which represent the coordinates of the pixel in the image. It then calculates 
+ * and returns the address of that pixel by adding x to the result of GetGSLineAddress(y).
+ *
+ * @param x The horizontal position of the pixel (starting from 0).
+ * @param y The vertical position of the pixel (starting from 0).
+ *
+ * @return A pointer to the address of the specified pixel in the grayscale image.
+ */
 uint16_t* Image::GetGSAddress(uint16_t x, uint16_t y)
 	{
 		return GetGSLineAddress(y) + x;
@@ -258,6 +346,7 @@ uint16_t* Image::GetGSAddress(uint16_t x, uint16_t y)
  * @param Width The width of the scanline.
  * @param Buffer Pointer to the start of the buffer containing RGBA values for each pixel.
  */
+"/**\n * @brief Reads a scanline from the buffer and writes it to the image data.\n *\n * This function reads each pixel's RGBA values from the provided buffer, converts them into an internal color representation (Vector4), checks if the current pixel in the image is the same as the one read from the buffer, and if they are not the same, it writes the new pixel data to the image.\n *\n * @param Addr Pointer to the start of the scanline in the image data.\n * @param Width The width of the scanline.\n * @param Buffer Pointer to the start of the buffer containing the RGBA values for each pixel.\n */"
 void Image::ReadScanline(uint32_t* Addr, uint32_t Width, uint8_t* Buffer)
 	{
 		for (uint32_t x = 0; x < Width; ++x, ++Addr)
@@ -284,6 +373,15 @@ void Image::ReadScanline(uint32_t* Addr, uint32_t Width, uint8_t* Buffer)
  * @param Addr The address where the new image data should start at.
  * @param Width The width of the image in pixels.
  * @param Buffer A buffer containing the raw pixel data for each row of the image.
+ * 
+ * @return A pointer to the newly allocated memory that contains the image data. This must be deleted by the caller when it is no longer needed.
+ */
+/**
+ * @brief Reads an image from the buffer and returns a pointer to it. If bShouldFlip is true, the image will be flipped vertically.
+ * 
+ * @param Addr The address where the new image data should start at.
+ * @param Width The width of the image in pixels.
+ * @param Buffer A buffer containing the raw pixel data.
  * 
  * @return A pointer to the newly allocated memory that contains the image data. This must be deleted by the caller when it is no longer needed.
  */
@@ -335,6 +433,19 @@ T* Image::ReadImage(T* Addr, uint32_t Width, T** Buffer)
  * @param Type The pixel type to resize the image for. Can be RGBA, RGB or Greyscale.
  * @param BufferSize The size of the buffer to allocate in bytes.
  */
+/**
+ * @brief Resizes the image based on the given pixel type and buffer size.
+ *
+ * This function resizes the image by allocating memory for a new buffer of the specified size. 
+ * The type of the image is determined by the PixelType parameter, which can be either RGBA, RGB or Greyscale. 
+ * For RGBA and RGB types, it creates a new uint32_t array to store the pixel data. 
+ * For Greyscale type, it creates a new uint16_t array. If an unsupported PixelType is passed, no action is taken.
+ *
+ * @param Type The type of image to resize. Can be RGBA, RGB or Greyscale.
+ * @param BufferSize The size of the buffer to allocate for the resized image.
+ * 
+ * @return void
+ */
 void Image::ResizeImage(PixelType Type, size_t BufferSize)
 	{
 		switch (Type)
@@ -372,6 +483,18 @@ void Image::ResizeImage(PixelType Type, size_t BufferSize)
  * @param[in] y An integer representing the y-coordinate of the chunk.
  * 
  * @return A vector of uint8_t containing the inflated (decompressed) image data.
+ */
+/**
+ * @brief Inflates a chunk of compressed image data.
+ *
+ * This function takes in a vector of uint8_t (Data), an integer x, and y as parameters. It inflates the chunk of compressed image data stored in Data using zlib's inflateInit() and inflateEnd() functions. 
+ * The inflated data is then returned as a new std::vector<uint8_t>.
+ *
+ * @param[in,out] Data - A vector containing the compressed image data to be inflated. This will also contain the inflated data upon successful completion of this function.
+ * @param x - The x-coordinate of the chunk in the image.
+ * @param y - The y-coordinate of the chunk in the image.
+ * 
+ * @return A new std::vector<uint8_t> containing the inflated data, or an empty vector if there was an error during inflation.
  */
 std::vector<uint8_t> Image::InflateChunk(std::vector<uint8_t>& Data, int x, int y)
 	{

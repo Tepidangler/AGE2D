@@ -22,9 +22,23 @@ namespace AGE
 	{
 	public:
 
-		Physics2D() = default;
+		Ph/**
+ * @brief Default constructor for the ysics2D class.
+ *
+ * This function initializes a new instance of the ysics2D class with default values.
+ * It does not take any parameters and returns an object of type ysics2D.
+ * 
+ * @return A new instance of the ysics2D class with default values.
+ */
+ysics2D() = default;
 
-		~Physics2D() = default;
+		~P/**
+ * @brief Default constructor for the Physics2D class.
+ *
+ * This function initializes a new instance of the Physics2D class with default values.
+ * It does not take any parameters and returns nothing.
+ */
+hysics2D() = default;
 
 		bool CreateNewPhysicsWorld(Ref<Scene> scene);
 
@@ -68,10 +82,29 @@ namespace AGE
 
 		bool QueryHit(const QueryParams& Params);
 
-		Ref<World>& GetWorld() { return m_World; }
+		Re/**
+ * @brief Returns a reference to the World object.
+ *
+ * This function returns a reference to the World object that is currently being used by the program. The returned reference can be used to modify or access the state of this object.
+ * 
+ * @return f<World>& A reference to the current World object.
+ */
+f<World>& GetWorld() { return m_World; }
 
 		template<typename T>
-		static T GetShapeFromID(b2ShapeId ID)
+		st/**
+ * @brief Retrieves a shape from its ID.
+ * 
+ * This function retrieves and returns the shape associated with the given ID. The type of the shape is determined by the value returned by b2Shape_GetType(ID).
+ * If the type is b2_capsuleShape, it calls b2Shape_GetCapsule(ID) to get the capsule shape. 
+ * If the type is b2_polygonShape, it calls b2Shape_GetPolygon(ID) to get the polygon shape.
+ * If the type is b2_segmentShape, it calls b2Shape_GetSegment(ID) to get the segment shape.
+ * In all other cases (including if the function returns a default value), it defaults to returning the polygon shape from b2Shape_GetPolygon(ID).
+ * 
+ * @param ID The unique identifier of the shape.
+ * @return The shape associated with the given ID, or the default shape if no match is found.
+ */
+atic T GetShapeFromID(b2ShapeId ID)
 		{
 			switch (b2Shape_GetType(ID))
 			{

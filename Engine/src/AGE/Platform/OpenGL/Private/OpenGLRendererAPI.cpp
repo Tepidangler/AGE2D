@@ -16,6 +16,16 @@ namespace AGE
  * 
  * @return void
  */
+/**
+ * @brief Initializes the OpenGL Renderer API with various settings for rendering.
+ * 
+ * This function sets up several important OpenGL states such as blending, depth testing, line smoothing and front face winding order.
+ * It enables blending by setting the source blend factor to GL_SRC_ALPHA and the destination blend factor to GL_ONE_MINUS_SRC_ALPHA. 
+ * Depth testing is enabled with a depth function of GL_LEQUAL, clearing the depth buffer with glClearDepth(1.0f), and enabling line smoothing with glEnable(GL_LINE_SMOOTH). 
+ * The front face winding order is set to GL_CW using glFrontFace(GL_CW).
+ * 
+ * @return void
+ */
 void OpenGLRendererAPI::Init()
 	{
 		AGE_PROFILE_FUNCTION();
@@ -32,6 +42,13 @@ void OpenGLRendererAPI::Init()
  * @brief This function sets the clear color for the OpenGL context.
  * 
  * @param Color A Vector4 object representing the RGBA values of the clear color.
+ */
+/**
+ * @brief Set the clear color for OpenGL rendering context.
+ *
+ * This function sets the clear color for the current OpenGL rendering context. The color is specified as a Vector4 with each component ranging from 0 to 1.
+ *
+ * @param Color A Vector4 specifying the red, green, blue and alpha components of the color.
  */
 void OpenGLRendererAPI::SetClearColor(const Vector4 Color)
 	{
@@ -50,6 +67,16 @@ void OpenGLRendererAPI::SetClearColor(const Vector4 Color)
  * 
  * @return void No return value is expected as this function only sets OpenGL state variables.
  */
+/**
+ * @brief Set the viewport for OpenGL rendering.
+ * 
+ * This function sets the viewport in OpenGL to a specified width and height starting at coordinates (x, y). The viewport is defined as the rectangular area of the window where rendering takes place.
+ * 
+ * @param x The x-coordinate of the lower left corner of the viewport rectangle.
+ * @param y The y-coordinate of the lower left corner of the viewport rectangle.
+ * @param Width The width of the viewport rectangle.
+ * @param Height The height of the viewport rectangle.
+ */
 void OpenGLRendererAPI::SetViewport(uint32_t x, uint32_t y, uint32_t Width, uint32_t Height)
 	{
 		glViewport(-1, -1, (int)Width, (int)Height);
@@ -63,6 +90,12 @@ void OpenGLRendererAPI::SetViewport(uint32_t x, uint32_t y, uint32_t Width, uint
  *
  * @return void
  */
+/**
+ * @brief Clears the color and depth buffer.
+ *
+ * This function uses OpenGL's glClear() function to clear both the color and depth buffers. The GL_COLOR_BUFFER_BIT and 
+ * GL_DEPTH_BUFFER_BIT flags are used to specify which buffers should be cleared.
+ */
 void OpenGLRendererAPI::Clear()
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -71,6 +104,14 @@ void OpenGLRendererAPI::Clear()
 	/**
  * @brief This function flushes the OpenGL command buffer. 
  * It ensures that all commands issued up to this point are executed immediately, without buffering them for later execution.
+ *
+ * @return void
+ */
+/**
+ * @brief Flushes the OpenGL command queue.
+ * 
+ * This function calls glFlush(), which forces all pending commands to be executed as quickly as possible.
+ * It is useful for ensuring that certain operations are completed before proceeding with other tasks.
  *
  * @return void
  */
@@ -86,6 +127,12 @@ void OpenGLRendererAPI::Flush()
  * @param VertexArray A reference to a vertex array object that contains the data to be drawn.
  * @param IndexCount The number of indices to draw from the element array. If this is zero, the count in the index buffer will be used instead.
  * 
+ * @return void
+ */
+/**
+ * @brief This function is used to draw an indexed element array. It binds the vertex array and then uses OpenGL's glDrawElements function to render a set number of elements from the index buffer.
+ * @param VertexArray A reference to a constant VertexArray object which represents the data for rendering.
+ * @param IndexCount The number of indices to be drawn. If this is 0, it defaults to the count in the index buffer of the vertex array.
  * @return void
  */
 void OpenGLRendererAPI::DrawIndexed(const Ref<VertexArray>& VertexArray, uint32_t IndexCount)
@@ -104,6 +151,16 @@ void OpenGLRendererAPI::DrawIndexed(const Ref<VertexArray>& VertexArray, uint32_
  * @param VertexArray A reference to a VertexArray object that contains the vertex data for the lines to be drawn.
  * @param VertexCount The number of vertices in the VertexArray to draw.
  */
+/**
+ * @brief Draws a series of lines defined by the given vertex array.
+ * 
+ * This function binds the provided VertexArray object and then uses OpenGL's glDrawArrays to draw a series of lines, starting from the first element (index 0) and drawing 'VertexCount' number of vertices. The type of primitives drawn is specified as GL_LINES.
+ * 
+ * @param VertexArray A reference to a VertexArray object that contains the vertex data for the lines to be drawn.
+ * @param VertexCount The number of vertices in the line strip or loop, i.e., the number of elements to draw.
+ * 
+ * @return void
+ */
 void OpenGLRendererAPI::DrawLines(const Ref<VertexArray>& VertexArray, uint32_t VertexCount)
 	{
 		VertexArray->Bind();
@@ -116,6 +173,12 @@ void OpenGLRendererAPI::DrawLines(const Ref<VertexArray>& VertexArray, uint32_t 
  * 
  * @param VertexArray A reference to a constant VertexArray object that represents the vertex data to be drawn.
  * @param IndexCount The number of indices to draw. If not provided, it will use the count from the index buffer of the VertexArray.
+ */
+/**
+ * @brief DrawStrips is a function that draws triangle strips using the OpenGL API.
+ * 
+ * @param VertexArray A reference to a constant VertexArray object which represents the vertex array data.
+ * @param IndexCount An unsigned integer representing the number of indices to be drawn. If this value is zero, it defaults to the count in the index buffer of the VertexArray.
  */
 void OpenGLRendererAPI::DrawStrips(const Ref<VertexArray>& VertexArray, uint32_t IndexCount)
 	{
@@ -132,6 +195,10 @@ void OpenGLRendererAPI::DrawStrips(const Ref<VertexArray>& VertexArray, uint32_t
  *
  * @param Width The new line width, in pixels. Must be greater than zero.
  */
+/** 
+ * @brief This function sets the width of lines used for rendering.
+ * @param Width The new line width to be set. Must be greater than zero.
+ */
 void OpenGLRendererAPI::SetLineWidth(float Width)
 	{
 		glLineWidth(Width);
@@ -144,12 +211,23 @@ void OpenGLRendererAPI::SetLineWidth(float Width)
  *
  * @return void
  */
+/**
+ * @brief Submits the current frame for rendering.
+ * 
+ * This function submits the current frame to be rendered by the OpenGL Renderer API. It does not actually render anything, it just prepares everything for rendering.
+ * 
+ * @return void
+ */
 void OpenGLRendererAPI::Submit()
 	{
 	}
 	/**
  * @brief This function is used to present the rendered scene to the screen. 
  * It does not take any parameters and returns void, indicating that it has completed its operation without returning a value.
+ */
+/**
+ * @brief This function is used to present the rendered scene to the screen. 
+ * It does not take any parameters and returns void, indicating that it has completed its task without returning a value.
  */
 void OpenGLRendererAPI::Present()
 	{

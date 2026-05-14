@@ -46,6 +46,12 @@ namespace AGE
  * @param index The zero-based index of the argument to be returned.
  * @return A pointer to a constant character string representing the argument at the given index. If the index is out of bounds, this function will return nullptr.
  */
+/**
+ * @brief This function returns the argument at a given index.
+ * 
+ * @param index The zero-based index of the argument to return.
+ * @return A pointer to the argument, or nullptr if the index is out of range.
+ */
 const char* operator[](int index) const
 		{
 			CoreLogger::Info("Argument Count: {}", Count);
@@ -74,6 +80,11 @@ const char* operator[](int index) const
 	};
 
 	
+/**
+ * @brief The main application class.
+ *
+ * This class represents the core of the AGE (Another Game Engine) framework, managing various aspects such as device management, layers, scripts, and assets. It also handles window events and manages the ImGui layer for user interface elements.
+ */
 class AGE_API App
 	{
 
@@ -107,9 +118,20 @@ class AGE_API App
  * 
  * @return A reference to the DeviceManager instance.
  */
+/**
+ * @brief Returns a reference to the device manager instance.
+ *
+ * This function returns a reference to the device manager instance that is currently in use by the application. The returned object can be used for various operations related to managing devices, such as initializing or shutting down devices.
+ *
+ * @return A reference to the DeviceManager instance.
+ */
 inline DeviceManager& GetDeviceManager() { return *m_DeviceManager; }
 
 		/**
+ * @brief This function returns a reference to the singleton instance of the App class.
+ * @return A reference to the singleton instance of the App class.
+ */
+/**
  * @brief This function returns a reference to the singleton instance of the App class.
  * @return A reference to the singleton instance of the App class.
  */
@@ -119,17 +141,32 @@ inline static App& Get() { return *s_Instance; }
  * @brief Retrieves the command line arguments of the application.
  * @return An instance of ApplicationCommandLineArgs containing all the command line arguments.
  */
+/**
+ * @brief Retrieves the command line arguments of the application.
+ * @return An instance of ApplicationCommandLineArgs containing all the command line arguments.
+ */
 ApplicationCommandLineArgs GetCommandLineArgs() const { return m_CommandLineArgs; }
 
 		/**
  * @brief This function returns the ImGui layer of the application.
  * @return Pointer to the ImGuiLayer object if it exists, nullptr otherwise.
  */
+/**
+ * @brief Returns the ImGui layer instance.
+ *
+ * This function returns a pointer to the ImGui layer instance stored in this class. It is used for handling user interface events and rendering.
+ *
+ * @return Pointer to the ImGuiLayer instance.
+ */
 inline ImGuiLayer* GetImGuiLayer() { return m_ImGuiLayer; }
 
 		/**
  * @brief This function returns the target platform.
  *
+ * @return uint16_t The target platform as a uint16_t value.
+ */
+/**
+ * @brief This function returns the target platform.
  * @return uint16_t The target platform as a uint16_t value.
  */
 uint16_t GetTargetPlatform() { return m_Target; }
@@ -141,6 +178,14 @@ uint16_t GetTargetPlatform() { return m_Target; }
  *
  * @param Target The new target platform as an unsigned 16-bit integer.
  */
+/**
+ * @brief Sets the target platform to a given value.
+ *
+ * This function sets the member variable `m_Target` to the provided uint16_t parameter `Target`, which is cast to type `TargetPlatform` before assignment. 
+ * The purpose of this function is to update the current target platform being targeted by the system.
+ *
+ * @param Target The new value for the target platform. This should be a valid enumerator of the `TargetPlatform` enum.
+ */
 void SetTargetPlatform(uint16_t Target) { m_Target = (TargetPlatform)Target; }
 
 		/**
@@ -149,6 +194,15 @@ void SetTargetPlatform(uint16_t Target) { m_Target = (TargetPlatform)Target; }
  * This function returns a reference to the AppConfig object that holds all the configurations for the application.
  * The returned object can be used to modify the application's settings.
  * 
+ * @return A reference to the AppConfig object.
+ */
+/**
+ * @brief Returns the application configuration object.
+ *
+ * This function returns a reference to the AppConfig object that holds all of the
+ * configuration settings for the application. It is used by other parts of the
+ * application to access and modify these settings as needed.
+ *
  * @return A reference to the AppConfig object.
  */
 AppConfig& GetAppConfig() {return m_AppConfig;}
@@ -160,9 +214,20 @@ AppConfig& GetAppConfig() {return m_AppConfig;}
  *
  * @return A reference to the Project object.
  */
+/**
+ * @brief Returns a reference to the Project object.
+ *
+ * This function returns a reference to the Project object stored in the class instance. It allows for direct manipulation of this data if necessary.
+ *
+ * @return A reference to the Project object.
+ */
 Ref<Project>& GetProject() { return m_Project; }
 
 		/**
+ * @brief Returns the framebuffer size of the application.
+ * @return A constant reference to a Vector2 object representing the current framebuffer size.
+ */
+/**
  * @brief Returns the framebuffer size of the application.
  * @return A constant reference to a Vector2 object representing the current framebuffer size.
  */
@@ -174,6 +239,14 @@ const Vector2& GetFramebufferSize() {return m_FramebufferSize; }
  * This function sets the value of the member variable 'm_Project' to the input parameter 'Proj'. It takes a reference to a Project object and assigns it to 'm_Project'. 
  *
  * @param Proj A Ref<Project> object representing the new project.
+ */
+/**
+ * @brief Sets the project object.
+ *
+ * This function sets the value of the member variable `m_Project` to the provided `Proj` parameter.
+ * The purpose of this function is to provide a way to update the current project object that's being used by other parts of the system.
+ * 
+ * @param Proj A reference to the new Project object to be set.
  */
 void SetProject(Ref<Project> Proj) { m_Project = Proj; }
 

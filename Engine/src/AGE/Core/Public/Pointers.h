@@ -23,6 +23,18 @@ namespace AGE {
  *
  * @return A new instance of type T in an owning Scope.
  */
+/**
+ * @brief Creates a new instance of type T in an owning Scope.
+ * 
+ * This function creates and returns a new instance of type T, which is managed by the Scope class. The arguments provided are forwarded to the constructor of T.
+ *
+ * @tparam T Type of object to be created.
+ * @tparam Args Types of arguments to be passed to the constructor of T.
+ * 
+ * @param args Arguments to be passed to the constructor of T.
+ *
+ * @return A new instance of type T in an owning Scope.
+ */
 constexpr Scope<T> CreateScope(Args&& ... args)
     {
         return std::make_unique<T>(std::forward<Args>(args)...);
@@ -42,6 +54,17 @@ constexpr Scope<T> CreateScope(Args&& ... args)
  * @param args The arguments to be forwarded to the constructor of T.
  * @return A reference (std::shared_ptr) to an object of type T, constructed with the provided arguments.
  */
+/**
+ * @brief Creates a reference to an object of type T.
+ *
+ * This function creates and returns a reference to an object of type T, using variadic template arguments for constructor parameters. 
+ * The returned reference is managed by std::shared_ptr.
+ *
+ * @tparam T Type of the object that the reference points to.
+ * @tparam Args Types of the constructor arguments.
+ * @param args Constructor arguments for the object.
+ * @return A shared pointer referencing an object of type T.
+ */
 constexpr Ref<T> CreateRef(Args&& ... args)
     {
         return std::make_shared<T>(std::forward<Args>(args)...);
@@ -55,6 +78,14 @@ constexpr Ref<T> CreateRef(Args&& ... args)
  * 
  * @param p A unique pointer to an object of type `From` with a custom deleter.
  * @return A unique pointer to an object of type `To`, or nullptr if the dynamic_cast fails. The returned unique pointer will have its own deleter.
+ */
+/**
+ * @brief Dynamically casts a unique pointer to another type.
+ * 
+ * This function attempts to dynamically cast the given unique pointer to the specified type. If the cast is successful, it creates and returns a new unique pointer of the target type with the same deleter as the original pointer. The original pointer is then released. If the cast fails, an empty unique pointer of the target type is returned instead.
+ * 
+ * @param p The unique pointer to be dynamically casted.
+ * @return A new unique pointer of the target type if successful, or an empty unique pointer otherwise.
  */
 std::unique_ptr<To, Deleter> dynamic_unique_cast(std::unique_ptr<From, Deleter>&& p)
     {
@@ -76,6 +107,14 @@ std::unique_ptr<To, Deleter> dynamic_unique_cast(std::unique_ptr<From, Deleter>&
  *
  * @param ptr A reference to a raw pointer of type T that needs to be released.
  * @return None
+ */
+/**
+ * @brief Safely releases a COM object and sets the pointer to null.
+ *
+ * This function checks if the provided pointer is not null before attempting to release the object. If it's not null, 
+ * it calls the Release() method on the object and then sets the pointer to null.
+ *
+ * @param ptr A reference to a COM object pointer that needs to be released.
  */
 inline void SafeRelease(T& ptr)
     {

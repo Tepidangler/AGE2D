@@ -20,6 +20,16 @@ namespace AGE
  * 
  * @return void
  */
+/**
+ * @brief Writes project configuration to an INI file.
+ * 
+ * This function writes the paths for various project components into an INI file located at the specified path. The paths written include GameContentPath, GameSourcePath, GameShadersPath and GameScenesPath.
+ * 
+ * @param Path The path where the INI file will be saved.
+ * @param ProjectName The name of the project for which to write the configuration.
+ * 
+ * @return void No return value is expected as this function directly writes into an INI file.
+ */
 void Project::WriteProjectConfig(const std::filesystem::path& Path, const std::string& ProjectName)
 	{
 		IniWriter Writer(Path.string() + "/ProjectConfig.ini");
@@ -42,6 +52,14 @@ void Project::WriteProjectConfig(const std::filesystem::path& Path, const std::s
  * @param Path The path where the EditorConfig file will be created.
  * @param ProjectName The name of the project to use in generating paths.
  */
+/**
+ * @brief This function writes an EditorConfig file for a project.
+ * 
+ * The function takes two parameters, a path and a project name. It then writes to the specified path an EditorConfig file with two sections "Paths". In this section, it sets up paths for Logs and Assets of the project.
+ * @param Path The path where the EditorConfig file will be written.
+ * @param ProjectName The name of the project. This is used in setting up the paths.
+ * @return void No return value.
+ */
 void Project::WriteEditorConfig(const std::filesystem::path& Path, const std::string& ProjectName)
 	{
 		std::string CWD = std::filesystem::current_path().string();
@@ -58,6 +76,13 @@ void Project::WriteEditorConfig(const std::filesystem::path& Path, const std::st
  * This function reads a set of paths for various parts of the game project, such as content, source code, shaders, and scenes. It uses an `IniReader` to read the values from the specified path in the filesystem. The configuration data is then used to update the AppConfig object. If multiple entries exist for a particular key (e.g., "GameContentPath"), all of them are stored as a vector of strings.
  * 
  * @param Path The path to the INI file containing the project configuration data.
+ */
+/**
+ * @brief Reads the project configuration from an INI file located at a given path.
+ * 
+ * This function reads and parses the INI file located at the provided path, which is expected to contain paths for various game resources such as content, source code, shaders, etc. The parsed data is then used to set the corresponding properties in the AppConfig object.
+ * 
+ * @param Path The filesystem path of the INI file to read from.
  */
 void Project::ReadProjectConfig(const std::filesystem::path &Path)
 	{
@@ -111,6 +136,13 @@ void Project::ReadProjectConfig(const std::filesystem::path &Path)
  * @param Path The path to the INI file.
  * @return void
  */
+/**
+ * @brief Reads and parses the EditorConfig file to get configuration settings for paths like LogPath and EditorAssetsPath.
+ * 
+ * This function reads an INI-style config file located at a given path, which is expected to be in the same directory as the executable. The config file should contain sections named "Paths" with keys "LogPath" and "EditorAssetsPath". If these keys have multiple values (indicated by `HasMulti`), they are read into vectors; otherwise, their single value is directly assigned to the corresponding fields in `AppConfig`.
+ * 
+ * @param Path The path to the config file.
+ */
 void Project::ReadEditorConfig(const std::filesystem::path &Path)
 	{
 		AppConfig& Config = App::Get().GetAppConfig();
@@ -141,6 +173,7 @@ void Project::ReadEditorConfig(const std::filesystem::path &Path)
 	}
 
 	
+
 void Project::AddBuiltScenes()
 	{
 		AppConfig Config = App::Get().GetAppConfig();
@@ -186,6 +219,7 @@ void Project::AddBuiltScenes()
 	}
 
 	
+
 Ref<Project> AGE::Project::New(const std::string& ProjectName)
 	{
 		AppConfig Config = App::Get().GetAppConfig();
@@ -220,6 +254,7 @@ Ref<Project> AGE::Project::New(const std::string& ProjectName)
 		return s_ActiveProject;
 	}
 	
+
 Ref<Project> Project::Load(const std::filesystem::path& Path)
 	{
 		AppConfig& Config = App::Get().GetAppConfig();
@@ -256,6 +291,7 @@ Ref<Project> Project::Load(const std::filesystem::path& Path)
  * 
  * @return Returns true if the serialization was successful, false otherwise.
  */
+
 bool Project::SaveActive(const std::filesystem::path& Path, uint16_t AudioEngine, int Renderer, const std::filesystem::path& ScenePath, const std::filesystem::path& QuestPath, const std::filesystem::path& ConfigPath)
 	{
 		ProjectSerializer Serializer(s_ActiveProject);
@@ -282,6 +318,7 @@ bool Project::SaveActive(const std::filesystem::path& Path, uint16_t AudioEngine
 		return false;
 	}
 	
+
 bool Project::Package(const std::filesystem::path& Path, int TargetPlatform)
 	{
 		switch (TargetPlatform)
@@ -336,6 +373,7 @@ bool Project::Package(const std::filesystem::path& Path, int TargetPlatform)
 		return false;
 	}
 	
+
 void Project::CompileProject()
 	{
 		AppConfig Config = App::Get().GetAppConfig();

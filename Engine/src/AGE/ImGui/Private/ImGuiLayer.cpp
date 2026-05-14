@@ -19,6 +19,10 @@ namespace AGE
     /**
  * @brief ImGuiLayer is a class representing the layer for handling user interface elements with ImGui library in our application.
  */
+/**
+ * @brief ImGuiLayer is a class representing the layer for handling user interface elements with ImGui library in our application. 
+ * It extends the base Layer class and provides additional functionality specific to this library.
+ */
 ImGuiLayer::ImGuiLayer()
         : Layer("ImGuiLayer")
     {
@@ -28,11 +32,15 @@ ImGuiLayer::ImGuiLayer()
     /**
  * @brief Destructor for the ImGuiLayer class.
  */
+/**
+ * @brief Destructor for the ImGuiLayer class.
+ */
 ImGuiLayer::~ImGuiLayer()
     {
     }
 
     
+
 void ImGuiLayer::OnAttach()
     {
         AppConfig Config = App::Get().GetAppConfig();
@@ -100,6 +108,13 @@ void ImGuiLayer::OnAttach()
  * 
  * @return void
  */
+/**
+ * @brief Detaches the ImGui layer.
+ * 
+ * This function is responsible for detaching the ImGui layer from the application. It does this by shutting down the necessary components based on the current render API in use.
+ * 
+ * @return void
+ */
 void ImGuiLayer::OnDetach()
     {
 
@@ -138,6 +153,16 @@ void ImGuiLayer::OnDetach()
  * 
  * @return void
  */
+/**
+ * @brief Begins the ImGui layer. This function initializes the ImGui context based on the currently selected render API.
+ * 
+ * The Renderer::GetAPI() function is used to determine which render API is in use. Depending on this, different actions are taken:
+ * - If the OpenGL API is being used (case 1), then the ImGui_ImplOpenGL3_NewFrame(), ImGui_ImplGlfw_NewFrame(), and ImGui::NewFrame() functions are called to prepare for a new frame.
+ *   Additionally, if not in distribution mode (AG_DIST), ImGuizmo::BeginFrame() is also called.
+ * - If an invalid render API is selected (default case), then an assertion failure occurs with the message "Invalid Render API Selected!".
+ * 
+ * @return void
+ */
 void ImGuiLayer::Begin()
     {
         AGE_PROFILE_FUNCTION();
@@ -171,6 +196,14 @@ void ImGuiLayer::Begin()
  * 
  * @param E Reference to the Event object that needs to be handled.
  */
+/**
+ * @brief Handles events dispatched by the application.
+ *
+ * This function is responsible for dispatching events to their respective handlers. It uses an event dispatcher to handle different types of events, such as window resizing events. 
+ * The function also checks if event blocking is enabled and updates the ImGui IO accordingly.
+ *
+ * @param E Reference to the Event object that needs to be handled.
+ */
 void ImGuiLayer::OnEvent(Event& E)
     {
         EventDispatcher Dispatcher(E);
@@ -194,6 +227,14 @@ void ImGuiLayer::OnEvent(Event& E)
  * @param E The WindowResizeEvent object containing information about the new window size.
  * @return Returns true if the operation was successful, false otherwise. In this case, it always returns false as there are no errors to handle.
  */
+/**
+ * @brief Handles the window resize event.
+ * 
+ * This function is triggered when the size of the window changes. It updates the viewport and framebuffer sizes accordingly.
+ * 
+ * @param E The WindowResizeEvent object containing information about the new window size.
+ * @return Returns true if the event was handled, false otherwise. In this case, it always returns false as there is no specific handling for resize events yet.
+ */
 bool ImGuiLayer::OnWindowResized(WindowResizeEvent& E)
     {
         return false;
@@ -208,6 +249,11 @@ bool ImGuiLayer::OnWindowResized(WindowResizeEvent& E)
  * 
  * @return void No return value expected as this function does not explicitly return anything.
  */
+/**
+ * @brief This function is used to render the ImGui interface elements for a specific layer.
+ * 
+ * @param DeltaTime The time step representing the elapsed time since the last frame.
+ */
 void ImGuiLayer::OnImGuiRender(TimeStep DeltaTime)
     {
     }
@@ -216,6 +262,13 @@ void ImGuiLayer::OnImGuiRender(TimeStep DeltaTime)
  * @brief This function is responsible for ending the ImGui layer and rendering the GUI.
  * It updates the display size based on the window's width and height, then renders the GUI using either OpenGL or a different API depending on the current Renderer API. 
  * If an invalid Render API is selected, it asserts false with a message "Invalid Render API Selected!".
+ * @return void
+ */
+/**
+ * @brief This function is responsible for ending the ImGui layer and rendering it. It also updates the display size based on the window's width and height.
+ * 
+ * @param None
+ * 
  * @return void
  */
 void ImGuiLayer::End()
@@ -258,6 +311,13 @@ void ImGuiLayer::End()
     }
 
     
+/**
+ * @brief Sets the colors for the dark theme in ImGui.
+ * 
+ * This function sets various color values used by ImGui to create a dark theme. The colors are set based on predefined RGBA values.
+ * 
+ * @return void
+ */
 void ImGuiLayer::SetDarkThemeColors()
     {
         auto& Colors = ImGui::GetStyle().Colors;

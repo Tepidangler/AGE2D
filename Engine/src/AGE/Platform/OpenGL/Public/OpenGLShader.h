@@ -31,6 +31,10 @@ namespace AGE
  * @brief Returns the name of the shader.
  * @return A constant reference to a string containing the name of the shader.
  */
+/**
+ * @brief Returns the name of the shader.
+ * @return A constant reference to a string containing the name of the shader.
+ */
 virtual const std::string& GetShaderName() const override { return m_ShaderName; }
 
 		void UploadFloat(const char* Name, float Values) const;
@@ -53,6 +57,10 @@ virtual const std::string& GetShaderName() const override { return m_ShaderName;
  * This function returns a constant unsigned integer representing the unique ID of the renderer. It is an overridden virtual function from its base class, indicating that it provides a specific implementation for this method. 
  *
  * @return A constant unsigned integer representing the renderer's ID.
+ */
+/**
+ * @brief This function returns the renderer ID of the object.
+ * @return The renderer ID as a uint32_t value.
  */
 inline virtual uint32_t GetRendererID() const override { return m_RendererID; }
 

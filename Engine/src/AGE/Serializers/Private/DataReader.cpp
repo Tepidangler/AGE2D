@@ -14,6 +14,14 @@ namespace AGE
  * 
  * @param Path The file path to open as a stream.
  */
+/**
+ * @brief Constructs a FileStreamReader object with the given file path.
+ * 
+ * This constructor opens an ifstream in binary mode for reading from the provided file path.
+ * The opened stream is stored in m_Stream member variable.
+ * 
+ * @param Path The file path to open as a stream.
+ */
 FileStreamReader::FileStreamReader(const std::filesystem::path& Path)
 		:m_Path(Path)
 	{
@@ -21,6 +29,9 @@ FileStreamReader::FileStreamReader(const std::filesystem::path& Path)
 
 	}
 	/**
+ * @brief Destructor for the FileStreamReader class. Closes the file stream if it is open.
+ */
+/**
  * @brief Destructor for the FileStreamReader class. Closes the file stream if it is open.
  */
 FileStreamReader::~FileStreamReader()
@@ -37,6 +48,17 @@ FileStreamReader::~FileStreamReader()
  * @param Data Pointer to a buffer where the data will be stored.
  * @param Size Number of bytes to read from the stream.
  * @return True if the operation was successful, false otherwise.
+ */
+/**
+ * @brief Reads data from the stream into a buffer.
+ *
+ * This function reads a specified number of bytes from the stream into a provided buffer. 
+ * The size of the buffer is passed as an argument, and the actual amount read may be less if 
+ * there are fewer than 'Size' bytes left in the stream.
+ *
+ * @param Data Pointer to the buffer where the data will be stored.
+ * @param Size Number of bytes to read from the stream.
+ * @return Returns true on success, false otherwise (e.g., if the end of the file is reached).
  */
 bool FileStreamReader::ReadData(char* Data, size_t Size)
 	{
@@ -57,6 +79,16 @@ bool FileStreamReader::ReadData(char* Data, size_t Size)
  * @param Size The number of bytes to read from the stream.
  * @return bool Returns true if the operation was successful, false otherwise (e.g., end-of-file or error).
  */
+/**
+ * @brief Reads a specified number of bytes from the stream into a vector.
+ * 
+ * This function reads a specified number of bytes from the underlying input stream, storing them in a provided vector. The size of the data read is determined by the 'Size' parameter.
+ * 
+ * @param Data A reference to a std::vector<std::byte> where the read data will be stored.
+ * @param Size The number of bytes to read from the stream.
+ * 
+ * @return Returns true if the operation was successful, false otherwise (e.g., end-of-file or error).
+ */
 bool FileStreamReader::ReadBytes(std::vector<std::byte>& Data, size_t Size)
 	{
 #if __clang__
@@ -76,6 +108,15 @@ bool FileStreamReader::ReadBytes(std::vector<std::byte>& Data, size_t Size)
  * @param Size The number of bytes to read from the stream.
  * @return Returns true if the operation was successful, false otherwise. In this case, it always returns true as there is no way for an error to occur in this function.
  */
+/**
+ * @brief ReadBytes reads a specified number of bytes from the stream into a buffer.
+ * 
+ * This function attempts to read 'Size' bytes from the file stream and store them in the provided buffer 'Data'. The function returns true if it was able to successfully read all requested bytes, false otherwise.
+ * 
+ * @param Data Pointer to the buffer where the data will be stored.
+ * @param Size Number of bytes to read.
+ * @return True if successful, false otherwise.
+ */
 bool FileStreamReader::ReadBytes(uint8_t* Data, size_t Size)
 	{
 #if __clang__
@@ -91,6 +132,11 @@ bool FileStreamReader::ReadBytes(uint8_t* Data, size_t Size)
  * @param Addr Pointer to the start of the data buffer.
  * @param Size The size of the data in bytes.
  */
+/**
+ * @brief Constructor for MemoryStreamReader. Initializes the object with a given memory address and size.
+ * @param Addr Pointer to the memory location to be read from.
+ * @param Size The size of the data in bytes at the provided memory location.
+ */
 MemoryStreamReader::MemoryStreamReader(void* Addr, size_t Size)
 		:m_Addr(Addr)
 	{
@@ -98,6 +144,9 @@ MemoryStreamReader::MemoryStreamReader(void* Addr, size_t Size)
 		m_Stream = std::istringstream(s);
 	}
 	/**
+ * @brief Destructor for MemoryStreamReader class. Clears the stream of any error flags.
+ */
+/**
  * @brief Destructor for MemoryStreamReader class. Clears the stream of any error flags.
  */
 MemoryStreamReader::~MemoryStreamReader()
@@ -113,6 +162,15 @@ MemoryStreamReader::~MemoryStreamReader()
  * @param Data Pointer to the buffer where the read data will be stored.
  * @param Size Number of bytes to read from the stream.
  * @return True if successful, false otherwise.
+ */
+/**
+ * @brief Reads data from the stream into a buffer.
+ * 
+ * This function reads 'Size' bytes of data from the stream and stores it in the buffer pointed to by 'Data'. The function returns true if successful, false otherwise.
+ * 
+ * @param Data Pointer to the buffer where the read data will be stored.
+ * @param Size Number of bytes to read from the stream.
+ * @return True if the operation was successful, false otherwise.
  */
 bool MemoryStreamReader::ReadData(char* Data, size_t Size)
 	{
@@ -133,6 +191,15 @@ bool MemoryStreamReader::ReadData(char* Data, size_t Size)
  * @param Size The number of bytes to read from the stream.
  * @return Always returns true. In future this may change if we decide to add error handling for when not enough data is available in the stream.
  */
+/**
+ * @brief Reads a specified number of bytes from the stream into a vector.
+ * 
+ * This function reads 'Size' bytes from the underlying stream and stores them in the provided vector, 'Data'. The data is read as raw byte values (std::byte), so it can be used with any type that supports these operations.
+ * 
+ * @param Data A reference to a std::vector of std::bytes where the read data will be stored.
+ * @param Size The number of bytes to read from the stream.
+ * @return Returns true if the operation was successful, false otherwise (e.g., if there is an error in reading or EOF has been reached).
+ */
 bool MemoryStreamReader::ReadBytes(std::vector<std::byte>& Data, size_t Size)
 	{
 #if __clang__
@@ -151,6 +218,15 @@ bool MemoryStreamReader::ReadBytes(std::vector<std::byte>& Data, size_t Size)
  * @param Data Pointer to the buffer where the read data will be stored.
  * @param Size Number of bytes to read from the stream.
  * @return Returns true if the operation was successful, false otherwise (e.g., end of file).
+ */
+/**
+ * @brief Reads a specified number of bytes from the stream into a buffer.
+ * 
+ * This function reads a specified number of bytes from the underlying input stream into a provided buffer. The size of the data read is determined by the 'Size' parameter.
+ * 
+ * @param Data A pointer to the buffer where the read data will be stored.
+ * @param Size The number of bytes to read from the stream.
+ * @return Returns true if the operation was successful, false otherwise. In this case, it always returns true as there are no failure conditions for reading from the stream.
  */
 bool MemoryStreamReader::ReadBytes(uint8_t* Data, size_t Size)
 	{
@@ -171,6 +247,14 @@ bool MemoryStreamReader::ReadBytes(uint8_t* Data, size_t Size)
  * @param[out] String A reference to a std::string object where the JSON string will be stored.
  * @return bool Returns true if the operation was successful, and false otherwise.
  */
+/**
+ * @brief Reads a JSON string from the memory stream.
+ * 
+ * This function attempts to read a JSON string from the memory stream and stores it in the provided string reference. If successful, it returns true, otherwise it returns false.
+ * 
+ * @param String A reference to a std::string where the JSON string will be stored.
+ * @return bool Returns true if the operation was successful, false otherwise.
+ */
 bool MemoryStreamReader::ReadJson(std::string& String)
 	{
 		return false;
@@ -181,6 +265,12 @@ bool MemoryStreamReader::ReadJson(std::string& String)
  * 
  * @param Data Pointer to the buffer where the data will be stored.
  * @param Size The size of the data to read. If this is zero, it means that the size of the data is expected to follow in a uint32_t format.
+ */
+/**
+ * @brief Reads data from the buffer. If size is zero, it reads a uint32_t to determine the size of the data to read next.
+ * 
+ * @param Data Pointer to the buffer where the data will be stored.
+ * @param Size The size of the data in bytes. If this is zero, the function assumes that the actual size needs to be read first.
  */
 void DataReader::ReadBuffer(char* Data, size_t Size)
 	{
@@ -200,6 +290,14 @@ void DataReader::ReadBuffer(char* Data, size_t Size)
  *
  * @param[out] String The string to be read into.
  */
+/**
+ * @brief Reads a string from the data source.
+ *
+ * This function reads a string from the data source, which is expected to be in the format of a size_t followed by the actual string data. 
+ * The size_t indicates the length of the following string data.
+ *
+ * @param[out] String A reference to the string that will hold the read data.
+ */
 void DataReader::ReadString(std::string& String)
 	{
 		size_t Sizet = 0;
@@ -218,6 +316,13 @@ void DataReader::ReadString(std::string& String)
  * 
  * @param[out] String Reference to a string where the JSON data will be stored.
  * @return True if successful, false otherwise.
+ */
+/**
+ * @brief Reads a JSON string from the stream and stores it in the provided string reference.
+ * The size of the JSON string is read first, then the actual data is read into a string buffer.
+ * 
+ * @param[out] String Reference to a string where the JSON data will be stored.
+ * @return True if successful, false otherwise. This function always returns true as it should not fail in this context.
  */
 bool FileStreamReader::ReadJson(std::string& String)
 	{

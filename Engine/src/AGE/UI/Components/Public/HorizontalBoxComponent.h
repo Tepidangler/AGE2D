@@ -23,6 +23,13 @@ namespace AGE
  * 
  * @param[in] Serializer A pointer to an instance of DataWriter that is responsible for writing the serialized data.
  */
+/**
+ * @brief This function serializes the VerticalBoxComponent object.
+ * 
+ * The function writes the current state of the VerticalBoxComponent object to a DataWriter instance, which can be used for further processing or storage.
+ * 
+ * @param Serializer A pointer to an instance of DataWriter that will handle the serialization process.
+ */
 void CallSerialize(DataWriter* Serializer) override
 		{
 			//Serializer->WriteObject<VerticalBoxComponent>(*this);
@@ -32,6 +39,14 @@ void CallSerialize(DataWriter* Serializer) override
  * It reads an object of type VerticalBoxComponent using the provided Serializer.
  * 
  * @param[in] Serializer A pointer to the DataReader object that will be used for deserialization.
+ */
+/**
+ * @brief Deserializes the VerticalBoxComponent from a DataReader.
+ * 
+ * This function reads an object of type VerticalBoxComponent from the provided DataReader. The exact behavior depends on how the DataReader is implemented and what it can handle.
+ * 
+ * @param Serializer A pointer to the DataReader that provides the serialized data.
+ * @return void No return value expected.
  */
 void CallDeserialize(DataReader* Serializer) override
 		{

@@ -22,6 +22,10 @@ namespace AGE
  * @param Name The name of the TextBoxComponent.
  * @return None
  */
+/**
+ * @brief Constructs a TextBoxComponent with the given name and sets default properties.
+ * @param Name The name of the TextBoxComponent.
+ */
 TextBoxComponent::TextBoxComponent(const std::string &Name)
 	{
 		m_Name = Name;
@@ -35,6 +39,13 @@ TextBoxComponent::TextBoxComponent(const std::string &Name)
  * This function updates the TextBoxComponent by checking if it is visible. If it is, it sets up properties for a quad and string to be drawn. The quad's transform, color, and other properties are set according to the component's box properties. Then, it calls Renderer2D::DrawQuad with these properties and Renderer2D::DrawString with the string properties of the TextBoxComponent.
  * 
  * @param DeltaTime The time step for updating the component.
+ */
+/**
+ * @brief Updates the TextBoxComponent based on the provided TimeStep.
+ * 
+ * This function updates the TextBoxComponent by checking if it is visible. If it is, it creates a QuadProperties object and sets its properties such as Transform, Color etc., then calls Renderer2D::DrawQuad() with this QuadProperties to render the quad. It also renders a string using Renderer2D::DrawString().
+ * 
+ * @param DeltaTime The time step for the update operation.
  */
 void TextBoxComponent::OnUpdate(TimeStep DeltaTime)
 	{
@@ -55,11 +66,19 @@ void TextBoxComponent::OnUpdate(TimeStep DeltaTime)
  *
  * @param[in] Event - A reference to the Event that needs to be processed.
  */
+/**
+ * @brief Handles an event of type Event.
+ *
+ * This function takes in a reference to an Event object and processes it according to its type. The exact behavior depends on the specific implementation of this class, which is not specified here.
+ *
+ * @param[in] Event A reference to the Event that needs to be processed.
+ */
 void TextBoxComponent::OnEvent(Event &Event)
 	{
 	}
 
 	
+
 void TextBoxComponent::DrawFontSelectionComboBox()
 	{
 		std::unordered_map<UUID,Ref<AGEFont>> Fonts = AssetManager::Get().GetAssetRegistry()->GetFonts();
@@ -97,6 +116,7 @@ void TextBoxComponent::DrawFontSelectionComboBox()
  * 
  * @return void
  */
+
 void TextBoxComponent::DrawContent()
 	{
 		ImGui::Text("String Properties");
@@ -123,6 +143,10 @@ void TextBoxComponent::DrawContent()
  * @brief This function is used to cast the current object to TextBoxComponent type.
  * 
  * @return TextBoxComponent* Returns a pointer to this object, but with its type as TextBoxComponent.
+ */
+/**
+ * @brief This function is used to cast the current object to TextBoxComponent type.
+ * @return Returns a pointer of type TextBoxComponent, which points to this object if it can be safely casted to that type. If not, returns nullptr.
  */
 TextBoxComponent* UIComponent::As()
 	{

@@ -92,6 +92,14 @@ namespace AGE
  * @param Name The name of the vertex buffer to retrieve.
  * @return A reference to the requested vertex buffer or an empty reference if no such buffer exists.
  */
+/**
+ * @brief Retrieves a reference to the vertex buffer with the given name.
+ *
+ * This function takes in a string parameter 'Name' which is used as an identifier for the desired vertex buffer. It then returns a Ref<VertexBuffer> object, which can be utilized to access and manipulate the vertex buffer data. If no vertex buffer exists with the provided name, this function will return an empty reference.
+ *
+ * @param Name The name of the vertex buffer to retrieve.
+ * @return A reference to the desired vertex buffer or an empty reference if no such buffer exists.
+ */
 Ref<VertexBuffer> GetVertexBuffer(const std::string& Name)
 		{
 			return VertexBuffers[Name]; 
@@ -109,6 +117,11 @@ Ref<VertexBuffer> GetVertexBuffer(const std::string& Name)
  * @brief Virtual destructor for the Pipeline class.
  *
  * This function is responsible for releasing any resources that were acquired by the object during its lifetime. It does not return anything and thus, it has a void return type. 
+ */
+/**
+ * @brief Virtual destructor for the Pipeline class.
+ *
+ * This function is responsible for releasing any resources that were acquired by the pipeline during its lifetime, such as memory or file handles. It does not return anything and has no parameters.
  */
 virtual ~Pipeline() = default;
 

@@ -14,6 +14,13 @@ namespace AGE
  *
  * @return void
  */
+/**
+ * @brief Default destructor for the OpenGLRendererAPI class.
+ *
+ * This function is responsible for freeing any resources that were allocated during the lifetime of an instance of this class. It does not perform any operations on the state of the renderer itself, but rather cleans up any associated memory or other resources.
+ * 
+ * @return void
+ */
 ~OpenGLRendererAPI() =default;
 		void Init() override;
 		void SetClearColor(const Vector4 Color) override;
@@ -31,6 +38,13 @@ namespace AGE
  * @param VertexStart The starting vertex position.
  * 
  * @return Nothing is returned as the function is declared with 'override' keyword, indicating it overrides a virtual function in base class.
+ */
+/**
+ * @brief This function draws a set of vertices using index buffers.
+ * @param IndexCount The number of indices to draw from the index buffer.
+ * @param IndexStart The starting index in the index buffer.
+ * @param VertexStart The vertex offset within the vertex buffer.
+ * @return void
  */
 void DrawIndexed(uint32_t IndexCount, uint32_t IndexStart, int VertexStart) override {}
 		void DrawIndexed(const Ref<VertexArray>& VertexArray, uint32_t IndexCount) override;

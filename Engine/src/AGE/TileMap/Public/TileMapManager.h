@@ -25,9 +25,16 @@ namespace AGE
  *
  * This function is responsible for releasing any resources that were acquired by the TileMapManager during its lifetime, such as memory or file handles. It does not perform any operations on the objects themselves.
  */
+/**
+ * @brief Default destructor for TileMapManager class.
+ */
 ~TileMapManager() = default;
 
-		static TileMapManager& Get()
+		/**
+ * @brief Get the singleton instance of the TileMapManager. If it doesn't exist, create a new one.
+ * @return Reference to the single instance of TileMapManager.
+ */
+static TileMapManager& Get()
 		{
 			static TileMapManager* instance;
 			if (!instance)

@@ -29,6 +29,13 @@ namespace AGE
  *
  * @return True if the animation is ready to be loaded, false otherwise.
  */
+/**
+ * @brief Checks if the animation is ready to be loaded.
+ * 
+ * This function checks several conditions to determine if an animation can be loaded. It first checks if `bIsReadyToLoad` is false, in which case it returns false. If `Name` is empty, it logs an error and sets `bIsReadyToLoad` to false before returning false. If the number of frames is not greater than 1, it also logs an error and sets `bIsReadyToLoad` to false. Finally, if `MovementStatus` is undefined, it logs an error and sets `bIsReadyToLoad` to false. In all other cases, it returns true.
+ * 
+ * @return True if the animation can be loaded, false otherwise.
+ */
 bool IsReadyToLoad()
 		{
 			if (!bIsReadyToLoad)
@@ -63,6 +70,13 @@ bool IsReadyToLoad()
  * 
  * @param Value The new value for bIsReadyToLoad, which can be either true (indicating readiness) or false (indicating non-readiness).
  */
+/**
+ * @brief Sets the state of Ready to Load.
+ *
+ * This function sets the value of bIsReadyToLoad variable, which indicates whether the system is ready to load data or not.
+ *
+ * @param Value The new boolean value for bIsReadyToLoad.
+ */
 void SetIsReadyToLoad(bool Value)
 		{
 			bIsReadyToLoad = Value;
@@ -81,8 +95,21 @@ void SetIsReadyToLoad(bool Value)
  *
  * @param other The instance of Animation to be copied.
  */
+/**
+ * @brief Copy constructor for the Animation class.
+ *
+ * This function creates a new instance of an Animation object by copying all its attributes from another existing Animation object.
+ * The copy is done using the '= default' directive, which uses the compiler-generated copy constructor.
+ * 
+ * @param other The existing Animation object to be copied.
+ */
 Animation(const Animation&) = default;
 		/**
+ * @brief Destructor for the Animation class.
+ *
+ * This function is responsible for releasing any resources that were acquired by the animation object, such as memory or file handles. It does not return anything and has no parameters.
+ */
+/**
  * @brief Destructor for the Animation class.
  *
  * This function is responsible for releasing any resources that were acquired by the animation object, such as memory or file handles. It does not return anything and has no parameters.
@@ -101,6 +128,13 @@ Animation(const Animation&) = default;
  *
  * @return int - Current frame rate in frames per second. If no frame rate has been set, it will return 0.
  */
+/**
+ * @brief Returns the current frame rate.
+ *
+ * This function retrieves and returns the current frame rate of the system. The returned value is an integer representing the number of frames per second.
+ *
+ * @return int - Current frame rate in frames per second.
+ */
 int GetFrameRate() { return m_FrameRate; }
 		/**
  * @brief Sets the frame rate for a video processing system.
@@ -110,11 +144,22 @@ int GetFrameRate() { return m_FrameRate; }
  * @param Rate An integer representing the desired frame rate. Must be greater than 0 and less than or equal to 60.
  * @return void
  */
+/**
+ * @brief Sets the frame rate for a video processing system.
+ *
+ * This function sets the frame rate of the video processing system to the specified value. The frame rate is an integer representing the number of frames processed per second.
+ *
+ * @param Rate An integer representing the desired frame rate.
+ */
 void SetFrameRate(int Rate) { m_FrameRate = Rate; }
 
 		/**
  * @brief This function returns the maximum number of frames that can be processed by the system.
  * @return int The maximum number of frames. If no limit is set, it will return -1.
+ */
+/**
+ * @brief This function returns the maximum number of frames that can be processed by the system.
+ * @return int The maximum number of frames. If no limit is set, it will return a large value (e.g., INT_MAX).
  */
 int GetMaxFrames() { return m_MaxFrames; }
 		/**
@@ -124,6 +169,13 @@ int GetMaxFrames() { return m_MaxFrames; }
  * 
  * @param Frames The new maximum number of frames allowed. Must be greater than or equal to zero.
  */
+/**
+ * @brief Sets the maximum number of frames allowed in a video sequence.
+ *
+ * This function sets the value of the member variable `m_MaxFrames` to the input parameter `Frames`. It is used to limit the length of video sequences processed by other functions in the class.
+ *
+ * @param Frames The new maximum number of frames allowed. Must be a positive integer.
+ */
 void SetMaxFrames(int Frames) { m_MaxFrames = Frames; }
 
 		/**
@@ -132,6 +184,11 @@ void SetMaxFrames(int Frames) { m_MaxFrames = Frames; }
  * This function retrieves and returns the value of the member variable 'm_CurrentFrame'. It represents the current frame in a sequence or animation, for instance.
  *
  * @return The current frame number as an integer. If no specific frame is set, it may return 0 or some default value indicating that there's currently no active frame.
+ */
+/**
+ * @brief This function returns the current frame number.
+ *
+ * @return The current frame number as an integer. If no frame is currently set, it will return -1.
  */
 int GetCurrentFrame() { return m_CurrentFrame; }
 		void SetCurrentFrame(int Frame);
@@ -144,6 +201,15 @@ int GetCurrentFrame() { return m_CurrentFrame; }
  * 
  * @return True if the system is oscillating, false otherwise.
  */
+/**
+ * @brief Returns the oscillation state of the system.
+ *
+ * This function returns a boolean value indicating whether or not the system is in an oscillating mode.
+ * The actual implementation and meaning of this flag are specific to the application, so it's important 
+ * to refer to the documentation for that context.
+ *
+ * @return True if the system is in oscillation mode, false otherwise.
+ */
 bool GetOscillate() { return bOscillate; }
 		/**
  * @brief Sets the oscillation state of an object.
@@ -151,6 +217,10 @@ bool GetOscillate() { return bOscillate; }
  * This function sets the 'bOscillate' variable to a specified boolean value, which determines whether or not the object should oscillate.
  *
  * @param Osc A boolean value indicating if the object should oscillate (true) or not (false).
+ */
+/**
+ * @brief Sets the oscillation state of an object.
+ * @param Osc A boolean value indicating whether to oscillate or not.
  */
 void SetOscillate(bool Osc) { bOscillate = Osc; }
 
@@ -160,6 +230,10 @@ void SetOscillate(bool Osc) { bOscillate = Osc; }
  * This function returns a reference to the currently active subtexture in the sprite sheet. The returned value is a const reference, meaning that it cannot be modified by this function.
  *
  * @return A constant reference to the current texture.
+ */
+/**
+ * @brief Gets the current texture being used in the game.
+ * @return A reference to the SubTexture2D object representing the current texture.
  */
 Ref<SubTexture2D> GetCurrentTexture() { return m_CurrentTexture; }
 		void LoadAnimation(const AnimationSpecification Anim);

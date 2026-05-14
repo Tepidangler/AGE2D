@@ -16,6 +16,11 @@ namespace AGE
  * 
  * @param WindowHandle A pointer to an existing GLFWwindow object that this context will be bound to.
  */
+/** 
+ * @brief This class represents an OpenGL context. It is responsible for initializing and managing the OpenGL pipeline.
+ * 
+ * @param WindowHandle A pointer to a GLFWwindow object, which represents the window that this context will be associated with.
+ */
 class AGE_API OpenGLContext : public GraphicsContext
 	{
 	public:

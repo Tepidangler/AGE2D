@@ -30,6 +30,10 @@ namespace AGE
  * @brief Returns the name of the window.
  * @return A constant reference to a string containing the name of the window.
  */
+/**
+ * @brief Returns the name of the window.
+ * @return A constant reference to a string containing the window's name.
+ */
 const std::string& GetWindowName() const { return m_Name; }
 
 		/**
@@ -41,6 +45,14 @@ const std::string& GetWindowName() const { return m_Name; }
  * @param Data The constant reference to the NodeEditorWindow whose data is being serialized.
  * 
  * @return void
+ */
+/**
+ * @brief This function serializes the NodeEditorWindow data into a DataWriter object.
+ * 
+ * @param Serializer Pointer to the DataWriter object where the serialized data will be written.
+ * @param Data Const reference to the NodeEditorWindow whose data is being serialized.
+ * 
+ * @return None
  */
 static void Serialize(DataWriter* Serializer, const NodeEditorWindow& Data)
 		{
@@ -63,6 +75,7 @@ static void Serialize(DataWriter* Serializer, const NodeEditorWindow& Data)
 		}
 
 		
+
 static void Deserialize(DataReader* Serializer, NodeEditorWindow& Data)
 		{
 			uint64_t ID;

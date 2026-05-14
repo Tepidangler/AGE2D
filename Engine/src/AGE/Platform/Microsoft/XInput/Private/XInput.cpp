@@ -9,6 +9,9 @@ namespace AGE
 	/**
  * @brief Constructor for the XInput class. Initializes and registers controllers when an instance of this class is created.
  */
+/**
+ * @brief XInput constructor that registers controllers and logs an info message.
+ */
 XInput::XInput()
 	{
 		CoreLogger::Info("Registering Controllers...");
@@ -17,6 +20,7 @@ XInput::XInput()
 	}
 
 	
+
 void XInput::RegisterControllers()
 	{
 		ulong_t Result;
@@ -61,6 +65,14 @@ void XInput::RegisterControllers()
  * 
  * @param Gamepad The XINPUT_GAMEPAD structure containing the raw left thumbstick values.
  * @param Info The controller info including settings for the deadzone.
+ */
+/**
+ * @brief Clamps the left thumbstick values to a specified deadzone.
+ * 
+ * This function takes in an XINPUT_GAMEPAD structure and a constant reference to an XInputControllerInfo object, which contains settings for the controller. It calculates the magnitude of the left thumbstick (LX, LY) by taking the square root of the sum of squares of LX and LY. The normalized values are then calculated as the original values divided by the magnitude. If the magnitude is greater than the deadzone value, it's adjusted to be within the range [0, 32767].
+ * 
+ * @param Gamepad Reference to an XINPUT_GAMEPAD structure containing the left thumbstick (LX, LY) values.
+ * @param Info Constant reference to an XInputControllerInfo object with settings for the controller.
  */
 void XInput::ClampLeftThumbstickDeadZone(XINPUT_GAMEPAD& Gamepad, const XInputControllerInfo& Info)
 	{
@@ -121,6 +133,13 @@ void XInput::ClampLeftThumbstickDeadZone(XINPUT_GAMEPAD& Gamepad, const XInputCo
  * @param Gamepad Reference to an XINPUT_GAMEPAD structure containing the right thumbstick values.
  * @param Info Object containing information about the controller settings.
  */
+/**
+ * Clamps the values of the right thumbstick to a specified deadzone.
+ * The clamped values are then sent as events to an event callback function.
+ * 
+ * @param Gamepad Reference to the XINPUT_GAMEPAD structure containing the right thumbstick data.
+ * @param Info Constant reference to the XInputControllerInfo structure holding controller settings and callback function.
+ */
 void XInput::ClampRightThumbstickDeadZone(XINPUT_GAMEPAD& Gamepad, const XInputControllerInfo& Info)
 	{
 		float RX = Gamepad.sThumbRX;
@@ -165,6 +184,7 @@ void XInput::ClampRightThumbstickDeadZone(XINPUT_GAMEPAD& Gamepad, const XInputC
 		}
 	}
 	
+
 void XInput::ClampLeftTriggerDeadZone(XINPUT_GAMEPAD& Gamepad, const XInputControllerInfo& Info)
 	{
 		float LT = Gamepad.bLeftTrigger;
@@ -199,6 +219,7 @@ void XInput::ClampLeftTriggerDeadZone(XINPUT_GAMEPAD& Gamepad, const XInputContr
  * @param Gamepad The gamepad whose right trigger value to clamp.
  * @param Info Contains settings for deadzones and a callback function.
  */
+
 void XInput::ClampRightTriggerDeadZone(XINPUT_GAMEPAD& Gamepad, const XInputControllerInfo& Info)
 	{
 		float RT = Gamepad.bRightTrigger;
@@ -229,6 +250,7 @@ void XInput::ClampRightTriggerDeadZone(XINPUT_GAMEPAD& Gamepad, const XInputCont
 		}
 	}
 	
+
 void XInput::CheckButtonInput(XINPUT_GAMEPAD& Gamepad, const XInputControllerInfo& Info)
 	{
 		bool IsSet = IsBitSet(Gamepad.wButtons, GamePad::XInputDpadUp);
@@ -580,11 +602,20 @@ void XInput::CheckButtonInput(XINPUT_GAMEPAD& Gamepad, const XInputControllerInf
  * @param Mask The mask representing the bit position to be checked.
  * @return Returns true if the specified bit is set, false otherwise.
  */
+/**
+ * @brief This function checks if a specific bit is set in a given number.
+ * 
+ * @param Number The number to check for the presence of bits.
+ * @param Mask The mask representing the bit(s) to be checked.
+ * 
+ * @return Returns true if any of the specified bit(s) are set, false otherwise.
+ */
 bool XInput::IsBitSet(uint16_t Number, uint16_t Mask)
 	{
 		return (Number & Mask) != 0;
 	}
 	
+
 void XInput::RegisterSingleController(ulong_t Slot)
 	{
 		ulong_t Result;
@@ -624,6 +655,12 @@ void XInput::RegisterSingleController(ulong_t Slot)
  * 
  * @note This function assumes that the input is within the valid range (0 <= Slot < number of controllers).
  */
+/**
+ * @brief GetLRDeadzones returns the left and right deadzones for a given controller slot.
+ * 
+ * @param Slot The index of the controller in the m_Controllers array to get the deadzones from.
+ * @return A pair of uint16_t values representing the left and right deadzones respectively.
+ */
 std::pair<uint16_t, uint16_t> XInput::GetLRDeadzones(ulong_t Slot)
 	{
 		return std::pair<uint16_t, uint16_t>(m_Controllers[Slot].second.Settings.LeftThumbstickDeadzone, m_Controllers[Slot].second.Settings.RightThumbstickDeadzone);
@@ -636,6 +673,12 @@ std::pair<uint16_t, uint16_t> XInput::GetLRDeadzones(ulong_t Slot)
  * @param Slot The slot number to retrieve the deadzone value from.
  * @return uint16_t The left thumbstick deadzone value in the specified slot.
  */
+/** 
+ * @brief This function returns the deadzone value for the left thumbstick.
+ * 
+ * @param Slot The slot number to get the deadzone from.
+ * @return uint16_t The deadzone value for the left thumbstick.
+ */
 uint16_t XInput::GetLeftThumbstickDeadzone(ulong_t Slot)
 	{
 		return GetLRDeadzones(Slot).first;
@@ -647,6 +690,14 @@ uint16_t XInput::GetLeftThumbstickDeadzone(ulong_t Slot)
  *
  * @param Slot The slot of the controller whose left thumbstick deadzone is being set.
  * @param Value The new value for the left thumbstick deadzone, between 0 and 100.
+ */
+/**
+ * @brief Set the left thumbstick deadzone for a specific controller slot.
+ *
+ * This function sets the value of the left thumbstick deadzone for a given controller slot. The deadzone is a value between 0 and 10000, where 0 means any input will be accepted and 10000 means no input (centered) will be accepted.
+ *
+ * @param Slot The slot of the controller to set the left thumbstick deadzone for.
+ * @param Value The new value for the left thumbstick deadzone.
  */
 void XInput::SetLeftThumbstickDeadzone(ulong_t Slot, uint16_t Value)
 	{
@@ -661,6 +712,12 @@ void XInput::SetLeftThumbstickDeadzone(ulong_t Slot, uint16_t Value)
  * @param Slot The slot number to retrieve the deadzone values from.
  * @return uint16_t The deadzone value for the right thumbstick.
  */
+/**
+ * @brief This function returns the value of the right thumbstick deadzone for a given slot.
+ * 
+ * @param Slot The input parameter is the gamepad slot number.
+ * @return uint16_t Returns the value of the right thumbstick deadzone.
+ */
 uint16_t XInput::GetRightThumbstickDeadzone(ulong_t Slot)
 	{
 		return GetLRDeadzones(Slot).second;
@@ -672,6 +729,14 @@ uint16_t XInput::GetRightThumbstickDeadzone(ulong_t Slot)
  *
  * @param Slot The slot of the controller whose right thumbstick deadzone is being set.
  * @param Value The new value for the right thumbstick deadzone. Must be between 0 and 100, inclusive.
+ */
+/**
+ * @brief Set the right thumbstick deadzone value for a specific controller slot.
+ * 
+ * This function sets the right thumbstick deadzone value for a given controller slot. The deadzone is a value between 0 and 10000, where 0 means any input will be accepted and 10000 means no input (i.e., the stick is centered) will be accepted.
+ * 
+ * @param Slot The slot of the controller to set the deadzone for.
+ * @param Value The new deadzone value, between 0 and 10000.
  */
 void XInput::SetRightThumbstickDeadzone(ulong_t Slot, uint16_t Value)
 	{
@@ -686,6 +751,14 @@ void XInput::SetRightThumbstickDeadzone(ulong_t Slot, uint16_t Value)
  * 
  * @return A pair of uint16_t values representing the left and right trigger deadzones, respectively. If the provided slot number exceeds the total number of controllers, this function will return (0, 0).
  */
+/**
+ * @brief Get the trigger thresholds for a specific controller slot.
+ * 
+ * This function retrieves the left and right trigger deadzones for a given controller slot. The returned values are in the range of 0 to 1023, representing the threshold levels at which triggers will be considered 'pressed'.
+ *
+ * @param Slot The index of the controller whose thresholds you want to retrieve. This should be within the valid range for your hardware setup.
+ * @return A pair of uint16_t values representing the left and right trigger deadzones, respectively. If an invalid slot is provided, this function may return default or unexpected values.
+ */
 std::pair<uint16_t, uint16_t> XInput::GetTriggerThresholds(ulong_t Slot)
 	{
 		return std::pair<uint16_t, uint16_t>(m_Controllers[Slot].second.Settings.LeftTriggerDeadzone, m_Controllers[Slot].second.Settings.RightTriggerDeadzone);
@@ -697,6 +770,12 @@ std::pair<uint16_t, uint16_t> XInput::GetTriggerThresholds(ulong_t Slot)
  * 
  * @param Slot The slot number for which to retrieve the trigger threshold. This should be a value between 1 and 4, inclusive.
  * @return uint16_t The left trigger threshold value in the range of 0 to 65535.
+ */
+/** 
+ * @brief This function returns the left trigger threshold for a given slot.
+ * 
+ * @param Slot The slot number to get the left trigger threshold from.
+ * @return uint16_t The left trigger threshold value.
  */
 uint16_t XInput::GetLeftTriggerThreshold(ulong_t Slot)
 	{
@@ -710,6 +789,14 @@ uint16_t XInput::GetLeftTriggerThreshold(ulong_t Slot)
  * @param Value The new deadzone value, a uint16_t between 0 and 127 inclusive.
  * @return void
  */
+/**
+ * @brief Set the left trigger threshold for a specific controller slot.
+ * 
+ * This function sets the deadzone value for the left trigger of a specified controller slot. The deadzone is a value between 0 and 100, where 0 represents no deadzone (i.e., full range of input) and 100 represents a complete deadzone (i.e., no input).
+ *
+ * @param Slot The slot number of the controller to set the threshold for.
+ * @param Value The new value for the left trigger threshold, between 0 and 100.
+ */
 void XInput::SetLeftTriggerThreshold(ulong_t Slot, uint16_t Value)
 	{
 		m_Controllers[Slot].second.Settings.LeftTriggerDeadzone = Value;
@@ -721,6 +808,12 @@ void XInput::SetLeftTriggerThreshold(ulong_t Slot, uint16_t Value)
  * 
  * @param Slot The slot number for which we want to retrieve the right trigger threshold.
  * @return uint16_t The right trigger threshold for the given slot.
+ */
+/** 
+ * @brief This function retrieves the right trigger threshold for a specific slot.
+ * 
+ * @param[in] Slot The slot number to retrieve the trigger threshold from.
+ * @return uint16_t Returns the right trigger threshold value.
  */
 uint16_t XInput::GetRightTriggerThreshold(ulong_t Slot)
 	{
@@ -736,6 +829,14 @@ uint16_t XInput::GetRightTriggerThreshold(ulong_t Slot)
  * 
  * @return void
  */
+/**
+ * @brief Set the right trigger threshold for a specific controller slot.
+ *
+ * This function sets the right trigger threshold value for a given controller slot. The threshold is used to determine when the analog input should be interpreted as a button press. 
+ *
+ * @param Slot The slot of the controller whose right trigger threshold is being set.
+ * @param Value The new right trigger threshold value. This must be between 0 and UINT16_MAX, inclusive.
+ */
 void XInput::SetRightTriggerThreshold(ulong_t Slot, uint16_t Value)
 	{
 		m_Controllers[Slot].second.Settings.RightTriggerDeadzone = Value;
@@ -747,6 +848,14 @@ void XInput::SetRightTriggerThreshold(ulong_t Slot, uint16_t Value)
  *
  * @param Speed The new low frequency motor speed to set. Must be between XINPUT_GAMEPAD_LEFT_TRIGGER_DEADZONE and XINPUT_GAMEPAD_RIGHT_TRIGGER_DEADZONE.
  * @param ControllerSlot The slot of the controller whose low frequency motor speed to set. Must be a valid controller slot number (0-3).
+ */
+/**
+ * @brief Set the low frequency motor speed for a specific controller slot.
+ *
+ * This function sets the left motor speed of the vibration device on the specified controller slot to the provided speed value. The speed is represented as an unsigned 16-bit integer, with higher values representing faster motor movement.
+ *
+ * @param Speed The new low frequency motor speed value. Must be between XINPUT_VIBRATION::wLeftMotorMin and XINPUT_VIBRATION::wLeftMotorMax (both inclusive).
+ * @param ControllerSlot The slot of the controller for which to set the low frequency motor speed. This is a zero-based index, with 0 representing the first controller in the array.
  */
 void XInput::SetLowFrequencyMotorSpeed(uint16_t Speed, ulong_t ControllerSlot)
 	{
@@ -768,6 +877,14 @@ void XInput::SetLowFrequencyMotorSpeed(uint16_t Speed, ulong_t ControllerSlot)
  * @param Speed The new high frequency motor speed to be set. Must be within the range of uint16_t (0-65535).
  * @param ControllerSlot The slot number of the controller whose motor speed is being set.
  */
+/**
+ * @brief Set the high frequency motor speed for a specific controller slot.
+ *
+ * This function sets the high frequency motor speed of a specified controller slot. The speed is set in the range of uint16_t, where 0 represents no vibration and 65535 represents maximum vibration.
+ *
+ * @param Speed The new high frequency motor speed to be set.
+ * @param ControllerSlot The specific controller slot whose motor speed will be changed.
+ */
 void XInput::SetHighFrequencyMotorSpeed(uint16_t Speed, ulong_t ControllerSlot)
 	{
 		m_Controllers[ControllerSlot].second.Settings.HighFreqMotorSpeed = Speed;
@@ -781,6 +898,7 @@ void XInput::SetHighFrequencyMotorSpeed(uint16_t Speed, ulong_t ControllerSlot)
 	}
 
 	
+
 void XInput::PollControllers()
 	{
 		for (ulong_t i = 0; i < m_Controllers.size(); i++)

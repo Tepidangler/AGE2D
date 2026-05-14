@@ -22,12 +22,27 @@ namespace AGE
 
 		void OnUpdate() override;
 
-		inline unsigned int GetWidth() const override { return m_Data.Width; }
-		inline unsigned int GetHeight() const override { return m_Data.Height; }
+		/**
+ * @brief Returns the width of the data object.
+ * @return The width of the data object as an unsigned integer.
+ */
+inline unsigned int GetWidth() const override { return m_Data.Width; }
+		/**
+ * @brief This function returns the height of an object.
+ * @return The height as an unsigned integer.
+ */
+inline unsigned int GetHeight() const override { return m_Data.Height; }
 
 		// Window Attributes
 
-		inline void SetEventCallback(const EventCallbackFn& Callback) override
+		/**
+ * @brief This function sets the event callback for various components of the system.
+ * The callback is used to notify clients about certain events that occur within the system.
+ * It's set both in m_Data and m_RendererCallback, as well as in each JData object in m_JDatas.
+ * 
+ * @param Callback The event callback function to be set. This function should take an EventType parameter and return void.
+ */
+inline void SetEventCallback(const EventCallbackFn& Callback) override
 		{
 			m_Data.EventCallback = Callback;
 			m_RendererCallback = Callback;
@@ -42,12 +57,28 @@ namespace AGE
 		bool IsVSync() const override;
 		void ProcessJoystickInput();
 
-		static LinuxWindow& Get() { return *s_Window; }
-		void* GetNativeWindow() const override { return m_Window; }
-		Window GetPlatformWindow() override { return m_X11Window; }
+		/**
+ * @brief This function returns a reference to the static instance of LinuxWindow.
+ * @return A reference to the static instance of LinuxWindow.
+ */
+static LinuxWindow& Get() { return *s_Window; }
+		/**
+ * @brief This function returns a pointer to the native window object.
+ * @return A void pointer to the native window object, or nullptr if no such object exists.
+ */
+void* GetNativeWindow() const override { return m_Window; }
+		/**
+ * @brief This function returns the platform window associated with this object.
+ * @return The X11 Window for this object.
+ */
+Window GetPlatformWindow() override { return m_X11Window; }
 		Vector2 GetMousePos() override;
 
-		GraphicsContext* GetGraphicsContext() override { return m_Context.get(); }
+		/**
+ * @brief This function returns the GraphicsContext object associated with this class instance.
+ * @return A pointer to the GraphicsContext object, or nullptr if no context is available.
+ */
+GraphicsContext* GetGraphicsContext() override { return m_Context.get(); }
 
 		static void JoystickCallback(int JID, int Event);
 

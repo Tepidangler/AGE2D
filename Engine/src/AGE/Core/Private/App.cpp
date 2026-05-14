@@ -29,6 +29,14 @@ namespace AGE
  * 
  * @return None
  */
+/**
+ * Constructor for the App class. Initializes an instance of the application with a name and command line arguments.
+ * 
+ * @param name The name of the application.
+ * @param Args Command line arguments provided when starting the application.
+ * 
+ * @return None
+ */
 App::App(const std::string& name, ApplicationCommandLineArgs Args)
 	{
 		AGE_PROFILE_FUNCTION();
@@ -83,6 +91,13 @@ App::App(const std::string& name, ApplicationCommandLineArgs Args)
  * 
  * This function is responsible for cleaning up any resources that were acquired during the lifetime of an instance of this class, such as memory or file handles. It calls the Shutdown() method to perform these cleanups.
  */
+/**
+ * @brief Destructor for the App class.
+ * 
+ * This function is responsible for cleaning up any resources that were acquired during the lifetime of an instance of this class. In this case, it calls the Shutdown() method to ensure all system resources are properly released and cleaned up.
+ * 
+ * @return void
+ */
 App::~App()
 	{
 		Shutdown();
@@ -97,6 +112,7 @@ App::~App()
  * 
  * It then pushes an ImGuiLayer onto the layer stack and attaches it to the NewProjectLayer if bShowNewProjectMenu is true. Finally, it sets m_Running to true.
  */
+
 void App::Init()
 	{
 		m_DeviceManager = CreateScope<DeviceManager>(AudioEngineType::AGESoundEngine);
@@ -131,6 +147,14 @@ void App::Init()
  * 
  * @return void
  */
+/**
+ * @brief Initializes the Renderer module.
+ * 
+ * This function is used to initialize the Renderer module by calling the Init() function from the Renderer class.
+ * It sets up any necessary resources for rendering, such as setting up OpenGL context or initializing shaders and textures.
+ *
+ * @return void
+ */
 void App::InitRenderer()
 	{
 		Renderer::Init();
@@ -142,6 +166,15 @@ void App::InitRenderer()
  * This function iterates over each layer in the m_LayerStack, checks if its name is either "NewProjectLayer" or "ImGuiLayer",
  * and skips these two special layers. For other layers, it calls their Init() method to initialize them and then OnAttach() to attach them. 
  * The variable bBlockThisFrame is also set to false at the end of this function.
+ * 
+ * @return void
+ */
+/**
+ * @brief Initializes and attaches all layers in the layer stack.
+ * 
+ * This function iterates over each layer in the m_LayerStack vector, checks if its name is either "NewProjectLayer" or "ImGuiLayer",
+ * and skips these two special layers. For other layers, it calls Init() to initialize them and OnAttach() to attach them to the application. 
+ * It also sets bBlockThisFrame to false at the end of this function.
  * 
  * @return void
  */
@@ -166,6 +199,13 @@ void App::InitLayers()
  * 
  * @return void
  */
+/**
+ * @brief Loads assets in separate threads for concurrent loading.
+ * 
+ * This function starts three additional threads to load scenes, sound banks and Aseprite files concurrently. It then detaches these threads so they run independently of the main thread. After that, it calls `LoadTextures` and `LoadShaders` functions to finish the asset loading process.
+ * 
+ * @return void
+ */
 void App::LoadAssets()
 	{
 		m_AssetLoadThreads.emplace_back(std::thread(&App::LoadScenes, this));
@@ -185,6 +225,10 @@ void App::LoadAssets()
  * @param None
  * @return void
  */
+/** 
+ * @brief This function is used to shutdown the application. It sets a flag indicating that the program is no longer running, and then shuts down the renderer.
+ * @return void
+ */
 void App::Shutdown()
 	{
 		bProgramRunning.store(false);
@@ -199,6 +243,17 @@ void App::Shutdown()
  * This function is responsible for dispatching events to all layers and components in the application. It uses an EventDispatcher object to handle different types of events, such as WindowCloseEvent, WindowResizeEvent, FramebufferResizeEvent, RendererChangeEvent, ProjectCreatedEvent, and ProjectLoadedEvent.
  * 
  * @param E Reference to the event that needs to be handled.
+ */
+/**
+ * @brief Handles an event dispatched by the application.
+ *
+ * This function is responsible for dispatching events to all layers and components in the application's layer stack. 
+ * It uses an EventDispatcher object to handle different types of events such as WindowCloseEvent, WindowResizeEvent, FramebufferResizeEvent, RendererChangeEvent, ProjectCreatedEvent, and ProjectLoadedEvent.
+ * The function also checks for specific conditions like if the NewProjectLayer is shown or if event handling should be blocked in the current frame. 
+ * It iterates over the layer stack from back to front and calls OnEvent on each layer until an event has been handled. 
+ * Similarly, it does this for components as well. If an event gets handled during any of these iterations, the loop breaks early.
+ *
+ * @param E The event to be dispatched.
  */
 void App::OnEvent(Event& E)
 	{
@@ -253,6 +308,13 @@ void App::OnEvent(Event& E)
  * This function pushes a given Layer object onto the m_LayerStack, which is essentially a stack of layers used in an application. The OnAttach() method for this layer will be called to initialize it.
  * @param Layer Pointer to the Layer that needs to be pushed and attached.
  */
+/** 
+ * @brief Pushes a layer onto the application's layer stack.
+ * 
+ * This function pushes a given Layer object into the m_LayerStack of the App class. The layer is added at the top of the stack, and will be processed last during rendering.
+ * 
+ * @param[in] Layer Pointer to the Layer object that needs to be pushed onto the stack.
+ */
 void App::PushLayer(Layer* Layer)
 	{
 		AGE_PROFILE_FUNCTION();
@@ -266,6 +328,14 @@ void App::PushLayer(Layer* Layer)
  * This function pushes a given Layer object into the m_LayerStack, which is assumed to be of type LayerStack. The Layer's OnAttach() function is then called.
  * 
  * @param[in] Layer Pointer to the Layer object that will be pushed onto the stack and its OnAttach() function will be called.
+ */
+/** 
+ * @brief Pushes an overlay layer onto the stack and calls its OnAttach function.
+ * 
+ * This function pushes a given Layer object into the m_LayerStack, which is assumed to be of type LayerStack. It then calls the OnAttach() function on this Layer object.
+ * The AGE_PROFILE_FUNCTION macro is used for profiling purposes and should not affect the functionality of the application.
+ * 
+ * @param[in] Layer Pointer to a Layer object that will be pushed onto the stack.
  */
 void App::PushOverlay(Layer* Layer)
 	{
@@ -282,6 +352,13 @@ void App::PushOverlay(Layer* Layer)
  * @param Comp Pointer to the ScriptableEntity component to push onto the stack.
  * @return void No return value.
  */
+/** 
+ * @brief Pushes a ScriptableEntity component onto the stack.
+ * 
+ * This function takes in a pointer to a ScriptableEntity object and pushes it into the m_CompStack, which is likely a stack of components for some kind of application.
+ * 
+ * @param Comp A pointer to the ScriptableEntity component that will be pushed onto the stack.
+ */
 void App::PushScriptableComp(ScriptableEntity* Comp)
 	{
 		m_CompStack.PushComponent(Comp);
@@ -294,12 +371,20 @@ void App::PushScriptableComp(ScriptableEntity* Comp)
  * 
  * @return void
  */
+/**
+ * @brief This function retrieves DirectX error messages.
+ * 
+ * The function does not take any parameters and returns void. It is designed to handle the retrieval of error messages from the DirectX library, which can be useful for debugging purposes. However, it doesn't provide specific information about the errors that have occurred. For this, additional functions or methods might be needed.
+ * 
+ * @return Void
+ */
 void App::GetDirectXErrorMessages()
 	{
 
 	}
 
 	
+
 void App::Run()
 	{
 		Init();
@@ -349,6 +434,7 @@ void App::Run()
 	}
 
 	
+
 void App::LoadScenes()
 	{
 		std::filesystem::path ScenesPath = m_AppConfig.CurrentProjectPath.string() + "/Scenes";
@@ -372,6 +458,12 @@ void App::LoadScenes()
 	}
 	/**
  * @brief Loads and initializes all shader files from specified directories.
+ * @return void
+ */
+/**
+ * @brief LoadShaders function loads shader programs based on the current RendererAPI.
+ * It initializes the renderer and then loads all vertex shaders from a specified directory. 
+ * If the RendererAPI is not OpenGL, it asserts false with an error message indicating that the RendererAPI is not currently implemented.
  * @return void
  */
 void App::LoadShaders()
@@ -404,6 +496,13 @@ void App::LoadShaders()
  * 
  * @return void
  */
+/**
+ * @brief Loads all textures from the game content directory.
+ * 
+ * This function iterates over every file in the "Textures" subdirectory of the game content path, and loads each texture into the AssetManager if the program is currently running (i.e., bProgramRunning is true). If the program is not running, it stops loading textures immediately.
+ * 
+ * @return void
+ */
 void App::LoadTextures()
 	{
 		for (auto& T : std::filesystem::recursive_directory_iterator(AssetManager::Get().GetGameContentPath().string() + "/Textures"))
@@ -422,6 +521,7 @@ void App::LoadTextures()
 		}
 	}
 	
+
 void App::LoadSoundBanks()
 	{
 		switch (App::Get().GetDeviceManager().GetAudioManager().GetAudioEngineType())
@@ -500,6 +600,13 @@ void App::LoadSoundBanks()
  * 
  * @return void
  */
+/**
+ * @brief Loads all Aseprite files from the game content directory.
+ * 
+ * This function iterates over each file in the "Aesprite" subdirectory of the game content path, and loads them using AssetManager::LoadAsepriteFile().
+ * It currently does not handle loading directories or recursive traversal, so it only loads files directly under the "Aesprite" directory. 
+ * If more complex behavior is needed in the future, this function should be updated accordingly.
+ */
 void App::LoadAsepriteFiles()
 	{
 		//for (auto& A : std::filesystem::recursive_directory_iterator(AssetManager::Get().GetGameContentPath().string() + "/Aesprite"))
@@ -519,6 +626,14 @@ void App::LoadAsepriteFiles()
  * 
  * @return void
  */
+/**
+ * @brief Closes the application by setting m_Running to false.
+ *
+ * This function sets the member variable m_Running of an instance of the App class to false, effectively closing the application.
+ * It does not return any value and has no parameters.
+ *
+ * @return void
+ */
 void App::Close()
 	{
 		m_Running = false;
@@ -529,6 +644,14 @@ void App::Close()
  * 
  * @param E A reference to the WindowCloseEvent object representing the event.
  * @return Returns true if the operation was successful, otherwise it returns false. In this case, since we always return true, the confidence level is 1.0.
+ */
+/**
+ * @brief Handles the window close event.
+ * 
+ * This function is called when a window is closed by the user or system. It sets the running flag to false, indicating that the application should terminate.
+ * 
+ * @param E The WindowCloseEvent object containing information about the event.
+ * @return Returns true if the operation was successful, otherwise returns false. In this case, it always returns true as there are no operations that could fail.
  */
 bool App::OnWindowClose(WindowCloseEvent& E)
 	{
@@ -543,6 +666,16 @@ bool App::OnWindowClose(WindowCloseEvent& E)
  * @brief Handles the window resize event.
  *
  * This function is triggered when the size of the application's window changes. It checks if the new width or height are zero, 
+ * indicating a minimized state. If so, it sets `m_Minimized` to true and returns false. Otherwise, it sets `m_Minimized` to false 
+ * and calls Renderer::OnWindowResize with the new dimensions before returning false.
+ *
+ * @param E The window resize event object.
+ * @return Always returns false as per current implementation.
+ */
+/**
+ * @brief Handles the window resize event.
+ *
+ * This function is called when the size of the application's window changes. It checks if the new width or height are zero, 
  * indicating a minimized state. If so, it sets `m_Minimized` to true and returns false. Otherwise, it sets `m_Minimized` to false 
  * and calls Renderer::OnWindowResize with the new dimensions before returning false.
  *
@@ -572,6 +705,14 @@ bool App::OnWindowResize(WindowResizeEvent& E)
  * @param E The FramebufferResizeEvent that triggered this function.
  * @return Always returns false. This function does not handle errors or exceptions, so it always returns false.
  */
+/**
+ * @brief Handles the framebuffer resize event by updating the renderer and storing the new size in m_FramebufferSize.
+ * 
+ * This function is triggered when the window's framebuffer (the actual pixels on screen) gets resized. It updates the Renderer with the new width and height, then stores these values in m_FramebufferSize for later use.
+ * 
+ * @param E The FramebufferResizeEvent that was fired. Contains information about the new size of the framebuffer.
+ * @return Always returns false as there are no errors to handle in this function.
+ */
 bool App::OnFramebufferResize(FramebufferResizeEvent& E)
 	{
 		Renderer::OnFramebufferResize(E.GetWidth(), E.GetHeight());
@@ -587,6 +728,14 @@ bool App::OnFramebufferResize(FramebufferResizeEvent& E)
  * @param E An instance of RendererChangeEvent containing details about the new renderer.
  * @return Returns false to indicate that no further action is needed after this event.
  */
+/**
+ * @brief Handles the event of a renderer change.
+ * 
+ * This function is called when the application's current renderer changes. The event details are passed as an argument.
+ *
+ * @param E A reference to the RendererChangeEvent that describes the change.
+ * @return Returns true if the event was handled successfully, false otherwise.
+ */
 bool App::OnRendererChanged(RendererChangeEvent& E)
 	{
 		return false;
@@ -598,6 +747,13 @@ bool App::OnRendererChanged(RendererChangeEvent& E)
  * @param E A reference to the ProjectCreatedEvent object containing information about the newly created project.
  * 
  * @return Returns false as this function does not have a meaningful return value in this context.
+ */
+/**
+ * @brief This function is triggered when a new project is created. It initializes the AssetManager, loads assets, and sets up the layer stack for the newly created project.
+ * 
+ * @param E A reference to the ProjectCreatedEvent object containing information about the newly created project.
+ * 
+ * @return Returns false as no further action is needed after this function call.
  */
 bool App::OnProjectCreated(ProjectCreatedEvent &E)
 	{
@@ -616,6 +772,13 @@ bool App::OnProjectCreated(ProjectCreatedEvent &E)
  * @param E A reference to the ProjectLoadedEvent that contains information about the loaded project.
  * 
  * @return Returns false as this function does not have any meaningful return value in the context of its purpose.
+ */
+/**
+ * @brief This function is triggered when a project is loaded. It sets up the AssetManager, loads assets, and initializes layers.
+ * 
+ * @param E A reference to the ProjectLoadedEvent that contains information about the loaded project.
+ * 
+ * @return Returns false as this function does not have any meaningful return value in this context.
  */
 bool App::OnProjectLoaded(ProjectLoadedEvent &E)
 	{

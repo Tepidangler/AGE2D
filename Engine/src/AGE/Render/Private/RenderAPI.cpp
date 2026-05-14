@@ -13,6 +13,13 @@ namespace AGE
  * 
  * @return Scope<RendererAPI> - The newly created RendererAPI instance or nullptr if an invalid API is set.
  */
+/**
+ * @brief Creates a new instance of the RendererAPI based on the current setting.
+ * 
+ * This function creates and returns an instance of either OpenGLRendererAPI or another type of RendererAPI, depending on what is currently set as the API. If no valid API is set (i.e., s_API is None), it asserts false with a message indicating that this case is not supported.
+ * 
+ * @return Scope<RendererAPI> A new instance of the RendererAPI, or nullptr if an invalid API is detected.
+ */
 Scope<RendererAPI> RendererAPI::Create()
 	{
 		switch ((int)s_API)

@@ -21,7 +21,15 @@ namespace YAML
 	template<>
 	struct convert<AGE::Vector2>
 	{
-		static Node encode(const AGE::Vector2& rhs)
+		/**
+ * @brief Encodes a 2D vector into a Node object.
+ *
+ * This function takes in a const reference to an AGE::Vector2 and encodes it into a Node object by pushing the x and y coordinates of the Vector2 onto the Node. The encoded Node is then returned.
+ *
+ * @param rhs The 2D vector to be encoded.
+ * @return The encoded Node containing the x and y coordinates of the input Vector2.
+ */
+static Node encode(const AGE::Vector2& rhs)
 		{
 			Node node;
 			node.push_back(rhs.x);
@@ -30,7 +38,16 @@ namespace YAML
 			return node;
 		}
 
-		static bool decode(const Node& node, AGE::Vector2& rhs)
+		/**
+ * @brief Decodes a Node object into an AGE::Vector2.
+ *
+ * This function attempts to decode the given Node object into an AGE::Vector2. It checks if the node is a sequence and has exactly two elements, then assigns the first element of the node as x value of the vector and the second one as y value. If the conditions are not met, it returns false.
+ * 
+ * @param[in] node The Node object to be decoded.
+ * @param[out] rhs The AGE::Vector2 that will store the decoded values.
+ * @return True if the decoding was successful, False otherwise.
+ */
+static bool decode(const Node& node, AGE::Vector2& rhs)
 		{
 			if (!node.IsSequence() || node.size() != 2)
 			{
@@ -46,7 +63,15 @@ namespace YAML
 	template<>
 	struct convert<AGE::Vector3>
 	{
-		static Node encode(const AGE::Vector3& rhs)
+		/**
+ * @brief Encodes a Vector3 object into a Node object.
+ * 
+ * This function takes in a const reference to an AGE::Vector3 object and encodes it into a Node object by pushing the x, y, and z values of the vector onto the node.
+ * The encoded Node is then returned.
+ * @param rhs The Vector3 object to be encoded.
+ * @return The encoded Node object containing the x, y, and z values from the input Vector3.
+ */
+static Node encode(const AGE::Vector3& rhs)
 		{
 			Node node;
 			node.push_back(rhs.x);
@@ -56,7 +81,18 @@ namespace YAML
 			return node;
 		}
 
-		static bool decode(const Node& node, AGE::Vector3& rhs)
+		/**
+ * @brief Decodes a Node object into an AGE::Vector3 object.
+ *
+ * This function takes in a const reference to a Node object and a reference to an AGE::Vector3 object. 
+ * It checks if the Node is a sequence (i.e., it contains elements) and has exactly three elements. If these conditions are met, it assigns the first element of the Node to rhs.x, the second to rhs.y, and the third to rhs.z. The function returns true if all operations were successful, false otherwise.
+ *
+ * @param node A const reference to a Node object that should be decoded into an AGE::Vector3 object.
+ * @param rhs A reference to an AGE::Vector3 object where the result of the decoding will be stored.
+ * 
+ * @return Returns true if successful, false otherwise.
+ */
+static bool decode(const Node& node, AGE::Vector3& rhs)
 		{
 			if (!node.IsSequence() || node.size() != 3)
 			{
@@ -74,7 +110,15 @@ namespace YAML
 	template<>
 	struct convert<AGE::Vector4>
 	{
-		static Node encode(const AGE::Vector4& rhs)
+		/** 
+ * @brief Encodes a Vector4 into a Node object.
+ * 
+ * This function takes in a const reference to an AGE::Vector4 and encodes it into a Node object by pushing the x, y, z, and w values of the vector onto the node.
+ * 
+ * @param rhs The input Vector4 to be encoded.
+ * @return Returns a Node object containing the encoded data from the input Vector4.
+ */
+static Node encode(const AGE::Vector4& rhs)
 		{
 			Node node;
 
@@ -86,7 +130,14 @@ namespace YAML
 			return node;
 		}
 
-		static bool decode(const Node& node, AGE::Vector4& rhs)
+		/**
+ * @brief Decodes a Node object into an AGE::Vector4.
+ *
+ * This function takes in a const reference to a Node object and a reference to an AGE::Vector4. 
+ * It checks if the node is a sequence and has exactly four elements. If it does, it assigns the first three elements of the node (interpreted as floats) to x, y, and z properties of the Vector4 respectively, and the fourth element to w property. 
+ * The function returns true if the decoding was successful, false otherwise.
+ */
+static bool decode(const Node& node, AGE::Vector4& rhs)
 		{
 			if (!node.IsSequence() || node.size() != 4)
 			{
@@ -103,7 +154,15 @@ namespace YAML
 	template<>
 	struct convert<AGE::Ref<AGE::Texture2D>>
 	{
-		static Node encode(const AGE::Ref<AGE::Texture2D>& rhs)
+		/**
+ * @brief Encodes a texture into a Node object.
+ * 
+ * This function takes a reference to an AGE::Texture2D object and encodes it into a Node object. The encoded data is then pushed back onto the node.
+ * 
+ * @param rhs Reference to the Texture2D object to be encoded.
+ * @return Encoded texture as a Node object.
+ */
+static Node encode(const AGE::Ref<AGE::Texture2D>& rhs)
 		{
 			Node node;
 
@@ -112,7 +171,18 @@ namespace YAML
 			return node;
 		}
 
-		static bool decode(const Node& node, AGE::Ref<AGE::Texture2D>& rhs)
+		/**
+ * @brief Decodes a Node object into an AGE::Ref<AGE::Texture2D>.
+ *
+ * This function checks if the input node is a sequence and has exactly one element. If it does, 
+ * it attempts to convert that single element into an AGE::Ref<AGE::Texture2D> and assigns it to rhs. 
+ * The function returns true on success and false otherwise.
+ *
+ * @param[in] node The Node object to decode.
+ * @param[out] rhs The AGE::Ref<AGE::Texture2D> to store the result in.
+ * @return True if the decoding was successful, false otherwise.
+ */
+static bool decode(const Node& node, AGE::Ref<AGE::Texture2D>& rhs)
 		{
 			if (!node.IsSequence() || node.size() != 1)
 			{
@@ -126,7 +196,15 @@ namespace YAML
 	template<>
 	struct convert<AGE::Ref<AGE::AudioSource>>
 	{
-		static Node encode(const AGE::Ref<AGE::AudioSource>& rhs)
+		/**
+ * @brief Encodes an audio source into a Node object.
+ * 
+ * This function takes in a reference to an AudioSource and encodes it into a Node object. The encoded data is then pushed back onto the Node object.
+ * 
+ * @param rhs A reference to an AudioSource that needs to be encoded.
+ * @return Returns a Node object containing the encoded audio source.
+ */
+static Node encode(const AGE::Ref<AGE::AudioSource>& rhs)
 		{
 			Node node;
 
@@ -135,7 +213,19 @@ namespace YAML
 			return node;
 		}
 
-		static bool decode(const Node& node, AGE::Ref<AGE::AudioSource>& rhs)
+		/**
+ * @brief Decodes a Node object into an AGE::Ref<AGE::AudioSource>.
+ *
+ * This function takes in a const reference to a Node object and attempts to decode it into 
+ * an instance of AGE::Ref<AGE::AudioSource>. If the node is not a sequence or if it's empty, 
+ * the function returns false indicating failure. Otherwise, it sets rhs to the first element in 
+ * the Node object and returns true.
+ *
+ * @param[in] node The input Node object to be decoded.
+ * @param[out] rhs The output AGE::Ref<AGE::AudioSource> instance where the decoded data will be stored.
+ * @return True if successful, false otherwise.
+ */
+static bool decode(const Node& node, AGE::Ref<AGE::AudioSource>& rhs)
 		{
 			if (!node.IsSequence() || node.size() <= 0)
 			{
@@ -150,7 +240,17 @@ namespace YAML
 	template<>
 	struct convert <std::vector<std::pair<std::string, std::vector<uint8_t>>>>
 	{
-		static Node encode(const std::vector<std::pair<std::string, std::vector<uint8_t>>>& rhs)
+		/**
+ * @brief Encodes a vector of pairs into a Node object.
+ *
+ * This function takes in a vector of pairs, where each pair contains a string and a vector of uint8_t values. 
+ * It iterates over the input vector, assigning each pair's first element to the node as its key, and the second element to the node as its value. 
+ * After processing all pairs, it returns the resulting Node object.
+ *
+ * @param rhs The vector of pairs to encode into a Node object.
+ * @return The encoded Node object.
+ */
+static Node encode(const std::vector<std::pair<std::string, std::vector<uint8_t>>>& rhs)
 		{
 			Node node;
 			for (size_t i = 0; i < rhs.size(); i++)
@@ -162,7 +262,20 @@ namespace YAML
 			return node;
 		}
 
-		static bool decode(const Node& node, std::vector<std::pair<std::string, std::vector<uint8_t>>>& rhs)
+		/**
+ * @brief Decodes a Node object into a vector of pairs.
+ *
+ * This function takes in a const reference to a Node object and a reference to a 
+ * std::vector of std::pair<std::string, std::vector<uint8_t>>. It first resizes the output vector based on the size of the input node.
+ * Then it checks if the "second" field in the node is a sequence and has more than zero elements. If not, it returns false. 
+ * Otherwise, it iterates over the node fields, extracting the "first" and "second" values into the output vector.
+ *
+ * @param[in] node The Node object to be decoded.
+ * @param[out] rhs The std::vector of pairs where the decoded data will be stored.
+ * 
+ * @return True if successful, false otherwise.
+ */
+static bool decode(const Node& node, std::vector<std::pair<std::string, std::vector<uint8_t>>>& rhs)
 		{		
 			rhs.resize(node.size()*(uint64_t)(.5f));
   			std::cout << Dump(node) << std::endl;
@@ -192,7 +305,16 @@ namespace YAML
 	template<>
 	struct convert <std::vector<uint8_t>>
 	{
-		static Node encode(const std::vector<uint8_t>& rhs)
+		/**
+ * @brief Encodes a vector of uint8_t into a Node object.
+ *
+ * This function takes an input vector of uint8_t and encodes it into a Node object by assigning each element of the vector to a corresponding index in the Node object. 
+ * The encoding is done using a for loop, where each element from the input vector is assigned to a position in the Node object.
+ *
+ * @param rhs A const reference to an std::vector<uint8_t> that needs to be encoded into a Node object.
+ * @return Returns a Node object which contains the encoded data from the input vector.
+ */
+static Node encode(const std::vector<uint8_t>& rhs)
 		{
 			Node node;
 			for (size_t i = 0; i < rhs.size(); i++)
@@ -202,7 +324,22 @@ namespace YAML
 			return node;
 		}
 
-		static bool decode(const Node& node, std::vector<uint8_t>& rhs)
+		/**
+ * @brief Decodes a Node object into an std::vector of uint8_t values.
+ *
+ * This function takes in a const reference to a Node object and a reference to an 
+ * std::vector of unsigned char (uint8_t). It checks if the node is a sequence and 
+ * its size is greater than zero, returning false otherwise. If the check passes, it 
+ * resizes the vector to match the size of the node and populates it with uint8_t values 
+ * obtained by converting each string element in the Node object to an unsigned char. It then 
+ * returns true indicating successful decoding.
+ *
+ * @param[in] node The input Node object to be decoded.
+ * @param[out] rhs The output vector of uint8_t values.
+ *
+ * @return True if the function successfully decodes the Node, false otherwise.
+ */
+static bool decode(const Node& node, std::vector<uint8_t>& rhs)
 		{
 			if (!node.IsSequence() || node.size() <= 0)
 			{
@@ -223,7 +360,15 @@ namespace YAML
 	template<>
 	struct convert <AGE::AnimationSpecification>
 	{
-		static Node encode(const AGE::AnimationSpecification& rhs)
+		/**
+ * @brief Encodes an AnimationSpecification object into a Node object.
+ * 
+ * This function takes an instance of the AnimationSpecification class and encodes it into a Node object, which is then returned by the function. The encoding process involves pushing back several properties of the AnimationSpecification object onto the Node object in specific order: Name, NumberOfFrames, MovementStatus (cast to int), Width, Height, TextureFilePath, and bIsReadyToLoad.
+ * 
+ * @param rhs The AnimationSpecification object to be encoded.
+ * @return A Node object containing the encoded data from the AnimationSpecification object.
+ */
+static Node encode(const AGE::AnimationSpecification& rhs)
 		{
 			Node node;
 			node.push_back(rhs.Name);
@@ -237,7 +382,18 @@ namespace YAML
 			return node;
 		}
 
-		static bool decode(const Node& node, AGE::AnimationSpecification& rhs)
+		/**
+ * @brief Decodes a Node object into an AnimationSpecification object.
+ *
+ * This function takes in a const reference to a Node object and a reference to an 
+ * AGE::AnimationSpecification object. It checks if the Node is a sequence and if it has any elements. If these conditions are not met, it returns false. Otherwise, it populates the AnimationSpecification with data from the Node. The function then returns true.
+ *
+ * @param node The const reference to the Node object to be decoded.
+ * @param rhs The reference to the AGE::AnimationSpecification object that will hold the decoded data.
+ * 
+ * @return Returns true if the Node was successfully decoded, false otherwise.
+ */
+static bool decode(const Node& node, AGE::AnimationSpecification& rhs)
 		{
 			if (!node.IsSequence() || node.size() <= 0)
 			{
@@ -259,26 +415,57 @@ namespace YAML
 
 namespace AGE
 {
-	YAML::Emitter& operator <<(YAML::Emitter& Out, const AGE::Vector2& v)
+	/**
+ * @brief Overload of the << operator for YAML::Emitter and AGE::Vector2.
+ * This function allows to output an instance of Vector2 in a format that can be easily parsed by YAML.
+ * 
+ * @param Out The YAML emitter object to which we are appending data.
+ * @param v The vector to be serialized and appended to the emitter.
+ * @return A reference to the modified YAML::Emitter object.
+ */
+YAML::Emitter& operator <<(YAML::Emitter& Out, const AGE::Vector2& v)
 	{
 		Out << YAML::Flow;
 		Out << YAML::BeginSeq << v.x << v.y << YAML::EndSeq;
 		return Out;
 	}
 
-	YAML::Emitter& operator <<(YAML::Emitter& Out, const AGE::Vector3& v)
+	/**
+ * @brief Overload of the << operator for YAML::Emitter and AGE::Vector3.
+ * This function allows to output an AGE::Vector3 object in a format that can be easily parsed by YAML.
+ * 
+ * @param Out The YAML emitter to which we are appending the vector data.
+ * @param v The Vector3 object whose data is being appended to the emitter.
+ * @return A reference to the modified YAML::Emitter.
+ */
+YAML::Emitter& operator <<(YAML::Emitter& Out, const AGE::Vector3& v)
 	{
 		Out << YAML::Flow;
 		Out << YAML::BeginSeq << v.x << v.y << v.z << YAML::EndSeq;
 		return Out;
 	}
-	YAML::Emitter& operator <<(YAML::Emitter& Out, const AGE::Vector4& v)
+	/**
+ * @brief Overload of the << operator for YAML::Emitter and AGE::Vector4.
+ * This function allows to output an AGE::Vector4 instance in a format that can be easily parsed by YAML parsers.
+ * 
+ * @param Out The YAML emitter object to which we are appending the vector data.
+ * @param v The Vector4 instance from which we want to extract data for output.
+ * @return A reference to the modified YAML::Emitter object.
+ */
+YAML::Emitter& operator <<(YAML::Emitter& Out, const AGE::Vector4& v)
 	{
 		Out << YAML::Flow;
 		Out << YAML::BeginSeq << v.x << v.y << v.z << v.w << YAML::EndSeq;
 		return Out;
 	}
-	YAML::Emitter& operator <<(YAML::Emitter& Out, const std::unordered_map<std::string, Ref<Texture2D>>& um)
+	/**
+ * @brief Overload of the << operator for YAML::Emitter and std::unordered_map<std::string, Ref<Texture2D>>. 
+ * This function serializes an unordered map where each key-value pair represents a texture name and its corresponding Texture2D object.
+ * @param Out The YAML emitter to which the data is appended.
+ * @param um The unordered map of textures to be serialized.
+ * @return A reference to the modified YAML emitter.
+ */
+YAML::Emitter& operator <<(YAML::Emitter& Out, const std::unordered_map<std::string, Ref<Texture2D>>& um)
 	{
 		Out << YAML::Flow;
 		for (auto KV : um)
@@ -287,7 +474,15 @@ namespace AGE
 		}
 		return Out;
 	}
-	YAML::Emitter& operator <<(YAML::Emitter& Out, const std::vector<Ref<AudioSource>>& sound)
+	/**
+ * @brief Overload of the << operator for YAML::Emitter and std::vector<Ref<AudioSource>>.
+ * This function serializes a vector of Ref<AudioSource> into a YAML emitter in a flow sequence format.
+ * 
+ * @param Out The YAML emitter to which the data is appended.
+ * @param sound The vector of Ref<AudioSource> to be serialized.
+ * @return YAML::Emitter& Returns the modified emitter for further use.
+ */
+YAML::Emitter& operator <<(YAML::Emitter& Out, const std::vector<Ref<AudioSource>>& sound)
 	{
 		Out << YAML::Flow;
 		Out << YAML::BeginSeq;
@@ -299,7 +494,8 @@ namespace AGE
 		return Out;
 	}
 
-	YAML::Emitter& operator <<(YAML::Emitter& Out, const std::vector<std::pair<std::string, std::vector<uint8_t>>> Bindings)
+	
+YAML::Emitter& operator <<(YAML::Emitter& Out, const std::vector<std::pair<std::string, std::vector<uint8_t>>> Bindings)
 	{
 		Out << YAML::Flow;
 		Out << YAML::BeginMap;
@@ -320,7 +516,18 @@ namespace AGE
 		return Out;
 	}
 
-	YAML::Emitter& operator <<(YAML::Emitter& Out, AGE::AnimationSpecification Anim)
+	/**
+ * @brief Serializes an animation specification into a YAML emitter.
+ *
+ * This function takes an instance of AnimationSpecification and serializes its data into a YAML emitter in a specific format. 
+ * The output includes the name, number of frames, movement status, width, height, texture file path, and readiness to load of the animation.
+ *
+ * @param Out A reference to an existing YAML::Emitter object.
+ * @param Anim An instance of AnimationSpecification that needs to be serialized.
+ * 
+ * @return The modified YAML emitter with the serialized data appended at its end.
+ */
+YAML::Emitter& operator <<(YAML::Emitter& Out, AGE::AnimationSpecification Anim)
 	{
 		Out << YAML::Flow;
 		Out << YAML::BeginSeq;
@@ -338,7 +545,17 @@ namespace AGE
 
 	
 
-	static std::string RigidBody2DBodyTypeToString(BodyType BodyType)
+	/**
+ * @brief Converts a given body type to its string representation.
+ *
+ * This function takes in an enumeration of type BodyType and returns the corresponding string representation.
+ * The possible values for BodyType are Static, Dynamic, and Kinematic. If the input is not one of these three, 
+ * it asserts false with a message "Unknown Body Type".
+ *
+ * @param BodyType The body type to convert to a string.
+ * @return A string representation of the given body type. Possible values are: "Static", "Dynamic", and "Kinematic".
+ */
+static std::string RigidBody2DBodyTypeToString(BodyType BodyType)
 	{
 		switch (BodyType)
 		{
@@ -360,7 +577,15 @@ namespace AGE
 		return {};
 	}
 
-	static BodyType RigidBody2DTypeFromString(const std::string& BodyTypeString)
+	/**
+ * @brief Converts a string to its corresponding RigidBody2D type.
+ * 
+ * This function takes in a string and converts it into the equivalent RigidBody2D type. It supports three types: "Static", "Dynamic" and "Kinematic". If an unknown string is passed, it asserts false and returns Static as default.
+ * 
+ * @param BodyTypeString The string to be converted.
+ * @return The corresponding RigidBody2D type.
+ */
+static BodyType RigidBody2DTypeFromString(const std::string& BodyTypeString)
 	{
 		if (BodyTypeString == "Static")
 		{
@@ -381,12 +606,28 @@ namespace AGE
 
 	}
 
-	SceneSerializer::SceneSerializer(const Ref<Scene>& S)
+	/**
+ *  @brief Constructs a SceneSerializer object with the given scene reference.
+ *  
+ *  This constructor initializes the m_Scene member variable with the provided scene reference.
+ *  
+ *  @param S A const reference to a Ref<Scene> object representing the scene to be serialized.
+ */
+SceneSerializer::SceneSerializer(const Ref<Scene>& S)
 		:m_Scene(S)
 	{
 	}
 
-	static void SerializeEntity(YAML::Emitter& Out, Entity E)
+	/**
+ * @brief Serializes an entity to a YAML emitter object.
+ * 
+ * This function serializes the given entity into a YAML emitter object, which can be written to a file or string. 
+ * The serialization includes components such as IDComponent, TagComponent, CameraComponent, TransformComponent, etc., if they exist on the entity.
+ * 
+ * @param Out A reference to the YAML emitter object where the serialized data will be stored.
+ * @param E The entity to be serialized. It must have at least an IDComponent.
+ */
+static void SerializeEntity(YAML::Emitter& Out, Entity E)
 	{
 		CoreLogger::Assert(E.HasComponent<IDComponent>(), "No ID Component present!");
 		Out << YAML::BeginMap;
@@ -602,7 +843,16 @@ namespace AGE
 
 	}
 
-	void SceneSerializer::Serialize(const std::string& FilePath)
+	/**
+ * @brief This function serializes the current scene into a YAML file at the specified path.
+ * 
+ * The function extracts the filename from the provided filepath, sets this as the name of the scene, and then writes out the scene data to the file in YAML format. Each entity in the scene is represented by an entry in the "Entities" sequence.
+ * 
+ * @param FilePath A string representing the path where the serialized scene should be saved.
+ * 
+ * @return void
+ */
+void SceneSerializer::Serialize(const std::string& FilePath)
 	{
 
 		std::string base = FilePath.substr(FilePath.find_last_of("/\\") + 1);
@@ -633,7 +883,8 @@ namespace AGE
 		Fout << Out.c_str();
 	}
 
-	bool SceneSerializer::Deserialize(const std::string& FilePath)
+	
+bool SceneSerializer::Deserialize(const std::string& FilePath)
 	{
 		std::ifstream Stream(FilePath);
 
@@ -849,12 +1100,27 @@ namespace AGE
 		return true;
 	}
 
-	ProjectSerializer::ProjectSerializer(Ref<Project> Project)
+	/**
+ * @brief Constructs a new instance of the ProjectSerializer class with the given project reference.
+ * 
+ * @param Project The project to be serialized and stored in this object.
+ */
+ProjectSerializer::ProjectSerializer(Ref<Project> Project)
 		:m_Project(Project)
 	{
 
 	}
-	bool ProjectSerializer::Serialize(const std::filesystem::path& FilePath)
+	/**
+ * @brief Serializes the project configuration and information into a YAML file.
+ *
+ * This function serializes the project's configuration and information into a YAML file at the specified path. 
+ * The configuration includes details about the project such as its name, starting scene, asset directory, C++ namespace, copyright notice, audio engine used, renderer used, quest filepath, config filepath, and built scenes.
+ *
+ * @param FilePath The path to the YAML file where the serialized data will be written.
+ * 
+ * @return Returns true if the serialization was successful, false otherwise. In this case, it always returns true as there are no exceptions that could cause a failure.
+ */
+bool ProjectSerializer::Serialize(const std::filesystem::path& FilePath)
 	{
 		const auto& Config = m_Project->GetConfig();
 		const auto& Info = m_Project->GetInfo();
@@ -889,7 +1155,8 @@ namespace AGE
 		Fout << Out.c_str();
 		return true;
 	}
-	void ProjectSerializer::SerializeBinary(const std::filesystem::path& FilePath)
+	
+void ProjectSerializer::SerializeBinary(const std::filesystem::path& FilePath)
 	{
 		AppConfig Config = App::Get().GetAppConfig();
 		std::time_t t = std::time(nullptr);
@@ -962,7 +1229,16 @@ namespace AGE
 
 		}
 	}
-	bool ProjectSerializer::Deserialize(const std::filesystem::path& FilePath)
+	/**
+ * @brief Deserializes a project from a YAML file.
+ * 
+ * This function reads the contents of a YAML file and populates the internal configuration and info structures with data from the file.
+ * If the file cannot be loaded, an error message is logged and false is returned.
+ * 
+ * @param FilePath The path to the YAML file containing project information.
+ * @return True if the deserialization was successful, false otherwise.
+ */
+bool ProjectSerializer::Deserialize(const std::filesystem::path& FilePath)
 	{
 		auto& Config = m_Project->GetConfig();
 		auto& Info = m_Project->GetInfo();
@@ -1007,7 +1283,15 @@ namespace AGE
 
 		return true;
 	}
-	bool ProjectSerializer::DeserializeBinary(const std::filesystem::path& FilePath)
+	/** 
+ * @brief Deserializes a binary file into the project.
+ * 
+ * This function attempts to deserialize a binary file located at the given path into the current project state. It returns true if the operation was successful, and false otherwise.
+ * 
+ * @param FilePath The path of the binary file to be deserialized.
+ * @return True if the binary file was successfully deserialized, false otherwise.
+ */
+bool ProjectSerializer::DeserializeBinary(const std::filesystem::path& FilePath)
 	{
 		return false;
 	}

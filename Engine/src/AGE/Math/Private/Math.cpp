@@ -64,6 +64,18 @@ namespace AGE
  * 
  * @return True if planes are not parallel (determinant is non-zero), false otherwise.
  */
+/**
+ * @brief Computes the intersection point of three planes in a 3D space.
+ *
+ * Given three planes, this function computes and returns their intersection point if they are not parallel (i.e., have a non-zero determinant). The intersection point is calculated using Cramer's rule.
+ *
+ * @param f1 First plane to intersect with.
+ * @param f2 Second plane to intersect with.
+ * @param f3 Third plane to intersect with.
+ * @param p Pointer to a Point3D object where the intersection point will be stored if it exists.
+ * 
+ * @return True if planes are not parallel (determinant is non-zero), false otherwise.
+ */
 bool Math::IntersectThreePlanes(const Plane& f1, const Plane& f2, const Plane& f3, Point3D* p)
 	{
 		const Vector3& n1 = f1.GetNormal();
@@ -81,6 +93,21 @@ bool Math::IntersectThreePlanes(const Plane& f1, const Plane& f2, const Plane& f
 	}
 
 	
+/**
+ * @brief Computes the intersection point and direction vector of two planes in a 3D space.
+ *
+ * The function calculates the intersection line defined by its direction vector `v` and any point on this line is given by `p`.
+ * It takes as input two plane objects, each represented by a normal vector and a constant term (w).
+ * If the planes are not parallel (i.e., their normals are linearly independent), it computes the intersection point and direction vector.
+ * The function returns true if the planes intersect, false otherwise.
+ * 
+ * @param f1 First plane object with normal `n1` and constant term `f1.w`.
+ * @param f2 Second plane object with normal `n2` and constant term `f2.w`.
+ * @param p Pointer to a Point3D where the intersection point will be stored.
+ * @param v Pointer to a Vector3 where the direction vector of the intersection line will be stored.
+ * 
+ * @return True if planes intersect, false otherwise.
+ */
 bool Math::IntersectTwoPlanes(const Plane& f1, const Plane& f2, Point3D* p, Vector3* v)
 	{
 		const Vector3& n1 = f1.GetNormal();
@@ -105,6 +132,16 @@ bool Math::IntersectTwoPlanes(const Plane& f1, const Plane& f2, Point3D* p, Vect
  * @param v A Vector2 representing the origin of the line.
  * @return float Returns the distance between the point and the line in 2D space. If the input parameters are invalid, it returns NaN (Not a Number).
  */
+/**
+ * @brief Computes the distance between a point and a line in 2D space.
+ * 
+ * This function calculates the shortest distance from a given point to a line defined by two points. The line is represented as a vector, which starts at the origin (0,0).
+ * 
+ * @param q A const reference to a Vector2 object representing the point in 2D space.
+ * @param v A const reference to a Vector2 object representing the direction of the line from the origin.
+ * 
+ * @return Returns a float value representing the distance between the input point and the line. If the inputs are invalid, it returns NaN (Not a Number).
+ */
 float Math::DistPointLine2D(const Vector2& q, const Vector2& v)
 	{
 		//Vector2 a = CrossProduct2D(q, v);
@@ -122,6 +159,17 @@ float Math::DistPointLine2D(const Vector2& q, const Vector2& v)
  * 
  * @return Returns a float value representing the shortest distance between two lines in 2D space.
  */
+/**
+ * @brief Calculates the distance between two lines in a 2D space.
+ *
+ * This function calculates the shortest distance between any point on line segment AB and CD, where A = p1 and B = p1 + v1.
+ * The result is the perpendicular distance from one of the points to the other line.
+ *
+ * @param p1 First point defining the first line.
+ * @param v1 Direction vector for the first line.
+ * 
+ * @return Returns a float representing the shortest distance between two lines in a 2D space. If the lines are parallel, returns Unknown.
+ */
 float Math::DistLineLine2D(const Vector2& p1, const Vector2& v1)
 	{
 		return 0.0f;
@@ -137,6 +185,17 @@ float Math::DistLineLine2D(const Vector2& p1, const Vector2& v1)
  * @param v The Vector3 object representing the direction vector of the line.
  * 
  * @return A float value representing the shortest distance between the given point and the line. If the direction vector is zero, it returns Unknown.
+ */
+/**
+ * @brief Computes the distance between a point and a line in 3D space.
+ * 
+ * The function calculates the shortest distance from a given point to a line defined by an origin point (p) and a direction vector (v). It uses cross product, dot product, and square root functions for calculations.
+ * 
+ * @param q A constant reference to the Point3D object representing the query point.
+ * @param p A constant reference to the Point3D object representing the origin of the line.
+ * @param v A constant reference to the Vector3 object representing the direction vector of the line.
+ * 
+ * @return The function returns a float value representing the distance from the point to the line. If the direction vector is zero, it means the line is degenerate and the function will return NaN (not a number).
  */
 float Math::DistPointLine3D(const Point3D& q, const Point3D& p, const Vector3& v)
 	{
@@ -156,6 +215,19 @@ float Math::DistPointLine3D(const Point3D& q, const Point3D& p, const Vector3& v
  * @param v2 The direction vector of the second line.
  *
  * @return The shortest distance between the two lines. If the determinant is zero, it returns the perpendicular distance.
+ */
+/**
+ * @brief Calculates the distance between two lines in 3D space.
+ *
+ * The function calculates the shortest distance between two lines in 3-dimensional space defined by points and directions.
+ * It uses the method of least squares to find the closest points on each line, which minimizes the sum of the squares of the distances.
+ *
+ * @param p1 First point on the first line.
+ * @param v1 Direction vector for the first line.
+ * @param p2 First point on the second line.
+ * @param v2 Direction vector for the second line.
+ *
+ * @return The shortest distance between the two lines.
  */
 float Math::DistLineLine3D(const Point3D& p1, const Vector3& v1, const Point3D& p2, const Vector3& v2)
 	{
@@ -192,6 +264,15 @@ float Math::DistLineLine3D(const Point3D& p1, const Vector3& v1, const Point3D& 
  *
  * @return Returns a float value representing the determinant of the input 3x3 matrix. If the input matrix is not a 3x3 matrix, the behavior is undefined.
  */
+/**
+ * @brief Calculates the determinant of a 3x3 matrix.
+ *
+ * The function takes as input a constant reference to a Matrix3D object and returns its determinant.
+ * It uses the formula for calculating the determinant of a 3x3 matrix, which involves the dot product of the row vectors with the cross products of other row vectors.
+ *
+ * @param M A const reference to the input Matrix3D object.
+ * @return The determinant of the input Matrix3D as a float value.
+ */
 float Math::Determinant(const Matrix3D& M)
 	{
 		return (
@@ -207,6 +288,14 @@ float Math::Determinant(const Matrix3D& M)
  *
  * @param M A const reference to the 3x3 matrix to be inverted.
  * @return An instance of Matrix3D representing the inverse of the input matrix.
+ */
+/**
+ * @brief Computes the inverse of a 3x3 matrix.
+ *
+ * This function takes as input a const reference to a Matrix3D object and returns an instance of Matrix3D that represents the inverse of the input matrix. The computation is based on the formula for finding the inverse of a 3x3 matrix, which involves cross product and dot product operations.
+ *
+ * @param M A const reference to the Matrix3D object whose inverse we want to compute.
+ * @return An instance of Matrix3D that represents the inverse of the input matrix.
  */
 Matrix3D Math::Inverse(const Matrix3D& M)
 	{
@@ -233,6 +322,14 @@ Matrix3D Math::Inverse(const Matrix3D& M)
  *
  * @param M A constant reference to the 4x4 matrix to be inverted.
  * @return The inverse of the input matrix. If the determinant of the input matrix is zero, this function returns an identity matrix.
+ */
+/**
+ * @brief Computes the inverse of a 4x4 matrix.
+ *
+ * This function takes as input a const reference to a 4x4 matrix and returns its inverse. The implementation is based on the formula for calculating the inverse of a 4x4 matrix, which involves cross products and dot products.
+ *
+ * @param M A const reference to the 4x4 matrix to be inverted.
+ * @return The inverse of the input matrix. If the determinant of the input matrix is zero or negative, this function returns an identity matrix.
  */
 Matrix4D Math::Inverse(const Matrix4D& M)
 	{
@@ -263,6 +360,19 @@ Matrix4D Math::Inverse(const Matrix4D& M)
  * 
  * @return Returns true if a valid intersection exists, false otherwise.
  */
+/**
+ * @brief Intersects a line with a plane.
+ *
+ * This function calculates the intersection point of a line defined by a starting point and direction vector, 
+ * and a plane. The result is stored in the output parameter `q`.
+ *
+ * @param p A constant reference to the starting point of the line.
+ * @param v A constant reference to the direction vector of the line.
+ * @param f A constant reference to the plane.
+ * @param q Pointer to a Point3D object where the intersection point will be stored.
+ * 
+ * @return Returns true if there is an intersection, false otherwise. If no intersection exists, `q` remains unchanged.
+ */
 bool Math::IntersectLinePlane(const Point3D& p, const Vector3& v, const Plane& f, Point3D* q)
 	{
 		float fv = DotProductPlaneVector(f, v);
@@ -283,6 +393,14 @@ bool Math::IntersectLinePlane(const Point3D& p, const Vector3& v, const Plane& f
  * @param t The angle of rotation in radians.
  * @return A 3x3 Matrix3D representing a rotation transformation.
  */
+/**
+ * @brief Creates a rotation matrix around the X axis.
+ *
+ * This function creates and returns a 3x3 rotation matrix that represents a rotation of 't' radians about the X-axis. The cosine and sine functions are used to calculate the values for the matrix elements, ensuring the correct rotation.
+ *
+ * @param t The angle of rotation in radians.
+ * @return A Matrix3D object representing a 3x3 rotation matrix.
+ */
 Matrix3D Math::MakeRotationX(float t)
 	{
 		float c = std::cos(t);
@@ -295,6 +413,14 @@ Matrix3D Math::MakeRotationX(float t)
 	}
 
 	/**
+ * @brief Creates a rotation matrix around the Y axis.
+ *
+ * This function creates and returns a 3x3 rotation matrix that represents a rotation of 't' radians about the Y-axis. The cosine and sine of 't' are used to calculate the values in the matrix.
+ *
+ * @param t The angle of rotation, in radians.
+ * @return A Matrix3D object representing a 3x3 rotation matrix.
+ */
+/**
  * @brief Creates a rotation matrix around the Y axis.
  *
  * This function creates and returns a 3x3 rotation matrix that represents a rotation of 't' radians about the Y-axis. The cosine and sine of 't' are used to calculate the values in the matrix.
@@ -322,6 +448,14 @@ Matrix3D Math::MakeRotationY(float t)
  * @param t The angle (in radians) by which to rotate.
  * @return A 3x3 Matrix3D representing a rotation of 't' radians about the Z-axis.
  */
+/**
+ * @brief Creates a rotation matrix around the Z axis.
+ *
+ * This function creates and returns a 3x3 rotation matrix that represents a rotation of 't' radians about the Z-axis. The cosine and sine of 't' are used to calculate the values in the matrix.
+ *
+ * @param t The angle of rotation, in radians.
+ * @return A Matrix3D object representing a 3x3 rotation matrix.
+ */
 Matrix3D Math::MakeRotationZ(float t)
 	{
 
@@ -347,6 +481,15 @@ Matrix3D Math::MakeRotationZ(float t)
  */
 CONFIDENCE: 1.0;
 
+/**
+ * @brief Creates a rotation matrix for a given angle and axis.
+ *
+ * This function creates a 3x3 rotation matrix based on the provided angle (in radians) and axis vector. The resulting matrix can be used to rotate vectors or points in 3D space.
+ *
+ * @param t The rotation angle in radians.
+ * @param a The rotation axis as a Vector3 object.
+ * @return A Matrix3D object representing the created rotation matrix.
+ */
 Matrix3D Math::MakeRotation(float t, const Vector3& a)
 	{
 
@@ -376,6 +519,16 @@ Matrix3D Math::MakeRotation(float t, const Vector3& a)
  * @param a Axis of rotation represented as a Vector4.
  * 
  * @return Matrix4D representing the rotation matrix.
+ */
+/**
+ * @brief Creates a rotation matrix based on an angle and axis of rotation.
+ *
+ * This function creates a 4x4 rotation matrix that rotates an object by the specified angle around the given axis. The axis is represented as a Vector4, where the first three components are the x, y, and z coordinates of the vector, respectively.
+ *
+ * @param t The angle of rotation in radians.
+ * @param a A Vector4 representing the axis of rotation. The first three elements represent the x, y, and z coordinates of the vector, respectively.
+ * 
+ * @return A Matrix4D object that represents the created rotation matrix.
  */
 Matrix4D Math::MakeRotation(float t, const Vector4& a)
 	{
@@ -409,6 +562,14 @@ Matrix4D Math::MakeRotation(float t, const Vector4& a)
  */
 CONFIDENCE: 1.0;
 
+/**
+ * @brief Creates a reflection matrix for a given vector.
+ *
+ * This function takes in a Vector3 object and returns a Matrix3D object that represents the reflection of the input vector across an arbitrary axis. The returned matrix is calculated based on the formula for reflection matrices, which involves negating the components of the input vector multiplied by 2 and then adding 1 to each component.
+ *
+ * @param a A const reference to a Vector3 object representing the vector to be reflected.
+ * @return Matrix3D The reflection matrix corresponding to the input vector.
+ */
 Matrix3D Math::MakeReflection(const Vector3& a)
 	{
 		float x = a[0] * -2.f;
@@ -433,6 +594,13 @@ Matrix3D Math::MakeReflection(const Vector3& a)
  *
  * @param a A Vector3 object representing the basis vectors for the transformation.
  * @return Matrix3D Returns a Matrix3D object that represents the involution matrix corresponding to the input vector.
+ */
+/**
+ * @brief Creates an involution matrix from a vector.
+ * 
+ * This function takes a Vector3 object as input and returns a Matrix3D object that represents the involution matrix corresponding to the input vector. The input vector is multiplied by two, and then used in the construction of the resulting matrix.
+ * @param a A const reference to a Vector3 object representing the input vector.
+ * @return Returns a Matrix3D object representing the involution matrix for the given input vector.
  */
 Matrix3D Math::MakeInvolution(const Vector3& a)
 	{
@@ -460,6 +628,16 @@ Matrix3D Math::MakeInvolution(const Vector3& a)
  * @param a The vector used for scaling.
  * @return A Matrix3D representing the created scaling matrix.
  */
+/**
+ * @brief Creates a scaling matrix from a scale factor and a vector.
+ *
+ * This function creates a 3x3 scaling matrix based on the given scale factor (s) and vector (a). The resulting matrix is used to scale vectors in homogeneous coordinates, which allows for easy transformation of objects in 3D space.
+ *
+ * @param s The scale factor by which to multiply each component of the input vector.
+ * @param a The vector whose components are multiplied by the scale factor to create the diagonal elements of the resulting matrix.
+ *
+ * @return A 3x3 scaling matrix that scales vectors in homogeneous coordinates according to the given scale factor and vector.
+ */
 Matrix3D Math::MakeScale(float s, const Vector3& a)
 	{
 		s -= 1.f;
@@ -486,6 +664,14 @@ Matrix3D Math::MakeScale(float s, const Vector3& a)
  * 
  * @return Returns the scaled Matrix4D.
  */
+/**
+ * @brief This function scales a given Matrix4D by the x, y and z components of a Vector4.
+ * 
+ * @param M The Matrix4D to be scaled.
+ * @param a A reference to a constant Vector4 containing the scaling factors in x, y and z.
+ * 
+ * @return The resulting Matrix4D after being scaled by the input Vector4.
+ */
 Matrix4D Math::MakeScale(Matrix4D M, const Vector4& a)
 	{
 		M[0][0] *= a.x;
@@ -511,6 +697,15 @@ Matrix4D Math::MakeScale(Matrix4D M, const Vector4& a)
  * @param M The Matrix4D to be translated.
  * @param a The translation vector.
  * 
+ * @return The translated Matrix4D.
+ */
+/**
+ * @brief Translates a Matrix4D by a Vector4.
+ *
+ * This function takes in a Matrix4D and a Vector4 as parameters. It adds the x, y, and z components of the Vector4 to the corresponding elements in the Matrix4D. The modified Matrix4D is then returned.
+ * 
+ * @param M The Matrix4D to be translated.
+ * @param a The Vector4 that specifies the translation.
  * @return The translated Matrix4D.
  */
 Matrix4D Math::Translate(Matrix4D M, const Vector4& a)
@@ -541,6 +736,18 @@ Matrix4D Math::Translate(Matrix4D M, const Vector4& a)
  *
  * @return A 3x3 Matrix that represents skew symmetric transformation.
  */
+/**
+ * @brief Creates a skew symmetric matrix from given parameters.
+ *
+ * This function takes three parameters, two vectors and one scalar. It calculates the skew-symmetric matrix for the vector 'a' 
+ * scaled by tan(t) and multiplies it with the third vector 'b'. The resulting Matrix3D is returned.
+ *
+ * @param t Scalar value to scale the vector 'a'.
+ * @param a Vector to be scaled and used in the skew-symmetric matrix calculation.
+ * @param b Third vector which will be multiplied with the result of the skew-symmetric matrix calculation.
+ * 
+ * @return The resulting Matrix3D after performing the required calculations.
+ */
 Matrix3D Math::MakeSkew(float t, const Vector3& a, const Vector3& b)
 	{
 		t = std::tan(t);
@@ -561,6 +768,14 @@ Matrix3D Math::MakeSkew(float t, const Vector3& a, const Vector3& b)
  * 
  * @param H A const reference to the Transform4D object to be inverted.
  * @return The inverse of the input Transform4D object.
+ */
+/**
+ * Computes the inverse of a 4x4 homogeneous transformation matrix.
+ *
+ * Given a 4x4 homogeneous transformation matrix, this function computes and returns its inverse. The inverse is computed by first extracting the rotation and translation components from H, then computing the cross product of these to obtain a scale vector s, and finally inverting the determinant of the upper-left 3x3 submatrix of H.
+ *
+ * @param[in] H The homogeneous transformation matrix to invert.
+ * @return The inverse of the input matrix.
  */
 Transform4D Math::Inverse(const Transform4D& H)
 	{
@@ -599,6 +814,15 @@ Transform4D Math::Inverse(const Transform4D& H)
  * @param q The quaternion that defines the transformation.
  * @return A Vector3 object representing the transformed vector.
  */
+/**
+ * @brief Transforms a vector using a quaternion rotation.
+ *
+ * This function applies the rotation defined by the given quaternion to the input vector. The transformation is performed according to the standard mathematical formula for transforming vectors with quaternions, which involves multiplication of the vector and quaternion, followed by cross product and scalar multiplication.
+ *
+ * @param v The input vector to be transformed.
+ * @param q The rotation defined as a quaternion.
+ * @return A new Vector3 representing the result of the transformation.
+ */
 Vector3 Math::Transform(const Vector3& v, const Quaternion& q)
 	{
 		const Vector3& b = q.GetVectorPart();
@@ -615,6 +839,14 @@ Vector3 Math::Transform(const Vector3& v, const Quaternion& q)
  * @brief Reflects a plane in 4D space.
  *
  * This function takes a Plane object and returns a Transform4D that represents the reflection of the plane across the origin. The transformation matrix is calculated based on the equation for reflection in 4 dimensions, which involves negating each component of the plane's normal vector (x, y, z) and scaling it by -1.
+ *
+ * @param f Plane object to be reflected.
+ * @return Transform4D representing the reflection transformation.
+ */
+/**
+ * @brief Reflects a plane in 4D space.
+ *
+ * This function takes a Plane object and returns a Transform4D that represents the reflection of the plane across the origin. The transformation matrix is calculated based on the equation for reflection in 4D space, which involves negating each component of the plane's normal vector (x, y, z) and scaling it by -1.
  *
  * @param f Plane object to be reflected.
  * @return Transform4D representing the reflection transformation.
@@ -647,6 +879,17 @@ Transform4D Math::MakeReflection(const Plane& f)
  * 
  * @return Matrix4D The transformation matrix created from the input vectors.
  */
+/**
+ * @brief Creates a transformation matrix from position, rotation and scale vectors.
+ * 
+ * This function takes three Vector3D objects as input representing the position, rotation and scale of an object in 3D space. It converts these into a single Matrix4D object that represents the complete transformation of the object. The resulting matrix is created by first applying a translation to the identity matrix based on the Position vector, then rotating this translated matrix using the Rotation vector, and finally scaling the rotated matrix with the Scale vector.
+ * 
+ * @param Position A Vector3D representing the position of the object in 3D space.
+ * @param Rotation A Vector3D representing the rotation of the object in 3D space (in degrees).
+ * @param Scale A Vector3D representing the scale of the object in 3D space.
+ * 
+ * @return A Matrix4D that represents the complete transformation of the object.
+ */
 Matrix4D Math::MakeTransform(const Vector3 &Position, const Vector3 &Rotation, const Vector3 &Scale)
 	{
 
@@ -670,6 +913,7 @@ Matrix4D Math::MakeTransform(const Vector3 &Position, const Vector3 &Rotation, c
  * 
  * @return Returns true if successful, false otherwise. If the input matrix is not invertible or has no perspective, this function returns false.
  */
+
 bool Math::DecomposeTransform(const Matrix4D& Transform, Vector3& Translation, Vector3& Rotation, Vector3& Scale)
 	{
 		// From glm::decompose in matrix_decompose.inl
@@ -752,6 +996,13 @@ bool Math::DecomposeTransform(const Matrix4D& Transform, Vector3& Translation, V
  *
  * @return A 3x3 Matrix3D representing the rotation associated with this quaternion.
  */
+/**
+ * @brief Computes the rotation matrix associated with this quaternion.
+ *
+ * The function calculates a 3D rotation matrix from the quaternion representation of a rotation. This is achieved by converting the quaternion to a 4x4 matrix, and then extracting the upper left 3x3 submatrix which represents the rotation.
+ *
+ * @return A Matrix3D object representing the 3D rotation represented by this quaternion.
+ */
 Matrix3D Quaternion::GetRotationMatrix(void)
 	{
 		float x2 = x * x;
@@ -778,6 +1029,7 @@ Matrix3D Quaternion::GetRotationMatrix(void)
  *
  * @param m The 3x3 rotation matrix.
  */
+
 void Quaternion::SetRotationMatrix(const Matrix3D& m)
 	{
 		float m00 = m(0, 0);

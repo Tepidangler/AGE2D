@@ -16,6 +16,13 @@ namespace AGE
  * 
  * @return void
  */
+/** 
+ * @brief Initializes the renderer.
+ *
+ * This function initializes the renderer by calling the Init function from RenderCommand class. It is used to prepare the renderer for rendering operations.
+ *
+ * @return void
+ */
 void Renderer::Init()
 	{
 		AGE_PROFILE_FUNCTION();
@@ -33,6 +40,14 @@ void Renderer::Init()
  * 
  * @return void No return value is expected.
  */
+/** 
+ * @brief Begins a new scene with the given camera and transformation.
+ * 
+ * This function begins a new rendering scene using the provided camera and transformation matrix. It uses Renderer2D::BeginScene to start the scene, which is expected to handle the actual setup of the scene.
+ *
+ * @param Camera The camera that will be used for this scene.
+ * @param Transform The transformation matrix that will be applied to everything in this scene.
+ */
 void Renderer::BeginScene(const Camera& Camera, const Matrix4D& Transform)
 	{
 		Renderer2D::BeginScene(Camera, Transform);
@@ -45,6 +60,13 @@ void Renderer::BeginScene(const Camera& Camera, const Matrix4D& Transform)
  * 
  * @param Camera The editor camera that will be used in this scene.
  */
+/** 
+ * @brief Begins a new scene with the specified camera.
+ * 
+ * This function begins a new rendering scene using the provided EditorCamera object. It uses Renderer2D's BeginScene method to start the scene, passing in the camera as an argument.
+ * 
+ * @param Camera The editor camera that will be used for this scene.
+ */
 void Renderer::BeginScene(const EditorCamera& Camera)
 	{
 		Renderer2D::BeginScene(Camera);
@@ -55,12 +77,22 @@ void Renderer::BeginScene(const EditorCamera& Camera)
  * @param Width The new width of the window in pixels.
  * @param Height The new height of the window in pixels.
  */
+/**
+ * @brief This function is used to handle the window resize event. It sets the viewport size based on the provided width and height parameters.
+ * @param Width The new width of the window.
+ * @param Height The new height of the window.
+ */
 void Renderer::OnWindowResize(uint32_t Width, uint32_t Height)
 	{
 		RenderCommand::SetViewport(0, 0, Width, Height);
 	}
 
 	/**
+ * @brief This function is called when the framebuffer size changes. It sets the viewport to match the new dimensions.
+ * @param Width The width of the new framebuffer in pixels.
+ * @param Height The height of the new framebuffer in pixels.
+ */
+/**
  * @brief This function is called when the framebuffer size changes. It sets the viewport to match the new dimensions.
  * @param Width The width of the new framebuffer in pixels.
  * @param Height The height of the new framebuffer in pixels.
@@ -77,11 +109,23 @@ void Renderer::OnFramebufferResize(uint32_t Width, uint32_t Height)
  * 
  * @return None
  */
+/**
+ * @brief Ends the current scene rendering.
+ * 
+ * This function is used to end the current scene rendering by calling the `EndScene` method of the Renderer2D class. It does not take any parameters and returns void.
+ */
 void Renderer::EndScene()
 	{
 		Renderer2D::EndScene();
 	}
 	/**
+ * @brief Shuts down the renderer and its 2D component.
+ *
+ * This function is used to clean up resources held by the Renderer and its associated Renderer2D component. It should be called when shutting down the application or before initializing a new scene.
+ *
+ * @return void
+ */
+/**
  * @brief Shuts down the renderer and its 2D component.
  *
  * This function is used to clean up resources held by the Renderer and its associated Renderer2D component. It should be called when shutting down the application or before initializing a new scene.
@@ -101,6 +145,13 @@ void Renderer::Shutdown()
  * 
  * @return void
  */
+/**
+ * @brief Submits the current render command to be processed by the renderer.
+ * 
+ * This function submits a render command for processing by the Renderer class. It uses the RenderCommand::Submit() method, which is responsible for adding the command to the queue of commands that need to be processed.
+ * 
+ * @return void No return value.
+ */
 void Renderer::Submit()
 	{
 		RenderCommand::Submit();
@@ -109,6 +160,11 @@ void Renderer::Submit()
  * @brief Flushes the rendering queue by calling the `Flush` function of the `RenderCommand` class.
  * 
  * This function is used to clear the rendering queue and ensure that all previous render commands are executed before any new ones are added. It calls the `Flush` function from the `RenderCommand` class, which should handle the actual flushing process.
+ */
+/**
+ * @brief Flushes the rendering queue.
+ * 
+ * This function is used to flush the rendering queue by calling the `Flush` method of the RenderCommand class. It ensures that all pending render commands are executed immediately, without waiting for a new command to be added.
  */
 void Renderer::Flush()
 	{

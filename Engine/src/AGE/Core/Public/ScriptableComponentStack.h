@@ -21,6 +21,10 @@ namespace GameFramework
  * @brief Returns an iterator pointing to the beginning of the 'm_Entitys' vector.
  * @return An iterator to the start of the 'm_Entitys' vector.
  */
+/**
+ * @brief Returns an iterator pointing to the beginning of the 'm_Entitys' vector.
+ * @return An iterator to the start of the 'm_Entitys' vector.
+ */
 std::vector<AGE::ScriptableEntity*>::iterator begin() { return m_Entitys.begin(); }
 
 		/**
@@ -29,15 +33,27 @@ std::vector<AGE::ScriptableEntity*>::iterator begin() { return m_Entitys.begin()
  * 
  * @return An iterator to the theoretical element that follows the end of the sequence.
  */
+/**
+ * @brief Returns an iterator pointing to the theoretical element that follows the last element of the vector.
+ * @return An iterator to the theoretical element following the last element of the vector.
+ */
 std::vector<AGE::ScriptableEntity*>::iterator end() { return m_Entitys.end(); }
 
 		/**
  * @brief Returns a constant iterator pointing to the beginning of the 'm_Entitys' vector.
  * @return A constant iterator to the beginning of the 'm_Entitys' vector. If the vector is empty, past-the-end (cend) iterator is returned.
  */
+/**
+ * @brief Returns a constant iterator pointing to the beginning of the 'm_Entitys' vector.
+ * @return A constant iterator to the beginning of the 'm_Entitys' vector.
+ */
 std::vector<AGE::ScriptableEntity*>::const_iterator begin() const { return m_Entitys.cbegin(); }
 
 		/**
+ * @brief Returns a constant iterator pointing to the past-the-end element of the container.
+ * @return A constant iterator pointing to the past-the-end element in the container.
+ */
+/**
  * @brief Returns a constant iterator pointing to the past-the-end element of the container.
  * @return A constant iterator pointing to the past-the-end element in the container.
  */

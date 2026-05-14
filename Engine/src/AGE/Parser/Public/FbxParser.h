@@ -16,11 +16,18 @@ namespace AGE
  *
  * @return A new instance of the FBXParser class with all fields initialized to their default values.
  */
+/**
+ * @brief Default constructor for the FBXParser class.
+ */
 FBXParser() = default;
 
 		/**
  * @brief This function returns a reference to the singleton instance of the FBXParser class. If an instance does not already exist, it will be created.
  * @return A reference to the single instance of the FBXParser class.
+ */
+/**
+ * @brief This function returns a reference to the singleton instance of the FBXParser class. If an instance does not already exist, it will be created.
+ * @return A reference to the FBXParser instance.
  */
 static FBXParser& Get()
 		{
