@@ -27,7 +27,15 @@ namespace AGE
 		virtual void SetMat4(const char* Name, const Matrix4D Matrix) const override;
 		virtual void SetInt(const char* Name, const int Texture = 0, const int* TexturePtr = nullptr, const int Count = 2) const override;
 
-		virtual const std::string& GetShaderName() const override { return m_ShaderName; }
+		/**
+ * @brief Returns the name of the shader.
+ * @return A constant reference to a string containing the name of the shader.
+ */
+/**
+ * @brief Returns the name of the shader.
+ * @return A constant reference to a string containing the name of the shader.
+ */
+virtual const std::string& GetShaderName() const override { return m_ShaderName; }
 
 		void UploadFloat(const char* Name, float Values) const;
 		void UploadFloat2(const char* Name, const Vector2& Values) const;
@@ -43,7 +51,18 @@ namespace AGE
 
 		void Compile(const std::unordered_map<GLenum, std::string>& ShaderSources);
 
-		inline virtual uint32_t GetRendererID() const override { return m_RendererID; }
+		/**
+ * @brief Returns the unique identifier for the renderer.
+ *
+ * This function returns a constant unsigned integer representing the unique ID of the renderer. It is an overridden virtual function from its base class, indicating that it provides a specific implementation for this method. 
+ *
+ * @return A constant unsigned integer representing the renderer's ID.
+ */
+/**
+ * @brief This function returns the renderer ID of the object.
+ * @return The renderer ID as a uint32_t value.
+ */
+inline virtual uint32_t GetRendererID() const override { return m_RendererID; }
 
 		
 	private:

@@ -5,7 +5,17 @@
 
 namespace AGE
 {
-	class AGE_API KeyEvent : public Event
+	/**
+ * @brief Represents a keyboard event.
+ *
+ * This class is used to represent a keyboard event, which includes the key code associated with the event.
+ */
+/**
+ * @brief Represents a keyboard event.
+ *
+ * This class is used to represent a keyboard event, which includes the key code of the pressed key.
+ */
+class AGE_API KeyEvent : public Event
 	{
 	public:
 		
@@ -21,15 +31,50 @@ namespace AGE
 		int m_KeyCode;
 	};
 
-	class AGE_API KeyPressedEvent : public KeyEvent
+	
+/**
+ * @brief Returns the repeat count of a certain process or operation.
+ * 
+ * This function returns the number of times a specific process or operation is repeated, as an integer value. If it fails to retrieve the data, it will return -1.
+ * 
+ * @return The repeat count as an integer.
+ */
+class AGE_API KeyPressedEvent : public KeyEvent
 	{
 	public:
 		KeyPressedEvent(int KeyCode, int RepeatCount)
 			: KeyEvent(KeyCode), m_RepeatCount(RepeatCount) {}
 
-		inline int GetRepeatCount() const { return m_RepeatCount; }
+		/**
+ * @brief Returns the repeat count of a certain process or operation.
+ * @return The number of times the process or operation is repeated, as an integer value. If the function fails to retrieve the data, it returns -1.
+ */
+/**
+ * @brief Returns the repeat count of a sequence.
+ *
+ * This function retrieves the current value of the member variable `m_RepeatCount`, which represents the number of times a sequence should be repeated.
+ *
+ * @return The current repeat count as an integer. If no sequence is set or if the sequence has not been processed yet, this will return 0.
+ */
+inline int GetRepeatCount() const { return m_RepeatCount; }
 
-		std::string ToString() const override
+		/**
+ * @brief Converts the event into a string representation.
+ * 
+ * This function converts the KeyPressedEvent object into a string format that includes the key code and repeat count of the event.
+ * The resulting string is returned by this method.
+ * 
+ * @return A string in the format "KeyPressedEvent: [keycode] ([repeatcount] repeats)".
+ */
+/**
+ * @brief Converts the event into a string representation.
+ *
+ * This function converts the KeyPressedEvent object into a human-readable string format. 
+ * It includes details about the key code and repeat count of the event.
+ *
+ * @return A string containing the details of the event in a readable format.
+ */
+std::string ToString() const override
 		{
 			std::stringstream ss;
 			ss << "KeyPressedEvent: " << m_KeyCode << " (" << m_RepeatCount << " repeats)";
@@ -48,7 +93,23 @@ namespace AGE
 		KeyReleasedEvent(int KeyCode)
 			: KeyEvent(KeyCode) {}
 
-		std::string ToString() const override
+		/**
+ * @brief Converts the event to a string representation.
+ *
+ * This function converts the KeyReleasedEvent into a string format that includes information about the key code of the released key. 
+ * The resulting string is returned by this method.
+ *
+ * @return A string representing the KeyReleasedEvent in the format "KeyReleasedEvent: <key_code>".
+ */
+/**
+ * @brief Converts the event to a string representation.
+ *
+ * This function converts the KeyReleasedEvent into a string format that includes information about the key code of the released key. 
+ * The resulting string is returned by this method.
+ *
+ * @return A string in the format "KeyReleasedEvent: <key_code>".
+ */
+std::string ToString() const override
 		{
 			std::stringstream ss;
 			ss << "KeyReleasedEvent: " << m_KeyCode;
@@ -58,13 +119,42 @@ namespace AGE
 			EVENT_CLASS_TYPE(KeyReleased)
 	};
 
-	class AGE_API KeyTypedEvent : public KeyEvent
+	/**
+ * @brief Represents a Key Typed Event in the system.
+ * 
+ * This class extends the base KeyEvent class and represents an event where a key has been typed into the system. It provides a method to convert this event into a string representation.
+ */
+/**
+ * @brief Converts the event into a string format.
+ *
+ * This function converts the KeyTypedEvent object into a string format that includes the key code of the event. 
+ * The resulting string is returned by this method.
+ *
+ * @return A string representation of the KeyTypedEvent object, including the key code.
+ */
+class AGE_API KeyTypedEvent : public KeyEvent
 	{
 	public:
 		KeyTypedEvent(int KeyCode)
 			: KeyEvent(KeyCode) {}
 
-		std::string ToString() const override
+		/**
+ * @brief Converts the event into a string format.
+ *
+ * This function converts the KeyTypedEvent object into a string format that includes the key code of the event. 
+ * The resulting string is returned by this method.
+ *
+ * @return A string representation of the KeyTypedEvent object, including the key code.
+ */
+/**
+ * @brief Converts the event to a string representation.
+ *
+ * This function converts the KeyTypedEvent into a string format that includes the key code of the event. 
+ * The resulting string is returned by this method.
+ *
+ * @return A string in the format "KeyTypedEvent: <key_code>".
+ */
+std::string ToString() const override
 		{
 			std::stringstream ss;
 			ss << "KeyTypedEvent: " << m_KeyCode;

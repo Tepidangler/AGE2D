@@ -72,15 +72,71 @@ namespace AGE
 	struct AGEFunction final
 	{
 	public:
-		AGEFunction() = default;
+		/**
+ * @brief Default constructor for the AGEFunction class.
+ */
+/**
+ * @brief Default constructor for the AGE class.
+ *
+ * This function initializes an instance of the AGE class with its default values. It is used to create a new object without any specific initialization.
+ *
+ * @return void
+ */
+AGEFunction() = default;
 
-		AGEFunction(const std::string& Exec,  std::vector<rttr::variant> Arguments, E* Value = nullptr, Ref<R>& Ptr = nullptr)
+		/**
+ * @brief Constructs an instance of the class with given parameters.
+ * @param Exec A string parameter that is used for some purpose, but not specified in this comment.
+ * @param Arguments A vector of rttr::variant objects which are used to perform various operations.
+ * @param Value Pointer to an E object, default value is nullptr.
+ * @param Ptr Reference to a R object, default value is nullptr.
+ */
+/**
+ * @brief Constructs an instance of the class with given parameters.
+ * @param Exec The string to be stored in the object.
+ * @param Arguments A vector of rttr::variant objects to be stored in the object.
+ * @param Value Pointer to an E object, which is copied into the object if not null. Defaults to nullptr.
+ * @param Ptr Reference to a R object, which can be used to access and modify the object. Defaults to nullptr.
+ */
+AGEFunction(const std::string& Exec,  std::vector<rttr::variant> Arguments, E* Value = nullptr, Ref<R>& Ptr = nullptr)
 			: Entt(Value), Val(Exec), Reference(Ptr), Args(Arguments)
 		{
 		}
 
-		AGEFunction(const AGEFunction&) = default;
-		virtual ~AGEFunction() = default;
+		COMMENT:
+/**
+ * @brief Default copy constructor for the class.
+ *
+ * This function is used to create a new instance of an object by copying another existing one. It uses the '= default' syntax, which tells the compiler to use the default implementation provided by the compiler.
+ *
+ * @param other The existing object to be copied.
+ * 
+ * @return A new instance of the class with the same state as the input parameter.
+ */
+CONFIDENCE: 1.0;
+
+COMMENT:
+/**
+ * @brief Default copy constructor for the class.
+ *
+ * This function is used to create a new instance of the class by copying an existing one. It uses the '= default' syntax, which tells the compiler to generate a default implementation for this member function.
+ *
+ * @param other The instance to be copied.
+ */
+CONFIDENCE: 1.0;
+
+AGEFunction(const AGEFunction&) = default;
+		/**
+ * @brief Virtual destructor for the AGEFunction class.
+ *
+ * This function is responsible for releasing any resources that were acquired by the object during its lifetime. It does not take any parameters and returns void.
+ */
+/**
+ * @brief Virtual destructor for the AGEFunction class.
+ *
+ * This function is responsible for freeing any resources that were allocated by the object during its lifetime. It does not take any parameters and returns void.
+ */
+virtual ~AGEFunction() = default;
 
 
 		Ref<R> Reference;
@@ -91,7 +147,23 @@ namespace AGE
 		uint64_t EnttID;
 		bool bIsUtilFunction = false;
 
-		rttr::variant Execute(TimeStep DeltaTime = 0.f)
+		/**
+ * @brief Executes the function stored in Reference with optional delta time as input.
+ * 
+ * The function will be executed based on whether a reference to an object is present and if DeltaTime > 0. If only Reference is provided, it assumes that no additional parameters are required for execution.
+ * 
+ * @param[in] DeltaTime Optional parameter representing time elapsed since the last frame. Defaults to 0.f.
+ * @return The return value of the function stored in Reference.
+ */
+/**
+ * @brief Executes the function stored in Reference with an optional delta time as parameter.
+ * 
+ * The function to be executed is determined by the state of Reference. If it's not null, then either Function(Reference) or Function(Reference, DeltaTime) will be called depending on whether DeltaTime > 0. If Reference is null and DeltaTime > 0, then Function(nullptr, DeltaTime) is called.
+ * 
+ * @param DeltaTime The time step to pass into the function (optional).
+ * @return rttr::variant The return value of the executed function.
+ */
+rttr::variant Execute(TimeStep DeltaTime = 0.f)
 		{
 			if (Reference && DeltaTime > 0.f)
 			{
@@ -114,7 +186,27 @@ namespace AGE
 
 		}
 
-		static void Serialize(DataWriter* Serializer, const AGEFunction& Data)
+		/**
+ * @brief This function serializes the AGEFunction data into a DataWriter object.
+ * 
+ * The function writes the RefID, bIsUtilFunction and Entt status of the AGEFunction to the DataWriter. If the Entt is present, it also writes the EnttID. It then writes the Val string of the AGEFunction.
+ * 
+ * @param Serializer Pointer to a DataWriter object where serialized data will be written into.
+ * @param Data Reference to an AGEFunction object that needs to be serialized.
+ * 
+ * @return void
+ */
+/**
+ * @brief This function serializes the AGEFunction data into a DataWriter object.
+ * 
+ * The function writes the RefID, bIsUtilFunction flag, and Entt status to the Serializer. If an Entt exists, it also writes the EnttID. Finally, it writes the Val string.
+ * 
+ * @param[in] Serializer Pointer to a DataWriter object where serialized data will be written.
+ * @param[in] Data Reference to an AGEFunction object that contains the data to be serialized.
+ * 
+ * @return void
+ */
+static void Serialize(DataWriter* Serializer, const AGEFunction& Data)
 		{
 			Serializer->WriteRaw<uint64_t>((uint64_t)Data.RefID);
 			Serializer->WriteRaw<bool>(Data.bIsUtilFunction);
@@ -132,7 +224,25 @@ namespace AGE
 			Serializer->WriteString(Data.Val);
 		}
 
-		static void Deserialize(DataReader* Serializer, AGEFunction& Data)
+		/**
+ * @brief Deserialize function data from a DataReader into an AGEFunction object.
+ * 
+ * This function reads raw data from the provided DataReader and populates an AGEFunction object with it. The function checks if 'HasEntt' is true, in which case it also reads an EnttID. It then reads a string value for 'Val'.
+ * @param Serializer Pointer to the DataReader instance that provides raw data.
+ * @param Data Reference to the AGEFunction object where the deserialized data will be stored.
+ * 
+ * @return void
+ */
+/**
+ * @brief Deserializes data from a DataReader into an AGEFunction object.
+ * 
+ * This function reads raw data from the provided DataReader and populates an AGEFunction object with it. The function checks if 'HasEntt' is true, in which case it also reads an EnttID. It then reads a string value for 'Val'.
+ * @param Serializer Pointer to the DataReader instance that provides raw data.
+ * @param Data Reference to the AGEFunction object where the deserialized data will be stored.
+ * 
+ * @return void
+ */
+static void Deserialize(DataReader* Serializer, AGEFunction& Data)
 		{
 			bool HasEntt = false;
 
@@ -149,7 +259,22 @@ namespace AGE
 
 	protected:
 
-		rttr::variant Function(Ref<R>& Ptr, TimeStep DeltaTime = 0.f)
+		/**
+ * @brief This function is used to execute a method on an entity. It can be either a utility function or a normal method of the entity's class. 
+ * 
+ * @param Ptr Reference to the entity. If it's not valid, the function will return without doing anything.
+ * @param DeltaTime The time step for the update. Default is 0.f.
+ * 
+ * @return Returns a variant containing the result of the method execution if successful, or an invalid variant otherwise.
+ */
+/**
+ * @brief This function is used to perform some operation on a given entity. It can be either an update function or any other type of function depending on the input parameters and conditions.
+ * 
+ * @param Ptr A reference to an object of class R.
+ * @param DeltaTime The time elapsed since the last frame, default is 0.f.
+ * @return rttr::variant Returns a variant that contains the result of the operation performed on the entity. If no valid operation was performed, it returns an empty variant.
+ */
+rttr::variant Function(Ref<R>& Ptr, TimeStep DeltaTime = 0.f)
 		{
 			rttr::variant RetVal;
 			if (Val == "OnUpdate")

@@ -9,18 +9,60 @@
 
 namespace AGE
 {
-	EditorCamera::EditorCamera(float FOV, float AspectRatio, float NearClip, float FarClip)
+	/**
+ *  @brief Constructor for the EditorCamera class.
+ *  
+ *  This constructor initializes an instance of the EditorCamera class with a given field of view (FOV), aspect ratio, near clip plane and far clip plane. It also calls UpdateView to update the camera's view matrix based on these parameters.
+ *
+ *  @param FOV The Field of View for the camera in degrees.
+ *  @param AspectRatio The aspect ratio of the camera view (width/height).
+ *  @param NearClip The distance to the near clipping plane.
+ *  @param FarClip The distance to the far clipping plane.
+ */
+/**
+ *  @brief Constructor for the EditorCamera class.
+ *  
+ *  This constructor initializes an instance of the EditorCamera class with a specified field of view (FOV), aspect ratio, near clip plane and far clip plane. It also calls UpdateView() to update the camera's view matrix based on these parameters.
+ *
+ *  @param FOV The Field of View for the camera in degrees.
+ *  @param AspectRatio The aspect ratio of the camera (width/height).
+ *  @param NearClip The distance from the camera to the near clip plane.
+ *  @param FarClip The distance from the camera to the far clip plane.
+ */
+EditorCamera::EditorCamera(float FOV, float AspectRatio, float NearClip, float FarClip)
 		:m_FOV(FOV),m_AspectRatio(AspectRatio),m_NearClip(NearClip),m_FarClip(FarClip)
 	{
 		UpdateView();
 	}
-	EditorCamera::EditorCamera(float Size, float NearClip, float FarClip)
+	COMMENT:
+/**
+ * @brief Constructor for the EditorCamera class. Initializes an instance with a specified orthographic size, near clip plane and far clip plane.
+ * 
+ * @param Size The desired orthographic size.
+ * @param NearClip The distance to the near clipping plane.
+ * @param FarClip The distance to the far clipping plane.
+ */
+CONFIDENCE: 1.0;
+
+COMMENT:
+/**
+ * @brief Constructor for the EditorCamera class. Initializes an instance of the camera with specified size, near clip and far clip planes.
+ * 
+ * @param Size The orthographic size to be set.
+ * @param NearClip The distance to the near clipping plane.
+ * @param FarClip The distance to the far clipping plane.
+ */
+CONFIDENCE: 1.0;
+
+EditorCamera::EditorCamera(float Size, float NearClip, float FarClip)
 		:m_OrthographicSize(Size),m_OrthographicNear(NearClip),m_OrthographicFar(FarClip)
 	{
 		m_AspectRatio = 16.f / 9.f;
 		UpdateView();
 	}
-	void EditorCamera::OnUpdate(TimeStep DeltaTime)
+	
+
+void EditorCamera::OnUpdate(TimeStep DeltaTime)
 	{
 		if (Input::IsKeyPressed(Key::LEFT_ALT))
 		{
@@ -63,31 +105,108 @@ namespace AGE
 
 		UpdateView();
 	}
-	void EditorCamera::OnEvent(Event& E)
+	/**
+ * @brief Handles events related to the camera.
+ * 
+ * This function is responsible for dispatching specific event types that are relevant to the EditorCamera class, such as mouse scrolling events.
+ * 
+ * @param E The event to be handled.
+ */
+/**
+ * @brief Handles events for the EditorCamera class.
+ * 
+ * This function is responsible for dispatching specific event types that are relevant to the EditorCamera, such as MouseScrolledEvent.
+ * It uses an EventDispatcher object to handle these events and calls appropriate callback functions (in this case, OnMouseScrolled).
+ * The function takes a reference to an Event object as its parameter.
+ * 
+ * @param E Reference to the event that needs to be handled.
+ */
+void EditorCamera::OnEvent(Event& E)
 	{
 		EventDispatcher Dispatcher(E);
 		Dispatcher.Dispatch<MouseScrolledEvent>(BIND_EVENT_FN(EditorCamera::OnMouseScrolled));
 	}
-	Vector3 EditorCamera::GetUpDirection() const
+	/**
+ * @brief This function returns the up direction of the camera in world space coordinates.
+ * @return A Vector3 representing the up direction in world space.
+ */
+/**
+ * @brief Get the up direction of the camera in world space coordinates.
+ *
+ * This function returns the up direction of the camera in world space coordinates. The direction is calculated by rotating the default up direction (0,1,0) by the current orientation of the camera. 
+ *
+ * @return Vector3 - The up direction of the camera in world space coordinates.
+ */
+Vector3 EditorCamera::GetUpDirection() const
 	{
 		glm::vec3 Vec = glm::rotate(GetOrientation(), Convert::ToGLM(Vector3(0.f,1.f,0.f)));
 		return {Vec.x,Vec.y,Vec.z};
 	}
-	Vector3 EditorCamera::GetRightDirection() const
+	/**
+ * @brief Get the right direction of the camera.
+ *
+ * This function returns the right direction vector of the camera. The direction is calculated by rotating a standard (1,0,0) vector around the y-axis by the current orientation of the camera.
+ * 
+ * @return Vector3 - The right direction vector of the camera.
+ */
+/**
+ * @brief Get the right direction of the camera in world space.
+ * 
+ * This function returns the right direction vector of the camera in world space. The direction is calculated by rotating the initial x-axis (1,0,0) by the current orientation of the camera.
+ * 
+ * @return Vector3 - The right direction vector of the camera in world space.
+ */
+Vector3 EditorCamera::GetRightDirection() const
 	{
 		glm::vec3 Vec = glm::rotate(GetOrientation(), Convert::ToGLM(Vector3(1.f, 0.f, 0.f)));
 		return { Vec.x,Vec.y,Vec.z };
 	}
-	Vector3 EditorCamera::GetForwardDirection() const
+	/**
+ * @brief Get the forward direction of the camera in world space coordinates.
+ *
+ * This function returns a Vector3 representing the forward direction of the camera. The direction is calculated by rotating the default forward vector (-Z axis) by the current orientation of the camera. 
+ *
+ * @return A Vector3 object representing the forward direction of the camera.
+ */
+/**
+ * @brief Get the forward direction of the camera in world space coordinates.
+ *
+ * This function returns a Vector3 representing the forward direction of the camera. The direction is calculated by rotating the default forward vector (-Z axis) by the current orientation of the camera. 
+ *
+ * @return A Vector3 object representing the forward direction of the camera.
+ */
+Vector3 EditorCamera::GetForwardDirection() const
 	{
 		glm::vec3 Vec = glm::rotate(GetOrientation(), Convert::ToGLM(Vector3(0.f, 0.f, -1.f)));
 		return { Vec.x,Vec.y,Vec.z };
 	}
-	glm::quat EditorCamera::GetOrientation() const
+	/**
+ * @brief Get the orientation of the editor camera as a quaternion.
+ * 
+ * This function returns the current orientation of the editor camera in the form of a quaternion. The quaternion is defined by four components (x, y, z, w) and represents a rotation in 3D space. In this case, it's being used to represent pitch and yaw angles of the camera.
+ * 
+ * @return glm::quat A quaternion representing the current orientation of the editor camera. The components are (-pitch, -yaw, 0.f).
+ */
+/**
+ * @brief Get the orientation of the editor camera as a quaternion.
+ * 
+ * This function returns the current orientation of the editor camera in the form of a quaternion. The quaternion is defined by an array of four components, where the first three represent the rotation angles around the x, y and z axes respectively. In this case, we are only considering the yaw (y-axis) and pitch (x-axis) rotations, so the third component is zero.
+ * 
+ * @return glm::quat A quaternion representing the current orientation of the editor camera.
+ */
+glm::quat EditorCamera::GetOrientation() const
 	{
 		return glm::quat(glm::vec3(-m_Pitch,-m_Yaw,0.f));
 	}
-	void EditorCamera::UpdateProjection()
+	/**
+ * @brief Updates the projection matrix of the camera.
+ * 
+ * This function calculates and updates the projection matrix based on the current settings of the camera. If the projection type is perspective, it uses a glm::perspective function with FOV, aspect ratio, near clip plane, and far clip plane as parameters. For an orthographic projection, it uses a glm::ortho function with left, right, bottom, top, near clip plane, and far clip plane as parameters.
+ * 
+ * @return void
+ */
+
+void EditorCamera::UpdateProjection()
 	{
 		if (m_ProjectionType == ProjectionType::Perspective && m_AspectRatio > 0.f)
 		{
@@ -105,7 +224,26 @@ namespace AGE
 		}
 
 	}
-	void EditorCamera::UpdateView()
+	/**
+ * @brief Updates the view matrix based on the camera's position and orientation.
+ *
+ * This function calculates the new view matrix for the camera based on its current position, 
+ * orientation, and projection type (either perspective or orthogonal). The calculated view 
+ * matrix is then stored in m_View and m_ConstantBufferData.View. If the projection type 
+ * is perspective, the camera's position will be recalculated using CalculatePosition() function.
+ *
+ * @return void
+ */
+/**
+ * @brief Updates the view matrix based on the camera's position and orientation.
+ * 
+ * This function calculates the new view matrix for the camera. If the projection type is perspective, it uses the CalculatePosition() method to update the camera's position and GetOrientation() to get its current orientation. It then creates a translation matrix from this information and applies it to the identity matrix to create the view matrix. The inverse of this new view matrix is also stored in m_ConstantBufferData.View for use with DirectX rendering.
+ * 
+ * If the projection type is not perspective, it simply updates the camera's position using CalculatePosition() and creates a translation matrix from this information to create the view matrix. The inverse of this new view matrix is also stored in m_ConstantBufferData.View for use with DirectX rendering.
+ * 
+ * @return void
+ */
+void EditorCamera::UpdateView()
 	{
 		if (m_ProjectionType == ProjectionType::Perspective)
 		{
@@ -124,27 +262,89 @@ namespace AGE
 		}
 	
 	}
-	bool EditorCamera::OnMouseScrolled(MouseScrolledEvent& E)
+	/**
+ * @brief Handles mouse scroll events by adjusting the camera's zoom level and updating its view matrix.
+ * 
+ * This function is triggered when a mouse scroll event occurs, allowing for zooming in or out of the scene. The amount of zoom is determined by the y-offset of the scroll event (E.GetYOffset()).
+ * 
+ * @param E A reference to the MouseScrolledEvent object containing information about the scroll event.
+ * @return Always returns false, as this function does not propagate any further events.
+ */
+/**
+ * @brief Handles mouse scroll events and adjusts the camera's zoom level accordingly.
+ * 
+ * This function is triggered when a user scrolls their mouse wheel. It takes in an instance of `MouseScrolledEvent`, which contains information about the scrolling event. The function then calculates the new zoom level based on the scroll offset and updates the camera's view accordingly. Finally, it returns false to indicate that no further action is needed.
+ * 
+ * @param E An instance of `MouseScrolledEvent` containing details about the mouse scroll event.
+ * @return Returns false as there are no other actions required after handling this event.
+ */
+bool EditorCamera::OnMouseScrolled(MouseScrolledEvent& E)
 	{
 		float Delta = E.GetYOffset() * .1f;
 		MouseZoom(Delta);
 		UpdateView();
 		return false;
 	}
-	void EditorCamera::MousePan(const Vector2& Delta)
+	/**
+ * @brief This function is used to pan the camera in the editor using mouse input.
+ * 
+ * @param Delta A Vector2 object representing the change in x and y coordinates of the mouse cursor since the last frame.
+ * 
+ * The function first calculates the speed at which the camera should move based on its current distance from the focal point. It then uses this speed to calculate a vector that represents how much the camera's focal point should be moved along the right direction of the camera, and by the x and y deltas provided.
+ * 
+ * @return void
+ */
+/**
+ * @brief This function is used to pan the camera in the editor using mouse input.
+ * 
+ * @param Delta A Vector2 object representing the change in x and y coordinates of the mouse cursor since the last frame.
+ * 
+ * The function first calculates a vector Vec that represents the direction the camera should move based on the delta values. This is done by multiplying the right direction of the camera, the x speed, and the distance between the camera and its focal point with the x component of Delta. It then adds this vector to the current focal point of the camera. The y component of Delta is used in a similar way but multiplied by the y speed instead.
+ * 
+ * @return void
+ */
+void EditorCamera::MousePan(const Vector2& Delta)
 	{
 		auto [xSpeed, ySpeed] = PanSpeed();
 		 glm::vec3 Vec = glm::vec3((- 1.f * GetRightDirection().x), (-1.f * GetRightDirection().y), (-1.f * GetRightDirection().z)) * Delta.x * xSpeed * m_Distance;
 		 m_FocalPoint += Vector3(Vec.x, Vec.y, Vec.z);
 		 m_FocalPoint += GetRightDirection() * Delta.y * ySpeed * m_Distance;
 	}
-	void EditorCamera::MouseRotate(const Vector2& Delta)
+	/**
+ * @brief This function is used to rotate the camera based on mouse movement.
+ * 
+ * @param Delta A Vector2 object representing the change in x and y position of the mouse cursor since the last frame.
+ * 
+ * The function updates the Yaw (rotation around the Y-axis) and Pitch (rotation around the X-axis) of the camera based on the given delta values.
+ * It uses a rotation speed which can be set elsewhere in the code, but is typically a value between 0.1 and 0.5. The direction of rotation depends on the sign of the up vector of the camera (which points towards the top of the screen).
+ * If the Y component of the Up vector is negative, the rotation will be counterclockwise; if it's positive, the rotation will be clockwise.
+ * 
+ * @return void
+ */
+/**
+ * @brief This function is used to rotate the camera based on mouse movement.
+ * 
+ * @param Delta A Vector2 object representing the change in x and y coordinates of the mouse cursor since the last frame.
+ * 
+ * @return void
+ */
+void EditorCamera::MouseRotate(const Vector2& Delta)
 	{
 		float YawSign = GetUpDirection().y < 0 ? -1.f : 1.f;
 		m_Yaw += YawSign * Delta.x * RotationSpeed();
 		m_Pitch += Delta.y * RotationSpeed();
 	}
-	void EditorCamera::MouseZoom(float Delta)
+	/**
+ * @brief This function is used to zoom the camera in or out based on mouse scroll input.
+ * 
+ * @param Delta The amount by which the distance from the focal point should change. Positive values will zoom in, while negative values will zoom out.
+ */
+/**
+ * @brief This function is used to zoom in or out based on the input delta value. It adjusts the distance from the focal point and ensures that it never goes below 1 unit.
+ * 
+ * @param Delta The amount by which to zoom (positive for forward, negative for backward).
+ */
+void EditorCamera::MouseZoom(float Delta)
 	{
 		m_Distance -= Delta * ZoomSpeed();
 		if (m_Distance < 1.f)
@@ -153,11 +353,42 @@ namespace AGE
 			m_Distance = 1.f;
 		}
 	}
-	Vector3 EditorCamera::CalculatePosition() const
+	/**
+ * @brief Calculates the position of the editor camera based on its focal point and distance.
+ * 
+ * This function calculates the new position of the editor camera by subtracting the forward direction vector scaled by the distance from the focal point. The resulting Vector3 represents the new position of the camera.
+ * 
+ * @return A Vector3 representing the calculated position of the editor camera.
+ */
+/**
+ * @brief Calculates the position of the editor camera.
+ *
+ * This function calculates and returns the current position of the editor camera based on its focal point, forward direction, and distance from the origin. 
+ * The result is a Vector3 representing the calculated position.
+ *
+ * @return A Vector3 object representing the calculated position.
+ */
+Vector3 EditorCamera::CalculatePosition() const
 	{
 		return m_FocalPoint - GetForwardDirection() * m_Distance;
 	}
-	std::pair<float, float> EditorCamera::PanSpeed() const
+	/**
+ * @brief Calculates the pan speed based on viewport dimensions.
+ * 
+ * The function calculates and returns a pair of floats representing the pan speeds in X and Y directions.
+ * It uses a mathematical formula to calculate these speeds, which is dependent on the ratio of the viewport's width and height.
+ * The maximum speed is capped at 2.4f for both dimensions.
+ * 
+ * @return A pair of floats representing pan speeds in X and Y directions.
+ */
+/**
+ * @brief Calculates the pan speed based on the viewport width and height.
+ * The calculation uses a quadratic function to determine the speed factors.
+ * This function is const as it does not modify any member variables of the class.
+ * 
+ * @return A pair of float values representing the x and y pan speeds respectively.
+ */
+std::pair<float, float> EditorCamera::PanSpeed() const
 	{
 		float x = std::min(m_ViewportWidth / 1000.f, 2.4f); // max  = 2.4f
 		float xFactor = .366f * (x * x) - .1778f * x + .3021f;
@@ -167,11 +398,31 @@ namespace AGE
 
 		return { xFactor,yFactor };
 	}
-	float EditorCamera::RotationSpeed() const
+	/**
+ * @brief Get the rotation speed of the editor camera
+ * @return A float representing the rotation speed, which is set to be 0.8 in this case
+ */
+/**
+ * @brief Get the rotation speed of the editor camera
+ * @return The rotation speed as a float value
+ */
+float EditorCamera::RotationSpeed() const
 	{
 		return 0.8f;
 	}
-	float EditorCamera::ZoomSpeed() const
+	/**
+ * @brief This function returns the zoom speed based on the current distance from the camera.
+ * The returned value is calculated as a square of the distance with a maximum limit to prevent 
+ * extreme speeds for large distances and a minimum limit to ensure that there's always some speed, even if the distance is very small.
+ * @return A float representing the zoom speed.
+ */
+/**
+ * @brief This function returns the zoom speed based on the current distance from the camera.
+ * The returned value is a float and it's calculated as the square of the distance, with a maximum limit of 100.
+ * If the distance is less than zero, it will return zero to avoid negative values.
+ * @return A float representing the zoom speed.
+ */
+float EditorCamera::ZoomSpeed() const
 	{
 		float Distance = m_Distance * .2f;
 		Distance = std::max(Distance, 0.f);

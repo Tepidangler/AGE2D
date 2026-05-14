@@ -27,7 +27,18 @@ namespace AGE
 		~Wwise() override;
 
 
-		inline void SetMarkerLabel(const std::string& Label) { m_MarkerLabel = Label; }
+		/**
+ * @brief Sets the marker label to a given string value.
+ * @param Label The new label for the marker.
+ */
+/**
+ * @brief Sets the marker label.
+ *
+ * This function sets the marker label to a given string value. The new label is stored in the member variable `m_MarkerLabel`.
+ *
+ * @param[in] Label - A constant reference to the string that will be used as the new marker label.
+ */
+inline void SetMarkerLabel(const std::string& Label) { m_MarkerLabel = Label; }
 
 		virtual void Init() override;
 

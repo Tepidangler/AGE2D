@@ -35,7 +35,8 @@
 namespace AGE
 {
 	template<typename T, typename S, int N, msdf_atlas::GeneratorFunction<S, N> GenFunc>
-	static Ref<Texture2D> CreateAndCacheAtlas(const std::string& FontName, float FontSize, const std::vector<msdf_atlas::GlyphGeometry>& Glyphs,
+	"Creates and caches an atlas from a font with specified parameters."
+static Ref<Texture2D> CreateAndCacheAtlas(const std::string& FontName, float FontSize, const std::vector<msdf_atlas::GlyphGeometry>& Glyphs,
 		const msdf_atlas::FontGeometry& FontGeometry, uint32_t Width, uint32_t Height)
 	{
 		msdf_atlas::GeneratorAttributes Attributes;
@@ -64,7 +65,15 @@ namespace AGE
 
 
 
-	AGEFont::AGEFont(const std::filesystem::path& FontPath, bool LoadingDefault)
+	/**
+ * Constructor for AGEFont class. It loads a font from the given path and initializes MSDFData object with it. 
+ * The function checks if the provided file exists, initializes FreeType library, loads the font using FreeType, 
+ * generates glyphs for each character in the charset, packs them into an atlas, applies edge coloring to them, 
+ * creates a texture from the packed glyphs and caches it. If LoadingDefault is true, it saves the default fonts; otherwise, it saves the custom ones.
+ * @param FontPath The filesystem path to the font file.
+ * @param LoadingDefault Flag indicating whether we are loading default fonts or not.
+ */
+AGEFont::AGEFont(const std::filesystem::path& FontPath, bool LoadingDefault)
 		:m_Data(new MSDFData()), m_AssetID(UUID())
 	{
 		std::filesystem::path Path = FontPath;
@@ -177,12 +186,18 @@ namespace AGE
 		msdfgen::destroyFont(Font);
 		msdfgen::deinitializeFreetype(FT);
 	}
-	AGEFont::~AGEFont()
+	/**
+ * @brief Destructor for AGEFont class.
+ * 
+ * This function is responsible for releasing the memory allocated to the data member 'm_Data' which holds the font data. It does this by deleting the pointer, effectively freeing up the memory space it was using.
+ */
+AGEFont::~AGEFont()
 	{
 		delete m_Data;
 	}
 
-	void AGEFont::SaveFont()
+	
+void AGEFont::SaveFont()
 	{
 		const AppConfig& Config = App::Get().GetAppConfig();
 		const std::string& FileName = m_AtlasTexture->GetName();
@@ -197,7 +212,8 @@ namespace AGE
 		FontData.WriteBuffer(TextureBytes);
 	}
 
-	void AGEFont::LoadFont(const std::string& FontName)
+	
+void AGEFont::LoadFont(const std::string& FontName)
 	{
 		const AppConfig& Config = App::Get().GetAppConfig();
 		const std::string& FileName = FontName;
@@ -228,7 +244,12 @@ namespace AGE
 		CoreLogger::Info("Loaded Font {}", FontName);
 	}
 
-	Ref<AGEFont> AGEFont::GetDefault()
+	/**
+ * @brief Get the default font instance. If it doesn't exist, create a new one and register it in AssetManager.
+ * 
+ * @return Ref<AGEFont> A reference to the default font instance.
+ */
+Ref<AGEFont> AGEFont::GetDefault()
 	{
 		static Ref<AGEFont> DefaultFont;
 
@@ -243,7 +264,14 @@ namespace AGE
 		return DefaultFont;
 	}
 
-	void AGEFont::SaveDefaultFont()
+	/**
+ * @brief Saves the default font to a file in the editor's asset path.
+ * 
+ * This function writes various details about the current font, including its type (always "AGEFont"), version number (1), texture ID, and texture specification, into a file named after the font's texture name located in the 'Fonts/AGEFonts/' directory of the editor's asset path. The texture data itself is also written to the file.
+ * 
+ * @return void
+ */
+void AGEFont::SaveDefaultFont()
 	{
 		const AppConfig& Config = App::Get().GetAppConfig();
 		const std::string& FileName = m_AtlasTexture->GetName();
@@ -258,7 +286,16 @@ namespace AGE
 		FontData.WriteBuffer(TextureBytes);
 	}
 
-	void AGEFont::LoadDefaultFont(const std::string &FontName)
+	/**
+ * @brief Loads a default font from the specified file.
+ * 
+ * This function reads in a font file and populates the atlas texture with its data. The font file should be in the AGEFont format, which includes information about the font name, version number, asset ID, texture specification, and raw bytes of the texture data. If the header does not match "AGEFont", an error message is logged and the function returns early.
+ * 
+ * @param FontName The name of the font file to load (without extension).
+ * 
+ * @return void
+ */
+void AGEFont::LoadDefaultFont(const std::string &FontName)
 	{
 		const AppConfig& Config = App::Get().GetAppConfig();
 		const std::string& FileName = FontName;

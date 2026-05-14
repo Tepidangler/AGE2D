@@ -6,17 +6,37 @@
 
 namespace AGE
 {
-	Wwise::Wwise()
+	/**
+ * @brief Constructor for the Wwise class. Initializes the low-level IO object and calls Init().
+ */
+/**
+ * @brief Constructor for the Wwise class. Initializes the low-level IO object and calls Init() function.
+ */
+Wwise::Wwise()
 	{
 		g_LowLevelIO = new CAkFilePackageLowLevelIODeferred();
 		Init();
 	}
 
-	Wwise::~Wwise()
+	/**
+ * @brief Destructor for the Wwise class.
+ * 
+ * This function is responsible for cleaning up any resources that were allocated during the lifetime of the object, such as shutting down the audio engine.
+ */
+/**
+ * @brief Destructor for the Wwise class.
+ * 
+ * This function is responsible for cleaning up any resources that were allocated during the lifetime of an instance of this class. In this case, it calls the Shutdown() method to ensure all audio playback and memory usage are properly cleaned up.
+ * 
+ * @return void
+ */
+Wwise::~Wwise()
 	{
 		Shutdown();
 	}
-	void Wwise::Init()
+	
+
+void Wwise::Init()
 	{
 
 		AkMemSettings MemSettings;
@@ -99,19 +119,69 @@ namespace AGE
 		//InitPlugins();
 	}
 
-	void Wwise::Start()
+	/**
+ * @brief Start the audio engine.
+ *
+ * This function initializes and starts the audio engine. It does not start any sounds or music, it only prepares the 
+ * environment for them.
+ *
+ * @return void
+ */
+/**
+ * @brief This function starts the audio engine.
+ *
+ * @return void
+ */
+void Wwise::Start()
 	{
 	}
 
-	void Wwise::Update()
+	/**
+ * @brief This function updates the audio engine.
+ *
+ * The Update function is responsible for processing all events and updating the state of the audio engine. 
+ * It does not take any parameters and returns void.
+ */
+/**
+ * @brief This function updates the Wwise system.
+ *
+ * The Update function is responsible for updating the internal state of the Wwise system, which includes processing any audio events that have been queued up and preparing the system for the next frame. 
+ *
+ * @return void
+ */
+void Wwise::Update()
 	{
 	}
 
-	void Wwise::Stop()
+	/**
+ * @brief Stops all currently playing audio in the Wwise engine.
+ * 
+ * This function is used to stop all sounds that are currently being played by the Wwise engine. It will not interrupt any ongoing sound sequences or music tracks, but it will halt all other types of sounds immediately.
+ * 
+ * @return void
+ */
+/**
+ * @brief Stops all currently playing audio in the Wwise sound engine.
+ * 
+ * This function is used to stop all sounds that are currently being played by the Wwise sound engine. It will not interrupt any ongoing transitions or sequences, but will immediately halt all active sources.
+ * 
+ * @return void
+ */
+void Wwise::Stop()
 	{
 	}
 
-	void Wwise::Shutdown()
+	/**
+ * @brief This function is used to shutdown the Wwise audio engine. 
+ * It includes terminating various components of the Wwise system such as the communication module, music and sound engines, low-level I/O, stream manager, and memory manager.
+ * The function does not take any parameters and returns void.
+ */
+/**
+ * @brief This function is used to shut down the Wwise audio engine. 
+ * It terminates various components of the Wwise system, including the communication module, music and sound engines, low-level I/O, stream manager, and memory manager.
+ * The function does not return any value.
+ */
+void Wwise::Shutdown()
 	{
 #ifndef AK_OPTIMIZED
 		AK::Comm::Term();
@@ -128,37 +198,151 @@ namespace AGE
 		AK::MemoryMgr::Term();
 	}
 
-	void Wwise::LoadBanks(const std::vector<Ref<SoundBank>> &Banks)
+	/**
+ * @brief Loads a collection of Sound Banks into the Wwise engine.
+ * 
+ * This function takes in a vector of references to Sound Bank objects and loads them into the Wwise engine for use.
+ * Each SoundBank object contains information about a particular audio bank that can be loaded into the Wwise engine.
+ * The function does not return anything, it simply modifies the state of the Wwise engine based on the input parameters.
+ * 
+ * @param Banks A vector of references to Sound Bank objects to load.
+ */
+/**
+ * @brief Loads a collection of Sound Banks into the Wwise audio engine.
+ *
+ * This function takes in a vector of references to Sound Bank objects and loads them into the Wwise audio engine. 
+ * Each SoundBank object contains information about a specific audio bank that can be loaded into the engine.
+ * The function does not return any value, it simply modifies the state of the Wwise audio engine based on the input parameters.
+ *
+ * @param Banks A vector of references to Sound Bank objects to load into the Wwise audio engine.
+ */
+void Wwise::LoadBanks(const std::vector<Ref<SoundBank>> &Banks)
 	{
 	}
 
-	void Wwise::LoadBank(Ref<SoundBank> Bank)
+	/**
+ * @brief Loads a SoundBank into the Wwise engine.
+ * 
+ * This function takes in a reference to a SoundBank object and loads it into the Wwise engine. The exact behavior of this function depends on how the SoundBank is implemented, but generally it should involve some form of loading operation that sets up the sound data for use by the Wwise engine.
+ * 
+ * @param Bank A reference to a SoundBank object containing the sound data to be loaded into the Wwise engine.
+ * @return void This function does not return any value.
+ */
+/**
+ * @brief Loads a SoundBank into the Wwise engine.
+ * 
+ * This function takes a reference to a SoundBank object and loads it into the Wwise engine. The SoundBank should have been previously initialized with the appropriate data.
+ * 
+ * @param Bank A reference to the SoundBank that is to be loaded.
+ */
+void Wwise::LoadBank(Ref<SoundBank> Bank)
 	{
 	}
 
-	std::string & Wwise::GetCurrentEventName()
+	/**
+ * @brief Get the name of the current event in the Wwise sound engine.
+ *
+ * This function returns a reference to the string that holds the label for the currently playing event in the Wwise sound engine. 
+ * The returned string is updated whenever an event starts or changes, so it represents the most recent event.
+ *
+ * @return A reference to the current event name string.
+ */
+/**
+ * @brief Get the name of the current event in the Wwise sound engine.
+ *
+ * This function returns a reference to the string that holds the label for the currently playing event in the Wwise sound engine. 
+ * The returned string is updated every time an event starts or stops, so this function can be used to get the name of the current event at any point.
+ *
+ * @return A reference to the string holding the label for the current event.
+ */
+std::string & Wwise::GetCurrentEventName()
 	{
 		return m_MarkerLabel;
 	}
 
-	void Wwise::SetCurrentEventName(const std::string &Name)
+	/**
+ * @brief This function sets the current event name in the Wwise audio engine.
+ *
+ * @param Name The new name for the current event.
+ */
+/**
+ * @brief This function sets the current event name in the Wwise sound engine.
+ *
+ * @param Name The new name for the current event.
+ */
+void Wwise::SetCurrentEventName(const std::string &Name)
 	{
 	}
 
-	bool Wwise::IsEventValid(const std::string& EventName)
+	/**
+ *  @brief Checks if the given event name is valid in the Wwise system.
+ *  
+ *  This function takes an event name as input and checks whether it exists in the Wwise system or not.
+ *  
+ *  @param EventName The name of the event to be checked.
+ *  @return Returns true if the event is valid, false otherwise. If the event name is empty or contains only whitespace characters, this function will return false.
+ */
+/**
+ *  @brief Checks whether a given event name is valid in the Wwise system.
+ *  
+ *  This function takes an event name as input and checks if it exists within the Wwise system.
+ *  
+ *  @param EventName The name of the event to be checked.
+ *  @return Returns true if the event is valid, false otherwise. If the event does not exist in the Wwise system, this function will return false.
+ */
+bool Wwise::IsEventValid(const std::string& EventName)
 	{
 		return false;
 	}
 
-	void Wwise::SetParameterByName(const std::string &Name, float Value)
+	/**
+ * @brief This function sets a parameter by its name in the Wwise sound engine.
+ * 
+ * @param Name The name of the parameter to be set.
+ * @param Value The new value for the parameter.
+ * 
+ * @return void
+ */
+/**
+ * @brief This function sets a parameter by its name in the Wwise sound engine.
+ *
+ * @param Name The name of the parameter to be set.
+ * @param Value The new value for the parameter.
+ */
+void Wwise::SetParameterByName(const std::string &Name, float Value)
 	{
 	}
 
-	void Wwise::Set3DAttributes(void *Attributes)
+	/**
+ * @brief This function sets the 3D attributes for a sound object in the Wwise audio engine.
+ * 
+ * @param Attributes A pointer to an instance of the Wwise::AK::SpatialAudioParams structure, which contains the new 3D attributes for the sound object.
+ * 
+ * @return void This function does not return any value.
+ */
+/**
+ * @brief This function sets the 3D attributes for a sound object in the Wwise audio engine.
+ * 
+ * @param Attributes A pointer to an instance of the Wwise::AK::SpatialAudioParams structure, which contains the new 3D attributes for the sound object.
+ */
+void Wwise::Set3DAttributes(void *Attributes)
 	{
 	}
 
-	void Wwise::ProcessAudio()
+	/**
+ * @brief This function processes the audio using Wwise's Sound Engine.
+ *
+ * The function checks if the AK::SoundEngine is initialized by calling IsInitialized(). If it is, 
+ * then RenderAudio() is called to process the audio.
+ */
+/**
+ * @brief This function processes audio using the Wwise sound engine.
+ * 
+ * The function checks if the AK Sound Engine is initialized by calling IsInitialized(). If it's initialized, then RenderAudio() is called to process the audio.
+ * 
+ * @return void No return value.
+ */
+void Wwise::ProcessAudio()
 	{
 		if (AK::SoundEngine::IsInitialized())
 		{
@@ -166,7 +350,21 @@ namespace AGE
 		}
 	}
 
-	void Wwise::SetBasePath(const AkOSChar* Path)
+	/**
+ * @brief This function sets the base path for Wwise.
+ *
+ * @param Path The new base path to be set.
+ * 
+ * @return void
+ */
+/**
+ * @brief This function sets the base path for Wwise.
+ *
+ * @param Path The new base path to be set.
+ * 
+ * @return void
+ */
+void Wwise::SetBasePath(const AkOSChar* Path)
 	{
 		AKRESULT Result = g_LowLevelIO->SetBasePath(Path);
 		CoreLogger::Assert(Result == AK_Success, "Failed to Set Base Path");
@@ -174,7 +372,22 @@ namespace AGE
 
 	}
 #if 0
-	void Wwise::LoadBank(const std::string& Name)
+	/**
+ * @brief This function loads a soundbank into the Wwise SoundEngine.
+ *
+ * The function takes in a string parameter 'Name' which represents the name of the bank file that needs to be loaded. 
+ * It then uses this name to load the bank using AK::SoundEngine::LoadBank() method. If the loading is successful, it returns AK_Success; otherwise, an error message is logged and thrown.
+ * The function does not return any value as indicated by @return statement.
+ * 
+ * @param Name The name of the bank file to be loaded.
+ */
+/**
+ * @brief This function loads a sound bank into the Wwise Sound Engine.
+ * 
+ * @param Name The name of the soundbank file without extension (.bnk).
+ * @return void
+ */
+void Wwise::LoadBank(const std::string& Name)
 	{
 		uint32_t BankID;
 		AKRESULT eResult = AK::SoundEngine::LoadBank(Name.c_str(), BankID);
@@ -187,14 +400,42 @@ namespace AGE
 		*/
 	}
 
-	void Wwise::LoadBank(const uint32_t Name)
+	/**
+ * @brief This function loads a sound bank into the Wwise audio engine.
+ * 
+ * @param Name The name of the sound bank file without extension.
+ * @return void
+ */
+/**
+ * @brief This function loads a sound bank into the Wwise audio engine.
+ * 
+ * @param Name The name of the sound bank file without extension.
+ * @return void
+ */
+void Wwise::LoadBank(const uint32_t Name)
 	{
 		AkBankType BankType = AkBankTypeEnum::AkBankType_User;
 		AKRESULT eResult = AK::SoundEngine::LoadBank(Name, BankType);
 		CoreLogger::Assert(eResult == AK_Success, "LoadBank() Failed to Load Soundbank!");
 	}
 #endif
-	void Wwise::UnloadBank(const std::string& Name)
+	/**
+ * @brief Unloads a sound bank from the Wwise Sound Engine.
+ *
+ * This function takes in a string parameter representing the name of the sound bank to be unloaded. 
+ * It prepares an event for unloading and then unloads the specified bank using AK::SoundEngine::UnloadBank(). 
+ * If the unloading operation fails, it logs an error message via CoreLogger::Assert().
+ *
+ * @param Name The name of the sound bank to be unloaded.
+ */
+/**
+ * @brief Unloads a sound bank from the Wwise Sound Engine.
+ *
+ * This function unloads a specific sound bank by its name. The bank is identified by its string name, which must match exactly with the name of the bank in the Wwise project. 
+ *
+ * @param Name A const reference to a string representing the name of the bank to be unloaded.
+ */
+void Wwise::UnloadBank(const std::string& Name)
 	{
 		/**
 		const char* pszEvent = EventName.c_str();
@@ -207,62 +448,264 @@ namespace AGE
 
 	}
 
-	void Wwise::UnloadBank(const uint32_t Name)
+	/**
+ * @brief Unloads a sound bank from the Wwise Sound Engine.
+ *
+ * This function attempts to unload a soundbank with the given name from the Wwise Sound Engine. 
+ * It uses the AK::SoundEngine::UnloadBank() function for this purpose, which expects an unsigned integer parameter representing the name of the bank and an additional flag indicating whether or not to wait for the operation to complete.
+ * The function then checks if the result is equal to AK_Success. If it's not, a CoreLogger Assertion will be triggered with an error message indicating that LoadBank() did not return AK_Success. 
+ * This indicates that there was an issue unloading the bank and should be investigated for potential sound engine issues.
+ */
+/**
+ * @brief Unloads a sound bank from the Wwise Sound Engine.
+ *
+ * This function unloads a specific sound bank by its name. The bank is identified by an unsigned 32-bit integer, which is typically the file ID of the bank.
+ *
+ * @param Name The unique identifier for the bank to be unloaded.
+ * @return void No return value.
+ */
+void Wwise::UnloadBank(const uint32_t Name)
 	{
 		AKRESULT eResult = AK::SoundEngine::UnloadBank(Name, 0);
 		CoreLogger::Assert(eResult == AK_Success, "LoadBank() Returned AK_Success!");
 	}
 
-	AkPlayingID Wwise::PostMarkerEvent(const char* EventID, uint64_t GameObjID)
+	/**
+ * @brief Posts a marker event to the Wwise sound engine.
+ *
+ * This function posts an event with the specified EventID and GameObjID to the Wwise sound engine. 
+ * The function returns the playing ID of the posted event, which can be used for further control over the audio playback.
+ *
+ * @param EventID A string representing the identifier of the event to post.
+ * @param GameObjID An unsigned 64-bit integer representing the game object associated with the event.
+ *
+ * @return The playing ID of the posted event, which can be used for further control over the audio playback.
+ */
+/**
+ * @brief Posts a marker event to the Wwise sound engine.
+ *
+ * This function posts an event with the specified EventID and GameObjID to the Wwise sound engine. 
+ * The returned AkPlayingID can be used to control or manipulate this event later on.
+ *
+ * @param EventID A string identifier for the event to post.
+ * @param GameObjID An identifier for the game object associated with the event.
+ * @return Returns an AkPlayingID that represents the playing ID of the posted event.
+ */
+AkPlayingID Wwise::PostMarkerEvent(const char* EventID, uint64_t GameObjID)
 	{
 		AkPlayingID PlayingID = AK::SoundEngine::PostEvent(EventID, GameObjID);
 		return PlayingID;
 	}
 
-	AkPlayingID Wwise::PostMarkerEvent(const uint32_t EventID, uint64_t GameObjID)
+	/**
+ * @brief Posts a marker event to the Wwise sound engine.
+ *
+ * This function posts an event with the given Event ID and Game Object ID to the Wwise sound engine. 
+ * The function returns the playing ID of the posted event, which can be used for further control over the event.
+ *
+ * @param EventID The ID of the event to post.
+ * @param GameObjID The ID of the game object associated with the event.
+ * @return The playing ID of the posted event.
+ */
+/**
+ * @brief Posts a marker event to the Wwise sound engine.
+ *
+ * This function posts an event with the given Event ID and Game Object ID to the Wwise sound engine, 
+ * which then handles the event accordingly. The function returns the playing ID of the event.
+ *
+ * @param EventID The ID of the event to be posted.
+ * @param GameObjID The ID of the game object associated with the event.
+ * @return The playing ID of the event.
+ */
+AkPlayingID Wwise::PostMarkerEvent(const uint32_t EventID, uint64_t GameObjID)
 	{
 		AkPlayingID PlayingID = AK::SoundEngine::PostEvent(EventID, GameObjID);
 
 		return PlayingID;
 	}
 
-	AKRESULT Wwise::SetPosition(uint64_t GameObjID, AkSoundPosition SoundPos)
+	/**
+ * @brief Set the position of a sound object in the 3D space.
+ *
+ * This function sets the position and orientation of a sound object in the 3D space. The GameObjID is used to identify the sound object, while SoundPos contains the new position and orientation data for this object.
+ *
+ * @param GameObjID Unique identifier for the sound object.
+ * @param SoundPos Structure containing the new position and orientation of the sound object.
+ *
+ * @return AKRESULT indicating success or failure of the operation.
+ */
+/** 
+ * @brief This function sets the position of a sound object in the Wwise audio engine.
+ * 
+ * @param GameObjID The unique identifier for the game object whose sound position is being set.
+ * @param SoundPos A structure containing the new position and orientation of the sound object.
+ * 
+ * @return An enumeration value indicating whether the operation was successful or not.
+ */
+AKRESULT Wwise::SetPosition(uint64_t GameObjID, AkSoundPosition SoundPos)
 	{
 		return AK::SoundEngine::SetPosition(GameObjID, SoundPos);
 	}
 
-	AKRESULT Wwise::SetRTPCValue(const char* Name, AkRtpcValue nRPM)
+	/** 
+ * @brief This function sets the real-time parameter control (RTPC) value for a specified RTPC.
+ * @param Name The name of the RTPC to set.
+ * @param nRPM The new value for the RTPC.
+ * @return AKRESULT indicating success or failure of the operation.
+ */
+/** 
+ * @brief This function sets the real-time parameter control (RTPC) value for a specified RTPC.
+ * @param Name The name of the RTPC to set.
+ * @param nRPM The new value for the RTPC.
+ * @return AKRESULT indicating success or failure of the operation.
+ */
+AKRESULT Wwise::SetRTPCValue(const char* Name, AkRtpcValue nRPM)
 	{
 		return AK::SoundEngine::SetRTPCValue(Name, nRPM);
 	}
 
-	AKRESULT Wwise::SetState(uint32_t StateGroupID, uint32_t StateID)
+	/**
+ * @brief This function sets the state of a given group in Wwise sound engine.
+ * 
+ * @param StateGroupID The ID of the state group to be set.
+ * @param StateID The ID of the state within the specified state group.
+ * 
+ * @return AKRESULT Returns the result of setting the state, indicating success or failure.
+ */
+/** 
+ * @brief This function sets the state of a given group in Wwise sound engine.
+ * @param StateGroupID The ID of the state group to be set.
+ * @param StateID The ID of the state within the specified group to be set.
+ * @return AKRESULT Returns the result of setting the state, indicating success or failure.
+ */
+AKRESULT Wwise::SetState(uint32_t StateGroupID, uint32_t StateID)
 	{
 		return AK::SoundEngine::SetState(StateGroupID, StateID);
 	}
 
-	AKRESULT Wwise::SetState(const char* Name, const char* Group)
+	/**
+ * @brief This function sets the state of a sound object in the Wwise Sound Engine.
+ * 
+ * @param Name The name of the state to be set.
+ * @param Group The group that contains the state to be set.
+ * 
+ * @return AKRESULT Returns the result of the SetState operation.
+ */
+/**
+ * @brief Set the state of a sound object.
+ * 
+ * This function sets the state of a sound object in Wwise. The name and group parameters specify the state to be set.
+ * 
+ * @param Name A string representing the name of the state to be set.
+ * @param Group A string representing the group of states to which the specified state belongs.
+ * 
+ * @return An enumeration value indicating the result of the operation. Possible values include:
+ * - `AKRESULT_SUCCESS` if the state was successfully set,
+ * - `AKRESULT_FAIL` if an error occurred while setting the state.
+ */
+AKRESULT Wwise::SetState(const char* Name, const char* Group)
 	{
 		return AK::SoundEngine::SetState(Name, Group);
 	}
 
-	AKRESULT Wwise::SetSwitch(uint32_t SwitchGroupID, uint32_t SwitchID, uint64_t GameObjID)
+	/**
+ * @brief Set a switch in the Wwise sound engine.
+ * 
+ * This function sets a specific switch within a group to a certain value for a given game object. The switch is identified by its Group ID, Switch ID and Game Object ID.
+ * 
+ * @param SwitchGroupID The unique identifier of the switch group.
+ * @param SwitchID The unique identifier of the switch within the group.
+ * @param GameObjID The unique identifier of the game object for which to set the switch.
+ * 
+ * @return AKRESULT indicating success or failure of the operation.
+ */
+/**
+ * @brief Set a switch in the Wwise sound engine.
+ * 
+ * This function sets a specific switch within a group to a certain value for a given game object.
+ * The function uses AK::SoundEngine::SetSwitch, which is part of the Wwise sound engine API.
+ * 
+ * @param SwitchGroupID ID of the switch group to set.
+ * @param SwitchID ID of the specific switch within the group to set.
+ * @param GameObjID ID of the game object for which to set the switch.
+ * 
+ * @return An AKRESULT indicating success or failure of the operation.
+ */
+AKRESULT Wwise::SetSwitch(uint32_t SwitchGroupID, uint32_t SwitchID, uint64_t GameObjID)
 	{
 		return AK::SoundEngine::SetSwitch(SwitchGroupID, SwitchID, GameObjID);
 	}
 
-	AKRESULT Wwise::SetSwitch(const char* SwitchGroup, const char* Switch, uint64_t GameObjID)
+	/**
+ * @brief Set a Wwise switch for a specific game object.
+ * 
+ * This function sets the value of a Wwise switch for a given group and name in the SoundEngine. The switch is associated with a particular game object, specified by its ID.
+ *
+ * @param SwitchGroup The name of the switch group to set.
+ * @param Switch The name of the switch to set within the group.
+ * @param GameObjID The unique identifier for the game object whose sound environment should be modified.
+ * 
+ * @return An AKRESULT indicating whether the operation was successful or not.
+ */
+/**
+ * @brief Set a switch in the Wwise sound engine.
+ * 
+ * This function sets a switch in the Wwise sound engine for a specific game object. The switch is part of a group and can be used to control different aspects of the audio environment.
+ * 
+ * @param SwitchGroup The name of the switch group.
+ * @param Switch The name of the switch within the group.
+ * @param GameObjID The ID of the game object for which to set the switch.
+ * 
+ * @return An AKRESULT indicating whether the operation was successful or not.
+ */
+AKRESULT Wwise::SetSwitch(const char* SwitchGroup, const char* Switch, uint64_t GameObjID)
 	{
 		return AK::SoundEngine::SetSwitch(SwitchGroup, Switch, GameObjID);
 	}
 
-	void Wwise::ParseSoundBankFile(const std::string& Filepath)
+	/**
+ * @brief Parses a sound bank file using the given file path.
+ * 
+ * This function reads and parses a sound bank file specified by its file path, which is passed as an argument to this function. The format of the sound bank file can vary depending on the specific implementation of Wwise used in your project.
+ *
+ * @param Filepath A constant string reference representing the file path of the sound bank file to be parsed. This parameter should contain the full or relative path to the sound bank file that you want to parse.
+ * 
+ * @return void No return value is expected from this function as it directly modifies internal data structures based on the content of the sound bank file.
+ */
+/**
+ * @brief Parses a sound bank file using the given file path.
+ * 
+ * This function reads and parses a sound bank file specified by its file path, which is passed as an argument to this function. The format of the sound bank file can be in any form that Wwise supports.
+ *
+ * @param Filepath A constant string reference representing the file path of the sound bank file to parse.
+ */
+void Wwise::ParseSoundBankFile(const std::string& Filepath)
 	{
 
 
 	}
 
-	AKRESULT Wwise::RegisterGameObj(uint64_t GameObjID, const char* Name)
+	/**
+ * @brief Registers a game object with the Wwise sound engine.
+ *
+ * This function registers a game object with the Wwise sound engine using its ID and name. 
+ * The result of this operation is returned, indicating whether the registration was successful or not.
+ *
+ * @param GameObjID The unique identifier for the game object to be registered.
+ * @param Name A string representing the name of the game object to be registered.
+ * @return An enumeration value indicating the success (AK_Success) or failure of the operation.
+ */
+/**
+ * @brief Registers a game object with the Wwise sound engine.
+ *
+ * This function registers a game object with the AkSoundEngine by providing it with an ID and name. 
+ * The function returns AK_Success if the registration is successful, otherwise it will return an error code indicating what went wrong.
+ *
+ * @param GameObjID The unique identifier for the game object.
+ * @param Name The name of the game object.
+ * @return Returns AK_Success on success, or a different value on failure.
+ */
+AKRESULT Wwise::RegisterGameObj(uint64_t GameObjID, const char* Name)
 	{
 
 		AKRESULT Result = AK::SoundEngine::RegisterGameObj(GameObjID, Name);
@@ -272,7 +715,19 @@ namespace AGE
 
 
 
-	AKRESULT Wwise::UnregisterGameObj(uint64_t GameObjID)
+	/**
+ * @brief This function unregisters a game object from the Wwise sound engine.
+ * 
+ * @param GameObjID The ID of the game object to be unregistered.
+ * @return AKRESULT Returns the result of the operation, indicating success or failure.
+ */
+/**
+ * @brief This function unregisters a game object from the Wwise sound engine.
+ * 
+ * @param GameObjID The ID of the game object to be unregistered.
+ * @return AKRESULT Returns the result of the operation, indicating success or failure.
+ */
+AKRESULT Wwise::UnregisterGameObj(uint64_t GameObjID)
 	{
 		AKRESULT Result = AK::SoundEngine::UnregisterGameObj(GameObjID);
 		CoreLogger::Assert(Result == AK_Success, "Failed to Unregister Game Object!");
@@ -280,7 +735,19 @@ namespace AGE
 	}
 
 
-	void Wwise::MIDICallback(bool LastCall)
+	/**
+ * @brief This function is responsible for handling MIDI events. It generates two MIDI notes (NoteOn and NoteOff) based on the provided parameters and sends them to the Sound Engine using PostMIDIOnEvent().
+ * 
+ * @param LastCall A boolean value indicating whether this is the last call in a sequence of calls. If true, it means that all subsequent calls will be the final ones in the sequence.
+ * 
+ * @return void
+ */
+/**
+ * @brief This function is used to handle MIDI events. It generates two MIDI notes (one for note on and one for note off) based on the provided parameters and sends them using the PostMIDIOnEvent() function.
+ * 
+ * @param LastCall A boolean flag indicating whether this is the last callback in a sequence of callbacks. If true, it means that no more MIDI events will be sent by this function.
+ */
+void Wwise::MIDICallback(bool LastCall)
 	{
 		AkMIDIPost aPosts[2];
 
@@ -309,14 +776,36 @@ namespace AGE
 
 		PostMIDIOnEvent(EventID, REGISTERED_MIDI_GAME_OBJECT, aPosts, 2);
 	}
-	AkPlayingID Wwise::PostMIDIOnEvent(uint32_t EventID, uint64_t GameObjID, AkMIDIPost* Posts, uint16_t NumPosts)
+	/**
+ * @brief This function posts a MIDI event to the Wwise sound engine.
+ * 
+ * @param EventID The ID of the MIDI event to be posted.
+ * @param GameObjID The ID of the game object associated with the MIDI event.
+ * @param Posts A pointer to an array of AkMIDIPost structures containing information about the MIDI events.
+ * @param NumPosts The number of elements in the Posts array.
+ * 
+ * @return Returns the ID of the playing instance that corresponds to the posted event. If no such instance exists, it returns AK_INVALID_PLAYING_ID.
+ */
+/**
+ * @brief This function posts MIDI events to the Wwise sound engine.
+ * 
+ * @param EventID The ID of the event to be posted.
+ * @param GameObjID The ID of the game object associated with the event.
+ * @param Posts Pointer to an array of AkMIDIPost structures containing MIDI data.
+ * @param NumPosts Number of elements in the Posts array.
+ * 
+ * @return Returns a unique playing ID for the posted event.
+ */
+AkPlayingID Wwise::PostMIDIOnEvent(uint32_t EventID, uint64_t GameObjID, AkMIDIPost* Posts, uint16_t NumPosts)
 	{
 		return AK::SoundEngine::PostMIDIOnEvent(EventID, GameObjID, Posts, NumPosts);
 	}
 
 
 
-	const char* Wwise::ProcessResultErrorCode(AKRESULT Code)
+	
+
+const char* Wwise::ProcessResultErrorCode(AKRESULT Code)
 	{
 		switch (Code)
 		{
@@ -560,7 +1049,15 @@ namespace AGE
 	}
 
 	template<>
-	Wwise* AudioEngine::As()
+	/**
+ * @brief This function returns a pointer to the Wwise object associated with this instance of AudioEngine.
+ * @return A pointer to the Wwise object, or nullptr if no such association exists.
+ */
+/**
+ * @brief This function returns a pointer to the Wwise object that is casted from this AudioEngine instance.
+ * @return A pointer to the Wwise object, or nullptr if the cast fails.
+ */
+Wwise* AudioEngine::As()
 	{
 		return (Wwise*)this;
 	}

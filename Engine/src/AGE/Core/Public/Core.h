@@ -65,9 +65,36 @@ namespace AGE
 		T& iterable_;
 
 	public:
-		explicit Reverse(T& iterable) : iterable_{ iterable } {}
-		auto begin() const { return std::rbegin(iterable_); }
-		auto end() const { return std::rend(iterable_); }
+		/**
+ * @brief Constructs a new instance of the Reverse class with an iterable object.
+ * @param[in] iterable A reference to the iterable object that will be reversed.
+ */
+/**
+ * @brief Constructs a new instance of the Reverse class with the provided iterable object.
+ * @param[in] iterable The reference to an iterable object (like vector, list etc.) that needs to be reversed.
+ */
+explicit Reverse(T& iterable) : iterable_{ iterable } {}
+		/**
+ * @brief Returns a reverse iterator pointing to the last element of the container (i.e., its reverse beginning).
+ * @return A reverse iterator which points to the end of the sequence of numbers in the container.
+ */
+/**
+ * @brief Returns a reverse iterator pointing to the last element of the container (i.e., its reverse beginning).
+ * @return A reverse iterator which points to the end of the sequence of numbers in the container.
+ */
+auto begin() const { return std::rbegin(iterable_); }
+		COMMENT:
+/**
+ * @brief Returns a reverse iterator pointing to the theoretical element past the last element of the sequence.
+ * @return A reverse iterator that points to the theoretical element past the last element of the sequence.
+ */
+CONFIDENCE: 1.0;
+
+/**
+ * @brief Returns a reverse iterator pointing to the theoretical element past the last element of the sequence.
+ * @return A reverse iterator that points to the theoretical element past the last element of the sequence.
+ */
+auto end() const { return std::rend(iterable_); }
 	};
 }
 

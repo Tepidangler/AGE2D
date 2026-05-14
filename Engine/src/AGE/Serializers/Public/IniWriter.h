@@ -30,7 +30,17 @@ namespace AGE
 	{
 	public:
 		IniWriter(const std::filesystem::path &Path);
-		~IniWriter() = default;
+		/**
+ * @brief Destructor for the IniWriter class.
+ *
+ * This function is responsible for releasing any resources that were acquired by the IniWriter object, such as memory or file handles. It does not return anything and has no parameters.
+ */
+/**
+ * @brief Default destructor for the IniWriter class.
+ *
+ * This function is responsible for freeing any resources that were allocated by the IniWriter object, such as memory or file handles. It does not return anything and has no parameters.
+ */
+~IniWriter() = default;
 
 		bool Write(const std::string &Section, const std::string &Key, const std::string &Value);
 

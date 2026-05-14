@@ -17,14 +17,37 @@ RTTR_REGISTRATION{
 
 namespace AGE
 {
-	TextBoxComponent::TextBoxComponent(const std::string &Name)
+	/**
+ * @brief Constructs a TextBoxComponent with the given name and sets default properties.
+ * @param Name The name of the TextBoxComponent.
+ * @return None
+ */
+/**
+ * @brief Constructs a TextBoxComponent with the given name and sets default properties.
+ * @param Name The name of the TextBoxComponent.
+ */
+TextBoxComponent::TextBoxComponent(const std::string &Name)
 	{
 		m_Name = Name;
 		m_Type = UIComponentType::TextBoxComponent;
 		m_StringProperties.TextFont = AGEFont::GetDefault();
 	}
 
-	void TextBoxComponent::OnUpdate(TimeStep DeltaTime)
+	/**
+ * @brief Updates the TextBoxComponent based on a time step.
+ * 
+ * This function updates the TextBoxComponent by checking if it is visible. If it is, it sets up properties for a quad and string to be drawn. The quad's transform, color, and other properties are set according to the component's box properties. Then, it calls Renderer2D::DrawQuad with these properties and Renderer2D::DrawString with the string properties of the TextBoxComponent.
+ * 
+ * @param DeltaTime The time step for updating the component.
+ */
+/**
+ * @brief Updates the TextBoxComponent based on the provided TimeStep.
+ * 
+ * This function updates the TextBoxComponent by checking if it is visible. If it is, it creates a QuadProperties object and sets its properties such as Transform, Color etc., then calls Renderer2D::DrawQuad() with this QuadProperties to render the quad. It also renders a string using Renderer2D::DrawString().
+ * 
+ * @param DeltaTime The time step for the update operation.
+ */
+void TextBoxComponent::OnUpdate(TimeStep DeltaTime)
 	{
 		if (m_CompProperties.Visible)
 		{
@@ -36,11 +59,27 @@ namespace AGE
 		}
 	}
 
-	void TextBoxComponent::OnEvent(Event &Event)
+	/**
+ * @brief Handles an event of type Event.
+ *
+ * This function takes in a reference to an Event object and processes it according to its type. The exact behavior depends on the specific implementation of this class.
+ *
+ * @param[in] Event - A reference to the Event that needs to be processed.
+ */
+/**
+ * @brief Handles an event of type Event.
+ *
+ * This function takes in a reference to an Event object and processes it according to its type. The exact behavior depends on the specific implementation of this class, which is not specified here.
+ *
+ * @param[in] Event A reference to the Event that needs to be processed.
+ */
+void TextBoxComponent::OnEvent(Event &Event)
 	{
 	}
 
-	void TextBoxComponent::DrawFontSelectionComboBox()
+	
+
+void TextBoxComponent::DrawFontSelectionComboBox()
 	{
 		std::unordered_map<UUID,Ref<AGEFont>> Fonts = AssetManager::Get().GetAssetRegistry()->GetFonts();
 		std::vector<std::string> FontNames = AssetManager::Get().GetAssetRegistry()->GetFontNames();
@@ -70,7 +109,15 @@ namespace AGE
 		}
 	}
 
-	void TextBoxComponent::DrawContent()
+	/**
+ * @brief Draws the content of the TextBoxComponent, including text properties, font selection, color editing, and positioning controls.
+ * 
+ * This function uses ImGui to draw a series of UI elements for configuring the text properties of the TextBoxComponent. It includes inputs for text string, font selection, color editing, and positioning controls. The function updates the m_StringProperties member variable accordingly based on user input.
+ * 
+ * @return void
+ */
+
+void TextBoxComponent::DrawContent()
 	{
 		ImGui::Text("String Properties");
 		ImGui::Text("Text");ImGui::SameLine();
@@ -92,7 +139,16 @@ namespace AGE
 	}
 
 	template<>
-	TextBoxComponent* UIComponent::As()
+	/**
+ * @brief This function is used to cast the current object to TextBoxComponent type.
+ * 
+ * @return TextBoxComponent* Returns a pointer to this object, but with its type as TextBoxComponent.
+ */
+/**
+ * @brief This function is used to cast the current object to TextBoxComponent type.
+ * @return Returns a pointer of type TextBoxComponent, which points to this object if it can be safely casted to that type. If not, returns nullptr.
+ */
+TextBoxComponent* UIComponent::As()
 	{
 		return (TextBoxComponent*)this;
 	}

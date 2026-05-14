@@ -43,23 +43,79 @@ RTTR_REGISTRATION
 namespace AGE
 {
 
-	void Renderer2D::Init()
+	/**
+ * @brief Initializes the Renderer2D object.
+ * 
+ * This function is used to initialize the Renderer2D object, setting it up for rendering operations. It does not take any parameters and returns void.
+ */
+/**
+ * @brief Initializes the Renderer2D object.
+ * 
+ * This function is used to initialize the Renderer2D object, setting it up for rendering operations. It does not take any parameters and returns void.
+ */
+void Renderer2D::Init()
 	{
 
 	}
 		
 
-	void Renderer2D::Shutdown()
+	/**
+ * @brief Shuts down the Renderer2D instance.
+ * 
+ * This function is used to clean up any resources that were allocated during initialization of the Renderer2D instance, such as freeing GPU memory or closing open graphics contexts. It also resets all internal state so a new call to Initialize() will start with an empty slate.
+ *
+ * @return void
+ */
+/**
+ * @brief Shuts down the Renderer2D instance.
+ * 
+ * This function is used to clean up any resources that were allocated during initialization of the Renderer2D object, such as freeing GPU memory or closing open graphics contexts. It also resets all internal state so a new call to Initialize() will start with a fresh slate.
+ * 
+ * @return void
+ */
+void Renderer2D::Shutdown()
 	{
 
 	}
 	
-	void Renderer2D::BeginScene(const Camera& Camera, const Matrix4D& Transform)
+	/** 
+ * @brief Begins a 2D scene with the specified camera and transformation.
+ * 
+ * This function starts a new batch for rendering 2D objects, using the provided camera and transformation matrix. The camera is used to calculate the view-projection matrix that will be applied during rendering.
+ * 
+ * @param Camera A const reference to the camera object representing the current scene's viewpoint.
+ * @param Transform A const reference to a Matrix4D object representing any additional transformations to apply to this batch of objects.
+ */
+/** 
+ * @brief Begins a 2D scene with the specified camera and transformation.
+ * 
+ * This function starts a new batch for rendering 2D objects using the provided camera and transformation matrix. The camera is used to calculate the view-projection matrix, which is then passed to the graphics pipeline.
+ * 
+ * @param Camera A const reference to the camera object representing the current scene's viewpoint.
+ * @param Transform A const reference to a Matrix4D object representing the transformation of the objects in the scene.
+ */
+void Renderer2D::BeginScene(const Camera& Camera, const Matrix4D& Transform)
 	{
 		AGE_PROFILE_FUNCTION();
 		RenderCommand::s_GraphicsPipeline->StartBatch2D();
 	}
-	void Renderer2D::BeginScene(const EditorCamera& Camera)
+	/**
+ * @brief Begin a 2D scene with the given camera.
+ *
+ * This function begins a new 2D scene using the provided EditorCamera. It calculates the World View Projection Matrix (WVPM) based on the camera's projection, view matrix and world matrix. The WVPM is then set as the CameraUniformBuffer data. Finally, it starts a batch for rendering 2D objects.
+ *
+ * @param Camera The EditorCamera to use for this scene.
+ */
+/** 
+ * @brief Begins a 2D scene with the provided camera.
+ * 
+ * This function sets up the necessary data for rendering 2D graphics using the given camera. It calculates the World View Projection Matrix (WVPM) based on the camera's projection, view matrix and world matrix. The WVPM is then set as a uniform buffer in the graphics pipeline. Finally, it starts a new batch of 2D rendering commands.
+ * 
+ * @param Camera A reference to an EditorCamera object representing the camera for the scene.
+ * 
+ * @return void
+ */
+void Renderer2D::BeginScene(const EditorCamera& Camera)
 	{
 		AGE_PROFILE_FUNCTION();
 
@@ -67,18 +123,56 @@ namespace AGE
 		RenderCommand::s_GraphicsPipeline->GetData().CameraUniformBuffer->SetData(&WVPM, sizeof(Renderer2DData::CameraData));
 		RenderCommand::s_GraphicsPipeline->StartBatch2D();
 	}
-	void Renderer2D::EndScene()
+	/** 
+ * @brief This function is used to end the current scene rendering in a 2D context.
+ * It calls the Flush2D method of the currently active GraphicsPipeline object, which should handle any remaining rendering tasks for this frame.
+ * 
+ * @return void
+ */
+/** 
+ * @brief This function is used to end the current rendering scene.
+ * It flushes all pending draw calls in the 2D graphics pipeline.
+ * 
+ * @return void
+ */
+void Renderer2D::EndScene()
 	{
 		AGE_PROFILE_FUNCTION();
 
 		RenderCommand::s_GraphicsPipeline->Flush2D();
 	}
-	void Renderer2D::Flush()
+	/** 
+ * @brief This function flushes the 2D rendering pipeline.
+ * 
+ * The RenderCommand class' s_GraphicsPipeline member is accessed and its Flush2D() method is called to flush all pending draw calls in the 2D graphics pipeline.
+ * 
+ * @return void No return value.
+ */
+/** 
+ * @brief This function flushes the 2D graphics pipeline. It ensures all pending draw calls are executed and completed before any new ones can begin.
+ * 
+ * @return void
+ */
+void Renderer2D::Flush()
 	{
 		RenderCommand::s_GraphicsPipeline->Flush2D();		
 	}
 
-	void Renderer2D::DrawQuad(const QuadProperties Props)
+	/**
+ * @brief Draw a quadrilateral with the specified properties.
+ * 
+ * This function draws a quadrilateral on the screen using the provided QuadProperties object. The quad is drawn in the current graphics pipeline and its vertices are added to the vertex buffer if there's enough space. If not, it calls `NextBatch2D` to start a new batch.
+ * 
+ * @param Props A structure containing properties of the quadrilateral such as color, size, transformation matrix, texture coordinates, tiling factor and entity ID.
+ */
+/**
+ * @brief Draw a quadrilateral with the specified properties.
+ * 
+ * This function draws a quadrilateral on the screen using the provided QuadProperties object. It checks if there are enough indices to draw another quad, and if not, it calls RenderCommand::s_GraphicsPipeline->NextBatch2D() to start a new batch. Then it creates a quad with the specified properties and increments the index count by 6. Finally, it updates the stats for quads drawn.
+ * 
+ * @param Props The QuadProperties object containing all the information about the quad to be drawn. This includes color, size, transformation matrix, texture coordinates, tiling factor, and entity ID.
+ */
+void Renderer2D::DrawQuad(const QuadProperties Props)
 	{
 		if (RenderCommand::s_GraphicsPipeline->GetData().QuadIndexCount >= Renderer2DData::MaxIndexCount)
 		{
@@ -89,7 +183,9 @@ namespace AGE
 
 		RenderCommand::s_GraphicsPipeline->GetData().Stats.QuadCount++;
 	}
-	void Renderer2D::DrawQuad(const Ref<Texture2D>& Texture, const QuadProperties Props)
+	
+"/**\n * @brief Draw a quad with the given properties and texture.\n * \n * This function is used to draw a single quad in the 2D graphics pipeline. It takes as input the texture, quad properties (color, size, transform, texture coordinates, tiling factor, entity ID), and it updates the vertex buffer accordingly. If the current batch of quads exceeds the maximum index count, it will start a new batch.\n * \n * @param Texture The reference to the texture that should be used for rendering this quad.\n * @param Props A structure containing all properties necessary for rendering (tint color, size, transform, texture coordinates, tiling factor, entity ID).\n */"
+void Renderer2D::DrawQuad(const Ref<Texture2D>& Texture, const QuadProperties Props)
 	{
 		if (RenderCommand::s_GraphicsPipeline->GetData().QuadIndexCount >= Renderer2DData::MaxIndexCount)
 		{
@@ -120,7 +216,20 @@ namespace AGE
 		RenderCommand::s_GraphicsPipeline->GetData().QuadIndexCount += 6;
 		RenderCommand::s_GraphicsPipeline->GetData().Stats.QuadCount++;
 	}
-	void Renderer2D::DrawQuad(const Ref<SubTexture2D>& Subtexture, const QuadProperties Props)
+	
+/**
+ * @brief Draw a quad using the provided properties and subtexture.
+ *
+ * This function is used to draw a single quad in 2D space. It takes a reference to a SubTexture2D, which contains information about the texture of the quad, as well as a QuadProperties struct that holds various properties related to the quad, such as its color, size, transformation matrix, texture coordinates, tiling factor and entity ID.
+ * 
+ * The function first checks if there are enough indices in the current batch for another quad. If not, it calls RenderCommand::s_GraphicsPipeline->NextBatch2D() to start a new batch. It then retrieves the texture from the subtexture and checks if it is already bound (i.e., its pointer exists within the TextureSlots array).
+ * 
+ * If the texture is not yet bound, it binds it by incrementing the TextureSlotIndex and adding a new entry to the TextureSlots array. It then creates a quad in the vertex buffer using RenderCommand::s_GraphicsPipeline->GetData().VertexBuffers["Quad"]->CreateQuad(), increments QuadIndexCount by 6 (since each quad is made up of two triangles, thus 6 indices), and increases the QuadCount statistic.
+ *
+ * @param Subtexture A reference to a SubTexture2D object containing information about the texture of the quad.
+ * @param Props A struct containing various properties related to the quad, such as its color, size, transformation matrix, texture coordinates, tiling factor and entity ID.
+ */
+void Renderer2D::DrawQuad(const Ref<SubTexture2D>& Subtexture, const QuadProperties Props)
 	{
 		if (RenderCommand::s_GraphicsPipeline->GetData().QuadIndexCount >= Renderer2DData::MaxIndexCount)
 		{
@@ -152,7 +261,19 @@ namespace AGE
 		RenderCommand::s_GraphicsPipeline->GetData().QuadIndexCount += 6;
 		RenderCommand::s_GraphicsPipeline->GetData().Stats.QuadCount++;
 	}
-	void Renderer2D::DrawCircle(const Matrix4D& Transform, const Vector4& Color, float Thickness, float Fade, int EntityID)
+	/**
+ * @brief Draw a circle on the screen using the provided parameters.
+ * 
+ * This function is used to draw a circle on the screen with the given transform, color, thickness, fade and entity ID. The function first checks if there are enough indices in the buffer for another circle. If not, it calls `NextBatch()` to create a new batch. Then, it creates a circle using the provided parameters and increments the index count and circle count stats.
+ * 
+ * @param Transform The transformation matrix of the circle.
+ * @param Color The color of the circle.
+ * @param Thickness The thickness of the circle's outline.
+ * @param Fade The fade value for the circle.
+ * @param EntityID The ID of the entity associated with the circle.
+ */
+
+void Renderer2D::DrawCircle(const Matrix4D& Transform, const Vector4& Color, float Thickness, float Fade, int EntityID)
 	{
 		AGE_PROFILE_FUNCTION();
 
@@ -169,14 +290,61 @@ namespace AGE
 		RenderCommand::s_GraphicsPipeline->GetData().Stats.CircleCount++;
 	}
 
-	void Renderer2D::DrawLine(const Vector3& Pos0, const Vector3& Pos1, const Vector4& Color, int EntityID)
+	/**
+ * @brief Draw a line in the 3D scene.
+ * 
+ * This function is used to draw a line segment in the 3D scene with a specified color and positions. The line is drawn between two points, Pos0 and Pos1. The color of the line can be customized by passing a Vector4 representing the RGBA values. The EntityID parameter allows for identification of which entity (if any) this line corresponds to.
+ * 
+ * @param Pos0 A constant reference to a Vector3 representing the start point of the line segment.
+ * @param Pos1 A constant reference to a Vector3 representing the end point of the line segment.
+ * @param Color A constant reference to a Vector4 representing the RGBA color values for the line.
+ * @param EntityID An integer value that represents the ID of the entity associated with this line (if any).
+ * 
+ * @return void
+ */
+/**
+ * @brief Draw a line in the 3D scene.
+ *
+ * This function is used to draw a line segment in the 3D scene with a specified color and positions. The line will be drawn between two points, Pos0 and Pos1.
+ * The color of the line can also be specified using the Color parameter. The EntityID provides an identifier for the entity associated with this line.
+ *
+ * @param Pos0 The starting position of the line segment.
+ * @param Pos1 The ending position of the line segment.
+ * @param Color The RGBA color of the line segment.
+ * @param EntityID An identifier for the entity associated with this line.
+ */
+void Renderer2D::DrawLine(const Vector3& Pos0, const Vector3& Pos1, const Vector4& Color, int EntityID)
 	{
 		RenderCommand::s_GraphicsPipeline->GetData().LineVertexBufferPtr = RenderCommand::s_GraphicsPipeline->GetData().VertexBuffers["Line"]->CreateLine(RenderCommand::s_GraphicsPipeline->GetData().LineVertexBufferPtr, Color, Pos0, Pos1, EntityID);
 
 		RenderCommand::s_GraphicsPipeline->GetData().LineVertexCount += 2;
 	}
 
-	void Renderer2D::DrawRect(const Vector3& Position, const Vector2& Size, const Vector4& Color, int EntityID)
+	/**
+ * @brief Draws a 2D rectangle on the screen.
+ * 
+ * This function takes in a position, size and color to draw a rectangle on the screen. The rectangle is defined by four lines - two horizontal and two vertical.
+ * 
+ * @param Position The center of the rectangle.
+ * @param Size The width and height of the rectangle.
+ * @param Color The color of the rectangle.
+ * @param EntityID An identifier for the entity associated with this rectangle.
+ * 
+ * @return void
+ */
+/**
+ * @brief Draws a 2D rectangle on the screen.
+ * 
+ * This function takes in a position, size and color to draw a rectangle on the screen. The rectangle is defined by four lines forming a quadrilateral.
+ * 
+ * @param Position The center position of the rectangle.
+ * @param Size The width and height of the rectangle.
+ * @param Color The color of the rectangle.
+ * @param EntityID An identifier for the entity associated with this rectangle.
+ * 
+ * @return void
+ */
+void Renderer2D::DrawRect(const Vector3& Position, const Vector2& Size, const Vector4& Color, int EntityID)
 	{
 		Vector3 p0 = Vector3(Position.x - Size.x * .5f, Position.y - Size.y * .5f, Position.z);
 		Vector3 p1 = Vector3(Position.x + Size.x * .5f, Position.y - Size.y * .5f, Position.z);
@@ -189,7 +357,29 @@ namespace AGE
 		DrawLine(p3,p0 , Color);
 	}
 
-	void Renderer2D::DrawRect(const Matrix4D& Transform, const Vector4& Color, int EntityID)
+	/**
+ * @brief Draws a 2D rectangle using lines.
+ *
+ * This function takes in a transformation matrix, color and entity ID as parameters to draw a 2D rectangle on the screen. The transformation matrix is used to transform the vertices of the rectangle into world space. The color specifies the color of the rectangle and the entity ID can be used for further processing or identification of the drawn object.
+ *
+ * @param Transform A constant reference to a Matrix4D object representing the transformation matrix.
+ * @param Color A constant reference to a Vector4 object representing the color of the rectangle.
+ * @param EntityID An integer representing the entity ID of the drawn object.
+ *
+ * @return void
+ */
+/**
+ * @brief Draws a 2D rectangle using lines.
+ * 
+ * This function takes in a transformation matrix, color and entity ID as parameters to draw a 2D rectangle on the screen. The transformation matrix is used to transform the vertices of the rectangle into their corresponding positions on the screen. The color specifies the color of the rectangle and the entity ID can be used for any purpose such as debugging or identification purposes.
+ * 
+ * @param Transform A constant reference to a Matrix4D object representing the transformation matrix.
+ * @param Color A constant reference to a Vector4 object representing the color of the rectangle.
+ * @param EntityID An integer representing the entity ID.
+ * 
+ * @return void
+ */
+void Renderer2D::DrawRect(const Matrix4D& Transform, const Vector4& Color, int EntityID)
 	{
 		Vector3 LineVertices[4];
 		for (int i = 0; i < 4; i++)
@@ -204,7 +394,19 @@ namespace AGE
 
 	}
 
-	void Renderer2D::DrawSprite(SpriteRendererComponent& SRC)
+	/**
+ * @brief Draws a 2D sprite based on the SpriteRendererComponent provided.
+ * 
+ * The function checks if there is a texture or animation textures in the component and draws accordingly. If neither are present, it draws a quad with no texture.
+ * 
+ * @param SRC Reference to the SpriteRendererComponent that contains all necessary information for drawing the sprite.
+ */
+/**
+ * @brief Draws a 2D sprite based on the SpriteRendererComponent provided.
+ * 
+ * The function checks if there is a Texture or SubTexture in the SpriteRendererComponent, and then calls the appropriate drawing functions accordingly. If neither are present, it draws a quad with no texture.
+ */
+void Renderer2D::DrawSprite(SpriteRendererComponent& SRC)
 	{
 		if (SRC.Texture)
 		{
@@ -229,7 +431,9 @@ namespace AGE
 			DrawQuad(SRC.SubTexture, SRC.QuadProps);
 		}
 	}
-	void Renderer2D::DrawTile(const SpriteRendererComponent& SRC)
+	"/**\n * @brief Draws a single tile using the SpriteRendererComponent data.\n * \n * This function updates necessary buffers and statistics as needed, based on the details provided by the SpriteRendererComponent.\n * \n * @param SRC The SpriteRendererComponent containing all the information about the tile to be drawn.\n */"
+
+void Renderer2D::DrawTile(const SpriteRendererComponent& SRC)
 	{
 		//SpriteSheetUtils::SetTexCoords(SRC.SubTexture, SRC.QuadProps, false);
 
@@ -263,7 +467,9 @@ namespace AGE
 		RenderCommand::s_GraphicsPipeline->GetData().TileIndexCounts[(size_t)SRC.TilesLayer] += 6;
 		RenderCommand::s_GraphicsPipeline->GetData().Stats.TileCount++;
 	}
-	void Renderer2D::DrawString(const StringProperties& Props)
+	
+
+void Renderer2D::DrawString(const StringProperties& Props)
 	{
 
 		const auto& FontGeometry = Props.TextFont->GetMSDFData()->FontGeometry;
@@ -377,7 +583,21 @@ namespace AGE
 		}
 
 	}
-	void Renderer2D::DrawTileMapLayers(TileMapRendererComponent& TMRC, tmx_map* Map, std::vector<tmx_layer*> layers)
+	
+```cpp
+/**
+ * @brief Draws a tile map layer using the provided TileMapRendererComponent, tmx_map and vector of tmx_layer objects.
+ * 
+ * This function prepares buffers for rendering tiles by creating index buffer, vertex array, and vertex buffers. It also sets up their layouts and pushes them into respective vectors in the graphics pipeline data structure. The function then iterates over the layers in reverse order to ensure correct drawing order (back-to-front).
+ * 
+ * @param TMRC Reference to a TileMapRendererComponent object that holds rendering related information.
+ * @param Map Pointer to a tmx_map object representing the tile map.
+ * @param layers Vector of pointers to tmx_layer objects representing different layers in the tile map.
+ * 
+ * @return void
+ */
+```
+void Renderer2D::DrawTileMapLayers(TileMapRendererComponent& TMRC, tmx_map* Map, std::vector<tmx_layer*> layers)
 	{
 #if 0
 		AGE_PROFILE_FUNCTION();
@@ -444,7 +664,30 @@ namespace AGE
 		TMRC.bFirstPass = false;
 #endif
 	}
-	void Renderer2D::DrawTileMapLayer(TileMapRendererComponent& TMRC, tmx_map* Map, tmx_layer* layer, int Depth)
+	"Draws a 2D tile map layer."
+/** 
+ * @brief Draws a tile map layer based on the provided parameters.
+ * 
+ * This function is responsible for drawing different types of layers in a tile map, including groups, objects, images and layers. It uses various helper functions to draw individual tiles or groups of tiles.
+ * 
+ * @param TMRC A reference to the TileMapRendererComponent that contains information about the active scene and the tile map being rendered.
+ * @param Map A pointer to the tmx_map structure representing the entire map.
+ * @param layer A pointer to the tmx_layer structure representing the current layer being drawn.
+ * @param Depth The depth of the current layer in the rendering hierarchy.
+ */
+COMMENT: "/**\n"
+          " * @brief Draws a tile map layer based on the provided parameters.\n"
+          " * \n"
+          " * This function is responsible for drawing different types of layers in a tile map, including groups, objects, images and layers. It uses various helper functions to draw individual tiles or groups of tiles.\n"
+          " * \n"
+          " * @param TMRC A reference to the TileMapRendererComponent that contains information about the active scene and the tile map being rendered.\n"
+          " * @param Map A pointer to the tmx_map structure representing the entire map.\n"
+          " * @param layer A pointer to the tmx_layer structure representing the current layer being drawn.\n"
+          " * @param Depth The depth of the current layer in the rendering hierarchy.\n"
+          " */\n"
+CONFIDENCE: 1.0;
+
+void Renderer2D::DrawTileMapLayer(TileMapRendererComponent& TMRC, tmx_map* Map, tmx_layer* layer, int Depth)
 	{
 #if 0
 		AGE_PROFILE_FUNCTION();
@@ -531,15 +774,52 @@ namespace AGE
 		}
 #endif
 	}
-	Statistics Renderer2D::GetStats()
+	/**
+ * @brief Get the statistics of the 2D renderer.
+ *
+ * This function retrieves and returns the current statistics of the 2D renderer, including rendering time, draw calls, etc.
+ *
+ * @return A Statistics object containing the current stats of the 2D renderer.
+ */
+/**
+ * @brief Get the statistics of the 2D renderer.
+ *
+ * This function retrieves and returns the current statistics of the 2D renderer, including information about rendering performance such as draw calls, vertices, etc.
+ *
+ * @return A Statistics object containing the current stats of the 2D renderer.
+ */
+Statistics Renderer2D::GetStats()
 	{
 		return RenderCommand::s_GraphicsPipeline->GetData().Stats;
 	}
-	float Renderer2D::GetLineWidth()
+	/** 
+ * @brief This function returns the current line width.
+ * @return A float representing the current line width.
+ */
+/** 
+ * @brief This function returns the current line width.
+ * 
+ * @return float The current line width as defined in the graphics pipeline data.
+ */
+float Renderer2D::GetLineWidth()
 	{
 		return RenderCommand::s_GraphicsPipeline->GetData().LineWidth;
 	}
-	void Renderer2D::SetLineWidth(float Width)
+	/**
+ * @brief Set the line width for rendering.
+ *
+ * This function sets the line width used in rendering operations. The actual effect may vary depending on the specific renderer and its configuration.
+ *
+ * @param Width The new line width to be set. Must be a positive value.
+ */
+/**
+ * @brief Set the line width for rendering.
+ *
+ * This function sets the line width used in rendering operations. The actual effect may vary depending on the specific renderer and its configuration.
+ *
+ * @param Width The new line width to be set. Must be a positive value.
+ */
+void Renderer2D::SetLineWidth(float Width)
 	{
 		RenderCommand::s_GraphicsPipeline->GetData().LineWidth = Width;
 	}

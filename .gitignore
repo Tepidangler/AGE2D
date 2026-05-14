@@ -6,6 +6,7 @@ Intermediates/
 # AGE files
 *.log
 AGEProfiles*.json
+**.diff
 
 
 # Visual Studio files and folder

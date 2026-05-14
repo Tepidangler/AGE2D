@@ -12,7 +12,16 @@ namespace AGE
 {
 	namespace Utils
 	{
-		static GLenum AGEImageFormatToGLDataFormat(ImageFormat Format)
+		/**
+ * @brief Converts an ImageFormat to a GLenum data format.
+ *
+ * This function takes in an ImageFormat and returns the corresponding GLenum data format. It uses a switch-case statement to handle different ImageFormats, 
+ * returning GL_RGB for RGB8 and GL_RGBA for RGBA8. If the ImageFormat is not supported by AGE (which should never happen), it asserts false and returns 0.
+ *
+ * @param Format The ImageFormat to convert.
+ * @return The corresponding GLenum data format.
+ */
+static GLenum AGEImageFormatToGLDataFormat(ImageFormat Format)
 		{
 			switch (Format)
 			{
@@ -34,7 +43,15 @@ namespace AGE
 			return 0;
 		}
 
-		static GLenum AGEImageFormatToGLInternalFormat(ImageFormat Format)
+		/**
+ * @brief Converts an ImageFormat to its corresponding GL internal format.
+ *
+ * This function takes in an ImageFormat and returns the equivalent GL internal format. It uses a switch-case statement to handle different ImageFormats, returning the appropriate GL_RGB8 or GL_RGBA8 based on the input. If the input is not supported by AGE (which should never happen as we only have two defined formats), it asserts false and returns 0.
+ *
+ * @param Format The ImageFormat to convert.
+ * @return The corresponding GL internal format, or 0 if the ImageFormat is not supported.
+ */
+static GLenum AGEImageFormatToGLInternalFormat(ImageFormat Format)
 		{
 			switch (Format)
 			{
@@ -58,7 +75,14 @@ namespace AGE
 
 	}
 
-	OpenGLTexture2D::OpenGLTexture2D(const TextureSpecification& Spec)
+	/**
+ * @brief Constructs an OpenGL 2D texture with the given specification.
+ * 
+ * The function creates a new OpenGL texture object and initializes it with the provided TextureSpecification. It sets various parameters such as wrapping and filtering modes for the texture.
+ * 
+ * @param Spec The TextureSpecification that contains details about the format, width, height etc of the texture to be created.
+ */
+OpenGLTexture2D::OpenGLTexture2D(const TextureSpecification& Spec)
 		:m_Specification(Spec), m_Width((int)Spec.Width), m_Height((int)Spec.Height)
 	{
 		AGE_PROFILE_FUNCTION();
@@ -82,7 +106,21 @@ namespace AGE
 		//glGenerateMipmap(m_TextureID);
 	}
 
-	OpenGLTexture2D::OpenGLTexture2D(const Image* Img, uint32_t Width, uint32_t Height, int Channels, size_t Size)
+	COMMENT:
+/**
+ * @brief Constructs an OpenGLTexture2D object from an image.
+ * 
+ * This function creates a 2D texture in OpenGL and initializes it with the given image data. The width, height, number of channels, and size of the image are also stored as member variables.
+ * 
+ * @param Img Pointer to the Image object containing the pixel data.
+ * @param Width The width of the texture in pixels.
+ * @param Height The height of the texture in pixels.
+ * @param Channels The number of channels in the image (3 for RGB, 4 for RGBA).
+ * @param Size The size of the image data in bytes.
+ */
+CONFIDENCE: 1.0;
+
+OpenGLTexture2D::OpenGLTexture2D(const Image* Img, uint32_t Width, uint32_t Height, int Channels, size_t Size)
 		:m_Width((int)Width), m_Height((int)Height), m_nrChannels(Channels)
 	{
 		AGE_PROFILE_FUNCTION();
@@ -126,7 +164,8 @@ namespace AGE
 
 	}
 	
-	OpenGLTexture2D::OpenGLTexture2D(const std::string& Path)
+	
+OpenGLTexture2D::OpenGLTexture2D(const std::string& Path)
 		: m_Path(Path), m_AssetID(UUID())
 	{
 		AGE_PROFILE_FUNCTION();
@@ -184,7 +223,8 @@ namespace AGE
 		m_Name = Utils::EngineStatics::GetFilename(FilePath);
 	}
 
-	OpenGLTexture2D::OpenGLTexture2D(const tmx_image* Image)
+	
+OpenGLTexture2D::OpenGLTexture2D(const tmx_image* Image)
 	{
 		[[maybe_unused]] char* TexData = (char*)Image->resource_image;
 
@@ -242,7 +282,15 @@ namespace AGE
 		//glTextureSubImage2D(m_TextureID, 0, 0, 0, m_Width, m_Height, DataFormat, GL_UNSIGNED_BYTE, Image->source);
 	}
 
-	OpenGLTexture2D::OpenGLTexture2D(const std::vector<std::string>& Paths)
+	/**
+ * Constructor for OpenGLTexture2D class. Loads a 2D texture from the given file paths.
+ * The constructor iterates over each path in the input vector, loads an image using stbi_load(), and creates an OpenGL texture with the loaded data.
+ * It also sets various parameters for the texture such as wrapping mode (GL_REPEAT), minifying/magnifying filter (GL_NEAREST).
+ * The constructor assumes that all images are in RGB or RGBA format, and it uses stbi_image_free() to free the loaded image data after creating the OpenGL texture.
+ * 
+ * @param Paths A vector of strings representing the file paths to load the textures from.
+ */
+OpenGLTexture2D::OpenGLTexture2D(const std::vector<std::string>& Paths)
 	{
 		AGE_PROFILE_FUNCTION();
 		//stbi_set_flip_vertically_on_load(true);
@@ -298,23 +346,45 @@ namespace AGE
 	}
 
 
-	OpenGLTexture2D::~OpenGLTexture2D()
+	/**
+ * @brief Destructor for OpenGLTexture2D class. Deletes the texture from GPU memory.
+ * 
+ * This function uses the glDeleteTextures() function to delete a single texture, identified by its ID (m_TextureID). The texture is deleted from the GPU's memory and can no longer be used in rendering operations.
+ * 
+ * @return void
+ */
+OpenGLTexture2D::~OpenGLTexture2D()
 	{
 		AGE_PROFILE_FUNCTION();
 		glDeleteTextures(1, &m_TextureID);
 	}
-	void OpenGLTexture2D::Bind(uint32_t Slot) const
+	/** 
+ * @brief This function binds the texture to a specific slot in the OpenGL context.
+ * 
+ * @param Slot The index of the texture unit to which the texture should be bound.
+ * 
+ * @return void
+ */
+void OpenGLTexture2D::Bind(uint32_t Slot) const
 	{
 		AGE_PROFILE_FUNCTION();
 		glBindTextureUnit(Slot, m_TextureID);
 
 	}
-	void OpenGLTexture2D::Unbind() const
+	/**
+ * @brief Unbinds the texture from the specified texture unit.
+ *
+ * This function binds a specific OpenGL texture to the first available texture unit (unit 0). After this operation, no further operations will affect this texture.
+ *
+ * @return void
+ */
+void OpenGLTexture2D::Unbind() const
 	{
 		glBindTextureUnit(0, 0);
 	}
 
-	void OpenGLTexture2D::SetData(void* Data, uint32_t Size)
+	
+void OpenGLTexture2D::SetData(void* Data, uint32_t Size)
 	{
 		AGE_PROFILE_FUNCTION();
 		uint32_t bpc = m_DataFormat == GL_RGBA ? 4 : 3; //bytes per channel

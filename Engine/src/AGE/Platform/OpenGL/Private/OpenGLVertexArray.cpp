@@ -6,7 +6,15 @@
 namespace AGE
 {
 
-	static GLenum ShaderDataTypeToOpenGLBaseType(ShaderDataType Type)
+	/**
+ * @brief Converts a given ShaderDataType to its corresponding OpenGL base type.
+ *
+ * This function takes in a ShaderDataType and returns the equivalent OpenGL base type for that data type. The ShaderDataType is an enum defined elsewhere in the code, with values representing different types of data (like FLOAT, INT, BOOL). 
+ *
+ * @param Type The ShaderDataType to convert.
+ * @return GLenum The corresponding OpenGL base type for the given ShaderDataType.
+ */
+static GLenum ShaderDataTypeToOpenGLBaseType(ShaderDataType Type)
 	{
 		switch ((int)Type)
 		{
@@ -55,29 +63,56 @@ namespace AGE
 		return 0;
 	}
 
-	OpenGLVertexArray::OpenGLVertexArray()
+	COMMENT:
+/**
+ * @brief OpenGLVertexArray is a class that represents an OpenGL Vertex Array Object. It provides methods for creating and binding the vertex array object.
+ */
+CONFIDENCE: 1.0;
+
+OpenGLVertexArray::OpenGLVertexArray()
 	{
 		AGE_PROFILE_FUNCTION();
 		glCreateVertexArrays(1, &m_ArrayID);
 	}
-	OpenGLVertexArray::~OpenGLVertexArray()
+	/**
+ * @brief Destructor for OpenGLVertexArray class. Deletes the vertex array object from GPU memory.
+ * 
+ * This function is responsible for deleting a Vertex Array Object (VAO) from GPU memory. The VAO was created during initialization and holds references to other data such as buffers, attributes etc. that are used in rendering operations. After deletion, this VAO can no longer be used by the OpenGL context.
+ * 
+ * @return void
+ */
+OpenGLVertexArray::~OpenGLVertexArray()
 	{
 		AGE_PROFILE_FUNCTION();
 		glDeleteVertexArrays(1, &m_ArrayID);
 		
 	}
-	void OpenGLVertexArray::Bind() const
+	/** 
+ * @brief This function binds the vertex array object.
+ * 
+ * It uses OpenGL's glBindVertexArray() function to bind this Vertex Array Object (VAO). The VAO is an object that contains all of the state needed to supply vertex data, such as what vertex arrays to use, how to interpret them, and how to render them.
+ * 
+ * @return void
+ */
+void OpenGLVertexArray::Bind() const
 	{
 		AGE_PROFILE_FUNCTION();
 		glBindVertexArray(m_ArrayID);
 	}
-	void OpenGLVertexArray::Unbind() const
+	/** 
+ * @brief This function unbinds the current vertex array object.
+ * 
+ * @param None
+ * @return void
+ */
+void OpenGLVertexArray::Unbind() const
 	{
 		AGE_PROFILE_FUNCTION();
 		glBindVertexArray(0);
 		
 	}
-	void OpenGLVertexArray::AddVertexBuffer(Ref<VertexBuffer>& VertexBuffer)
+	
+void OpenGLVertexArray::AddVertexBuffer(Ref<VertexBuffer>& VertexBuffer)
 	{
 		AGE_PROFILE_FUNCTION();
 		CoreLogger::Assert(!VertexBuffer->GetLayout().GetElements().empty(), "Vertex Buffer has no layout!");
@@ -157,7 +192,12 @@ namespace AGE
 
 		m_VertexBuffers.push_back(VertexBuffer);
 	}
-	void OpenGLVertexArray::SetIndexBuffer(Ref<IndexBuffer>& IndexBuffer)
+	/**
+ * @brief This function sets the index buffer for the OpenGL Vertex Array.
+ * 
+ * @param IndexBuffer A reference to an Index Buffer object.
+ */
+void OpenGLVertexArray::SetIndexBuffer(Ref<IndexBuffer>& IndexBuffer)
 	{
 		AGE_PROFILE_FUNCTION();
 		glBindVertexArray(m_ArrayID);
@@ -166,11 +206,30 @@ namespace AGE
 
 		m_IndexBuffer = IndexBuffer;
 	}
-	void OpenGLVertexArray::EnableVertexAttribArray(uint32_t ArrayID) const
+	/** 
+ * @brief This function enables a vertex attribute array.
+ * 
+ * @param ArrayID The ID of the vertex attribute array to be enabled.
+ * @return void
+ */
+void OpenGLVertexArray::EnableVertexAttribArray(uint32_t ArrayID) const
 	{
 		glEnableVertexAttribArray(ArrayID);
 	}
-	void OpenGLVertexArray::MakeVertexAttribPtr(uint32_t index, int size, uint32_t type, uint8_t normalized, int stride, const void* pointer) const
+	/**
+ * @brief This function sets up the vertex attribute pointer for a specific index.
+ * It takes in parameters such as size of data, type of data (GL_FLOAT or GL_INT), 
+ * whether the data is normalized, stride and pointer to the data.
+ * The function uses glVertexAttribPointer OpenGL function to set up the vertex attribute pointer.
+ * @param index The index of the generic vertex attribute to be modified.
+ * @param size Specifies the number of components per generic vertex attribute. Must be 1, 2, 3, or 4.
+ * @param type Specifies the data type of each component in the array. Must be GL_FLOAT or GL_INT.
+ * @param normalized If true, the integer values are treated as a stream of normalized fixed-point values.
+ * @param stride The byte offset between consecutive generic vertex attributes.
+ * @param pointer Specifies a pointer to the first component of the array.
+ * @return void
+ */
+void OpenGLVertexArray::MakeVertexAttribPtr(uint32_t index, int size, uint32_t type, uint8_t normalized, int stride, const void* pointer) const
 	{
 		if (type == GL_FLOAT || type == GL_INT)
 		{

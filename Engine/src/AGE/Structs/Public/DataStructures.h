@@ -23,7 +23,13 @@ namespace AGE
 	{
 	public:
 
-		XInputControllerSettings() = default;
+		/**
+ * @brief Default constructor for the XInputControllerSettings class.
+ *
+ * This function initializes an instance of the XInputControllerSettings class with its default settings.
+ * It does not take any parameters and returns void.
+ */
+XInputControllerSettings() = default;
 
 		int LeftThumbstickDeadzone = XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE;
 		int RightThumbstickDeadzone = XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE;
@@ -39,7 +45,12 @@ namespace AGE
 	struct XInputControllerInfo
 	{
 	public:
-		XInputControllerInfo() = default;
+		/**
+ * @brief Default constructor for XInputControllerInfo class.
+ *
+ * This function initializes an instance of the XInputControllerInfo class with its default values. It does not take any parameters and returns nothing.
+ */
+XInputControllerInfo() = default;
 
 		ulong_t PacketNumber = 0;
 
@@ -57,7 +68,14 @@ namespace AGE
 
 		std::function<void(Event&)> CallbackFn;
 
-		operator bool()
+		/**
+ * @brief Checks the connection status of the object.
+ * 
+ * This function returns a boolean value indicating whether or not the object is connected to its source.
+ * 
+ * @return bool - Returns true if the object is connected, false otherwise.
+ */
+operator bool()
 		{
 			return bConnected;
 		}
@@ -75,9 +93,21 @@ namespace AGE
 		uint8_t RGBAc[4];
 		uint32_t U32RBGA[4];
 
-		AGEPixel() = default;
+		/**
+ * @brief Default constructor for the AGEPixel class.
+ */
+AGEPixel() = default;
 
-		AGEPixel(uint8_t a, uint8_t b, uint8_t c, uint8_t d)
+		/**
+ * @brief Constructs an instance of AGEPixel with the given RGBA values.
+ * 
+ * The function takes four uint8_t parameters representing the red, green, blue and alpha components of a color in that order. It then stores these values internally as Uint32_t for further processing.
+ * @param a Red component (0-255).
+ * @param b Green component (0-255).
+ * @param c Blue component (0-255).
+ * @param d Alpha component (0-255).
+ */
+AGEPixel(uint8_t a, uint8_t b, uint8_t c, uint8_t d)
 		{
 			RGBAc[0] = a;
 			RGBAc[1] = b;
@@ -93,7 +123,16 @@ namespace AGE
 			
 		}
 
-		AGEPixel(float a, float b, float c, float d)
+		/**
+ * @brief Constructs an instance of AGEPixel with the given float values.
+ * 
+ * This function takes four float values and assigns them to the RGBAf array in the order they are provided. It then converts these floats into a uint32_t representation using ConvertFloatToU32() function, which is stored in U32RBGA array.
+ * @param a First float value.
+ * @param b Second float value.
+ * @param c Third float value.
+ * @param d Fourth float value.
+ */
+AGEPixel(float a, float b, float c, float d)
 		{
 			RGBAf[0] = a;
 			RGBAf[1] = b;
@@ -111,17 +150,39 @@ namespace AGE
 
 		}
 
-		operator Bytef*()
+		/**
+ * @brief This function converts the object to a Bytef pointer.
+ *
+ * The function returns a pointer of type Bytef that points to the RGBA color array.
+ * It is used for certain operations in the Zlib library, which requires data to be in this format.
+ * 
+ * @return A pointer of type Bytef pointing to the RGBA color array.
+ */
+operator Bytef*()
 		{
 			return (Bytef*)RGBAc;
 		}
 
-		operator uint32_t()
+		/**
+ * @brief Converts the RGBA color to a uint32_t value.
+ *
+ * The function shifts and combines the four bytes of the RGBA color into one uint32_t value, with each byte contributing 0 bits, 8 bits, 16 bits, and 24 bits respectively. This is done using bitwise shift and OR operations.
+ *
+ * @return A uint32_t representation of the RGBA color.
+ */
+operator uint32_t()
 		{
 			return (uint32_t)((RGBAc[0] << 0) | (RGBAc[1] << 8) | (RGBAc[2] << 16) | (RGBAc[3] << 24));
 		}
 	private:
-		uint32_t* ConvertFloatToU32(float* Bytes)
+		/**
+ * @brief Converts an array of float values to a uint32_t array.
+ * 
+ * @param Bytes Pointer to input float array containing four elements: r, g, b, a where each is in range [0,1].
+ * 
+ * @return A pointer to the uint32_t array with converted values. The first three elements correspond to RGB channels and the last one corresponds to alpha channel.
+ */
+uint32_t* ConvertFloatToU32(float* Bytes)
 		{
 			double rgb[4] = { Bytes[0], Bytes[1], Bytes[2], 0};
 			__m128 alpha = _mm_set1_ps(Bytes[3]);
@@ -249,7 +310,14 @@ namespace AGE
 
 		//Editor-Only
 		int EntityID = -1;
-		void ResetProperties()
+		/**
+ * @brief Resets all properties of the object to default values.
+ * 
+ * This function resets all properties of an object to their initial state. The properties include Alpha, Size, Color, TilingFactor, TintColor, TextureCoords, Transform and EntityID. All are set to their respective defaults: Alpha is set to 1.0f, Size is set to {1.0f, 1.0f}, Color is set to {1.0f, 1.0f, 1.0f, 1.0f}, TilingFactor is set to 1.0f, TintColor is set to {1.0f, 1.0f, 1.0f, 1.0f}, TextureCoords are set to {{1.0f, 1.0f}, {1.0f, 0.0f}, {0.0f, 0.0f}, {0.0f, 1.0f}}, Transform is set to {1.0f} and EntityID is set to -1.
+ * 
+ * @return void
+ */
+void ResetProperties()
 		{
 			Alpha = 1.f;
 			Size = { 1.f, 1.f };
@@ -305,11 +373,31 @@ namespace AGE
 		uint32_t x = 1280;
 		uint32_t y = 720;
 
-		std::pair<uint32_t,uint32_t> GetResolution() {return std::make_pair(x,y);}
-		void SetResolution(uint32_t X, uint32_t Y) {x = X; y= Y;}
+		/**
+ * @brief Returns the resolution of the screen in pixels as a pair of uint32_t values.
+ * The first value is the width and the second one is the height.
+ * 
+ * @return A pair containing two uint32_t values representing the resolution of the screen.
+ */
+std::pair<uint32_t,uint32_t> GetResolution() {return std::make_pair(x,y);}
+		/**
+ * @brief Sets the resolution of the display to a specified width and height.
+ * @param X The new width of the display in pixels.
+ * @param Y The new height of the display in pixels.
+ * @return void
+ */
+void SetResolution(uint32_t X, uint32_t Y) {x = X; y= Y;}
 
-		uint32_t GetWidth() {return x;}
-		uint32_t GetHeight() {return y;}
+		/**
+ * @brief This function returns the width of an object.
+ * @return The width as a uint32_t value.
+ */
+uint32_t GetWidth() {return x;}
+		/**
+ * @brief This function returns the height of an object.
+ * @return uint32_t The height of the object in units not specified by the function.
+ */
+uint32_t GetHeight() {return y;}
 
 
 	};
@@ -322,14 +410,40 @@ namespace AGE
 	struct AsepriteVariant;
 	struct AGEPoint
 	{
-		AGEPoint() = default;
-		AGEPoint(int32_t x, int32_t y)
+		/**
+ * @brief Default constructor for the AGEPoint class.
+ */
+AGEPoint() = default;
+		COMMENT:
+/**
+ * @brief Constructs an AGEPoint object with the given coordinates (x, y).
+ * @param x The x-coordinate of the point.
+ * @param y The y-coordinate of the point.
+ */
+CONFIDENCE: 1.0;
+
+AGEPoint(int32_t x, int32_t y)
 			:X(x), Y(y) {}
-		~AGEPoint() = default;
+		/**
+ * @brief Default destructor for the AGEPoint class.
+ *
+ * This function is used to clean up any resources that the object may be using, such as memory or file handles. It's important to ensure that all resources are properly released when an object is destroyed to prevent memory leaks or other issues. 
+ *
+ * @return void
+ */
+~AGEPoint() = default;
 		int32_t X;
 		int32_t Y;
 
-		bool operator==(const AGEPoint& Other)
+		/**
+ * @brief Compares two AGEPoint objects for equality based on their X and Y coordinates.
+ * 
+ * This function compares the X and Y coordinates of two AGEPoint objects for exact match. It returns true if both the X and Y coordinates are equal, otherwise it returns false.
+ * 
+ * @param Other The other AGEPoint object to compare with.
+ * @return True if this object's X and Y coordinates are exactly equal to the Other object's X and Y coordinates; False otherwise.
+ */
+bool operator==(const AGEPoint& Other)
 		{
 			bool x = X == Other.X;
 			bool y = Y == Other.Y;
@@ -337,7 +451,15 @@ namespace AGE
 			return x && y;
 		}
 
-		bool operator!=(const AGEPoint& Other)
+		/**
+ * @brief Compares two AGEPoint objects for inequality.
+ *
+ * This function compares the X and Y coordinates of two AGEPoint objects for inequality. It returns true if either or both the X and Y coordinates are not equal, otherwise it returns false.
+ * 
+ * @param Other The AGEPoint object to compare with this one.
+ * @return True if the X and Y coordinates of the two AGEPoint objects are not equal, false otherwise.
+ */
+bool operator!=(const AGEPoint& Other)
 		{
 			bool x = X == Other.X;
 			bool y = Y == Other.Y;
@@ -348,10 +470,25 @@ namespace AGE
 	};
 	struct AGESize
 	{
-		AGESize() = default;
-		AGESize(int32_t width, int32_t height)
+		/**
+ * @brief Default constructor for the AGESize class.
+ */
+AGESize() = default;
+		/**
+ * @brief Constructs an instance of AGESize with the specified width and height.
+ * @param width The width to be set for this AGESize object.
+ * @param height The height to be set for this AGESize object.
+ */
+AGESize(int32_t width, int32_t height)
 			:Width(width), Height(height) {}
-		~AGESize() = default;
+		/**
+ * @brief Default destructor for the AGESize class.
+ * 
+ * This function is responsible for releasing any resources that were acquired by the object during its lifetime, such as memory or file handles. It's a good practice to provide a default destructor in your classes to ensure proper cleanup when objects are destroyed.
+ * 
+ * @return void
+ */
+~AGESize() = default;
 
 		int32_t Width;
 		int32_t Height;
@@ -359,19 +496,59 @@ namespace AGE
 	struct AGERect
 	{
 	public:
-		AGERect() = default;
-		AGERect(AGEPoint Point, int32_t width, int32_t height)
+		/**
+ * @brief Default constructor for AGERect class.
+ * 
+ * This function initializes an instance of the AGERect class with default values.
+ * It does not take any parameters and returns no value.
+ */
+AGERect() = default;
+		/**
+ * @brief Constructs an AGERect object with a given point, width and height.
+ * 
+ * @param Point The top-left corner of the rectangle.
+ * @param width The width of the rectangle.
+ * @param height The height of the rectangle.
+ */
+AGERect(AGEPoint Point, int32_t width, int32_t height)
 			: XY(Point), Width(width), Height(height) {}
 
-		AGERect(int32_t x, int32_t y, int32_t width, int32_t height)
+		/**
+ * @brief Constructs an instance of AGERect with the given coordinates and dimensions.
+ * 
+ * @param x The x-coordinate of the top left corner of the rectangle.
+ * @param y The y-coordinate of the top left corner of the rectangle.
+ * @param width The width of the rectangle.
+ * @param height The height of the rectangle.
+ */
+AGERect(int32_t x, int32_t y, int32_t width, int32_t height)
 			:XY({x,y}), Width(width), Height(height) {}
-		~AGERect() = default;
+		COMMENT:
+/**
+ * @brief Default destructor for AGERect class.
+ *
+ * This function is used to clean up any resources that the object may be using, such as memory or file handles. It's important to ensure that all resources are properly released when an object is destroyed to prevent memory leaks or other issues.
+ *
+ * @return void
+ */
+CONFIDENCE: 1.0;
+
+~AGERect() = default;
 
 		AGEPoint XY;
 		int32_t Width;
 		int32_t Height;
 
-		bool Contains(AGEPoint Point)
+		/**
+ * @brief Checks whether the current point is equal to another given point.
+ *
+ * This function compares the x and y coordinates of the current point with those of a provided point. If both are identical, it returns true indicating that the points are equivalent. Otherwise, it returns false.
+ *
+ * @param Point The AGEPoint object to compare against.
+ * 
+ * @return True if the x and y coordinates of the two points match, False otherwise.
+ */
+bool Contains(AGEPoint Point)
 		{
 			return XY == Point;
 		}
@@ -468,23 +645,66 @@ namespace AGE
 	{
 		//Copied this implementation right out of the Aseprite user_data.h
 
-		AsepriteVariant() = default;
-		AsepriteVariant(const AsepriteVariant& v) = default;
+		/**
+ * @brief Default constructor for AsepriteVariant class.
+ */
+AsepriteVariant() = default;
+		/**
+ * @brief Copy constructor for the AsepriteVariant class.
+ *
+ * This function creates a new instance of AsepriteVariant that is a copy of an existing one. It uses the '= default' syntax to delegate the work to the compiler-generated copy constructor.
+ *
+ * @param v The existing AsepriteVariant instance to be copied.
+ */
+AsepriteVariant(const AsepriteVariant& v) = default;
 
 		template<typename T>
-		AsepriteVariant(T&& v) : VariantBase(std::forward<T>(v)) { }
+		/**
+ * @brief Constructs a variant object with the given value.
+ *
+ * This constructor takes an rvalue reference to construct a variant object from a temporary value. It uses std::forward to ensure that the correct move semantics are used based on whether T is an lvalue or rvalue.
+ *
+ * @tparam T The type of the value being moved into the variant.
+ * @param v The value being moved into the variant.
+ */
+AsepriteVariant(T&& v) : VariantBase(std::forward<T>(v)) { }
 
 		// Avoid using Variant.operator=(const char*) because the "const
 		// char*" is converted to a bool implicitly by MSVC.
-		AsepriteVariant& operator=(const char*) = delete;
+		/**
+ * @brief Overloaded assignment operator that disallows the use of a const char* as an argument.
+ *
+ * This function is marked as deleted to prevent its usage with a const char*. It will not compile if someone tries to assign a const char* value to this object. 
+ *
+ * @param[in] str The string to be assigned, which should not be of type const char*.
+ *
+ * @return A reference to the modified AsepriteVariant object.
+ */
+AsepriteVariant& operator=(const char*) = delete;
 
 		template<typename T>
-		AsepriteVariant& operator=(T&& v) {
+		/**
+ * @brief Assignment operator for AsepriteVariant.
+ *
+ * This function overloads the assignment operator to allow for moving of values into an AsepriteVariant object. It takes a rvalue reference (T&&) as its parameter, which allows it to accept both lvalues and rvalues. The function then calls the assignment operator of VariantBase with std::forward to handle the forwarding of the argument.
+ *
+ * @param v The value to be moved into this AsepriteVariant object.
+ * @return Reference to the modified AsepriteVariant object.
+ */
+AsepriteVariant& operator=(T&& v) {
 			VariantBase::operator=(std::forward<T>(v));
 			return *this;
 		}
 
-		const size_t type() const {
+		/**
+ * @brief Returns the value of the 'index' function for this object.
+ *
+ * This function is a simple wrapper around another function, 'index', which returns an unsigned integer. It simply calls that function and returns its result. 
+ * The purpose of this function could be to provide a consistent interface or to add additional functionality in derived classes.
+ *
+ * @return The value returned by the 'index' function for this object.
+ */
+const size_t type() const {
 			return index();
 		}
 	};
@@ -563,8 +783,16 @@ namespace AGE
 	struct AsepriteCelChunk
 	{
 	public:
-		AsepriteCelChunk() = default;
-		~AsepriteCelChunk() = default;
+		/**
+ * @brief Default constructor for AsepriteCelChunk class.
+ */
+AsepriteCelChunk() = default;
+		/**
+ * @brief Default destructor for the AsepriteCelChunk class.
+ *
+ * This function is responsible for releasing any resources that were acquired by the object during its lifetime, such as memory or file handles. It does not perform any operations on the actual data stored in the chunk.
+ */
+~AsepriteCelChunk() = default;
 
 
 		uint16_t LayerIndex;
@@ -578,7 +806,11 @@ namespace AGE
 		uint16_t FramePosition; // Frame position to link with
 		std::vector<AsepritePixelData> PixelDatas;
 
-		int order() const
+		/**
+ * @brief This function returns the sum of the 'LayerIndex' and 'zIndex'.
+ * @return The sum of 'LayerIndex' and 'zIndex', as an integer. If either index is not set, it will return 0.
+ */
+int order() const
 		{
 			return LayerIndex + zIndex;
 		}
@@ -592,10 +824,27 @@ namespace AGE
 	struct AsepriteLayer
 	{
 	public:
-		AsepriteLayer() = default;
-		AsepriteLayer(int LIndex, int ZIndex)
+		/**
+ * @brief Default constructor for AsepriteLayer class.
+ *
+ * This function initializes an instance of the AsepriteLayer class with default values. It is used to create a new layer in Aseprite.
+ */
+AsepriteLayer() = default;
+		/**
+ * @brief Constructs an AsepriteLayer object with the given layer index and z-index.
+ * @param LIndex The index of the layer in the Aseprite document.
+ * @param ZIndex The z-index of the layer, used for layering within a document.
+ */
+AsepriteLayer(int LIndex, int ZIndex)
 			:Layerindex(LIndex), zIndex(ZIndex) {}
-		AsepriteLayer(const AsepriteLayer&) = default;
+		/**
+ * @brief Copy constructor for the AsepriteLayer class.
+ *
+ * This function creates a new instance of AsepriteLayer that is a copy of an existing one. It uses the default implementation provided by the compiler, which should work correctly as long as the members of AsepriteLayer are trivially copyable.
+ *
+ * @param other The existing layer to be copied.
+ */
+AsepriteLayer(const AsepriteLayer&) = default;
 
 		int Layerindex;
 		int zIndex;
@@ -672,8 +921,18 @@ namespace AGE
 	struct AsepriteChunk
 	{
 	public:
-		AsepriteChunk() = default;
-		AsepriteChunk(const AsepriteChunk&) = default;
+		/**
+ * @brief Default constructor for AsepriteChunk class.
+ */
+AsepriteChunk() = default;
+		/**
+ * @brief Default copy constructor for the AsepriteChunk class.
+ *
+ * This function is used to create a new instance of AsepriteChunk by copying an existing one. It uses the '= default' syntax, which instructs the compiler to generate a default implementation for this member function.
+ * 
+ * @param other The existing AsepriteChunk instance to copy from.
+ */
+AsepriteChunk(const AsepriteChunk&) = default;
 
 		uint32_t Size;
 		AsepriteChunkType Type;
@@ -683,8 +942,18 @@ namespace AGE
 	struct AsepriteHeader
 	{
 	public:
-		AsepriteHeader() = default;
-		AsepriteHeader(const AsepriteHeader&) = default;
+		/**
+ * @brief Default constructor for AsepriteHeader class.
+ */
+AsepriteHeader() = default;
+		/**
+ * @brief Default copy constructor for the AsepriteHeader class.
+ *
+ * This function is used to create a new instance of the AsepriteHeader class by copying an existing one. It uses the '= default' syntax, which tells the compiler to use the default implementation provided by the compiler.
+ * 
+ * @param other The existing AsepriteHeader instance to copy.
+ */
+AsepriteHeader(const AsepriteHeader&) = default;
 		//HeaderData
 		uint32_t FileSize;
 		uint16_t MagicNumber = 0xA5E0;
@@ -710,8 +979,18 @@ namespace AGE
 	struct AsepriteFrameData
 	{
 	public:
-		AsepriteFrameData() = default;
-		AsepriteFrameData(const AsepriteFrameData&) = default;
+		/**
+ * @brief Default constructor for AsepriteFrameData class.
+ */
+AsepriteFrameData() = default;
+		/**
+ * @brief Default copy constructor for the AsepriteFrameData class.
+ *
+ * This function is used to create a new instance of AsepriteFrameData by copying an existing one. It uses the '= default' syntax, which instructs the compiler to generate a default implementation for this member function.
+ *
+ * @param other The existing AsepriteFrameData instance to copy.
+ */
+AsepriteFrameData(const AsepriteFrameData&) = default;
 		//FrameData
 		uint32_t BytesInFrame;
 		uint16_t MagicNumber = 0xF1FA;
@@ -729,10 +1008,28 @@ namespace AGE
 	struct AsepriteFileData
 	{
 	public:
-		AsepriteFileData() = default;
-		AsepriteFileData(const AsepriteHeader& HeaderData)
+		/**
+ * @brief Default constructor for AsepriteFileData class.
+ *
+ * This function initializes an instance of the AsepriteFileData class with default values. It is used to create a new object without any specific initialization. 
+ *
+ * @return An instance of AsepriteFileData with all fields initialized to their default values.
+ */
+AsepriteFileData() = default;
+		/**
+ * @brief Constructs an instance of the AsepriteFileData class using a const reference to an AsepriteHeader object.
+ * @param HeaderData A const reference to an AsepriteHeader object containing header data for the Aseprite file.
+ */
+AsepriteFileData(const AsepriteHeader& HeaderData)
 			:Header(HeaderData) {}
-		AsepriteFileData(const AsepriteFileData&) = default;
+		/**
+ * @brief Default copy constructor for the AsepriteFileData class.
+ *
+ * This function is used to create a new instance of AsepriteFileData by copying an existing one. It uses the '= default' syntax, which tells the compiler to generate the body of this function using the default behavior provided by the compiler.
+ *
+ * @param other The existing AsepriteFileData instance to copy.
+ */
+AsepriteFileData(const AsepriteFileData&) = default;
 
 		AsepriteHeader Header;
 		std::vector<AsepriteFrameData> Frames;

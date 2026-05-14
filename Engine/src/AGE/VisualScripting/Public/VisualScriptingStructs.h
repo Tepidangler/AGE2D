@@ -141,16 +141,71 @@ namespace AGE
 
 		Ref<ScriptableEntity> ObjPtr= nullptr;
 
-		AGEPin() = default;
-		AGEPin(UUID id, const char* name, AGEPinType type)
+		/**
+ * @brief Default constructor for the AGEPin class.
+ *
+ * This function initializes an instance of the AGEPin class with its default values. It does not take any parameters and returns nothing.
+ */
+/**
+ * @brief Default constructor for the AGEPin class.
+ */
+AGEPin() = default;
+		/**
+ * @brief Constructs an instance of AGEPin with the given parameters.
+ * 
+ * This constructor initializes a new instance of AGEPin with the provided UUID, name, and type. The Node pointer is initialized to nullptr, Kind is set to Input, and other members are assigned their respective values.
+ * @param id Unique identifier for this pin.
+ * @param name Name or label associated with this pin.
+ * @param type Specifies the kind of data that this pin can handle.
+ * 
+ * @return AGEPin
+ */
+/**
+ * @brief Constructs an instance of AGEPin with the given parameters.
+ * 
+ * This constructor initializes a new instance of AGEPin with the provided UUID, name, and type. The Node pointer is set to nullptr, Kind is initialized as Input.
+ * 
+ * @param id Unique identifier for this pin.
+ * @param name Name or label associated with this pin.
+ * @param type Specifies the type of the pin (Input, Output, etc.).
+ */
+AGEPin(UUID id, const char* name, AGEPinType type)
 			: ID(id), Node(nullptr), Name(name), Type(type), Kind(ax::NodeEditor::PinKind::Input)
 		{
 
 		}
 
-		virtual ~AGEPin() = default;
+		/**
+ * @brief Virtual destructor for the AGEPin class.
+ *
+ * This function is responsible for freeing any resources that were allocated by the object, such as memory or file handles. It's a virtual function because it can be overridden in derived classes to provide specific cleanup behavior.
+ *
+ * @return void
+ */
+/**
+ * @brief Virtual destructor for the AGEPin class.
+ *
+ * This function is responsible for releasing any resources that were acquired by the object during its lifetime, such as memory or file handles. It does not perform any specific actions related to the AGEPIN object itself. 
+ *
+ * @return void
+ */
+virtual ~AGEPin() = default;
 
-		rttr::variant GetValue(AGEPinType Type)
+		/**
+ * @brief GetValue is a function that returns an rttr::variant based on the input AGEPinType.
+ * 
+ * The function takes one parameter, Type of type AGEPinType and returns an rttr::variant. It uses a switch statement to determine which variant to return based on the integer value of Type.
+ * 
+ * @param Type An enumeration that specifies the type of variant to be returned.
+ * @return The function returns an rttr::variant corresponding to the input AGEPinType. If no matching case is found, it returns nullptr.
+ */
+/**
+ * @brief GetValue is a function that returns an rttr::variant based on the input AGEPinType.
+ * 
+ * @param Type The type of pin to get the value for. This can be one of several types defined in AGEPinType, including Boolean, Integer, Integer16, etc.
+ * @return rttr::variant The variant corresponding to the input type. If the type is not recognized, nullptr is returned.
+ */
+rttr::variant GetValue(AGEPinType Type)
 		{
 			switch ((int)Type)
 			{
@@ -174,7 +229,26 @@ namespace AGE
 			}
 		}
 
-		static void Serialize(DataWriter* Serializer, const AGEPin& Data)
+		/**
+ * @brief This function serializes an AGEPin object into a DataWriter.
+ * 
+ * The function writes various properties of the AGEPin, including its ID, NextNodeID, Name, Type, Kind, String, Boolean, Integer, Integer16, Integer64, UInteger16, UInteger32, UInteger64, Value, Vector2D, Vector3D, and Vector4D.
+ * It also handles the case where an object pointer is present in the AGEPin. If it exists, a boolean value of true is written to indicate that an object is being serialized, followed by its UUID. Otherwise, a boolean value of false is written.
+ * 
+ * @param Serializer Pointer to the DataWriter instance which will be used for serialization.
+ * @param Data Const reference to the AGEPin object that needs to be serialized.
+ */
+/**
+ * @brief This function serializes an AGEPin object into a DataWriter.
+ * 
+ * The function writes various properties of the AGEPin to the provided DataWriter, including its ID, NextNodeID, Name, Type, Kind, String, Boolean, Integer, Integer16, Integer64, UInteger16, UInteger32, UInteger64, Value, Vector2D, Vector3D, and Vector4D.
+ * 
+ * It also checks if the AGEPin has an associated ScriptableEntity object (ObjPtr). If it does, it writes a true flag followed by the UUID of the associated entity; otherwise, it writes a false flag.
+ * 
+ * @param Serializer Pointer to the DataWriter where the serialized data will be written.
+ * @param Data The AGEPin object that needs to be serialized.
+ */
+static void Serialize(DataWriter* Serializer, const AGEPin& Data)
 		{
 			Serializer->WriteRaw<uint64_t>((uint64_t)Data.ID);
 			Serializer->WriteRaw<uint64_t>((uint64_t)Data.NextNodeID);
@@ -205,7 +279,23 @@ namespace AGE
 			}
 		}
 
-		static void Deserialize(DataReader* Serializer, AGEPin& Data)
+		/**
+ * @brief Deserialize function for the AGEPin structure.
+ * This function reads data from a DataReader object and populates an AGEPin object with it. 
+ * The function assumes that the DataReader is correctly initialized and ready to read data.
+ * 
+ * @param Serializer Pointer to the DataReader object which provides the serialized data.
+ * @param Data Reference to the AGEPin object where the deserialized data will be stored.
+ */
+/**
+ * @brief Deserialize function for AGEPin data.
+ * 
+ * This function reads various types of data from a DataReader object and assigns them to an AGEPin object. It handles different types such as uint64_t, UUID, bool, int, int16_t, int64_t, uint16_t, uint32_t, uint64_t, float, Vector2, Vector3, and Vector4.
+ * 
+ * @param Serializer Pointer to the DataReader object that provides serialized data.
+ * @param Data Reference to the AGEPin object where the deserialized data will be stored.
+ */
+static void Deserialize(DataReader* Serializer, AGEPin& Data)
 		{
 			uint64_t ID;
 			uint64_t NextNodeID;
@@ -241,10 +331,38 @@ namespace AGE
 
 	struct NodeArguments
 	{
-		NodeArguments() = default;
+		/**
+ * @brief Default constructor for NodeArguments class.
+ *
+ * This function initializes the object with its default state. It is used to create an instance of the NodeArguments class without any arguments.
+ *
+ * @return An instance of the NodeArguments class with all members initialized to their default values.
+ */
+/**
+ * @brief Default constructor for NodeArguments class.
+ */
+NodeArguments() = default;
 		std::vector<rttr::variant> Args;
 
-		static void Serialize(DataWriter* Serializer, const NodeArguments& Data)
+		/**
+ * \brief This function is responsible for converting a NodeArguments object into a format that can be easily stored or transmitted. 
+ * It does this by iterating over each argument in the NodeArguments and writing its type and value to the DataWriter.
+ * The type of each argument is written as a byte, followed by the actual data.
+ *
+ * @param Serializer A pointer to an object that can write raw bytes or strings to a storage medium.
+ * @param Data An object containing the arguments to be serialized.
+ */
+/**
+ * @brief This function serializes the given data into a format that can be easily stored or transmitted.
+ * 
+ * The function takes in two parameters, a DataWriter object and a NodeArguments object. It writes to the DataWriter object based on the type of each argument in the NodeArguments object.
+ * 
+ * @param Serializer A pointer to an instance of DataWriter that will be used for writing data.
+ * @param Data The arguments to serialize, stored as a NodeArguments object.
+ * 
+ * @return void This function does not return any value. It directly writes the serialized data into the provided DataWriter object.
+ */
+static void Serialize(DataWriter* Serializer, const NodeArguments& Data)
 		{
 			Serializer->WriteRaw<uint64_t>(Data.Args.size());
 			for (auto& Arg : Data.Args)
@@ -374,7 +492,9 @@ namespace AGE
 			}
 		}
 
-		static void Deserialize(DataReader* Serializer, NodeArguments& Data)
+		"Deserialize function for NodeArguments."
+
+static void Deserialize(DataReader* Serializer, NodeArguments& Data)
 		{
 			uint64_t Size;
 			Serializer->ReadRaw<uint64_t>(Size);
@@ -536,22 +656,89 @@ namespace AGE
 		AGEFunction<AGENode, ScriptableEntity> Func;
 
 
-		AGENode() = default;
+		/**
+ * @brief Default constructor for AGENode class.
+ *
+ * This function initializes an instance of the AGENode class with its default values. It does not take any parameters and returns nothing.
+ */
+/**
+ * @brief Default constructor for AGENode class.
+ */
+AGENode() = default;
 
-		AGENode(ax::NodeEditor::NodeId id, const char* name, ImColor color = ImColor(255, 255, 255))
+		/**
+ * @brief Constructs an instance of AGENode with the given parameters.
+ * 
+ * This constructor initializes a new instance of AGENode with the provided id, name and color. The default color is white (255, 255, 255).
+ * The Type is set to Blueprint by default. Size is initialized as 0.f.
+ * @param id Unique identifier for this node.
+ * @param name Name of the node.
+ * @param color Color of the node in RGB format (default: white).
+ */
+/**
+ * @brief Constructs an instance of AGENode with the given id, name and color.
+ * 
+ * The function initializes a new instance of AGENode with the provided id, name, and color. It also sets the default type to Blueprint and size to 0.
+ * 
+ * @param id Unique identifier for the node.
+ * @param name Name or label associated with the node.
+ * @param color Color used to represent the node in visualizations. Defaults to white (255, 255, 255).
+ * 
+ * @return An instance of AGENode with the provided id, name and color.
+ */
+AGENode(ax::NodeEditor::NodeId id, const char* name, ImColor color = ImColor(255, 255, 255))
 			:ID(id), Name(name), Color(color), Type(AGENodeType::Blueprint), Size(0.f)
 		{
 
 		}
 
-		bool operator<(const AGENode& Other) const
+		/**
+ * @brief Compares the ID of this node with another node's ID.
+ *
+ * This function compares the ID of the current node (`this->ID.Get()`) 
+ * with the ID of the other node passed as an argument (`Other.ID.Get()`).
+ * It returns `true` if the ID of this node is less than that of the other, and `false` otherwise.
+ *
+ * @param Other The AGENode instance to compare with.
+ * @return True if the ID of this node is less than that of the other, false otherwise.
+ */
+/**
+ * @brief Compares the ID of this node with another node's ID.
+ *
+ * This function compares the ID of the current node (`this->ID.Get()`) 
+ * with the ID of another node (`Other.ID.Get()`). It returns `true` if 
+ * the ID of this node is less than that of the other, and `false` otherwise.
+ *
+ * @param Other The AGENode instance to compare against.
+ * @return True if the ID of this node is less than the other's, false otherwise.
+ */
+bool operator<(const AGENode& Other) const
 		{
 			return (ID.Get() < Other.ID.Get());
 		}
 
-		virtual ~AGENode() = default;
+		/**
+ * @brief Virtual destructor for the AGENode class.
+ *
+ * This function is responsible for releasing any resources that were acquired by the object during its lifetime. It does not take any parameters and returns no value.
+ */
+/**
+ * @brief Virtual destructor for the AGENode class.
+ *
+ * This function is responsible for releasing any resources that were acquired by the object during its lifetime. It does not return anything and has no parameters.
+ */
+virtual ~AGENode() = default;
 
-		void SetNodeFuncArguments()
+		
+/**
+ * @brief This function sets the arguments for a node function based on the input parameters.
+ * 
+ * The function iterates over each argument in `FunctionArgs` and checks its type. If it's a pointer to string or float, it gets the value of that pointer and adds it to `Func.Args`. For an AGEPinType, if it equals Any, it adds the last input's type and value to `Func.Args`.
+ * 
+ * @param bCanSkip This flag is used to skip certain iterations in the loop based on its value.
+ * @return void No return value. The function modifies `Func.Args` directly.
+ */
+void SetNodeFuncArguments()
 		{
 			bool bCanSkip = false;
 			Func.Args.clear();
@@ -587,7 +774,9 @@ namespace AGE
 
 
 		}
-		bool CompileOutputPins()
+		
+
+bool CompileOutputPins()
 		{
 			bool success = true;
 			for (auto O : Outputs)
@@ -755,7 +944,16 @@ namespace AGE
 
 			return success;
 		}
-		static void Serialize(DataWriter* Serializer, const AGENode& Data)
+		
+/**
+ * @brief Serializes an AGENode object into a DataWriter.
+ * 
+ * This function takes in a pointer to a DataWriter and an instance of the AGENode class, then writes various properties of the node to the DataWriter.
+ * 
+ * @param Serializer A pointer to an instance of DataWriter that will be used for serialization.
+ * @param Data An instance of the AGENode class whose properties are being serialized.
+ */
+static void Serialize(DataWriter* Serializer, const AGENode& Data)
 		{
 			std::vector<AGEPin> Inputs(Data.Inputs.size());
 			std::vector<AGEPin> Outputs(Data.Outputs.size());
@@ -793,7 +991,23 @@ namespace AGE
 			Serializer->WriteObject<AGEFunction< AGENode, ScriptableEntity>>(Data.Func);
 		}
 
-		static void Deserialize(DataReader* Serializer, AGENode& Data)
+		/**
+ * @brief Deserializes an object of type AGENode from a DataReader instance.
+ * 
+ * This function reads data from the provided serializer and populates an AGENode object with it. The data read includes the node's ID, name, color, inputs, outputs, type, size, next node ID (if any), state, saved state, function arguments, whether the node is in begin play mode, and if it runs on update.
+ * 
+ * @param Serializer A pointer to a DataReader instance that provides serialized data.
+ * @param Data An lvalue reference to an AGENode object where the deserialized data will be stored.
+ */
+/**
+ * @brief Deserializes an object of type AGENode from a DataReader instance.
+ * 
+ * This function reads various data types and populates the provided AGENode instance with deserialized data. It uses the DataReader to read raw data, strings, arrays, and objects. The function also handles some basic data types like uint64_t, uint32_t, bool, Vector2, etc.
+ * 
+ * @param Serializer A pointer to a DataReader instance that provides serialized data.
+ * @param Data An lvalue reference to an AGENode object where the deserialized data will be stored.
+ */
+static void Deserialize(DataReader* Serializer, AGENode& Data)
 		{
 			uint64_t ID;
 			uint32_t Color;
@@ -845,17 +1059,71 @@ namespace AGE
 
 		ImColor Color;
 
-		AGENodeLink() = default;
+		/**
+ * @brief Default constructor for AGENodeLink class.
+ *
+ * This function initializes an instance of the AGENodeLink class with its members set to their default values.
+ * The default value is determined by the C++ standard, which may vary depending on the specific type of each member variable.
+ * For example, if a member variable is of type int, it will be initialized to 0; for pointers, they will be initialized to nullptr.
+ * If you need more control over initialization, consider using an initializer list in the constructor definition.
+ *
+ * @return An instance of AGENodeLink with all members set to their default values.
+ */
+/**
+ * @brief Default constructor for AGENodeLink class.
+ */
+AGENodeLink() = default;
 
-		AGENodeLink(ax::NodeEditor::LinkId LID, ax::NodeEditor::PinId SPID, ax::NodeEditor::PinId EPID)
+		/**
+ * @brief Constructs an instance of AGENodeLink with the given LinkId, StartPinId and EndPinId. The color is set to white (255, 255, 255).
+ * 
+ * @param LID The unique identifier for this link.
+ * @param SPID The id of the start pin of this link.
+ * @param EPID The id of the end pin of this link.
+ */
+/**
+ * @brief Constructs an instance of AGENodeLink with the given LinkId, StartPinId and EndPinId. The color is set to white (255, 255, 255).
+ * @param LID Unique identifier for the link.
+ * @param SPID Identifier for the start pin of the link.
+ * @param EPID Identifier for the end pin of the link.
+ */
+AGENodeLink(ax::NodeEditor::LinkId LID, ax::NodeEditor::PinId SPID, ax::NodeEditor::PinId EPID)
 			: ID(LID), StartPinID(SPID), EndPinID(EPID), Color(255, 255, 255)
 		{
 
 		}
 
-		virtual ~AGENodeLink() = default;
+		/**
+ * @brief Virtual destructor for the AGENodeLink class.
+ *
+ * This function is responsible for freeing any resources that were allocated by the object during its lifetime. It does not take any parameters and returns void.
+ */
+/**
+ * @brief Virtual destructor for the AGENodeLink class.
+ *
+ * This function is responsible for releasing any resources that were acquired by the object during its lifetime. It does not take any parameters and returns void.
+ */
+virtual ~AGENodeLink() = default;
 
-		static void Serialize(DataWriter* Serializer, const AGENodeLink& Data)
+		/**
+ *  @brief This function serializes an AGENodeLink object into a DataWriter.
+ *  
+ *  The function writes the ID, StartPinID, EndPinID and Color of the given AGENodeLink to the provided DataWriter.
+ *  It uses WriteRaw method from DataWriter to write each value as raw binary data.
+ *
+ *  @param Serializer Pointer to a DataWriter object that will be used for serialization.
+ *  @param Data Reference to an AGENodeLink object that needs to be serialized.
+ */
+/**
+ * @brief This function serializes an AGENodeLink object into a DataWriter.
+ * 
+ * The function writes the ID, StartPinID, EndPinID and Color of the given AGENodeLink to the provided DataWriter.
+ * It uses WriteRaw method for each data type (uint64_t, uint32_t) to write the respective values into the serializer.
+ * 
+ * @param Serializer Pointer to a DataWriter object where the serialized data will be written.
+ * @param Data Reference to an AGENodeLink object that needs to be serialized.
+ */
+static void Serialize(DataWriter* Serializer, const AGENodeLink& Data)
 		{
 			Serializer->WriteRaw<uint64_t>((uint64_t)Data.ID);
 			Serializer->WriteRaw<uint64_t>((uint64_t)Data.StartPinID);
@@ -864,7 +1132,24 @@ namespace AGE
 
 		}
 
-		static void Deserialize(DataReader* Serializer, AGENodeLink& Data)
+		/**
+ * @brief Deserializes data from a DataReader into an AGENodeLink object.
+ * 
+ * This function reads raw data from the provided DataReader and populates an AGENodeLink object with it. The data read includes IDs for the node link, start pin ID, end pin ID, and color of the link.
+ * 
+ * @param Serializer A pointer to a DataReader that provides the serialized data.
+ * @param Data An AGENodeLink object where the deserialized data will be stored.
+ * 
+ * @return void
+ */
+/**
+ * @brief Deserialize function for AGENodeLink data structure.
+ * This function reads raw data from a DataReader object and populates an AGENodeLink object with the deserialized data.
+ * 
+ * @param Serializer Pointer to the DataReader object that provides the serialized data.
+ * @param Data Reference to the AGENodeLink object where the deserialized data will be stored.
+ */
+static void Deserialize(DataReader* Serializer, AGENodeLink& Data)
 		{
 			uint64_t Id;
 			uint32_t color;
@@ -881,7 +1166,25 @@ namespace AGE
 
 	struct NodeIdLess
 	{
-		bool operator()(const ax::NodeEditor::NodeId& lhs, const ax::NodeEditor::NodeId rhs) const
+		/**
+ * @brief Compares two NodeIds for less than comparison.
+ *
+ * This function compares the underlying pointers of two NodeId objects and returns true if the pointer of lhs is less than that of rhs, otherwise it returns false.
+ * 
+ * @param lhs The first NodeId to compare.
+ * @param rhs The second NodeId to compare.
+ * @return True if the pointer of lhs is less than that of rhs, False otherwise.
+ */
+/**
+ * @brief Compares two NodeIds for less than comparison.
+ *
+ * This function compares the underlying pointers of two NodeId objects and returns true if the left hand side is less than the right hand side, otherwise it returns false.
+ * 
+ * @param lhs The first NodeId to compare.
+ * @param rhs The second NodeId to compare.
+ * @return True if lhs < rhs, False otherwise.
+ */
+bool operator()(const ax::NodeEditor::NodeId& lhs, const ax::NodeEditor::NodeId rhs) const
 		{
 			return lhs.AsPointer() < rhs.AsPointer();
 		}

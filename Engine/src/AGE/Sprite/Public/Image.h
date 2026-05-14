@@ -15,14 +15,48 @@ namespace AGE
 		Indexed = 4
 	};
 
-	struct ImageSpecification
+	```cpp
+/**
+ * @brief Constructor for ImageSpecification class.
+ *
+ * This function initializes an instance of the ImageSpecification class with given width, height, channels, type and data.
+ * It takes in five parameters - width (uint32_t), height (uint32_t), channels (int), type (uint8_t) and Data (AsepriteFileData). 
+ * The function sets the Width, Height, Channels, Type, Size and FileData accordingly. It also handles the initialization of PixelsPerByte based on the type.
+ */
+```
+struct ImageSpecification
 	{
 
 	public:
-		ImageSpecification() = default;
-		ImageSpecification(const  ImageSpecification&) = default;
+		/**
+ * @brief Default constructor for ImageSpecification class.
+ *
+ * This function initializes an instance of the ImageSpecification class with its default values.
+ * It does not take any parameters and returns nothing.
+ */
+/**
+ * @brief Default constructor for ImageSpecification class.
+ */
+ImageSpecification() = default;
+		/**
+ * @brief Default copy constructor for the ImageSpecification class.
+ *
+ * This function is used to create a new instance of an ImageSpecification object by copying another existing one. It uses the '= default' syntax, which instructs the compiler to generate a default implementation for this member function.
+ *
+ * @param other The ImageSpecification object to be copied.
+ */
+/**
+ * @brief Copy constructor for the ImageSpecification class.
+ *
+ * This function creates a new instance of the ImageSpecification class by copying all data from an existing instance.
+ * It uses the '= default' syntax to allow the compiler to generate its own copy constructor.
+ * 
+ * @param other The existing ImageSpecification instance to be copied.
+ */
+ImageSpecification(const  ImageSpecification&) = default;
 
-		ImageSpecification(uint32_t width, uint32_t height, int channels, uint8_t type, AsepriteFileData Data)
+		Unknown
+ImageSpecification(uint32_t width, uint32_t height, int channels, uint8_t type, AsepriteFileData Data)
 			:Width(width), Height(height), Channels(channels), Type((PixelType)type), Size({(int32_t)width,(int32_t)height}), FileData(Data)
 		{
 			switch (Type)
@@ -52,7 +86,27 @@ namespace AGE
 		};		
 
 		//Use this constructor if you aren't sure how many channels there should be
-		ImageSpecification(uint32_t width, uint32_t height, uint8_t type, AsepriteFileData Data)
+		/**
+ * @brief Constructs an ImageSpecification object with the given parameters.
+ * 
+ * The constructor initializes the image specification based on the provided width, height, type and data. It sets the number of channels and pixels per byte according to the pixel type. If the pixel type is invalid, it logs an error message. For greyscale images, a warning message is logged as there's currently no implementation for 2-channel textures.
+ * 
+ * @param width The width of the image in pixels.
+ * @param height The height of the image in pixels.
+ * @param type The pixel type of the image (RGBA, RGB or Greyscale).
+ * @param Data The AsepriteFileData associated with this ImageSpecification.
+ */
+/**
+ * @brief Constructs an ImageSpecification object with the given parameters.
+ * 
+ * This function initializes an ImageSpecification object with a specified width, height, type and data. It sets up various properties based on the provided inputs such as Channels, PixelsPerByte, Bounds etc. The function also handles different pixel types (RGBA, RGB, Greyscale) by setting appropriate values for Channels and PixelsPerByte.
+ * 
+ * @param width Width of the image in pixels.
+ * @param height Height of the image in pixels.
+ * @param type Type of the pixel data. It can be one of the following: RGBA, RGB or Greyscale.
+ * @param Data AsepriteFileData containing the raw pixel data.
+ */
+ImageSpecification(uint32_t width, uint32_t height, uint8_t type, AsepriteFileData Data)
 			:Width(width), Height(height), Type((PixelType)type), Size({ (int32_t)width,(int32_t)height}), FileData(Data)
 		{
 			switch (Type)
@@ -87,20 +141,155 @@ namespace AGE
 		};
 
 
-		~ImageSpecification() = default;
+		/**
+ * @brief Destructor for the ImageSpecification class.
+ *
+ * This function is responsible for freeing any resources that were allocated during the lifetime of an instance of this class.
+ */
+/**
+ * @brief Default destructor for the ImageSpecification class.
+ */
+~ImageSpecification() = default;
 
-		std::pair<uint32_t, uint32_t> GetWidthHeight() { return { Width,Height }; }
-		uint32_t GetWidth() const { return Width; }
-		uint32_t GetWidth() { return Width; }
-		uint32_t GetHeight() { return Height; }
-		uint32_t GetHeight() const { return Height; }
-		int GetChannels() { return Channels; }
- 		PixelType GetPixelType() { return Type; }
-		PixelType GetPixelType() const { return Type; }
-		AGERect& GetBounds() { return Bounds; }
-		AGESize& GetSize() { return Size; }
-		int GetPixelsPerByte() { return PixelsPerByte; }
-		uint32_t GetWidthBytes() 
+		/**
+ * @brief This function returns a pair of integers representing the width and height.
+ * @return A std::pair<uint32_t, uint32_t> object containing the width and height.
+ */
+/**
+ * @brief This function returns a pair of integers representing the width and height.
+ * @return A std::pair<uint32_t, uint32_t> where first element is the width and second is the height.
+ */
+std::pair<uint32_t, uint32_t> GetWidthHeight() { return { Width,Height }; }
+		/**
+ * @brief Returns the width of an object.
+ *
+ * This function returns the current width value stored in the 'Width' variable. It is a getter method for the 'Width' attribute.
+ *
+ * @return uint32_t The current width of the object.
+ */
+/**
+ * @brief Returns the width of an object.
+ * @return The width as a uint32_t value.
+ */
+uint32_t GetWidth() const { return Width; }
+		/**
+ * @brief Returns the width of an object.
+ * @return The width as a uint32_t value.
+ */
+/**
+ * @brief This function returns the width of an object.
+ * @return The width as a uint32_t value.
+ */
+uint32_t GetWidth() { return Width; }
+		/**
+ * @brief This function returns the height of an object.
+ *
+ * @return The current height value as a uint32_t.
+ */
+/**
+ * @brief Returns the height of an object.
+ *
+ * This function retrieves and returns the current height value stored in the 'Height' variable.
+ * It does not take any parameters and has no side effects.
+ *
+ * @return The current height as a 32-bit unsigned integer.
+ */
+uint32_t GetHeight() { return Height; }
+		/**
+ * @brief Returns the height of an object.
+ *
+ * This function is used to get the current height value of an object. It does not take any parameters and returns a uint32_t representing the height.
+ *
+ * @return The current height as a uint32_t. If no height has been set, it will return 0.
+ */
+/**
+ * @brief This function returns the height of an object.
+ * @return uint32_t The height of the object in units as per the scale defined by the implementation.
+ */
+uint32_t GetHeight() const { return Height; }
+		/**
+ * @brief Returns the number of channels in use by the system.
+ *
+ * This function retrieves the current count of active channels in the system. It is used to manage resources and ensure efficient operation.
+ *
+ * @return int - The number of active channels. If no channels are available, it returns 0.
+ */
+/**
+ * @brief Returns the number of channels in use by the system.
+ *
+ * This function returns an integer representing the current number of channels being used by the system. It does not take any parameters and has no side effects.
+ *
+ * @return int The number of active channels. If there are no active channels, it will return 0.
+ */
+int GetChannels() { return Channels; }
+ 		/**
+ * @brief This function returns the type of a pixel.
+ * 
+ * @return PixelType The type of the pixel (e.g., RGB, Grayscale).
+ */
+/**
+ * @brief Returns the type of pixel represented by this object.
+ * @return The PixelType enum value representing the type of pixel.
+ */
+PixelType GetPixelType() { return Type; }
+		/**
+ * @brief Returns the type of pixel represented by this object.
+ * @return The PixelType enum value representing the type of pixel.
+ */
+/**
+ * @brief Returns the type of pixel represented by this object.
+ * @return The PixelType enum value representing the type of pixel.
+ */
+PixelType GetPixelType() const { return Type; }
+		/**
+ * @brief Gets the bounds of an object.
+ *
+ * This function returns a reference to the 'Bounds' variable, which represents the boundaries of the object.
+ * The returned value can be modified using assignment operators if required.
+ *
+ * @return A reference to the Bounds variable.
+ */
+/**
+ * @brief Gets the bounds of an object.
+ *
+ * This function returns a reference to the 'Bounds' variable, which represents the boundaries of the object.
+ * The returned value can be modified using assignment operators if required.
+ *
+ * @return A reference to the Bounds object.
+ */
+AGERect& GetBounds() { return Bounds; }
+		/**
+ * @brief This function returns the size of an object.
+ * @return A reference to the Size variable.
+ */
+/**
+ * @brief Gets the size of an object.
+ *
+ * This function returns a reference to the 'Size' variable, which represents the size of an object. The returned value can be modified using other functions if necessary.
+ *
+ * @return A reference to the Size variable.
+ */
+AGESize& GetSize() { return Size; }
+		/**
+ * @brief This function returns the number of pixels per byte.
+ * @return int The number of pixels per byte. If no value is set, it will return -1.
+ */
+/**
+ * @brief This function returns the number of pixels per byte.
+ * @return The number of pixels per byte as an integer.
+ */
+int GetPixelsPerByte() { return PixelsPerByte; }
+		/**
+ * @brief This function returns the width of an image in bytes.
+ * The bit depth (bpp) is determined by the PixelType of the image. If the PixelType is RGBA, then bpp is 32; if it's RGB, then bpp is 24; for Greyscale and Indexed pixel types, bpp is 8.
+ * For any other unrecognized PixelType, a warning message is logged to inform user that the default value of bpp (RGBA) is being used.
+ * @return The width of the image in bytes. This is calculated by multiplying the Width of the image with its bit depth per pixel (bpp).
+ */
+/**
+ * @brief This function returns the width of an image in bytes. The bits per pixel (bpp) is determined by the PixelType of the image.
+ * @return uint32_t Returns the width of the image in bytes.
+ */
+uint32_t GetWidthBytes() 
 		{
 			uint32_t bpp;
 
@@ -137,17 +326,118 @@ namespace AGE
 			return Width * bpp;
 		}
 
-		AsepriteFileData& GetFileData() { return FileData; }
+		/**
+ * @brief Returns the Aseprite file data.
+ *
+ * This function returns a reference to the Aseprite file data object, which contains all the information about the loaded Aseprite file.
+ *
+ * @return A reference to the AsepriteFileData object.
+ */
+/**
+ * @brief Returns the Aseprite file data.
+ *
+ * This function returns a reference to the Aseprite file data object, which contains all the information about the loaded Aseprite file.
+ *
+ * @return A reference to the AsepriteFileData object.
+ */
+AsepriteFileData& GetFileData() { return FileData; }
 
 
-		void SetFileData(const AsepriteFileData& Data) { FileData = Data; }
-		void SetWidthHeight(const std::pair<uint32_t, uint32_t>& WidthHeight) { Width = WidthHeight.first; Height = WidthHeight.second; }
-		void SetWidth(const uint32_t width) { Width = width; }
-		void SetHeight(const uint32_t height) { Height = height; }
-		void SetChannels(int channels) { Channels = channels; }
-		void SetPixelType(const PixelType& type) { Type = type; }
-		void SetSize(const AGESize& size) { Size = size; }
-		void SetBounds(const AGERect& bounds) { Bounds = bounds; }
+		/**
+ * @brief Sets the file data for the Aseprite object.
+ * @param Data The new file data to be set.
+ */
+/**
+ * @brief Sets the file data for the Aseprite object.
+ * @param Data The new file data to be set.
+ */
+void SetFileData(const AsepriteFileData& Data) { FileData = Data; }
+		/**
+ * @brief Sets the width and height of an object using a pair of unsigned integers.
+ * @param WidthHeight A pair of unsigned integers representing the new width and height.
+ */
+/**
+ * @brief Sets the width and height of an object using a pair of unsigned integers.
+ * @param WidthHeight A pair containing the new width and height values.
+ */
+void SetWidthHeight(const std::pair<uint32_t, uint32_t>& WidthHeight) { Width = WidthHeight.first; Height = WidthHeight.second; }
+		/**
+ * @brief Sets the width of an object.
+ * @param[in] width The new width to be set for the object.
+ */
+/**
+ * @brief This function sets the width of an object.
+ * @param[in] width The new width to be set for the object.
+ */
+void SetWidth(const uint32_t width) { Width = width; }
+		/**
+ * @brief Sets the height of an object.
+ *
+ * This function sets the 'Height' member variable to a specified value. It takes one parameter, which is the new height value.
+ * The function does not return anything (void).
+ *
+ * @param[in] height - The new height value for the object. Must be less than or equal to 4294967295.
+ * @return void
+ */
+/**
+ * @brief Sets the height of an object.
+ * @param[in] height The new height value to be set.
+ */
+void SetHeight(const uint32_t height) { Height = height; }
+		/**
+ * @brief Sets the number of audio channels to be processed by the system.
+ *
+ * This function sets the 'Channels' variable, which represents the number of audio channels in the system. It takes an integer parameter 'channels', which is used to set the value of Channels.
+ *
+ * @param channels The new number of audio channels.
+ * 
+ * @return void
+ */
+/**
+ * @brief Sets the number of audio channels to be processed by the system.
+ *
+ * This function sets the 'Channels' variable, which represents the number of audio channels in the system. The parameter 'channels' should be a positive integer representing the desired number of channels. 
+ * If it is not, or if there are any issues with setting this value (e.g., an invalid argument), no action will be taken and the function will return immediately.
+ *
+ * @param channels The new number of audio channels to set. Must be a positive integer.
+ */
+void SetChannels(int channels) { Channels = channels; }
+		/**
+ * @brief Sets the pixel type of an object.
+ *
+ * This function sets the pixel type for an object, which can be used to determine how the object should be rendered in a graphics context.
+ *
+ * @param[in] type The new PixelType value to set.
+ * @return void
+ */
+/**
+ * @brief Sets the pixel type of an object.
+ * @param[in] type The new pixel type to be set.
+ */
+void SetPixelType(const PixelType& type) { Type = type; }
+		/**
+ * @brief Sets the size of an object.
+ *
+ * This function sets the size attribute of an object to a given value. The size is expected to be in the form of an AGESize object.
+ *
+ * @param[in] size - The new size for the object.
+ * 
+ * @return void
+ */
+/**
+ * @brief Sets the size of an object.
+ * @param size The new size to set for the object.
+ */
+void SetSize(const AGESize& size) { Size = size; }
+		/**
+ * @brief Sets the bounds of an object.
+ * @param bounds The new bounds to set for the object.
+ */
+/**
+ * @brief Sets the bounds of an object.
+ * @param bounds The new bounds to set for the object.
+ */
+void SetBounds(const AGERect& bounds) { Bounds = bounds; }
 
 
 	private:
@@ -165,10 +455,58 @@ namespace AGE
 	class Image
 	{
 	public:
-		Image() = default;
+		/**
+ * @brief Default constructor for the Image class.
+ *
+ * This function initializes an instance of the Image class with default values. It is used to create a new image object without any specific attributes set.
+ *
+ * @return A new Image object with all fields initialized to their default values.
+ */
+/**
+ * @brief Default constructor for the Image class.
+ * 
+ * This function initializes an instance of the Image class with default values. It is used to create a new image object without any specific attributes set.
+ * 
+ * @return A newly created Image object with all fields initialized to their default values.
+ */
+Image() = default;
 		Image(ImageSpecification& Spec, bool FlipVerticallyOnLoad = false);
-		Image(const Image& Other) = default;
-		Image(const Image&& Other) noexcept
+		/**
+ * @brief Copy constructor for the Image class.
+ *
+ * This function creates a new instance of an Image object by copying all data from another Image object.
+ * It uses the '= default' syntax to delegate the copy construction to the compiler, which means it will use the 
+ * default implementation provided by the compiler. The compiler-generated copy constructor performs a memberwise 
+ * copy of the source object into this new object. This includes copying all data members that are part of the Image class.
+ *
+ * @param Other The Image object to be copied.
+ */
+/**
+ * @brief Copy constructor for the Image class.
+ *
+ * This function creates a new instance of an Image object by copying all data from another Image object.
+ * It is used to ensure deep copy semantics when passing objects by value or returning them from functions.
+ * 
+ * @param Other The Image object to be copied.
+ */
+Image(const Image& Other) = default;
+		/**
+ * @brief Move constructor for Image class.
+ * 
+ * This function is used to create a new instance of the Image class by moving all its data from an existing instance.
+ * It takes in a const lvalue reference to another Image object and moves its data into this new object, leaving the original object empty.
+ * The move operation is exception-safe as it does not throw exceptions under normal circumstances.
+ * 
+ * @param Other An rvalue reference to an existing Image object.
+ */
+/**
+ * @brief Move constructor for the Image class.
+ *
+ * This function creates a new instance of the Image class by moving all data from another instance to this one. It is used when an rvalue reference to an Image object is passed in, such as when it's returned from a function.
+ * 
+ * @param Other The other Image object from which to move data.
+ */
+Image(const Image&& Other) noexcept
 		{
 			m_Spec = Other.m_Spec;
 			m_RowBytes = Other.m_RowBytes;
@@ -184,20 +522,98 @@ namespace AGE
 
 		virtual ~Image();
 
-		ImageSpecification& GetImageSpec() { return m_Spec; }
-		const ImageSpecification& GetImageSpec() const { return m_Spec; }
-		uint32_t* GetImageBuffer() { return m_RGBImage; }
-		const uint32_t* GetImageBuffer() const { return m_RGBImage; }
+		/**
+ * @brief Returns the image specification object.
+ *
+ * This function returns a reference to an ImageSpecification object, which contains information about the image such as its size and format.
+ *
+ * @return A reference to the ImageSpecification object.
+ */
+/**
+ * @brief Returns the image specification object.
+ *
+ * This function returns a reference to the internal image specification object, which contains all the information about an image such as its size and format.
+ *
+ * @return A reference to the image specification object (m_Spec).
+ */
+ImageSpecification& GetImageSpec() { return m_Spec; }
+		/**
+ * @brief Returns the image specification object associated with this instance.
+ * @return A constant reference to the image specification object (m_Spec).
+ */
+/**
+ * @brief Returns the image specification.
+ *
+ * This function returns a constant reference to the image specification stored in the object. The returned value can be used to access various properties of the image, such as its size or format.
+ *
+ * @return A constant reference to the image specification.
+ */
+const ImageSpecification& GetImageSpec() const { return m_Spec; }
+		/**
+ * @brief This function returns a pointer to the RGB image buffer.
+ * @return Pointer to the RGB image buffer, type is uint32_t*. If no image data exists, it will return nullptr.
+ */
+/**
+ * @brief This function returns a pointer to the RGB image buffer.
+ * @return Pointer to the RGB image buffer, type is uint32_t*. If no image data exists, it will return nullptr.
+ */
+uint32_t* GetImageBuffer() { return m_RGBImage; }
+		/**
+ * @brief Returns a pointer to the RGB image buffer.
+ * @return Pointer to the RGB image buffer, or nullptr if no image is available.
+ */
+/**
+ * @brief Returns a pointer to the RGB image buffer.
+ * @return Pointer to the RGB image buffer, or nullptr if no image is available.
+ */
+const uint32_t* GetImageBuffer() const { return m_RGBImage; }
 
-		size_t GetImageByteSize() 
+		/**
+ * @brief This function returns the size of an image in bytes.
+ * @return The byte size of the image.
+ */
+/**
+ * @brief This function returns the byte size of an image.
+ * @return The byte size of the image as a size_t value.
+ */
+size_t GetImageByteSize() 
 		{
 			return m_ByteSize;
 		}
 
-		void SetImageSpec(const ImageSpecification& Spec) { m_Spec = Spec; }
+		/**
+ * @brief Sets the image specification.
+ *
+ * This function sets the image specification to a new value. The ImageSpecification object is passed by const reference, meaning that no copy of it will be made and the original object can still be used elsewhere in the code.
+ * 
+ * @param Spec A constant reference to an ImageSpecification object containing the new image specification.
+ */
+/**
+ * @brief Sets the image specification.
+ * @param Spec The new image specification to set.
+ */
+void SetImageSpec(const ImageSpecification& Spec) { m_Spec = Spec; }
 		
 		template<typename T>
-		T GetPixel(T x, T y)
+		/**
+ * @brief This function returns the pixel value at a given position.
+ * 
+ * The function checks if the template type T is uint32_t or uint16_t and calls the appropriate function to get the pixel address.
+ * If T is not either of these types, it will return a default value of T.
+ * @param x The x-coordinate of the pixel position.
+ * @param y The y-coordinate of the pixel position.
+ * @return Returns the pixel value at the given position.
+ */
+/**
+ * @brief This function returns a pixel value based on the template type. 
+ * If T is of type uint32_t it calls the GetRGBAddress() function with parameters x and y. 
+ * If T is of type uint16_t it calls the GetGSAddress() function with parameters x and y.
+ * @param[in] x The x-coordinate of the pixel to get.
+ * @param[in] y The y-coordinate of the pixel to get.
+ * @return Returns a value based on the template type. If T is uint32_t, it returns an RGB address. 
+ * If T is uint16_t, it returns a grayscale address.
+ */
+T GetPixel(T x, T y)
 		{
 			if (std::is_same<T,uint32_t>::value)
 			{
@@ -216,7 +632,34 @@ namespace AGE
 
 		void FillRect(int x1, int y1, int x2, int y2, Vector4 Color);
 
-		void BlendRect(int x1, int y1, int x2, int y2, Vector4 Color, int Alpha)
+		/**
+ * @brief Blends a rectangle with the specified color and alpha value.
+ * 
+ * This function takes four integer parameters to specify the coordinates of the rectangle, a Vector4 parameter for the color, and an integer parameter for the alpha value. It uses these inputs to blend the rectangle using the FillRect function.
+ *
+ * @param x1 The x-coordinate of the first corner of the rectangle.
+ * @param y1 The y-coordinate of the first corner of the rectangle.
+ * @param x2 The x-coordinate of the second corner of the rectangle.
+ * @param y2 The y-coordinate of the second corner of the rectangle.
+ * @param Color The color to blend the rectangle with.
+ * @param Alpha The alpha value to use for blending (0 is fully transparent, 255 is fully opaque).
+ *
+ * @return void
+ */
+/**
+ * @brief Blends a rectangle with specified color and alpha.
+ * 
+ * This function blends a rectangle defined by the coordinates (x1,y1) to (x2,y2) with the provided color and alpha value.
+ * The blend operation is performed using FillRect() function.
+ * 
+ * @param x1, y1 Coordinates of one corner of the rectangle.
+ * @param x2, y2 Coordinates of another corner of the rectangle.
+ * @param Color The color to blend with.
+ * @param Alpha The alpha value for blending operation.
+ * 
+ * @return void
+ */
+void BlendRect(int x1, int y1, int x2, int y2, Vector4 Color, int Alpha)
 		{
 			FillRect(x1, y1, x2, y2, Color);
 		}
@@ -247,7 +690,19 @@ namespace AGE
 		std::vector<uint8_t> InflateChunk(std::vector<uint8_t>& Data, int x, int y);
 
 		template<typename T>
-		inline bool IsSameColor(const T A, const T B)
+		/**
+ * @brief This function checks if two colors are the same. The comparison is done by comparing the alpha channel of each color.
+ * @param A First color to compare, represented as a T value (likely an ARGB integer).
+ * @param B Second color to compare, also represented as a T value.
+ * @return Returns true if both colors have the same alpha component or are fully transparent (alpha = 0), false otherwise.
+ */
+/**
+ * @brief This function checks if two colors are the same. The comparison is done by comparing the alpha channel of each color.
+ * @param A First color to compare, represented as a T value (likely an ARGB integer).
+ * @param B Second color to compare, also represented as a T value.
+ * @return Returns true if both colors have the same alpha component or are fully transparent (alpha = 0), false otherwise.
+ */
+inline bool IsSameColor(const T A, const T B)
 		{
 			if (((A >> 24) & 0xff) == 0)
 			{
@@ -284,7 +739,27 @@ namespace AGE
 		static constexpr size_t BaseAlignment = 1;
 #endif
 
-		constexpr size_t AlignSize(const size_t N, const size_t Alignment = BaseAlignment)
+		/**
+ * @brief This function aligns a size value to the specified alignment.
+ *
+ * The function takes in two parameters, N and Alignment (default is BaseAlignment). 
+ * It calculates the remainder of N divided by Alignment, if there's any remaining it subtracts this from the total size N and adds the necessary padding to make it a multiple of the alignment.
+ * If the resulting aligned size is greater than the alignment, it returns the aligned size; otherwise, it returns the alignment.
+ * 
+ * @param[in] N The size value to be aligned.
+ * @param[in] Alignment The desired alignment (default is BaseAlignment).
+ * @return The aligned size or the default alignment if no change was necessary.
+ */
+/**
+ * @brief This function aligns a size to the specified alignment.
+ * 
+ * The function takes in two parameters, N and Alignment (default is BaseAlignment). It calculates the remainder of N divided by Alignment, which represents how much we need to add to N to reach the next multiple of Alignment. If this value is not zero, it means that N does not yet align with Alignment, so we subtract this from Alignment and return the result as the aligned size.
+ * 
+ * @param[in] N The size to be aligned.
+ * @param[in] Alignment The alignment boundary. Defaults to BaseAlignment if not specified.
+ * @return The aligned size. If N is already a multiple of Alignment, it returns Alignment.
+ */
+constexpr size_t AlignSize(const size_t N, const size_t Alignment = BaseAlignment)
 		{
 			size_t Remaining = (N % Alignment);
 			size_t Aligned_N = N + (Remaining ? (Alignment - Remaining) : 0);

@@ -16,12 +16,50 @@ namespace AGE
 
 		UIImageComponent(const std::string& Name);
 
-		virtual ~UIImageComponent() = default;
+		/**
+ * @brief Virtual destructor for the UIImageComponent class.
+ *
+ * This function is responsible for releasing any resources that were acquired by the object during its lifetime. It does not take any parameters and returns no value.
+ */
+/**
+ * @brief Virtual destructor for the UIImageComponent class.
+ *
+ * This function is responsible for releasing any resources that were acquired by the object during its lifetime, such as memory or file handles. It does not return anything and has no parameters.
+ */
+virtual ~UIImageComponent() = default;
 
-		void CallSerialize(DataWriter* Serializer) override
+		/**
+ * @brief This function is used to serialize data using a DataWriter object.
+ * 
+ * The function takes in a pointer to a DataWriter object as its parameter. It does not return anything, so the return type should be void.
+ * 
+ * @param Serializer A pointer to a DataWriter object that will handle the serialization process.
+ */
+/**
+ * @brief This function is used to serialize data using a DataWriter object.
+ * 
+ * The function takes in one parameter, a pointer to a DataWriter object which is responsible for writing the serialized data.
+ * It does not return anything as it's an override of the base class method and doesn't need any post-processing after serialization.
+ * 
+ * @param Serializer A pointer to a DataWriter object that will be used to write the serialized data.
+ */
+void CallSerialize(DataWriter* Serializer) override
 		{
 		}
-		void CallDeserialize(DataReader* Serializer) override
+		/**
+ * @brief This function is used to call the deserialization process on a DataReader object.
+ * 
+ * The function takes in a pointer to a DataReader object as its parameter. It does not return anything, so it's void type.
+ * 
+ * @param Serializer A pointer to a DataReader object that will be used for the deserialization process.
+ */
+/**
+ * @brief This function is used to call the deserialization process on a DataReader object. 
+ * The exact behavior of this function depends on its implementation in the derived class, as it's marked as 'override'.
+ * 
+ * @param Serializer A pointer to an instance of DataReader that will be used for deserialization.
+ */
+void CallDeserialize(DataReader* Serializer) override
 		{
 		}
 

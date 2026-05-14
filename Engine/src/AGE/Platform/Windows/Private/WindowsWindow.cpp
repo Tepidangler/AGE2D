@@ -22,37 +22,113 @@ namespace AGE
 	static bool s_GLFWInitialized = false;
 	WindowsWindow* WindowsWindow::s_Window;
 
-	static void GLFWErrorCallback(int Error, const char* Description)
+	/**
+ * @brief This function is a callback for GLFW errors. It logs the error code and description to the CoreLogger.
+ * 
+ * @param[in] Error The error code from GLFW.
+ * @param[in] Description A string describing the error in more detail.
+ */
+/**
+ * @brief This function is a callback for GLFW error handling. It logs the error code and description to the CoreLogger.
+ * 
+ * @param Error The error code provided by GLFW.
+ * @param Description A string describing the error in more detail.
+ */
+static void GLFWErrorCallback(int Error, const char* Description)
 	{
 		CoreLogger::Error("GLFW Error ({0}): {1}", Error, Description);
 	}
 
-	Scope<AGEWindow> AGEWindow::Create(const WindowProps& Props)
+	/**
+ * @brief Creates a new instance of the WindowsWindow class.
+ * 
+ * This function creates and returns a new instance of the WindowsWindow class, initialized with the provided properties.
+ * The returned object is encapsulated in a Scope<AGEWindow> to manage its lifetime automatically.
+ * 
+ * @param Props - A reference to an instance of WindowProps containing the initial window properties.
+ * @return A new instance of Scope<AGEWindow>, which contains the newly created WindowsWindow object.
+ */
+/**
+ * @brief Creates a new instance of the WindowsWindow class.
+ * 
+ * This function creates a new instance of the WindowsWindow class with the specified properties. It returns a Scope object that can be used to manage the lifetime of the newly created window.
+ * 
+ * @param Props The properties for the new window.
+ * @return A Scope object managing the lifetime of the newly created window.
+ */
+Scope<AGEWindow> AGEWindow::Create(const WindowProps& Props)
 	{
 		return CreateScope<WindowsWindow>(Props);
 	}
 
-	WindowsWindow::WindowsWindow(const WindowProps& Props)
+	/**
+ * @brief Constructor for the WindowsWindow class. Initializes a new instance of the WindowsWindow with specified properties.
+ * 
+ * @param Props The WindowProperties object containing information about the window, such as its title and size.
+ */
+/**
+ * @brief Constructor for the WindowsWindow class. Initializes a new instance of the WindowsWindow with specified properties.
+ * 
+ * @param Props The WindowProperties object containing information about the window, such as its title and size.
+ */
+WindowsWindow::WindowsWindow(const WindowProps& Props)
 	{
 		AGE_PROFILE_FUNCTION();
 		Init(Props);
 		s_Window = this;
 	}
 
-	WindowsWindow::~WindowsWindow()
+	/**
+ * @brief Destructor for the WindowsWindow class.
+ * 
+ * This function is responsible for cleaning up any resources that were allocated during the lifetime of this object, such as memory or system resources. It also calls the Shutdown() function to perform necessary cleanup tasks.
+ * 
+ * @return void
+ */
+/** 
+ * @brief Destructor for the WindowsWindow class. It is responsible for shutting down the window and releasing any resources it may have acquired during its lifetime.
+ * @return None
+ */
+WindowsWindow::~WindowsWindow()
 	{
 		AGE_PROFILE_FUNCTION();
 		Shutdown();
 	}
 
-	Vector2 WindowsWindow::GetMousePos()
+	/**
+ * @brief Get the current mouse position in window coordinates.
+ *
+ * This function retrieves the current cursor position within the window,
+ * and returns it as a Vector2 object with x and y values representing 
+ * the horizontal and vertical positions respectively. The positions are 
+ * floating point numbers.
+ *
+ * @return A Vector2 object containing the current mouse position in 
+ *         window coordinates.
+ */
+/**
+ * @brief Get the current mouse position in window coordinates.
+ *
+ * This function retrieves the current cursor position within the window,
+ * and returns it as a Vector2 object with x and y values representing 
+ * the horizontal and vertical positions respectively.
+ *
+ * @return A Vector2 object containing the current mouse position.
+ */
+Vector2 WindowsWindow::GetMousePos()
 	{
 		double x, y;
 		glfwGetCursorPos(m_Window,&x, &y);
 		return {static_cast<float>(x),static_cast<float>(y)};
 	}
 
-	void WindowsWindow::JoystickCallback(int jid, int event)
+	/**
+ * @brief This function is a callback for joystick events. It gets called when a joystick is connected or disconnected.
+ * @param jid The ID of the joystick that has an event.
+ * @param event An integer representing the type of event (GLFW_CONNECTED or GLFW<｜begin▁of▁sentence｜>GLFW_DISCONNECTED).
+ */
+void Win
+dowsWindow::JoystickCallback(int jid, int event)
 	{
 
 		if (event == GLFW_CONNECTED)
@@ -68,13 +144,29 @@ namespace AGE
 		}
 	}
 
-	void WindowsWindow::SwitchRenderer()
+	/** 
+ * @brief Switches the renderer for this window instance.
+ * 
+ * This function triggers a RendererChangeEvent, which is then processed by the m_RendererCallback member variable of this class. The exact behavior and effect of this event on the rendering process will depend on how the callback has been implemented elsewhere in the codebase.
+ * 
+ * @return void No return value.
+ */
+void Win
+dowsWindow::SwitchRenderer()
 	{
 		RendererChangeEvent Event(this);
 		m_RendererCallback(Event);
 	}
 
-	void WindowsWindow::RebuildWindow()
+	/**
+ * @brief Rebuilds the window by shutting down the current context, resetting it and initializing a new one with the properties of the old window.
+ * 
+ * This function is used to update the state of the window without having to create a new instance. It's important to note that this function does not handle any errors or exceptions that may occur during its execution.
+ * 
+ * @return void
+ */
+void Win
+dowsWindow::RebuildWindow()
 	{
 		Shutdown();
 		m_Context.reset();
@@ -86,14 +178,32 @@ namespace AGE
 		Init(Props);
 	}
 
-	void WindowsWindow::SetWindowIcon(const std::filesystem::path& Path)
+	/**
+ * @brief Sets the icon of the window.
+ *
+ * This function sets the icon for the window using a file path provided as an argument. It loads the image from the given path, 
+ * stores it in the internal data structure and then uses glfwSetWindowIcon to set this image as the icon for the window. The loaded 
+ * image is freed after use with stbi_image_free.
+ *
+ * @param Path A const reference to a std::filesystem::path object representing the path of the image file.
+ */
+void Win/**
+ * @brief Set the window icon.
+ *
+ * This function sets the icon of the GLFW window to an image specified by a file path. The image is loaded using the stb_image library, and then set as the window's icon. After setting the icon, the memory allocated for the image pixels is freed with stbi_image_free().
+ *
+ * @param Path A const reference to a std::filesystem::path object representing the path of the image file. This parameter should be an absolute or relative path to the desired image file.
+ */
+dowsWindow::SetWindowIcon(const std::filesystem::path& Path)
 	{
 		m_Images[0].pixels = stbi_load(Path.string().c_str(), &m_Images[0].width, &m_Images[0].height, 0, 4);
 		glfwSetWindowIcon(m_Window, 1, m_Images);
 		stbi_image_free(m_Images[0].pixels);
 	}
 
-	void WindowsWindow::Init(const WindowProps& Props)
+	
+void Win
+dowsWindow::Init(const WindowProps& Props)
 	{
 		AGE_PROFILE_FUNCTION();
 		m_Data.Title = Props.Title;
@@ -296,7 +406,22 @@ namespace AGE
 
 	}
 
-	void WindowsWindow::Shutdown()
+	/**
+ * @brief Shuts down the WindowsWindow.
+ *
+ * This function sets the window should close flag to true, destroys the window and terminates GLFW. It also resets the s_GLFWInitialized flag.
+ * 
+ * @return void
+ */
+void Win/**
+ * @brief Shuts down the GLFW window and terminates the GLFW library.
+ *
+ * This function sets the flag for the GLFW window to close, destroys the window itself, 
+ * then terminates the GLFW library. It also resets the static variable s_GLFWInitialized to false.
+ *
+ * @return void
+ */
+dowsWindow::Shutdown()
 	{
 		AGE_PROFILE_FUNCTION();
 		glfwSetWindowShouldClose(m_Window, true);
@@ -310,7 +435,12 @@ namespace AGE
 
 
 
-	void WindowsWindow::OnUpdate()
+	/** 
+ * @brief This function is responsible for updating the window. It polls events, processes joystick input and swaps buffers.
+ * @return void
+ */
+void Win
+dowsWindow::OnUpdate()
 	{
 		AGE_PROFILE_FUNCTION();
 		glfwPollEvents();
@@ -318,7 +448,15 @@ namespace AGE
 		m_Context->SwapBuffers();
 	}
 
-	void WindowsWindow::SetVSync(bool Enabled)
+	/**
+ * @brief This function sets the Vertical Synchronization (VSync) setting for the window.
+ * 
+ * @param Enabled A boolean value indicating whether to enable or disable VSync. If true, VSync is enabled; if false, it's disabled.
+ * 
+ * @return void
+ */
+void Win
+dowsWindow::SetVSync(bool Enabled)
 	{
 		AGE_PROFILE_FUNCTION();
 
@@ -334,11 +472,33 @@ namespace AGE
 		m_Data.VSync = Enabled;
 	}
 
-	bool WindowsWindow::IsVSync() const
+	/**
+ * @brief This function is used to check the Vertical Synchronization (VSync) status of a window.
+ * 
+ * @return Returns true if VSync is enabled, false otherwise.
+ */
+bool Win
+dowsWindow::IsVSync() const
 	{
 		return m_Data.VSync;
 	}
-	void WindowsWindow::ProcessJoystickInput()
+	/**
+ * @brief Processes joystick input for the window.
+ * 
+ * This function processes any incoming joystick inputs and updates the internal state of the window accordingly.
+ * It does not return anything as it directly modifies the internal state of the window.
+ *
+ * @return None
+ */
+void Win/**
+ * @brief Processes joystick input and updates the game state accordingly.
+ * 
+ * This function reads the current state of all connected joysticks, compares it to the previous frame's state,
+ * and updates the game state based on any detected changes in button presses or axis movements.
+ *
+ * @return void
+ */
+dowsWindow::ProcessJoystickInput()
 	{
 	}
 }

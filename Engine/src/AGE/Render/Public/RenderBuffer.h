@@ -25,7 +25,15 @@ namespace AGE
 
 	};
 
-	static uint32_t ShaderDataTypeSize(ShaderDataType Type)
+	/**
+ * @brief Returns the size of a shader data type in bytes.
+ *
+ * This function takes a `ShaderDataType` enum value as input and returns its corresponding size in bytes. The return values are calculated based on the enum values, which represent different types of data that can be used in shaders. 
+ *
+ * @param Type The `ShaderDataType` to get the size for.
+ * @return uint32_t The size of the given ShaderDataType in bytes.
+ */
+static uint32_t ShaderDataTypeSize(ShaderDataType Type)
 	{
 		switch ((int)Type)
 		{
@@ -81,15 +89,40 @@ namespace AGE
 		uint32_t DataStepRate = 0;
 		bool Normalized = false;
 
-		BufferElement() {};
+		/**
+ * @brief Default constructor for BufferElement class.
+ */
+BufferElement() {};
 
-		BufferElement(ShaderDataType Type, const std::string& Name, bool normalized = false)
+		/**
+ * @brief BufferElement is a class representing an element in a buffer. 
+ * It holds information about the name, type of data, size and offset of the data, as well as whether it's normalized or not.
+ * 
+ * @param Type The type of shader data (e.g., float, int).
+ * @param Name The name of the buffer element.
+ * @param normalized A boolean indicating if the data is normalized. Default value is false.
+ */
+BufferElement(ShaderDataType Type, const std::string& Name, bool normalized = false)
 			: Name(Name), DataType(Type), Size(ShaderDataTypeSize(Type)), Offset(0), Normalized(normalized)
 		{
 
 		}
 
-		uint32_t GetComponentCount()  const
+		/**
+ * @brief GetComponentCount returns the number of components in a shader data type.
+ * 
+ * This function takes into account the current value of DataType and returns the appropriate number of components.
+ * The return values are as follows:
+ * - For DataType = 0, it returns 1 (Unknown ShaderDataType).
+ * - For DataType = 1 to 4 inclusive, it returns 1.
+ * - For DataType = 5 to 6 inclusive, it returns 9.
+ * - For DataType = 7 to 8 inclusive, it returns 2.
+ * - For DataType = 9 to 10 inclusive, it returns 3.
+ * - For DataType = 11, it returns 4 (Unknown ShaderDataType).
+ * 
+ * @return uint32_t The number of components in the shader data type.
+ */
+uint32_t GetComponentCount()  const
 		{
 			switch ((int)DataType)
 			{
@@ -143,25 +176,66 @@ namespace AGE
 
 		BufferLayout();
 
-		BufferLayout(const std::initializer_list<BufferElement>& Elements)
+		/**
+ * @brief Constructor for the BufferLayout class. Initializes the buffer layout with a list of elements.
+ * 
+ * @param Elements A std::initializer_list<BufferElement> containing the elements to be added to the layout.
+ */
+BufferLayout(const std::initializer_list<BufferElement>& Elements)
 			: m_Elements(Elements)
 		{
 			CalculateOffsetsAndStride();
 		}
 
-		inline const std::vector<BufferElement>& GetElements() const { return m_Elements; }
+		/**
+ * @brief Returns a constant reference to the vector of BufferElements stored in this object.
+ * @return A constant reference to the vector of BufferElements (m_Elements).
+ */
+inline const std::vector<BufferElement>& GetElements() const { return m_Elements; }
 
-		inline uint32_t GetStride() const { return m_Stride; }
+		/**
+ * @brief Returns the stride value of the object.
+ * @return The stride value as a uint32_t.
+ */
+inline uint32_t GetStride() const { return m_Stride; }
 
-		[[nodiscard]] std::vector<BufferElement>::iterator begin() { return m_Elements.begin(); }
+		COMMENT:
+/**
+ * @brief Returns an iterator pointing to the beginning of the buffer elements vector.
+ * @return An iterator to the start of the buffer elements vector.
+ */
+CONFIDENCE: 1.0;
 
-		[[nodiscard]] std::vector<BufferElement>::iterator end() { return m_Elements.end(); }
-		[[nodiscard]] std::vector<BufferElement>::const_iterator begin() const { return m_Elements.begin(); }
+[[nodiscard]] std::vector<BufferElement>::iterator begin() { return m_Elements.begin(); }
 
-		[[nodiscard]] std::vector<BufferElement>::const_iterator end() const { return m_Elements.end(); }
+		/**
+ * @brief Returns an iterator pointing to the theoretical element past the last element of the vector.
+ * @return An iterator to the theoretical element past the end of the vector.
+ */
+[[nodiscard]] std::vector<BufferElement>::iterator end() { return m_Elements.end(); }
+		COMMENT:
+/**
+ * @brief Returns a constant iterator pointing to the beginning of the buffer elements.
+ * @return A constant iterator to the first element in the container.
+ */
+CONFIDENCE: 1.0;
+
+[[nodiscard]] std::vector<BufferElement>::const_iterator begin() const { return m_Elements.begin(); }
+
+		/**
+ * @brief Returns a constant iterator pointing to the past-the-end element in the buffer elements vector.
+ * @return A constant iterator pointing to the past-the-end element.
+ */
+[[nodiscard]] std::vector<BufferElement>::const_iterator end() const { return m_Elements.end(); }
 	private:
 
-		void CalculateOffsetsAndStride()
+		/**
+ * @brief Calculates the offsets and stride for each element in a container.
+ * The function iterates over all elements, setting their offset to the current total offset (which starts at 0),
+ * then incrementing the total offset by the size of the current element. It also updates the overall stride which is the sum of sizes of all elements.
+ * @return void
+ */
+void CalculateOffsetsAndStride()
 		{
 			uint32_t offset = 0;
 			m_Stride = 0;
@@ -184,7 +258,12 @@ namespace AGE
 	{
 	public:
 		
-		virtual ~VertexBuffer() {};
+		/**
+ * @brief Virtual destructor for the VertexBuffer class.
+ *
+ * This function is responsible for releasing any resources that were acquired by the VertexBuffer object, such as memory or GPU resources. It does not return anything and thus has an empty return type (void).
+ */
+virtual ~VertexBuffer() {};
 
 		virtual void Bind() const = 0;
 
@@ -219,7 +298,12 @@ namespace AGE
 	class IndexBuffer
 	{
 	public:
-		virtual ~IndexBuffer() {};
+		/**
+ * @brief Virtual destructor for the IndexBuffer class.
+ *
+ * This function is responsible for releasing any resources that were acquired by the object during its lifetime, such as memory or file handles. It does not return anything and has no parameters.
+ */
+virtual ~IndexBuffer() {};
 
 		virtual void Bind() const = 0;
 
@@ -238,7 +322,12 @@ namespace AGE
 	class UniformBuffer
 	{
 	public:
-		virtual ~UniformBuffer() {}
+		/**
+ * @brief Virtual destructor for the UniformBuffer class.
+ *
+ * This function is responsible for releasing any resources that were acquired by the UniformBuffer object, such as memory or GPU resources. It does not return anything and thus has an empty return type (void).
+ */
+virtual ~UniformBuffer() {}
 		virtual void Bind() = 0;
 		virtual void Unbind() = 0;
 		virtual void SetData(const void* Data, uint32_t Size, uint32_t Offset = 0) = 0;

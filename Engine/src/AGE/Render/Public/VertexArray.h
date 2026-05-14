@@ -8,7 +8,17 @@ namespace AGE
 	{
 	public:
 		
-		virtual ~VertexArray() {};
+		/**
+ * @brief Virtual destructor for the VertexArray class.
+ *
+ * This function is responsible for releasing any resources that were acquired by the object during its lifetime, such as memory or GPU resources. It does not return anything and thus has an empty return type (void).
+ */
+/**
+ * @brief Virtual destructor for the VertexArray class.
+ *
+ * This function is responsible for releasing any resources that were acquired by the object during its lifetime, such as memory or GPU resources. It does not perform any operations on the actual data stored in the array. 
+ */
+virtual ~VertexArray() {};
 
 		virtual void Bind() const = 0;
 

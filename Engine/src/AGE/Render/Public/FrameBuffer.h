@@ -24,8 +24,26 @@ namespace AGE
 
 	struct FramebufferTextureSpecification
 	{
-		FramebufferTextureSpecification() = default;
-		FramebufferTextureSpecification(FramebufferTextureFormat Format)
+		/**
+ * @brief Default constructor for the FramebufferTextureSpecification class.
+ */
+/**
+ * @brief Default constructor for the FramebufferTextureSpecification class.
+ */
+FramebufferTextureSpecification() = default;
+		/**
+ * @brief Constructs a FramebufferTextureSpecification object with the specified texture format.
+ * 
+ * @param Format The texture format to be used for this specification.
+ */
+COMMENT:
+/**
+ * @brief Constructs a FramebufferTextureSpecification object with the given texture format.
+ * @param Format The format of the texture to be used for rendering.
+ */
+CONFIDENCE: 1.0;
+
+FramebufferTextureSpecification(FramebufferTextureFormat Format)
 			:TextureFormat(Format) {}
 
 		FramebufferTextureFormat TextureFormat = FramebufferTextureFormat::INVALIDFORMAT;
@@ -33,9 +51,27 @@ namespace AGE
 
 	struct FramebufferAttachmentSpecification
 	{
-		FramebufferAttachmentSpecification() = default;
+		/**
+ * @brief Default constructor for the FramebufferAttachmentSpecification class.
+ *
+ * This function initializes a new instance of the FramebufferAttachmentSpecification class with default values.
+ */
+/**
+ * @brief Default constructor for the FramebufferAttachmentSpecification class.
+ */
+FramebufferAttachmentSpecification() = default;
 
-		FramebufferAttachmentSpecification(std::initializer_list<FramebufferTextureSpecification> attachments)
+		/**
+ * @brief Constructs a FramebufferAttachmentSpecification object with the given list of FramebufferTextureSpecifications.
+ * 
+ * @param attachments A std::initializer_list<FramebufferTextureSpecification> containing the specifications for each texture to be attached to the framebuffer.
+ */
+/**
+ * @brief Constructs a FramebufferAttachmentSpecification object with the given list of FramebufferTextureSpecifications.
+ * 
+ * @param attachments A std::initializer_list<FramebufferTextureSpecification> containing the specifications for each texture attachment to be used in the framebuffer.
+ */
+FramebufferAttachmentSpecification(std::initializer_list<FramebufferTextureSpecification> attachments)
 			:Attachments(attachments) {}
 
 
@@ -63,7 +99,17 @@ namespace AGE
 	class FrameBuffer
 	{
 	public:
-		virtual ~FrameBuffer() {}
+		/**
+ * @brief Virtual destructor for the FrameBuffer class.
+ *
+ * This function is responsible for releasing any resources that were acquired by the FrameBuffer object, such as memory or file handles. It does not return anything (void) and thus it doesn't need a Doxygen comment to document its return value. 
+ */
+/**
+ * @brief Virtual destructor for the FrameBuffer class.
+ *
+ * This function is responsible for releasing any resources that were acquired by the object during its lifetime, such as memory or file handles. It does not return anything and thus has an empty return type (void).
+ */
+virtual ~FrameBuffer() {}
 		
 		virtual FrameBufferSpecification& GetSpecification()  = 0;
 		virtual const FrameBufferSpecification& GetSpecification() const = 0;
