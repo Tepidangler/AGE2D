@@ -327,3 +327,8 @@ _deps
 !/cmake-build-relwithdebinfo-wsl-gcc/
 !/Editor/AppConfig.ini
 !/Engine/libs/
+/vsclang_rd_settings.cap
+/Setup.sh
+/mkdocs.yml
+/docs/index.md
+/docs/getting-started.md
