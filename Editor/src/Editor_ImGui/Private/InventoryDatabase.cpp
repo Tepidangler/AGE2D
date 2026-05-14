@@ -61,7 +61,7 @@ namespace AGE
             ImGui::TableHeadersRow();
             ImGui::TableNextColumn();
 
-            for (int i = 0; i < m_Database.size(); i++)
+            for (size_t i = 0; i < m_Database.size(); i++)
             {
                 ImGui::InputText(std::string("##ItemName" + std::to_string(i)).c_str(), &m_Database[i].Name);
                 ImGui::TableNextColumn();

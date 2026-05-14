@@ -25,7 +25,14 @@ int main(int argc, char** argv)
 	auto app = AGE::CreateApp({argc, argv});
 	AGE_PROFILE_END_SESSION();
 	AGE_PROFILE_BEGIN_SESSION("Runtime", "./AGEProfile-Runtime.json");
-	app->Run();
+	try
+	{
+		app->Run();
+	}
+	catch (std::exception& e)
+	{
+		AGE::CoreLogger::Error(e.what());
+	}
 	AGE_PROFILE_END_SESSION();
 	AGE_PROFILE_BEGIN_SESSION("Shutdown", "./AGEProfile-Shutdown.json");
 	delete app;

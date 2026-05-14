@@ -13,7 +13,7 @@ namespace AGE
 	{
 	public:
 		FmodEngine();
-		virtual ~FmodEngine();
+		~FmodEngine() override;
 
 		virtual void Init() override;
 		virtual void Start() override;

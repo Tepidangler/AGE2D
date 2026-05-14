@@ -11,7 +11,9 @@
 #include "Serializers/Public/DataReader.h"
 #ifdef __clang__
 #pragma clang diagnostic push
+#ifdef AG_PLATFORM_LINUX
 #pragma clang diagnostic ignored "-Wnontrivial-memcall"
+#endif
 #include <imgui.h>
 #pragma clang diagnostic pop
 #endif

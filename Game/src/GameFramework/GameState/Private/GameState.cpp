@@ -29,9 +29,7 @@ namespace GameFramework
 	}
 	SaveGame GameState::LoadGameData(std::string FileName, int Index)
 	{
-		SaveGame Save = std::move(GameStatics::LoadGameFromSlot(FileName.c_str(), Index)); // We're trying move here because making all of these copies seems kind of unnecessary
-
-		return Save;
+		return GameStatics::LoadGameFromSlot(FileName.c_str(), Index);
 	}
 	void GameState::SwitchLevel(const AGE::Ref<AGE::Scene>& Scene)
 	{

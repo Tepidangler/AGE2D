@@ -182,14 +182,14 @@ void EditorCamera::UpdateView()
 			m_Position = CalculatePosition();
 		
 			glm::quat Orientation = GetOrientation();
-			m_View = glm::translate(Matrix4D(1.f).ToGLM(), Convert::ToGLM(m_Position)) * glm::toMat4(Orientation);
+			m_View = glm::translate(Matrix4D(1.f).ToGLM(), (glm::vec3)m_Position) * glm::toMat4(Orientation);
 			m_ConstantBufferData.View = m_View = glm::inverse(m_View.ToGLM());
 		}
 		else
 		{
 			m_Position = CalculatePosition();
 		
-			m_View = glm::translate(Matrix4D(1.f).ToGLM(), Convert::ToGLM(m_Position));
+			m_View = glm::translate(Matrix4D(1.f).ToGLM(), (glm::vec3)m_Position);
 			m_ConstantBufferData.View =  m_View = glm::inverse(m_View.ToGLM());
 		}
 	

@@ -3,7 +3,6 @@
 #include "Platform/Microsoft/XInput/Public/XInput.h"
 #include "Core/Public/GamepadCodes.h"
 #include "Events/Public/GameEvent.h"
-#include "Core/Public/JoyStickCodes.h"
 #include "Core/Public/Log.h"
 namespace AGE
 {
@@ -96,13 +95,13 @@ void XInput::ClampLeftThumbstickDeadZone(XINPUT_GAMEPAD& Gamepad, const XInputCo
 
 		if (NormalizedLX != 0.f)
 		{
-			AxisEvent Event(JoyStick::GamePadAxisLeftX, NormalizedLX);
+			AxisEvent Event(GamePad::Axes::GamePadAxisLeftX, NormalizedLX);
 			Info.CallbackFn(Event);
 		}
 
 		if (NormalizedLY != 0.f)
 		{
-			AxisEvent Event(JoyStick::GamePadAxisLeftY, NormalizedLY);
+			AxisEvent Event(GamePad::Axes::GamePadAxisLeftY, NormalizedLY);
 			Info.CallbackFn(Event);
 			
 		}
@@ -155,13 +154,13 @@ void XInput::ClampRightThumbstickDeadZone(XINPUT_GAMEPAD& Gamepad, const XInputC
 
 		if (NormalizedRX != 0.f)
 		{
-			AxisEvent Event(JoyStick::GamePadAxisRightX, NormalizedRX);
+			AxisEvent Event(GamePad::Axes::GamePadAxisRightX, NormalizedRX);
 			Info.CallbackFn(Event);
 		}
 
 		if (NormalizedRY != 0.f)
 		{
-			AxisEvent Event(JoyStick::GamePadAxisRightY, NormalizedRX);
+			AxisEvent Event(GamePad::Axes::GamePadAxisRightY, NormalizedRX);
 			Info.CallbackFn(Event);
 		}
 	}
@@ -190,7 +189,7 @@ void XInput::ClampLeftTriggerDeadZone(XINPUT_GAMEPAD& Gamepad, const XInputContr
 
 		if (NormalizedLT != 0.f)
 		{
-			AxisEvent Event(JoyStick::GamePadAxisLeftTrigger, NormalizedLT);
+			AxisEvent Event(GamePad::Axes::GamePadAxisLeftTrigger, NormalizedLT);
 			Info.CallbackFn(Event);
 		}
 	}
@@ -225,7 +224,7 @@ void XInput::ClampRightTriggerDeadZone(XINPUT_GAMEPAD& Gamepad, const XInputCont
 
 		if (NormalizedRT != 0.f)
 		{
-			AxisEvent Event(JoyStick::GamePadAxisRightTrigger, NormalizedRT);
+			AxisEvent Event(GamePad::Axes::GamePadAxisRightTrigger, NormalizedRT);
 			Info.CallbackFn(Event);
 		}
 	}
@@ -359,14 +358,14 @@ void XInput::CheckButtonInput(XINPUT_GAMEPAD& Gamepad, const XInputControllerInf
 		{
 			if (Keystroke.Flags == XINPUT_KEYSTROKE_KEYDOWN)
 			{
-				GamepadButtonPressedEvent Event(JoyStick::GamePadAxisLeftTrigger);
+				GamepadButtonPressedEvent Event(GamePad::Axes::GamePadAxisLeftTrigger);
 
 				Info.CallbackFn(Event);
 				
 			}
 			else if (Keystroke.Flags == XINPUT_KEYSTROKE_KEYUP)
 			{
-				GamepadButtonReleasedEvent Event(JoyStick::GamePadAxisLeftTrigger);
+				GamepadButtonReleasedEvent Event(GamePad::Axes::GamePadAxisLeftTrigger);
 				Info.CallbackFn(Event);
 			}
 			else if (Keystroke.Flags == XINPUT_KEYSTROKE_REPEAT)
@@ -379,13 +378,13 @@ void XInput::CheckButtonInput(XINPUT_GAMEPAD& Gamepad, const XInputControllerInf
 		{
 			if (Keystroke.Flags == XINPUT_KEYSTROKE_KEYDOWN)
 			{
-				GamepadButtonPressedEvent Event(JoyStick::GamePadAxisRightTrigger);
+				GamepadButtonPressedEvent Event(GamePad::Axes::GamePadAxisRightTrigger);
 
 				Info.CallbackFn(Event);
 			}
 			else if (Keystroke.Flags == XINPUT_KEYSTROKE_KEYUP)
 			{
-				GamepadButtonReleasedEvent Event(JoyStick::GamePadAxisRightTrigger);
+				GamepadButtonReleasedEvent Event(GamePad::Axes::GamePadAxisRightTrigger);
 				Info.CallbackFn(Event);
 			}
 			else if (Keystroke.Flags == XINPUT_KEYSTROKE_REPEAT)

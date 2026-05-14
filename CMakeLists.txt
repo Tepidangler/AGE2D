@@ -8,6 +8,8 @@ set(WWISE_INSTALL_PATH "" CACHE PATH "Path Wwise SDK is Installed to")
 option(BUILD_WITH_WWISE "Build with Wwise Audio Engine" OFF)
 set(SPDLOG_USE_STD_FORMAT ON CACHE BOOL "Use std::format instead of fmtlib")
 set(MSDF_ATLAS_USE_SKIA OFF CACHE BOOL "Use Skia with msdf-gen-atlas")
+
+option(BUILD_PACKAGE "Build a package for corresponding operating systems" OFF)
 if(WIN32)
     message(Status " VCPKG_ROOT: " $ENV{VCPKG_ROOT})
     set(YAML_MSVC_SHARED_RT OFF CACHE BOOL "Don't use /MD || Don't use /MT")
@@ -22,15 +24,27 @@ elseif(APPLE)
     set(CMAKE_STATIC_LIBRARY_SUFFIX ".a")
 endif()
 
+
 project(AGE LANGUAGES CXX)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 include(Dependencies.cmake)
 
+if(BUILD_PACKAGE)
+    include(GNUInstallDirs)
+endif()
+set(CPACK_DEBIAN_PACKAGE_NAME "age2d")
+set(CPACK_DEBIAN_PACKAGE_ARCHITECTURE "amd64")
+set(CPACK_PACKAGE_VENDOR "Alcoy Game Studio")
+set(CPACK_DEBIAN_PACKAGE_MAINTAINER "De'Lano Wilcox <tepidangler@protonmail.com>")
+set(CPACK_DEBIAN_PACKAGE_DEPENDS "libglfw3 (=3.4-3)")
 add_subdirectory(Engine)
 
 add_subdirectory(Game)
 
 add_subdirectory(Editor)
+if(BUILD_PACKAGE)
+    include(CPack)
+endif()
 
 

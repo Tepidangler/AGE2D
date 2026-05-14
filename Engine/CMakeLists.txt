@@ -53,7 +53,6 @@ if(WIN32)
 elseif(APPLE)
     add_compile_definitions(AG_PLATFORM_MACOS
                             GLFW_INCLUDE_NONE
-                            AK_OPTIMIZED
                             AL_LIBTYPE_STATIC
                             IMGUI_DEFINE_MATH_OPERATORS
                             _CRT_SECRURE_NO_WARNINGS
@@ -63,7 +62,6 @@ elseif(APPLE)
 elseif(UNIX)
     add_compile_definitions(AG_PLATFORM_LINUX
                             GLFW_INCLUDE_NONE
-                            AK_OPTIMIZED
                             AL_LIBTYPE_STATIC
                             IMGUI_DEFINE_MATH_OPERATORS
                             _CRT_SECRURE_NO_WARNINGS
@@ -96,6 +94,7 @@ endif()
 add_library(Engine STATIC
 
 		${STB_INC_DIRS}/stb_image.h
+		${STB_INC_DIRS}/stb_image.cpp
 		src/AGE/Core/Private/AGEpch.cpp
 		src/AGE/Core/Public/AGEpch.hpp
 		src/AGE/Audio/AudioEngine/Public/Soundbank.h
@@ -138,7 +137,7 @@ add_library(Engine STATIC
 		src/AGE/Audio/Fmod/Private/FmodEngine.cpp
 		src/AGE/Audio/Fmod/Public/FmodEngine.h
 		src/AGE/Audio/Wwise/Private/WwiseEngine.cpp
-		src/AGE/Audio/Wwise/Public/WwiseEngine.h
+		src/AGE/Audio/Wwise/Public/WWiseEngine.h
 		src/AGE/Camera/Private/EditorCamera.cpp
 		src/AGE/Camera/Public/EditorCamera.h
 		src/AGE/Camera/Public/Camera.h
@@ -163,7 +162,6 @@ add_library(Engine STATIC
 		src/AGE/Core/Public/Colors.h
 		src/AGE/Core/Public/Wwise_IDs.h
 		src/AGE/Core/Public/DeltaTime.h
-		src/AGE/Core/Public/JoyStickCodes.h
 		src/AGE/Core/Public/Buffer.h
 		src/AGE/Core/Public/Window.h
 		src/AGE/Core/Public/GamepadCodes.h
@@ -250,7 +248,6 @@ add_library(Engine STATIC
 		src/AGE/Render/Private/Pipeline.cpp
 		src/AGE/Render/Public/Pipeline.h
 		src/AGE/Render/Public/MSDFData.h
-		src/AGE/Render/Private/stb_image.cpp
 		src/AGE/RNG/Private/RNG.cpp
 		src/AGE/RNG/Public/RNG.h
 		src/AGE/Scene/Private/Scene.cpp
@@ -297,6 +294,13 @@ add_library(Engine STATIC
 		src/AGE/VisualScripting/Private/NodeEditorWindow.cpp
 		src/AGE/VisualScripting/Public/NodeEditorWindow.h
 		src/AGE/Core/Public/Pointers.h
+		src/AGE/Platform/Linux/Private/LinuxWindow.cpp
+		src/AGE/Platform/Linux/Public/LinuxWindow.h
+		src/AGE/Platform/Linux/Private/LinuxInput.cpp
+		src/AGE/Core/Private/InputBinding.cpp
+		src/AGE/Core/Public/InputBinding.h
+        src/AGE/TileMap/Private/Tilemap.cpp
+		src/AGE/TileMap/Public/Tilemap.h
 )
 set_property(TARGET Engine PROPERTY
 		MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
@@ -313,9 +317,9 @@ target_compile_definitions(Engine PUBLIC
 )
 if(WIN32)
 	target_compile_options(Engine PUBLIC
-			$<$<CONFIG:Debug>:/WX /Od>
-			$<$<CONFIG:RelWithDebInfo>:/WX /O2>
-			$<$<CONFIG:MinSizeRel>:/WX /Os /Oy>
+			$<$<CONFIG:Debug>:/WX>
+			$<$<CONFIG:RelWithDebInfo>:/O2>
+			$<$<CONFIG:MinSizeRel>:/Os /Oy>
 	)
 elseif(UNIX)
 	if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
@@ -415,6 +419,7 @@ target_link_libraries(Engine PUBLIC
 						box2d::box2d
 						ZLIB::ZLIB
 						OpenGL::GL
+						#opengl32.lib
 						tmx
                         ImGUI
                         glfw
@@ -474,3 +479,10 @@ else()
 endif()
 
 configure_file(CMake/Versioning.h.in Versioning.h)
+
+if(BUILD_PACKAGE)
+	install(TARGETS Engine
+			ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+			PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/age2d/Engine
+	)
+endif()

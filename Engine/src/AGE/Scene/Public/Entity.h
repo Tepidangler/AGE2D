@@ -254,8 +254,8 @@ static void Serialize(DataWriter* Serializer, const Entity& Data)
 
 			if (Data.HasComponent<TileMapRendererComponent>())
 			{
-				Serializer->WriteString("TileMap");
-				Serializer->WriteObject<TileMapRendererComponent>(Data.GetComponent<TileMapRendererComponent>());
+				//Serializer->WriteString("TileMap");
+				//Serializer->WriteObject<TileMapRendererComponent>(Data.GetComponent<TileMapRendererComponent>());
 			}
 			if (Data.HasComponent<CircleRendererComponent>())
 			{

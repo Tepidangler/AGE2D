@@ -20,7 +20,6 @@ namespace AGE
 	std::atomic_bool Active = true;
 	std::atomic_bool Scene_Flag = false;
 	static std::atomic<bool> bProgramRunning = true;
-	static std::atomic<bool> bLoadingFonts = true;
 
 	/**
  * Constructor for the App class. Initializes an instance of the application with a name and command line arguments.
@@ -44,11 +43,11 @@ App::App(const std::string& name, ApplicationCommandLineArgs Args)
 		m_AppConfig.ProjectBasePath = std::string(Buffer[0]) + "/OneDrive/Documents/AGEProjects";
 		delete Buffer;
 #elif defined(AG_PLATFORM_LINUX)
-		std::string BasePath{std::getenv("USERPROFILE")};
-		m_AppConfig.ProjectBasePath = std::string{ BasePath + "/OneDrive/Documents/AGEProjects"};
+		std::string BasePath{std::getenv("HOME")};
+		m_AppConfig.ProjectBasePath = std::string{ BasePath + "/ageprojects"};
 #elif defined(AG_PLATFORM_MACOS)
-		std::string BasePath{std::getenv("USERPROFILE")};
-		m_AppConfig.ProjectBasePath = std::string{ BasePath + "/OneDrive/Documents/AGEProjects"};
+		std::string BasePath{std::getenv("HOME")};
+		m_AppConfig.ProjectBasePath = std::string{ BasePath + "/AGEProjects"};
 #endif
 
 		if (m_CommandLineArgs.Count < 3)
@@ -56,15 +55,23 @@ App::App(const std::string& name, ApplicationCommandLineArgs Args)
 			bShowNewProjectMenu = true;
 		}
 
-		IniReader ini(m_CommandLineArgs.Args[1]);
-		bool HasMulti;
-		m_AppConfig.EditorAssetPath = ini.Read("Paths", "EditorAssetsPath",HasMulti);
-		m_AppConfig.DefaultFontPath = m_AppConfig.EditorAssetPath.string() + "/Fonts/Open_Sans/static/OpenSans-Regular.ttf";
-		if (HasMulti)
+		if (!m_CommandLineArgs.Args[1])
 		{
-			std::vector<std::string> Values  = ini.ReadAll("Paths", "EditorAssetsPath");
-			return;
+
 		}
+		else
+		{
+			IniReader ini(m_CommandLineArgs.Args[1]);
+			bool HasMulti;
+			m_AppConfig.EditorAssetPath = ini.Read("Paths", "EditorAssetsPath",HasMulti);
+			m_AppConfig.DefaultFontPath = m_AppConfig.EditorAssetPath.string() + "/Fonts/Open_Sans/static/OpenSans-Regular.ttf";
+			if (HasMulti)
+			{
+				std::vector<std::string> Values  = ini.ReadAll("Paths", "EditorAssetsPath");
+				return;
+			}
+		}
+
 
 
 	}
@@ -92,7 +99,7 @@ App::~App()
  */
 void App::Init()
 	{
-		m_DeviceManager = Scope<DeviceManager>(DeviceManager::Create(AudioEngineType::AGESoundEngine));
+		m_DeviceManager = CreateScope<DeviceManager>(AudioEngineType::AGESoundEngine);
 		m_DeviceManager->GetWindow().SetEventCallback(BIND_EVENT_FN(App::OnEvent));
 		//m_DeviceManager->GetXInput().SetEventCallback(BIND_EVENT_FN(App::OnEvent));
 #if !AG_DIST
@@ -373,14 +380,14 @@ void App::LoadShaders()
 		{
 		case RendererAPI::OpenGL:
 		{
-			for (auto& S : std::filesystem::recursive_directory_iterator(m_AppConfig.EditorAssetPath.string() + "/Shaders/GLSL/Vertex"))
-			{
-				if (!S.is_directory())
-				{
-					AssetManager::Get().LoadShader(S.path().string());
-				}
-			}
 			InitRenderer();
+			//for (auto& S : std::filesystem::recursive_directory_iterator(m_AppConfig.EditorAssetPath.string() + "Shaders/GLSL/Vertex"))
+			//{
+			//	if (!S.is_directory())
+			//	{
+			//		AssetManager::Get().LoadShader(S.path().string());
+			//	}
+			//}
 			break;
 		}
 		default:

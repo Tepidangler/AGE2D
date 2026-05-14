@@ -8,7 +8,6 @@
 #endif //AGE_DATABASEWINDOW_H
 
 #pragma once
-#include <imgui.h>
 #include "Editor_Core/Public/Database.h"
 #include "GameFramework/GameStructs/Public/GameStructs.h"
 

@@ -3,10 +3,26 @@
 #include "Core/Public/Core.h"
 #include "Core/Public/Pointers.h"
 
+#ifdef __clang__
+#pragma clang diagnostic push
+//#pragma clang diagnostic ignored "-Werror"
+#include "spdlog/spdlog.h"
+#include "spdlog/fmt/ostr.h"
+#pragma clang diagnostic pop
+#elif defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Werror"
+#include "spdlog/spdlog.h"
+#include "spdlog/fmt/ostr.h"
+#pragma GCC diagnostic pop
+#elif defined(_MSC_VER)
 #pragma warning(push, 0)
 #include "spdlog/spdlog.h"
 #include "spdlog/fmt/ostr.h"
 #pragma warning(pop)
+#else
+#error "Compiler is not supported with AGE yet"
+#endif
 
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include <string_view>
@@ -216,7 +232,7 @@ void Critical(std::string_view fmt, Args&& ... args)
 			printf("%s", Line.c_str());
 #endif
 		}
-#ifdef AGE_ENABLE_ASSERTS
+#if defined(AGE_ENABLE_ASSERTS)
 		template<typename ... Args> // CoreLogger->Assert(true ==  false, "True does not equal false")
 		"This function is a critical part of debugging and should only be used when you know what you're doing."
 void Assert(bool Condition, std::string_view fmt, Args&& ... args)
@@ -239,11 +255,11 @@ void Assert(bool Condition, std::string_view fmt, Args&& ... args)
 				__debugbreak();
 #elif defined(AG_PLATFORM_LINUX)
 				printf("%s", Line.c_str());
-#ifdef __clang__
+	#ifdef __clang__
 				__builtin_debugtrap();
-#else
+	#else
 				__builtin_trap();
-#endif
+	#endif
 #endif
 			}
 		}

@@ -5,6 +5,8 @@
 #ifdef __clang__
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
+#pragma clang diagnostic ignored "-Wunused-function"
+#pragma clang diagnostic ignored "-Wint-in-bool-context"
 #include "msdf-atlas-gen/msdf-atlas-gen.h"
 #pragma clang diagnostic pop
 #elif defined(__GNUC__)

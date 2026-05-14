@@ -9,19 +9,15 @@
 #include "Actors/Public/Actor.h"
 #include <functional>
 #include <cinttypes>
+#include "Core/Public/InputBinding.h"
 
 namespace GameFramework
 {
-	enum class KeyState : uint8_t { Pressed = 0, Released = 1 };
-
+#if  0
 	struct InputActionBinding
 	{
 	private:
-		uint8_t bConsumeInput = 1;
-		uint8_t bExecuteWhenPaused = 1;
-		uint8_t bPaired = 1;
-		std::string Name;
-		int Handle;
+
 
 	public:
 		KeyState State;
@@ -31,10 +27,10 @@ namespace GameFramework
 
 	public:
 		InputActionBinding()
-			:bPaired(false), Name(std::string()), State(KeyState::Pressed), Handle(-1), bConsumeInput(true), bExecuteWhenPaused(false) {}
+			:bPaired(false), Name(std::string()), bConsumeInput(true), bExecuteWhenPaused(false), Handle(-1), State(KeyState::Pressed){}
 
 		InputActionBinding(const std::string& ActionName, const KeyState EventStatus)
-			: bPaired(false), Name(ActionName), State(EventStatus), Handle(-1), bConsumeInput(true), bExecuteWhenPaused(false) {}
+			: bPaired(false), Name(ActionName), bConsumeInput(true), bExecuteWhenPaused(false),Handle(-1), State(EventStatus) {}
 
 		InputActionBinding(const InputActionBinding&) = default;
 		//InputActionBinding(const AGE::Ref<InputActionBinding>&) = default;
@@ -69,12 +65,12 @@ namespace GameFramework
 	struct InputAxisBinding
 	{
 	public:
+		std::string AxisName;
+		float AxisValue;
 		uint8_t bConsumeInput = 1;
 		uint8_t bExecuteWhenPaused = 1;
 
-		std::string AxisName;
 
-		float AxisValue;
 
 		using AxisCallbackFn = std::function<void(float)>;
 
@@ -96,6 +92,16 @@ namespace GameFramework
 			BindedFunction(AxisValue);
 		}
 	};
+#endif
+
+	namespace InputType
+	{
+		enum Type
+		{
+			Gamepad,
+			KBM
+		};
+	}
 
 	class InputComponent : public AGE::ScriptableEntity
 	{
@@ -123,53 +129,84 @@ namespace GameFramework
 
 		}
 
-		std::vector<AGE::Ref<InputActionBinding>> m_ActionBindings;
-		std::vector<AGE::Ref<InputAxisBinding>> m_AxisBindings;
+		std::vector<AGE::Ref<AGE::InputBinding>> m_ActionBindings;
+		std::vector<AGE::Ref<AGE::InputBinding>> m_AxisBindings;
 		bool bBlockInput = false;
 
-
-
-		template<typename T>
-		InputActionBinding& BindAction(const std::string& Action, KeyState State, T* Instigator, InputActionBinding::ActionCallbackFn Func)
+		AGE::InputBinding& BindAction(const std::string& Action,  AGE::KeyState::State state, uint16_t button, InputType::Type type, AGE::InputBinding::ActionCallbackFn Func)
 		{
-			InputActionBinding Binding(Action, State);
-
-			return AddActionBinding(Binding);
+//			InputActionBinding Binding(Action, state);
+			switch (type)
+			{
+				case InputType::KBM:
+				{
+					m_ActionBindings.emplace_back();
+					AddActionBinding(AGE::InputBinding::CreateKBMBinding(Action,(AGE::Key::Keys)button,AGE::Binding::Action));
+					m_ActionBindings.back()->BindActionFunction((Func));
+					m_AxisBindings.back()->SetInputType("KBM");
+					return *m_ActionBindings.back().get();
+				}
+				case InputType::Gamepad:
+				{
+					m_ActionBindings.emplace_back(AGE::InputBinding::CreateGamepadBinding(Action,(AGE::GamePad::Buttons)button,AGE::Binding::Action));
+					AddActionBinding(m_ActionBindings.back());
+					m_ActionBindings.back()->BindActionFunction((Func));
+					m_AxisBindings.back()->SetInputType("Gamepad");
+					return *m_ActionBindings.back().get();
+				}
+				default:
+				{
+					AGE::CoreLogger::Error("Unknown Input Binding! Creating Invalid Type...");
+					return *AGE::InputBinding::CreateInvalid().get();
+				}
+			}
 		}
 
-		template<typename T>
-		AGE::Ref<InputAxisBinding>& BindAxis(const std::string& Axis, T* Instigator, InputAxisBinding::AxisCallbackFn Func)
+		AGE::Ref<AGE::InputBinding>& BindAxis(const std::string& Axis, uint16_t button, InputType::Type type, AGE::InputBinding::AxisCallbackFn Func)
 		{
-			InputAxisBinding Binding(Axis);
-			m_AxisBindings.emplace_back(AGE::CreateRef<InputAxisBinding>(Binding));
-			Binding.BindFunction<T>(Func);
+			switch (type)
+			{
+				case InputType::KBM:
+				{
+					m_AxisBindings.emplace_back(AGE::InputBinding::CreateKBMBinding(Axis,(AGE::Key::Keys)button, AGE::Binding::Axis));
+					m_AxisBindings.back()->SetInputType("KBM");
+					break;
+				}
+				case InputType::Gamepad:
+				{
+					m_AxisBindings.emplace_back(AGE::InputBinding::CreateGamepadBinding(Axis,(AGE::GamePad::Axes)button,AGE::Binding::Axis));
+					m_AxisBindings.back()->SetInputType("Gamepad");
+					break;
+				}
+			}
+			m_AxisBindings.back()->BindAxisFunction(Func);
 			return m_AxisBindings.back();
 		}
 
-		InputActionBinding& AddActionBinding(InputActionBinding Binding)
+		AGE::InputBinding& AddActionBinding(AGE::Ref<AGE::InputBinding> Binding)
 		{
-			m_ActionBindings.emplace_back(AGE::CreateRef<InputActionBinding>(Binding));
-			InputActionBinding& BindRef = *m_ActionBindings.back().get();
-			//BindRef.GenerateNewHandle();
 
-			if (BindRef.State == KeyState::Pressed || BindRef.State == KeyState::Released)
+			AGE::InputBinding& BindRef = *m_ActionBindings.back().get();
+			BindRef.GenerateNewHandle();
+
+			if (BindRef.m_State == AGE::KeyState::Pressed || BindRef.m_State == AGE::KeyState::Released)
 			{
-				const KeyState PairedEvent = Binding.State == KeyState::Pressed ? KeyState::Released : KeyState::Pressed;
+				const AGE::KeyState::State PairedEvent = Binding->m_State == AGE::KeyState::Pressed ? AGE::KeyState::Released : AGE::KeyState::Pressed;
 
-				for (size_t i = m_ActionBindings.size() - 2; i >= 0; i--)
+				for (int i = m_ActionBindings.size() - 2; i >= 0; i--)
 				{
-					InputActionBinding& Ref = *m_ActionBindings[i].get();
-					if (Ref.GetActionName() == BindRef.GetActionName())
+					AGE::InputBinding& Ref = *m_ActionBindings[(size_t)i].get();
+					if (Ref.GetName() == BindRef.GetName())
 					{
-						if (Ref.bPaired)
+						if (Ref.IsPaired())
 						{
-							BindRef.bPaired = true;
+							BindRef.SetPaired(true);
 							break;
 						}
-						else if (Ref.State == PairedEvent)
+						else if (Ref.m_State == PairedEvent)
 						{
-							Ref.bPaired = true;
-							BindRef.bPaired = true;
+							Ref.SetPaired(true);
+							BindRef.SetPaired(true);
 						}
 					}
 				}

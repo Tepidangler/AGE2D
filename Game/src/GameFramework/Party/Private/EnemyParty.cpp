@@ -88,7 +88,7 @@ namespace GameFramework
     bool EnemyParty::IsPartyAlive()
     {
         size_t NumOfUnconciousCharacters = 0;
-        for (auto& M : m_Party)
+        for ([[maybe_unused]] auto& M : m_Party)
         {
 #if 0
             if (M.second.GetStats().HP <= 0)

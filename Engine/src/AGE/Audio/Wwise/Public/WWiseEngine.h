@@ -24,7 +24,7 @@ namespace AGE
 
 		Wwise();
 
-		~Wwise();
+		~Wwise() override;
 
 
 		/**

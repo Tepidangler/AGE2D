@@ -1,3 +1,4 @@
+#ifdef AG_PLATFORM_WINDOWS
 #include "AGEpch.hpp"
 #include "Utils/Public/WindowsUtils.h"
 #include "Platform/Windows/Public/WindowsWindow.h"
@@ -10,8 +11,6 @@
 #include "Events/Public/MouseEvent.h"
 #include "Events/Public/GameEvent.h"
 #include "Events/Public/RendererEvent.h"
-
-#include "Core/Public/JoyStickCodes.h"
 
 #include <stb_image.h>
 #include <glad/glad.h>
@@ -195,13 +194,7 @@ void WindowsWindow::Init(const WindowProps& Props)
 		m_Window = glfwCreateWindow((int)Props.Width, (int)Props.Height, m_Data.Title.c_str(), nullptr, nullptr);
 		m_Context = GraphicsContext::Create(m_Window);
 		m_Context->Init();
-#ifdef AG_PLATFORM_WINDOWS
 		m_Win32Window = glfwGetWin32Window(m_Window);
-#elif defined(AG_PLATFORM_LINUX)
-		m_X11Window = glfwGetX11Window(m_Window);
-#elif defined(AG_PLATFORM_MACOS)
-		m_CocoaWindow = glfwGetCocoaWindow(m_Window);
-#endif
 
 		glfwSetWindowUserPointer(m_Window, &m_Data);
 			
@@ -447,6 +440,6 @@ void WindowsWindow::ProcessJoystickInput()
 	{
 	}
 }
-
+#endif
 
 

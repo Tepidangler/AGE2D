@@ -1,5 +1,4 @@
 if(WIN32)
-find_path(STB_INC_DIRS "stb_image.h")
 find_path(FILEWATCH_INC_DIRS "thomasmonkman-filewatch/FileWatch.hpp")
 find_path(SIMPLEINI_INCLUDE_DIRS "ConvertUTF.c")
 find_path(MINIMP3_INCLUDE_DIRS "minimp3/minimp3.h")
@@ -43,6 +42,7 @@ FetchContent_Declare(openal-soft
         GIT_TAG master)
 
 set(LIBTYPE STATIC)
+
 FetchContent_MakeAvailable(openal-soft)
 
 set(OPENAL_INC_DIRS
@@ -64,6 +64,13 @@ GIT_TAG master
 )
 
 FetchContent_MakeAvailable(ImGuizmo)
+
+#stb
+FetchContent_Declare(stb
+        GIT_REPOSITORY https://github.com/Tepidangler/stb.git
+        GIT_TAG master
+)
+FetchContent_MakeAvailable(stb)
 
 if(WIN32)
 FetchContent_Declare(Imgui-Node-Editor
@@ -138,12 +145,7 @@ if(UNIX)
             GIT_TAG develop
     )
     FetchContent_MakeAvailable(nlohmann_json)
-    #stb
-    FetchContent_Declare(stb
-            GIT_REPOSITORY https://github.com/Tepidangler/stb.git
-            GIT_TAG master
-    )
-    FetchContent_MakeAvailable(stb)
+
     #filwatch
     FetchContent_Declare(filewatch
             GIT_REPOSITORY https://github.com/Tepidangler/filewatch.git
@@ -181,7 +183,6 @@ if(UNIX)
     FetchContent_MakeAvailable(Imgui-Node-Editor)
 
 
-    find_path(STB_INC_DIRS "stb_image.h" ${stb_SOURCE_DIR})
     find_path(FILEWATCH_INC_DIRS "FileWatch.hpp" ${filewatch_SOURCE_DIR})
     find_path(SIMPLEINI_INCLUDE_DIRS "ConvertUTF.c" ${simpleini_SOURCE_DIR})
     find_path(MINIMP3_INCLUDE_DIRS "minimp3.h" ${minimp3_SOURCE_DIR})
@@ -189,3 +190,4 @@ if(UNIX)
     find_path(RCSV_INC_DIRS "src/rapidcsv.h" ${rapidcsv_SOURCE_DIR})
 
 endif()
+    find_path(STB_INC_DIRS "stb_image.h" ${stb_SOURCE_DIR})

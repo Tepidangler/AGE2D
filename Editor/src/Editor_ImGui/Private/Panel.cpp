@@ -11,18 +11,13 @@
 
 namespace AGE
 {
-	Panel::Panel(const char* Name)
-		: m_Name(Name)
+	Panel::Panel()
 	{
 
 	}
 
 	void Panel::OnImGuiRender(AGE::TimeStep DeltaTime)
 	{
-		ImVec2 View = ImGui::GetContentRegionAvail();
-
-		static int Clicked = 0;
-
 		auto Stats2D = AGE::Renderer2D::GetStats();
 
 		std::string Name = "None";

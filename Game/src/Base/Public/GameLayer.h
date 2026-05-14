@@ -33,9 +33,9 @@ namespace Proj
 		AGE::Vector2 m_ViewportSize = { 1280.f,720.f };
 		static GameLayer* s_Instance;
 
-		bool m_bLoadedIni = false;
+		[[maybe_unused]] bool m_bLoadedIni = false;
 
 
-		float DT = 0.f;
+		[[maybe_unused]] float DT = 0.f;
 	};
 }

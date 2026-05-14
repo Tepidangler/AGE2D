@@ -602,6 +602,11 @@ AudioSource AGESound::LoadAudioSourceMP3(const std::string& FileName)
 
 		mp3dec_file_info_t Info;
 		int LoadResult = mp3dec_load(&s_Mp3d, FileName.c_str(), &Info, NULL, NULL);
+		if (!LoadResult)
+		{
+			CoreLogger::Error("Unable to load file: {}", FileName);
+			return AudioSource();
+		}
 		size_t Size = Info.samples * sizeof(mp3d_sample_t);
 
 		auto SampleRate = Info.hz;
@@ -660,7 +665,7 @@ AudioSource AGESound::LoadWav(const std::string& FileName)
 		std::vector<char> Data(Buffer, Buffer + Size);
 		AudioSource Audio;
 		Audio.SetSoundData(Data);
-		auto ALFormat = GetFormat(Channels, BitsPerSample);
+		//auto ALFormat = GetFormat(Channels, BitsPerSample);
 
 		return Audio;
 	}

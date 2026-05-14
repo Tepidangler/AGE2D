@@ -80,7 +80,7 @@ namespace AGE
 					EditorLayer::Get().SetViewportSize(Vector2(View[0], View[1]));
 					SpecView = View;
 				}
-				ImGui::Image((ImTextureID)(uintptr_t)FrameBuffer->GetColorAttachmentRendererID(Index), ImVec2(SpecView[0], SpecView[1]), ImVec2(0, 1), ImVec2(1, 0));
+				ImGui::Image((ImTextureID)(uintptr_t)FrameBuffer->GetColorAttachmentRendererID((uint32_t)Index), ImVec2(SpecView[0], SpecView[1]), ImVec2(0, 1), ImVec2(1, 0));
 
 				if (ImGui::BeginDragDropTarget())
 				{
@@ -217,7 +217,7 @@ namespace AGE
 						auto [TC, CC2D] = View.get<TransformComponent, CapsuleCollider2DComponent>(E);
 
 						Vector3 Translation = TC.Translation + Vector3(CC2D.Offset, .001f);
-						Vector3 Scale = TC.Scale * Vector3(CC2D.Radius * 2.f, 1.f);
+						Vector3 Scale = TC.Scale * Vector3(Vector2(CC2D.Radius * 2.f), 1.f);
 
 						Matrix4D Transform = glm::translate(glm::mat4(1.f), Convert::ToGLM(Translation)) *
 							glm::rotate(glm::mat4(1.f), TC.Rotation.z, glm::vec3(0.f, 0.f, 1.f)) *

@@ -199,7 +199,7 @@ find_package(nlohmann_json 3.12.0 REQUIRED)
 endif()
 find_package(fmt CONFIG REQUIRED)
 target_link_libraries(Editor PRIVATE 
-                        Engine #-WHOLEARCHIVE:$<TARGET_FILE:Engine>
+                        Engine
                         Game
                         Freetype::Freetype
                         OpenSSL::Crypto
@@ -223,3 +223,10 @@ else()
 endif()
 
 configure_file(CMake/Versioning.h.in Versioning.h)
+
+if(BUILD_PACKAGE)
+    install(TARGETS Editor
+            RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+            PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/age2d/Editor
+    )
+endif()

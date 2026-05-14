@@ -77,8 +77,6 @@ virtual uint32_t GetDepthAttachmentRendererID() const override {return m_DepthAt
 		FramebufferTextureSpecification m_DepthAttachmentSpecification = FramebufferTextureFormat::INVALIDFORMAT;
 		uint32_t m_DepthAttachment = 0;
 
-		int m_nrChannels = 4;
-
 		FrameBufferSpecification m_Specification;
 
 	};

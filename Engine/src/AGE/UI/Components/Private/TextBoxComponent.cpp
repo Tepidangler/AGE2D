@@ -67,7 +67,7 @@ void TextBoxComponent::DrawFontSelectionComboBox()
 
 		if (m_StringProperties.FontName.empty())
 		{
-			m_StringProperties.FontName = AGEFont::GetDefault()->GetAtlasTexture()->GetName();
+			m_StringProperties.FontName = AGEFont::GetDefault()->GetFontName();
 		}
 		ImGui::Text("Fonts"); ImGui::SameLine();
 		if (ImGui::BeginCombo("##Fonts",m_StringProperties.FontName.c_str()))

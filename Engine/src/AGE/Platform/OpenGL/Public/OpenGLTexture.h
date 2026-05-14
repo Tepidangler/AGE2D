@@ -113,8 +113,8 @@ bool operator==(const Texture& Other) const override
 		std::string m_Name;
 		uint32_t m_TextureID;
 		uint64_t m_AssetID;
-		int m_Width,m_Height,m_nrChannels;
 		TextureSpecification m_Specification;
+		int m_Width,m_Height,m_nrChannels = 0;
 		std::pair<uint8_t*,size_t> m_ImageData = {nullptr, 0};
 
 		GLenum m_InternalFormat, m_DataFormat;

@@ -69,26 +69,26 @@ namespace AGE
 			return std::string("UNDEFINED");
 		}
 
-		uint8_t ConvertToAxisKeyBinding(const std::string& String)
+		uint16_t ConvertToAxisKeyBinding(const std::string& String)
 		{
 			if (String == "Left Joystick X")
 			{
-				return JoyStick::Axes::GamePadAxisLeftX;
+				return GamePad::Axes::GamePadAxisLeftX;
 			}
 
 			if (String == "Left Joystick Y")
 			{
-				return JoyStick::Axes::GamePadAxisLeftY;
+				return GamePad::Axes::GamePadAxisLeftY;
 			}
 
 			if (String == "Right Joystick X")
 			{
-				return JoyStick::Axes::GamePadAxisRightX;
+				return GamePad::Axes::GamePadAxisRightX;
 			}
 
 			if (String == "Right Joystick Y")
 			{
-				return JoyStick::Axes::GamePadAxisRightY;
+				return GamePad::Axes::GamePadAxisRightY;
 			}
 
 			if (String == "DPad Left")
@@ -115,7 +115,7 @@ namespace AGE
 
 		}
 
-		uint8_t ConvertToActionKeyBinding(const std::string& String)
+		uint16_t ConvertToActionKeyBinding(const std::string& String)
 		{
 
 			if (String == "Face Button Bottom")
@@ -543,7 +543,6 @@ namespace AGE
 			{
 				if (ImGui::Begin("Create New Project", &bCreateProject))
 				{
-					static char Input[128];
 					ImGui::InputText("Project Name", &Project::GetActive()->GetConfig().Name);
 					if (ImGui::Button("Create Project"))
 					{
@@ -559,7 +558,6 @@ namespace AGE
 			if (bEditProjectSettings)
 			{
 				MakeProjectConfigMenu();
-				SaveProjectIniFile();
 			}
 		}
 	}
@@ -589,7 +587,7 @@ namespace AGE
 				ImGui::Text("Start Scene "); ImGui::SameLine();
 				if (ImGui::BeginCombo("##SelectedScene", CurrentSceneSelection.c_str()))
 				{
-					for (int i = 0; i < m_SceneNames.size(); i++)
+					for (size_t i = 0; i < m_SceneNames.size(); i++)
 					{
 						bool IsSelected = CurrentSceneSelection == m_SceneNames[i];
 						if (ImGui::Selectable(m_SceneNames[i].c_str(), IsSelected))
@@ -600,134 +598,35 @@ namespace AGE
 
 					ImGui::EndCombo();
 				}
-
-
 			}
 			ImGui::Separator();
 			if (ImGui::CollapsingHeader("Input Bindings"))
 			{
-				ImGui::Text("Axis Bindings");
-				ImGui::SameLine();
 				if (ImGui::Button("Add Axis Binding"))
 				{
-					if (m_AxisBindings.size() == 0)
-					{
-						size_t Size = m_AxisBindings.size();
-						m_AxisBindings.resize(Size + 1);
-						m_AxisBindings[Size].second.resize(1);
-					}
-					else
-					{
-						size_t Size = m_AxisBindings.size();
-						m_AxisBindings.resize(Size + 1);
-						m_AxisBindings[Size].second.resize(1);
-
-					}
-
+					size_t Size = m_AxisBindingData.size();
+					m_AxisBindingData.resize(Size + 1);
 				}
-
-				if (ImGui::CollapsingHeader("##AxisBindings"))
-				{
-					if (ImGui::BeginTable("Axis KeyBindings", 1))
-					{
-						for (int i = 0; i < m_AxisBindings.size(); i++)
-						{
-							std::string InputTextName = "##KeyBinding" + std::to_string(i);
-							std::string AddName = "Add Axis Key Binding " + std::to_string(i);
-							std::string DeleteName = "Delete Axis Binding " + std::to_string(i);
-							ImGui::TableNextColumn();
-							ImGui::InputText(InputTextName.c_str(), &m_AxisBindings[i].first); // The name of the Axis which should be binded to
-							ImGui::SameLine();
-							if (ImGui::Button(AddName.c_str()))
-							{
-								m_AxisBindings[i].second.resize(m_AxisBindings[i].second.size() + 1);
-							}
-							ImGui::SameLine();
-							if (ImGui::Button(DeleteName.c_str()))
-							{
-								if (m_AxisBindings.size() > 0)
-								{
-									m_AxisBindings.resize(m_AxisBindings.size() - 1);
-									m_AxisBindings.shrink_to_fit();
-								}
-							}
-							std::string KeyName = "##Keys" + std::to_string(i);
-							if (ImGui::CollapsingHeader(KeyName.c_str()))
-							{
-								for (int x = 0; x < m_AxisBindings[i].second.size(); x++)
-								{
-									DrawAxisCombo(i, x);
-								}
-								ImGui::Separator();
-							}
-							Project::GetActive()->GetInfo().UpdateAxisBindings(m_AxisBindings);
-						}
-						ImGui::EndTable();
-					}
-				}
-				ImGui::Separator();
-				ImGui::Text("ActionBindings");
 				ImGui::SameLine();
+				if (ImGui::Button("Save Axis Binding"))
+				{
+					SyncBindings();
+				}
+				DrawAxisBindings();
+				ImGui::Separator();
 				if (ImGui::Button("Add Action Binding"))
 				{
-					if (m_ActionBindings.size() == 0)
-					{
-						size_t Size = m_ActionBindings.size();
-						m_ActionBindings.resize(Size + 1);
-						m_ActionBindings[Size].second.resize(1);
-					}
-					else
-					{
-						size_t Size = m_ActionBindings.size();
-						m_ActionBindings.resize(Size + 1);
-						m_ActionBindings[Size].second.resize(1);
-					}
+					size_t Size = m_ActionBindingData.size();
+					m_ActionBindingData.resize(Size + 1);
 				}
-				if (ImGui::CollapsingHeader("##ActionBindings"))
+				ImGui::SameLine();
+				if (ImGui::Button("Save Action Binding"))
 				{
-					if (ImGui::BeginTable("Action KeyBindings", 1))
-					{
-						for (int i = 0; i < m_ActionBindings.size(); i++)
-						{
-							ImGui::TableNextColumn();
-							std::string InputTextName = "##ActionBinding" + std::to_string(i);
-							std::string AddName = "Add Action Key Binding " + std::to_string(i);
-							std::string DeleteName = "Delete Action Binding " + std::to_string(i);
-							ImGui::InputText(InputTextName.c_str(), &m_ActionBindings[i].first); // The name of the Axis which should be binded to
-							ImGui::SameLine();
-							if (ImGui::Button(AddName.c_str()))
-							{
-								m_ActionBindings[i].second.resize(m_ActionBindings[i].second.size() + 1);
-							}
-							ImGui::SameLine();
-							if (ImGui::Button(DeleteName.c_str()))
-							{
-								if (m_ActionBindings.size() > 0)
-								{
-									m_ActionBindings.resize(m_ActionBindings.size() - 1);
-									m_ActionBindings.shrink_to_fit();
-								}
-							}
-							std::string KeyName = "##Keys" + std::to_string(i);
-							if (ImGui::CollapsingHeader(KeyName.c_str()))
-							{
-								for (int x = 0; x < m_ActionBindings[i].second.size(); x++)
-								{
-									DrawActionCombo(i, x);
-								}
-								ImGui::Separator();
-							}
-							Project::GetActive()->GetInfo().UpdateActionBindings(m_ActionBindings);
-						}
-						ImGui::EndTable();
-					}
-
-
+					SyncBindings();
 				}
-
+				DrawActionBindings();
 			}
 			ImGui::End();
-
 		}
 	}
 
@@ -857,7 +756,7 @@ namespace AGE
 			RendererAPI::SetAPI((RendererAPI::API)Project::GetActive()->GetInfo().Renderer);
 
 			OpenScene(StartScenePath);
-			LoadProjectIniFile();
+			LoadInputIni();
 		}
 
 #ifdef AG_PLATFORM_WINDOWS
@@ -879,24 +778,58 @@ namespace AGE
 	{
 		Project::SaveActive(m_ProjectFilePath, App::Get().GetDeviceManager().GetAudioManager().GetAudioEngineType(), RendererAPI::GetAPI(), EditorLayer::Get().m_EditorScenePath, m_QuestFilePath);
 	}
-	void MainMenuBar::SaveProjectIniFile()
+	void MainMenuBar::SaveInputIni()
 	{
-		if (!m_ProjectFilePath.empty())
+		AppConfig& Config = App::Get().GetAppConfig();
+		if (!Config.CurrentProjectPath.empty())
 		{
-			IniSerializer Serializer(m_AxisBindings, m_ActionBindings);
-			Serializer.Serialize(m_ProjectFilePath.string() + "/Config", "/Input.ini");
+			if (!std::filesystem::exists(Config.CurrentProjectPath/ "Config/Input.ini"))
+			{
+				std::ofstream newfile(std::filesystem::path(Config.CurrentProjectPath/ "Config/Input.ini"));
+				if (newfile.is_open())
+				{
+					newfile.close();
+					CoreLogger::Trace("File successfully created at {}", std::filesystem::path(Config.CurrentProjectPath/ "Config/Input.ini").string());
+				}
+				else
+				{
+					CoreLogger::Trace("Failed to create file at {}", std::filesystem::path(Config.CurrentProjectPath/ "Config/Input.ini").string());
+				}
+			}
+			IniWriter Writer(Config.CurrentProjectPath / "Config/Input.ini");
+			std::ranges::for_each(m_AxisBindings.begin(), m_AxisBindings.end(),[&](const Ref<InputBinding>& Binding )
+			{
+				Writer.Write(Binding->GetInputType(),Binding->GetName(),std::to_string(Binding->GetKey()));
+
+			});
+
+			std::ranges::for_each(m_ActionBindings.begin(), m_ActionBindings.end(),[&](const Ref<InputBinding>& Binding)
+			{
+				Writer.Write(Binding->GetInputType(),Binding->GetName(),std::to_string(Binding->GetKey()));
+			});
+
+			Writer.SaveFile();
 		}
 
 
 	}
-	void MainMenuBar::LoadProjectIniFile()
+	void MainMenuBar::LoadInputIni()
 	{
+		AppConfig& Config = App::Get().GetAppConfig();
+
+		IniReader Reader(Config.CurrentProjectPath / "Config/Input.ini");
+
+		//TODO: Extend Ini reader to handle a use case where we don't know what's in the file ahead of time and we need to just read the entire file and parse it
+		bool HasMultiVal = false;
+		Reader.Read("Gamepad", "Move Forward", HasMultiVal);
+#if 0
 		IniSerializer Serializer(m_AxisBindings, m_ActionBindings);
 		Serializer.Deserialize(Project::GetActive()->GetInfo().ConfigFilepath.string(), "/Input.ini");
 		m_AxisBindings.resize(Project::GetActive()->GetInfo().AxisBindings.size());
 		m_ActionBindings.resize(Project::GetActive()->GetInfo().ActionBindings.size());
 		std::copy(Project::GetActive()->GetInfo().AxisBindings.begin(), Project::GetActive()->GetInfo().AxisBindings.end(), m_AxisBindings.begin());
 		std::copy(Project::GetActive()->GetInfo().ActionBindings.begin(), Project::GetActive()->GetInfo().ActionBindings.end(), m_ActionBindings.begin());
+#endif
 
 		AssetManager::Get().GetSceneNames(m_SceneNames);
 	}
@@ -915,22 +848,90 @@ namespace AGE
 		Project::Package(Project::GetActive()->GetProjectDirectory().string() + "/PackagedBuilds/", App::Get().GetTargetPlatform());
 	}
 
-	void MainMenuBar::DrawAxisCombo(int i, int x)
+	void MainMenuBar::DrawAxisBindings()
 	{
-		const char* KeyBindingStrings[] = { "Left Joystick X", "Left Joystick Y", "Right Joystick X", "Right Joystick Y", "DPad Left", "DPad Up", "DPad Right", "DPad Down" };
-		const char* CurrentKeyBindingString = KeyBindingStrings[(int)m_AxisBindings[i].second[x]];
-		std::string ComboName = "Binding " + std::to_string(x);
+		if (ImGui::CollapsingHeader("AxisBindings"))
+		{
+			if (ImGui::BeginTable("Axis KeyBindings", 1))
+			{
+				for (size_t i = 0; i < m_AxisBindingData.size(); i++)
+				{
+					std::string InputTextName = "##KeyBinding" + std::to_string(i);
+					std::string DeleteName = "Delete Axis Binding## " + std::to_string(i);
+					ImGui::TableNextColumn();
+					ImGui::InputText(InputTextName.c_str(), &m_AxisBindingData[i].ActionName); // The name of the Axis which should be binded to
+					ImGui::SameLine();
+					if (ImGui::Button(DeleteName.c_str()))
+					{
+						if (!m_AxisBindingData.empty())
+						{
+							m_AxisBindingData.resize(m_AxisBindingData.size() - 1);
+							m_AxisBindingData.shrink_to_fit();
+						}
+					}
+					std::string KeyName = "Keys##" + std::to_string(i);
+					if (ImGui::CollapsingHeader(KeyName.c_str()))
+					{
+						DrawAxisCombo((int)i);
+						ImGui::Separator();
+					}
+					Project::GetActive()->GetInfo().UpdateAxisBindings(m_AxisBindings);
+				}
+				ImGui::EndTable();
+			}
+		}
+	}
 
-		if (ImGui::BeginCombo(ComboName.c_str(), CurrentKeyBindingString))
+	void MainMenuBar::DrawActionBindings()
+	{
+		if (ImGui::CollapsingHeader("Action Bindings"))
+		{
+			if (ImGui::BeginTable("Action KeyBindings", 1))
+			{
+				for (size_t i = 0; i < m_ActionBindingData.size(); i++)
+				{
+					ImGui::TableNextColumn();
+					std::string InputTextName = "##ActionBinding" + std::to_string(i);
+					std::string DeleteName = "Delete Action Binding## " + std::to_string(i);
+					ImGui::InputText(InputTextName.c_str(), &m_ActionBindingData[i].ActionName); // The name of the Axis which should be binded to
+					ImGui::SameLine();
+					if (ImGui::Button(DeleteName.c_str()))
+					{
+						if (!m_ActionBindingData.empty())
+						{
+							m_ActionBindings.resize(m_ActionBindings.size() - 1);
+							m_ActionBindings.shrink_to_fit();
+						}
+					}
+					std::string KeyName = "Keys##" + std::to_string(i);
+					if (ImGui::CollapsingHeader(KeyName.c_str()))
+					{
+						DrawActionCombo((int)i);
+						ImGui::Separator();
+					}
+					Project::GetActive()->GetInfo().UpdateActionBindings(m_ActionBindings);
+				}
+				ImGui::EndTable();
+			}
+		}
+	}
+
+	void MainMenuBar::DrawAxisCombo(int i)
+	{
+		m_CurrentAxisBindingString = m_AxisBindingStrings[m_AxisBindingData[i].Index];
+		std::string ComboName = "Binding## " + std::to_string(i);
+
+		if (ImGui::BeginCombo(ComboName.c_str(), m_CurrentAxisBindingString.c_str()))
 		{
 			for (int y = 0; y < 8; y++)
 			{
-				bool IsSelected = CurrentKeyBindingString == KeyBindingStrings[y];
+				bool IsSelected = m_CurrentAxisBindingString == m_AxisBindingStrings[y];
 
-				if (ImGui::Selectable(KeyBindingStrings[y], IsSelected))
+				if (ImGui::Selectable(m_AxisBindingStrings[y].c_str(), IsSelected))
 				{
-					CurrentKeyBindingString = KeyBindingStrings[y];
-					m_AxisBindings[i].second[x] = Utils::ConvertToAxisKeyBinding(CurrentKeyBindingString);
+					m_CurrentAxisBindingString = m_AxisBindingStrings[y];
+					m_AxisBindingData[i].Axis = Utils::ConvertToAxisKeyBinding(m_CurrentAxisBindingString);
+					m_AxisBindingData[i].Index = y;
 				}
 
 				if (IsSelected)
@@ -942,36 +943,24 @@ namespace AGE
 
 			ImGui::EndCombo();
 		}
-
-		ImGui::SameLine();
-		std::string ButtonName = "Delete " + ComboName;
-		if (ImGui::Button(ButtonName.c_str()))
-		{
-			if (m_AxisBindings[i].second.size() > 0)
-			{
-				m_AxisBindings[i].second.erase(m_AxisBindings[i].second.begin() + x);
-
-			}
-		}
-
-
 	}
-	void MainMenuBar::DrawActionCombo(int i, int x)
-	{
-		const char* KeyBindingStrings[] = { "Face Button Bottom", "Face Button Right", "Face Button Left", "Face Button Top", "Left Bumper Button", "Right Bumper Button", "Select Button", "Start Button", "Guide Button", "Left Thumbstick", "Right Thumbstick"};
-		const char* CurrentKeyBindingString = KeyBindingStrings[(int)m_ActionBindings[i].second[x]];
-		std::string ComboName = "Binding " + std::to_string(x);
 
-		if (ImGui::BeginCombo(ComboName.c_str(), CurrentKeyBindingString))
+	void MainMenuBar::DrawActionCombo(int i)
+	{
+		m_CurrentActionBindingString = m_ActionBindingStrings[m_ActionBindingData[i].Index];
+		std::string ComboName = "Binding## " + std::to_string(i) ;
+
+		if (ImGui::BeginCombo(ComboName.c_str(), m_CurrentActionBindingString.c_str()))
 		{
 			for (int y = 0; y < 11; y++)
 			{
-				bool IsSelected = CurrentKeyBindingString == KeyBindingStrings[y];
+				bool IsSelected = m_CurrentActionBindingString == m_ActionBindingStrings[y];
 
-				if (ImGui::Selectable(KeyBindingStrings[y], IsSelected))
+				if (ImGui::Selectable(m_ActionBindingStrings[y].c_str(), IsSelected))
 				{
-					CurrentKeyBindingString = KeyBindingStrings[y];
-					m_ActionBindings[i].second[x] = Utils::ConvertToActionKeyBinding(CurrentKeyBindingString);
+					m_CurrentActionBindingString = m_ActionBindingStrings[y];
+					m_ActionBindingData[i].Name = Utils::ConvertToActionKeyBinding(m_CurrentActionBindingString);
+					m_ActionBindingData[i].Index = y;
 				}
 
 				if (IsSelected)
@@ -979,20 +968,7 @@ namespace AGE
 					ImGui::SetItemDefaultFocus();
 				}
 			}
-
-
 			ImGui::EndCombo();
-		}
-
-		ImGui::SameLine();
-		std::string ButtonName = "Delete " + ComboName;
-		if (ImGui::Button(ButtonName.c_str()))
-		{
-			if (m_ActionBindings[i].second.size() > 0)
-			{
-				m_ActionBindings[i].second.erase(m_ActionBindings[i].second.begin() + x);
-
-			}
 		}
 	}
 
@@ -1011,6 +987,29 @@ namespace AGE
 		EditorLayer::Get().m_DatabaseWindow->RestoreWindow();
 	}
 
+	void MainMenuBar::SyncBindings()
+	{
+		if (m_ActionBindingData.size() > m_ActionBindings.size())
+		{
+			size_t diff = m_ActionBindingData.size() - m_ActionBindings.size();
+			std::ranges::for_each(m_ActionBindingData.begin() + diff -1, m_ActionBindingData.end(), [&](const ActionBindingData& Data)
+			{
+				m_ActionBindings.emplace_back(InputBinding::CreateGamepadBinding(Data.ActionName, (GamePad::Buttons)Data.Button,Data.Type));
+				m_ActionBindings.back()->SetInputType("Gamepad");
+			});
+		}
 
+		if (m_AxisBindingData.size() > m_AxisBindings.size())
+		{
+			size_t diff = m_AxisBindingData.size() - m_AxisBindings.size();
+			std::ranges::for_each(m_AxisBindingData.begin() + diff -1, m_AxisBindingData.end(), [&](const AxisBindingData& Data)
+			{
+				m_AxisBindings.emplace_back(InputBinding::CreateGamepadBinding(Data.ActionName, (GamePad::Axes)Data.Axis,Data.Type));
+				m_AxisBindings.back()->SetInputType("Gamepad");
+			});
+		}
+
+		SaveInputIni();
+	}
 }
 #endif //AG_DIST

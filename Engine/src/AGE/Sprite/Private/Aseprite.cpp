@@ -83,7 +83,7 @@ Ref<Texture2D> Aseprite::CreateImage(const std::string& Filename, bool ShouldCre
 		ReadCelChunk(m_AsepriteData[Filename]);
 		ReorderLayers(Filename);
 
-		for (auto& F : m_AsepriteData[Filename].Frames)
+		for ([[maybe_unused]] auto& F : m_AsepriteData[Filename].Frames)
 		{ 
 			ReadOldPaletteChunk(m_AsepriteData[Filename]);
 			ReadNewPaletteChunk(m_AsepriteData[Filename]);
@@ -729,7 +729,7 @@ void Aseprite::ReadUserDataChunk( AsepriteFileData& Data)
 									Stream.ReadRaw<uint16_t>(KV.ElementsType);
 									if (KV.ElementsType == 0)
 									{
-										for (uint32_t e = 0; i < KV.NumofElementsInVec; e++)
+										for ([[maybe_unused]] uint32_t e = 0; i < KV.NumofElementsInVec; e++)
 										{
 											//Get Type
 											uint16_t Type;

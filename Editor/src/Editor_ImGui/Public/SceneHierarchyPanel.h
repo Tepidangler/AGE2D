@@ -13,6 +13,8 @@ namespace AGE
 		SceneHierarchyPanel() = default;
 		SceneHierarchyPanel(const Ref<Scene>& Scene);
 
+		virtual ~SceneHierarchyPanel() = default;
+
 		Ref<Scene> GetContext() { return m_Context; }
 		void SetContext(const Ref<Scene>& Context);
 
@@ -24,7 +26,7 @@ namespace AGE
 
 	private:
 
-		tmx_map* SelectTileMap();
+		void SelectTileMap();
 
 		Ref<AudioSource> SelectSound();
 
@@ -48,7 +50,6 @@ namespace AGE
 		Ref<Scene> m_Context;
 		Entity m_SelectionContext;
 
-		Ref<TileMapImporter> m_Importer;
 		Ref<Aseprite> m_AsepriteManager;
 
 		std::filesystem::path m_AssetPath;

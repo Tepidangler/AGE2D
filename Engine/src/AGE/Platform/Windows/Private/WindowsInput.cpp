@@ -1,3 +1,4 @@
+#ifdef AG_PLATFORM_WINDOWS
 #include "AGEpch.hpp"
 #include "Core/Public/Input.h"
 #include "App.h"
@@ -294,3 +295,4 @@ float Input::GetMouseY()
 	}
 
 }
+#endif

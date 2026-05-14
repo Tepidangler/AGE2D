@@ -92,7 +92,7 @@ namespace GameFramework
 
     void PlayerParty::RestoreStats()
     {
-        for (auto& M : m_Party)
+        for ([[maybe_unused]]auto& M : m_Party)
         {
             //M.second->ResetStats();
         }
@@ -106,7 +106,7 @@ namespace GameFramework
     bool PlayerParty::IsPartyAlive()
     {
         size_t NumOfUnconciousCharacters = 0;
-        for (auto& M : m_Party)
+        for ([[maybe_unused]] auto& M : m_Party)
         {
 #if 0
             if (M.second->GetStats().HP <= 0)

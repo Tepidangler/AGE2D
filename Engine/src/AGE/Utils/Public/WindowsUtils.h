@@ -5,13 +5,6 @@
 
 namespace AGE
 {
-	class WindowsUtils
-	{
-	public:
-
-		static bool FindFileFromDirectory(const char* FileName, std::filesystem::path Path, std::string& OutPath);
-	};
-
 	class FileDialogs
 	{
 	public:

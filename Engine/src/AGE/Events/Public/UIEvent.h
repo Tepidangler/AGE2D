@@ -36,8 +36,8 @@ Ref<ScriptableWidget> GetWidget() const { return m_ScriptableWidget; }
 		EVENT_CLASS_TYPE(WidgetConstructed)
 		EVENT_CLASS_CATEGORY(EventCategoryUI)
 	private:
-		Ref<ScriptableWidget> m_ScriptableWidget;
 		uint8_t m_Stack;
+		Ref<ScriptableWidget> m_ScriptableWidget;
 	};
 
 	class WidgetActivatedEvent : public Event
@@ -66,8 +66,8 @@ Ref<ScriptableWidget> GetWidget() const { return m_ScriptableWidget; }
 		EVENT_CLASS_TYPE(WidgetActivated)
 		EVENT_CLASS_CATEGORY(EventCategoryUI)
 	private:
-		Ref<ScriptableWidget> m_ScriptableWidget;
 		uint8_t m_Stack;
+		Ref<ScriptableWidget> m_ScriptableWidget;
 	};
 
 	class WidgetDeactivatedEvent : public Event
@@ -98,8 +98,8 @@ Ref<ScriptableWidget> GetWidget() const { return m_ScriptableWidget; }
 		EVENT_CLASS_TYPE(WidgetDeactivated)
 		EVENT_CLASS_CATEGORY(EventCategoryUI)
 	private:
-		Ref<ScriptableWidget> m_ScriptableWidget;
 		uint8_t m_Stack;
+		Ref<ScriptableWidget> m_ScriptableWidget;
 	};
 
 }

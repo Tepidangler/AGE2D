@@ -650,10 +650,10 @@ Transform4D Math::MakeReflection(const Plane& f)
 Matrix4D Math::MakeTransform(const Vector3 &Position, const Vector3 &Rotation, const Vector3 &Scale)
 	{
 
-		Matrix4D Rot = glm::toMat4(glm::quat(Convert::ToGLM(Rotation)));
+		Matrix4D Rot = glm::toMat4((glm::quat)*const_cast<Vector3*>(&Rotation));
 
 
-		return glm::translate(Matrix4D(1.f).ToGLM(),Convert::ToGLM(Position)) * Rot.ToGLM() * glm::scale(Matrix4D(1.f).ToGLM(), Convert::ToGLM(Scale));
+		return glm::translate(Matrix4D(1.f).ToGLM(),(glm::vec3)*const_cast<Vector3*>(&Position)) * Rot.ToGLM() * glm::scale(Matrix4D(1.f).ToGLM(), (glm::vec3)*const_cast<Vector3*>(&Scale));
 
 	}
 
@@ -695,7 +695,7 @@ bool Math::DecomposeTransform(const Matrix4D& Transform, Vector3& Translation, V
 		}
 
 		// Next take care of translation (easy).
-		Translation = vec3(LocalMatrix[3]);
+		Translation = Vector3(vec3(LocalMatrix[3]));
 		LocalMatrix[3] = vec4(0, 0, 0, LocalMatrix[3].w);
 
 		vec3 Row[3];

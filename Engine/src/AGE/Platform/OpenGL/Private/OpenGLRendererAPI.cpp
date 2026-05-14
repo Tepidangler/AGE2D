@@ -20,7 +20,7 @@ void OpenGLRendererAPI::Init()
 	{
 		AGE_PROFILE_FUNCTION();
 		glEnable(GL_BLEND);
-		glBlendEquation(GL_FUNC_ADD);
+		//glBlendEquation(GL_FUNC_ADD);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glEnable(GL_DEPTH_TEST);
 		glDepthFunc(GL_LEQUAL);

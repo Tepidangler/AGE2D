@@ -11,16 +11,17 @@ namespace GameFramework
 	}
 	void InputComponent::OnUpdate(AGE::TimeStep DeltaTime)
 	{
-		for (auto& B : m_AxisBindings)
+
+		std::ranges::for_each(m_AxisBindings.begin(), m_AxisBindings.end(), [&](const auto& Binding)
 		{
-			if (std::abs(B->AxisValue) == 1.f)
+			if (std::abs(Binding->GetAxisValue()) == 1.f) // Consider changing this to check for a value greater than that of the Deadzone
 			{
 				if (!bBlockInput)
 				{
-					B->Execute();
+					Binding->AxisExecute();
 				}
 			}
-		}
+		});
 	}
 	void InputComponent::OnEvent(AGE::Event& E)
 	{
@@ -38,9 +39,37 @@ namespace GameFramework
 
 		auto& ProjectAxisBindings = AGE::Project::GetActive()->GetInfo().AxisBindings;
 
+		if (std::abs(E.GetPosition()) < .002f)
+		{
+			return true;
+		}
+
+		if (auto it = std::ranges::find(ProjectAxisBindings,E.GetName(), &AGE::InputBinding::m_BindingName); it !=ProjectAxisBindings.end() && !bBlockInput)
+		{
+			it->get()->SetAxisValue(E.GetPosition());
+			it->get()->AxisExecute();
+		}
+		return true;
+#if  0
 		switch(E.GetAxis())
 		{
-		case AGE::JoyStick::GamePadAxisLeftX:
+			case AGE::GamePad::Axes::GamePadAxisLeftX:
+		{
+			if (std::abs(E.GetPosition()) < .002f)
+			{
+				break;
+			}
+
+			if (auto it = std::ranges::find(ProjectAxisBindings,E.GetName(), &AGE::InputBinding::m_BindingName); it !=ProjectAxisBindings.end() && !bBlockInput)
+			{
+				it->get()->SetAxisValue(E.GetPosition());
+				it->get()->AxisExecute();
+				break;
+			}
+
+			break;
+		}
+		case AGE::GamePad::Axes::GamePadAxisLeftY:
 		{
 			for (auto& B : m_AxisBindings)
 			{
@@ -49,16 +78,16 @@ namespace GameFramework
 					break;
 				}
 
-				if (B->AxisName == FindCorrespondingAxisName(ProjectAxisBindings, AGE::JoyStick::GamePadAxisLeftX) && !bBlockInput)
+				if (B->GetName() == FindCorrespondingAxisName(ProjectAxisBindings, AGE::GamePad::Axes::GamePadAxisLeftY) && !bBlockInput) // This should check if whatever name is linked to the LeftY Axis as a button is the axis name here and it should be like this for everything else
 				{
-					B->AxisValue = E.GetPosition();
-					B->Execute();
+					B->SetAxisValue(E.GetPosition());
+					B->AxisExecute();
 					break;
 				}
 			}
 			break;
 		}
-		case AGE::JoyStick::GamePadAxisLeftY:
+		case AGE::GamePad::Axes::GamePadAxisRightX:
 		{
 			for (auto& B : m_AxisBindings)
 			{
@@ -67,16 +96,16 @@ namespace GameFramework
 					break;
 				}
 
-				if (B->AxisName == FindCorrespondingAxisName(ProjectAxisBindings, AGE::JoyStick::GamePadAxisLeftY) && !bBlockInput) // This should check if whatever name is linked to the LeftY Axis as a button is the axis name here and it should be like this for everything else
+				if (B->GetName() == FindCorrespondingAxisName(ProjectAxisBindings, AGE::GamePad::Axes::GamePadAxisRightX) && !bBlockInput)
 				{
-					B->AxisValue = E.GetPosition();
-					B->Execute();
+					B->SetAxisValue(E.GetPosition());
+					B->AxisExecute();
 					break;
 				}
 			}
 			break;
 		}
-		case AGE::JoyStick::GamePadAxisRightX:
+		case AGE::GamePad::Axes::GamePadAxisRightY:
 		{
 			for (auto& B : m_AxisBindings)
 			{
@@ -85,16 +114,16 @@ namespace GameFramework
 					break;
 				}
 
-				if (B->AxisName == FindCorrespondingAxisName(ProjectAxisBindings, AGE::JoyStick::GamePadAxisRightX) && !bBlockInput)
+				if (B->GetName() == FindCorrespondingAxisName(ProjectAxisBindings, AGE::GamePad::Axes::GamePadAxisRightY) && !bBlockInput)
 				{
-					B->AxisValue = E.GetPosition();
-					B->Execute();
+					B->SetAxisValue(E.GetPosition());
+					B->AxisExecute();
 					break;
 				}
 			}
 			break;
 		}
-		case AGE::JoyStick::GamePadAxisRightY:
+		case AGE::GamePad::Axes::GamePadAxisLeftTrigger:
 		{
 			for (auto& B : m_AxisBindings)
 			{
@@ -103,35 +132,17 @@ namespace GameFramework
 					break;
 				}
 
-				if (B->AxisName == FindCorrespondingAxisName(ProjectAxisBindings, AGE::JoyStick::GamePadAxisRightY) && !bBlockInput)
+				if (B->GetName() == FindCorrespondingAxisName(ProjectAxisBindings, AGE::GamePad::Axes::GamePadAxisLeftTrigger) && !bBlockInput)
 				{
-					B->AxisValue = E.GetPosition();
-					B->Execute();
-					break;
-				}
-			}
-			break;
-		}
-		case AGE::JoyStick::GamePadAxisLeftTrigger:
-		{
-			for (auto& B : m_AxisBindings)
-			{
-				if (std::abs(E.GetPosition()) < .002f)
-				{
-					break;
-				}
-
-				if (B->AxisName == FindCorrespondingAxisName(ProjectAxisBindings, AGE::JoyStick::GamePadAxisLeftTrigger) && !bBlockInput)
-				{
-					B->AxisValue = E.GetPosition();
-					B->Execute();
+					B->SetAxisValue(E.GetPosition());
+					B->AxisExecute();
 					break;
 				}
 			}
 
 			break;
 		}
-		case AGE::JoyStick::GamePadAxisRightTrigger:
+		case AGE::GamePad::Axes::GamePadAxisRightTrigger:
 		{
 			for (auto& B : m_AxisBindings)
 			{
@@ -140,10 +151,10 @@ namespace GameFramework
 					break;
 				}
 
-				if (B->AxisName == FindCorrespondingAxisName(ProjectAxisBindings, AGE::JoyStick::GamePadAxisRightTrigger) && !bBlockInput)
+				if (B->GetName() == FindCorrespondingAxisName(ProjectAxisBindings, AGE::GamePad::Axes::GamePadAxisRightTrigger) && !bBlockInput)
 				{
-					B->AxisValue = E.GetPosition();
-					B->Execute();
+					B->SetAxisValue(E.GetPosition());
+					B->AxisExecute();
 					break;
 				}
 			}
@@ -156,6 +167,7 @@ namespace GameFramework
 		}
 
 		return true;
+#endif
 	}
 
 	bool InputComponent::OnButtonPressed(AGE::GamepadButtonPressedEvent& E)
@@ -164,22 +176,37 @@ namespace GameFramework
 
 		auto& ProjectActionBindings = AGE::Project::GetActive()->GetInfo().ActionBindings;
 
+		std::ranges::for_each(ProjectActionBindings,[&](const auto& Binding) // Not entirely sure _why we're doing this....
+		{
+			if (Binding->m_State == AGE::KeyState::Pressed)
+			{
+				Binding->m_State = AGE::KeyState::Pressed;
+			}
+		});
+
+		if (auto it = std::ranges::find(ProjectActionBindings,E.GetName(), &AGE::InputBinding::m_BindingName); it !=ProjectActionBindings.end() && !bBlockInput)
+		{
+			it->get()->m_State = AGE::KeyState::Pressed;
+			it->get()->ActionExecute();
+		}
+		return true;
+#if 0
 		switch (E.GetButton())
 		{
 		case AGE::GamePad::GamePadButtonA:
 		{
 			for (auto& B : m_ActionBindings)
 			{
-				if (B->State == KeyState::Pressed)
+				if (B->m_State == AGE::KeyState::Pressed)
 				{
-					B->State = KeyState::Pressed;
+					B->m_State = AGE::KeyState::Pressed;
 					break;
 				}
 
-				if (B->Name == FindCorrespondingActionName(ProjectActionBindings, AGE::GamePad::GamePadButtonA) && !bBlockInput)
+				if (B->GetName() == FindCorrespondingActionName(ProjectActionBindings, AGE::GamePad::GamePadButtonA) && !bBlockInput)
 				{
-					B->State = KeyState::Pressed;
-					B->Execute();
+					B->m_State = AGE::KeyState::Pressed;
+					B->ActionExecute();
 					break;
 				}
 			}
@@ -189,16 +216,16 @@ namespace GameFramework
 		{
 			for (auto& B : m_ActionBindings)
 			{
-				if (B->State == KeyState::Pressed)
+				if (B->m_State == AGE::KeyState::Pressed)
 				{
-					B->State = KeyState::Pressed;
+					B->m_State = AGE::KeyState::Pressed;
 					break;
 				}
 
-				if (B->Name == FindCorrespondingActionName(ProjectActionBindings, AGE::GamePad::GamePadButtonB) && !bBlockInput) // This should check if whatever name is linked to the LeftY Axis as a button is the axis name here and it should be like this for everything else
+				if (B->GetName() == FindCorrespondingActionName(ProjectActionBindings, AGE::GamePad::GamePadButtonB) && !bBlockInput) // This should check if whatever name is linked to the LeftY Axis as a button is the axis name here and it should be like this for everything else
 				{
-					B->State = KeyState::Pressed;
-					B->Execute();
+					B->m_State = AGE::KeyState::Pressed;
+					B->ActionExecute();
 					break;
 				}
 			}
@@ -208,16 +235,16 @@ namespace GameFramework
 		{
 			for (auto& B : m_ActionBindings)
 			{
-				if (B->State == KeyState::Pressed)
+				if (B->m_State == AGE::KeyState::Pressed)
 				{
-					B->State = KeyState::Pressed;
+					B->m_State = AGE::KeyState::Pressed;
 					break;
 				}
 
-				if (B->Name == FindCorrespondingActionName(ProjectActionBindings, AGE::GamePad::GamePadButtonX) && !bBlockInput)
+				if (B->GetName() == FindCorrespondingActionName(ProjectActionBindings, AGE::GamePad::GamePadButtonX) && !bBlockInput)
 				{
-					B->State = KeyState::Pressed;
-					B->Execute();
+					B->m_State = AGE::KeyState::Pressed;
+					B->ActionExecute();
 					break;
 				}
 			}
@@ -227,16 +254,16 @@ namespace GameFramework
 		{
 			for (auto& B : m_ActionBindings)
 			{
-				if (B->State == KeyState::Pressed)
+				if (B->m_State == AGE::KeyState::Pressed)
 				{
-					B->State = KeyState::Pressed;
+					B->m_State = AGE::KeyState::Pressed;
 					break;
 				}
 
-				if (B->Name == FindCorrespondingActionName(ProjectActionBindings, AGE::GamePad::GamePadButtonY) && !bBlockInput)
+				if (B->GetName() == FindCorrespondingActionName(ProjectActionBindings, AGE::GamePad::GamePadButtonY) && !bBlockInput)
 				{
-					B->State = KeyState::Pressed;
-					B->Execute();
+					B->m_State = AGE::KeyState::Pressed;
+					B->ActionExecute();
 					break;
 				}
 			}
@@ -246,16 +273,16 @@ namespace GameFramework
 		{
 			for (auto& B : m_ActionBindings)
 			{
-				if (B->State == KeyState::Pressed)
+				if (B->m_State == AGE::KeyState::Pressed)
 				{
-					B->State = KeyState::Pressed;
+					B->m_State = AGE::KeyState::Pressed;
 					break;
 				}
 
-				if (B->Name == FindCorrespondingActionName(ProjectActionBindings, AGE::GamePad::GamePadButtonLB) && !bBlockInput)
+				if (B->GetName() == FindCorrespondingActionName(ProjectActionBindings, AGE::GamePad::GamePadButtonLB) && !bBlockInput)
 				{
-					B->State = KeyState::Pressed;
-					B->Execute();
+					B->m_State = AGE::KeyState::Pressed;
+					B->ActionExecute();
 					break;
 				}
 			}
@@ -266,16 +293,16 @@ namespace GameFramework
 		{
 			for (auto& B : m_ActionBindings)
 			{
-				if (B->State == KeyState::Pressed)
+				if (B->m_State == AGE::KeyState::Pressed)
 				{
-					B->State = KeyState::Pressed;
+					B->m_State = AGE::KeyState::Pressed;
 					break;
 				}
 
-				if (B->Name == FindCorrespondingActionName(ProjectActionBindings, AGE::GamePad::GamePadButtonRB) && !bBlockInput)
+				if (B->GetName() == FindCorrespondingActionName(ProjectActionBindings, AGE::GamePad::GamePadButtonRB) && !bBlockInput)
 				{
-					B->State = KeyState::Pressed;
-					B->Execute();
+					B->m_State = AGE::KeyState::Pressed;
+					B->ActionExecute();
 					break;
 				}
 			}
@@ -285,16 +312,16 @@ namespace GameFramework
 		{
 			for (auto& B : m_ActionBindings)
 			{
-				if (B->State == KeyState::Pressed)
+				if (B->m_State == AGE::KeyState::Pressed)
 				{
-					B->State = KeyState::Pressed;
+					B->m_State = AGE::KeyState::Pressed;
 					break;
 				}
 
-				if (B->Name == FindCorrespondingActionName(ProjectActionBindings, AGE::GamePad::GamePadButtonBack) && !bBlockInput)
+				if (B->GetName() == FindCorrespondingActionName(ProjectActionBindings, AGE::GamePad::GamePadButtonBack) && !bBlockInput)
 				{
-					B->State = KeyState::Pressed;
-					B->Execute();
+					B->m_State = AGE::KeyState::Pressed;
+					B->ActionExecute();
 					break;
 				}
 			}
@@ -304,16 +331,16 @@ namespace GameFramework
 		{
 			for (auto& B : m_ActionBindings)
 			{
-				if (B->State == KeyState::Pressed)
+				if (B->m_State == AGE::KeyState::Pressed)
 				{
-					B->State = KeyState::Pressed;
+					B->m_State = AGE::KeyState::Pressed;
 					break;
 				}
 
-				if (B->Name == FindCorrespondingActionName(ProjectActionBindings, AGE::GamePad::GamePadButtonStart) && !bBlockInput)
+				if (B->GetName() == FindCorrespondingActionName(ProjectActionBindings, AGE::GamePad::GamePadButtonStart) && !bBlockInput)
 				{
-					B->State = KeyState::Pressed;
-					B->Execute();
+					B->m_State = AGE::KeyState::Pressed;
+					B->ActionExecute();
 					break;
 				}
 			}
@@ -323,16 +350,16 @@ namespace GameFramework
 		{
 			for (auto& B : m_ActionBindings)
 			{
-				if (B->State == KeyState::Pressed)
+				if (B->m_State == AGE::KeyState::Pressed)
 				{
-					B->State = KeyState::Pressed;
+					B->m_State = AGE::KeyState::Pressed;
 					break;
 				}
 
-				if (B->Name == FindCorrespondingActionName(ProjectActionBindings, AGE::GamePad::GamePadButtonGUIDE) && !bBlockInput)
+				if (B->GetName() == FindCorrespondingActionName(ProjectActionBindings, AGE::GamePad::GamePadButtonGUIDE) && !bBlockInput)
 				{
-					B->State = KeyState::Pressed;
-					B->Execute();
+					B->m_State = AGE::KeyState::Pressed;
+					B->ActionExecute();
 					break;
 				}
 			}
@@ -342,16 +369,16 @@ namespace GameFramework
 		{
 			for (auto& B : m_ActionBindings)
 			{
-				if (B->State == KeyState::Pressed)
+				if (B->m_State == AGE::KeyState::Pressed)
 				{
-					B->State = KeyState::Pressed;
+					B->m_State = AGE::KeyState::Pressed;
 					break;
 				}
 
-				if (B->Name == FindCorrespondingActionName(ProjectActionBindings, AGE::GamePad::GamePadButtonLeftThumb) && !bBlockInput)
+				if (B->GetName() == FindCorrespondingActionName(ProjectActionBindings, AGE::GamePad::GamePadButtonLeftThumb) && !bBlockInput)
 				{
-					B->State = KeyState::Pressed;
-					B->Execute();
+					B->m_State = AGE::KeyState::Pressed;
+					B->ActionExecute();
 					break;
 				}
 			}
@@ -361,16 +388,16 @@ namespace GameFramework
 		{
 			for (auto& B : m_ActionBindings)
 			{
-				if (B->State == KeyState::Pressed)
+				if (B->m_State == AGE::KeyState::Pressed)
 				{
-					B->State = KeyState::Pressed;
+					B->m_State = AGE::KeyState::Pressed;
 					break;
 				}
 
-				if (B->Name == FindCorrespondingActionName(ProjectActionBindings, AGE::GamePad::GamePadButtonRightThumb) && !bBlockInput)
+				if (B->GetName() == FindCorrespondingActionName(ProjectActionBindings, AGE::GamePad::GamePadButtonRightThumb) && !bBlockInput)
 				{
-					B->State = KeyState::Pressed;
-					B->Execute();
+					B->m_State = AGE::KeyState::Pressed;
+					B->ActionExecute();
 					break;
 				}
 			}
@@ -383,6 +410,7 @@ namespace GameFramework
 		}
 
 		return true;
+#endif
 	}
 
 	bool InputComponent::OnButtonReleased(AGE::GamepadButtonReleasedEvent& E)
@@ -391,6 +419,14 @@ namespace GameFramework
 
 		auto& ProjectActionBindings = AGE::Project::GetActive()->GetInfo().ActionBindings;
 
+		if (auto it = std::ranges::find(ProjectActionBindings,E.GetName(), &AGE::InputBinding::m_BindingName); it !=ProjectActionBindings.end() && !bBlockInput)
+		{
+			it->get()->m_State = AGE::KeyState::Released;
+			it->get()->ActionExecute();
+		}
+		return true;
+	}
+#if 0
 		switch (E.GetButton())
 		{
 		case AGE::GamePad::GamePadButtonA:
@@ -398,10 +434,10 @@ namespace GameFramework
 			for (auto& B : m_ActionBindings)
 			{
 
-				if (B->Name == FindCorrespondingActionName(ProjectActionBindings, AGE::GamePad::GamePadButtonA) && !bBlockInput)
+				if (B->GetName() == FindCorrespondingActionName(ProjectActionBindings, AGE::GamePad::GamePadButtonA) && !bBlockInput)
 				{
-					B->State = KeyState::Released;
-					B->Execute();
+					B->m_State = AGE::KeyState::Released;
+					B->ActionExecute();
 					break;
 				}
 			}
@@ -412,10 +448,10 @@ namespace GameFramework
 			for (auto& B : m_ActionBindings)
 			{
 
-				if (B->Name == FindCorrespondingActionName(ProjectActionBindings, AGE::GamePad::GamePadButtonB) && !bBlockInput) // This should check if whatever name is linked to the LeftY Axis as a button is the axis name here and it should be like this for everything else
+				if (B->GetName() == FindCorrespondingActionName(ProjectActionBindings, AGE::GamePad::GamePadButtonB) && !bBlockInput) // This should check if whatever name is linked to the LeftY Axis as a button is the axis name here and it should be like this for everything else
 				{
-					B->State = KeyState::Released;
-					B->Execute();
+					B->m_State = AGE::KeyState::Released;
+					B->ActionExecute();
 					break;
 				}
 			}
@@ -425,10 +461,10 @@ namespace GameFramework
 		{
 			for (auto& B : m_ActionBindings)
 			{
-				if (B->Name == FindCorrespondingActionName(ProjectActionBindings, AGE::GamePad::GamePadButtonX) && !bBlockInput)
+				if (B->GetName() == FindCorrespondingActionName(ProjectActionBindings, AGE::GamePad::GamePadButtonX) && !bBlockInput)
 				{
-					B->State = KeyState::Released;
-					B->Execute();
+					B->m_State = AGE::KeyState::Released;
+					B->ActionExecute();
 					break;
 				}
 			}
@@ -439,10 +475,10 @@ namespace GameFramework
 			for (auto& B : m_ActionBindings)
 			{
 
-				if (B->Name == FindCorrespondingActionName(ProjectActionBindings, AGE::GamePad::GamePadButtonY) && !bBlockInput)
+				if (B->GetName() == FindCorrespondingActionName(ProjectActionBindings, AGE::GamePad::GamePadButtonY) && !bBlockInput)
 				{
-					B->State = KeyState::Released;
-					B->Execute();
+					B->m_State = AGE::KeyState::Released;
+					B->ActionExecute();
 					break;
 				}
 			}
@@ -453,10 +489,10 @@ namespace GameFramework
 			for (auto& B : m_ActionBindings)
 			{
 
-				if (B->Name == FindCorrespondingActionName(ProjectActionBindings, AGE::GamePad::GamePadButtonLB) && !bBlockInput)
+				if (B->GetName() == FindCorrespondingActionName(ProjectActionBindings, AGE::GamePad::GamePadButtonLB) && !bBlockInput)
 				{
-					B->State = KeyState::Released;
-					B->Execute();
+					B->m_State = AGE::KeyState::Released;
+					B->ActionExecute();
 					break;
 				}
 			}
@@ -468,10 +504,10 @@ namespace GameFramework
 			for (auto& B : m_ActionBindings)
 			{
 
-				if (B->Name == FindCorrespondingActionName(ProjectActionBindings, AGE::GamePad::GamePadButtonRB) && !bBlockInput)
+				if (B->GetName() == FindCorrespondingActionName(ProjectActionBindings, AGE::GamePad::GamePadButtonRB) && !bBlockInput)
 				{
-					B->State = KeyState::Released;
-					B->Execute();
+					B->m_State = AGE::KeyState::Released;
+					B->ActionExecute();
 					break;
 				}
 			}
@@ -483,10 +519,10 @@ namespace GameFramework
 			{
 
 
-				if (B->Name == FindCorrespondingActionName(ProjectActionBindings, AGE::GamePad::GamePadButtonBack) && !bBlockInput)
+				if (B->GetName() == FindCorrespondingActionName(ProjectActionBindings, AGE::GamePad::GamePadButtonBack) && !bBlockInput)
 				{
-					B->State = KeyState::Released;
-					B->Execute();
+					B->m_State = AGE::KeyState::Released;
+					B->ActionExecute();
 					break;
 				}
 			}
@@ -497,10 +533,10 @@ namespace GameFramework
 			for (auto& B : m_ActionBindings)
 			{
 
-				if (B->Name == FindCorrespondingActionName(ProjectActionBindings, AGE::GamePad::GamePadButtonStart) && !bBlockInput)
+				if (B->GetName() == FindCorrespondingActionName(ProjectActionBindings, AGE::GamePad::GamePadButtonStart) && !bBlockInput)
 				{
-					B->State = KeyState::Released;
-					B->Execute();
+					B->m_State = AGE::KeyState::Released;
+					B->ActionExecute();
 					break;
 				}
 			}
@@ -511,10 +547,10 @@ namespace GameFramework
 			for (auto& B : m_ActionBindings)
 			{
 
-				if (B->Name == FindCorrespondingActionName(ProjectActionBindings, AGE::GamePad::GamePadButtonGUIDE) && !bBlockInput)
+				if (B->GetName() == FindCorrespondingActionName(ProjectActionBindings, AGE::GamePad::GamePadButtonGUIDE) && !bBlockInput)
 				{
-					B->State = KeyState::Released;
-					B->Execute();
+					B->m_State = AGE::KeyState::Released;
+					B->ActionExecute();
 					break;
 				}
 			}
@@ -525,10 +561,10 @@ namespace GameFramework
 			for (auto& B : m_ActionBindings)
 			{
 
-				if (B->Name == FindCorrespondingActionName(ProjectActionBindings, AGE::GamePad::GamePadButtonLeftThumb) && !bBlockInput)
+				if (B->GetName() == FindCorrespondingActionName(ProjectActionBindings, AGE::GamePad::GamePadButtonLeftThumb) && !bBlockInput)
 				{
-					B->State = KeyState::Released;
-					B->Execute();
+					B->m_State = AGE::KeyState::Released;
+					B->ActionExecute();
 					break;
 				}
 			}
@@ -539,10 +575,10 @@ namespace GameFramework
 			for (auto& B : m_ActionBindings)
 			{
 
-				if (B->Name == FindCorrespondingActionName(ProjectActionBindings, AGE::GamePad::GamePadButtonRightThumb) && !bBlockInput)
+				if (B->GetName() == FindCorrespondingActionName(ProjectActionBindings, AGE::GamePad::GamePadButtonRightThumb) && !bBlockInput)
 				{
-					B->State = KeyState::Released;
-					B->Execute();
+					B->m_State = AGE::KeyState::Released;
+					B->ActionExecute();
 					break;
 				}
 			}
@@ -568,7 +604,7 @@ namespace GameFramework
 				return B.first;
 			}
 		}
-		
+
 		return std::string("NOT FOUND");
 	}
 
@@ -585,5 +621,5 @@ namespace GameFramework
 		}
 		return std::string("NOT FOUND");
 	}
-
+#endif
 }

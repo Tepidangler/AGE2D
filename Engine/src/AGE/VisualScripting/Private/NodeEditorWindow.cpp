@@ -12,7 +12,10 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wconversion"
 #pragma clang diagnostic ignored "-Wfloat-conversion"
+#ifdef AG_PLATFORM_LINUX
 #pragma clang diagnostic ignored "-Wnontrivial-memcall"
+#pragma clang diagnostic ignored "-Wunused-but-set-variable"
+#endif
 #ifdef AG_PLATFORM_WINDOWS
 #pragma GCC diagnostic ignored "-Wmicrosoft-unqualified-friend"
 #endif
@@ -48,8 +51,7 @@ using C = AGE::Colors::Color;
 namespace AGE
 {
 	template<typename T>
-	
-static void DrawProperties(rttr::type TargetType, rttr::instance Instance, Ref<ScriptableEntity> Target)
+	static void DrawProperties(rttr::type TargetType, rttr::instance Instance, Ref<ScriptableEntity> Target)
 	{
 		T* DerivedTarget = (T*)Target.get();
 		if (ImGui::CollapsingHeader("Properties"))
@@ -137,8 +139,7 @@ static void DrawProperties(rttr::type TargetType, rttr::instance Instance, Ref<S
 		}
 	}
 	Ref<AGEFont> NodeEditorWindow::s_Font = nullptr;
-	
-static void DrawVec2Control(const std::string& Label, Vector2& Values, float ResetValue = 0.f)
+	static void DrawVec2Control(const std::string& Label, Vector2& Values, float ResetValue = 0.f)
 	{
 		ImGuiIO& io = ImGui::GetIO();
 
@@ -181,8 +182,7 @@ static void DrawVec2Control(const std::string& Label, Vector2& Values, float Res
 
 	}
 
-	"Draws a control for Vector3 values with three buttons and drag floats."
-static void DrawVec3Control(const std::string& Label, Vector3& Values, float ResetValue = 0.f, float ColumnWidth = 100.f)
+	static void DrawVec3Control(const std::string& Label, Vector3& Values, float ResetValue = 0.f, float ColumnWidth = 100.f)
 	{
 		ImGuiIO& io = ImGui::GetIO();
 
@@ -240,8 +240,7 @@ static void DrawVec3Control(const std::string& Label, Vector3& Values, float Res
 
 	}
 
-	
-static void DrawVec4Control(const std::string& Label, Vector4& Values, float ResetValue = 0.f, float ColumnWidth = 100.f)
+	static void DrawVec4Control(const std::string& Label, Vector4& Values, float ResetValue = 0.f, float ColumnWidth = 100.f)
 	{
 		ImGuiIO& io = ImGui::GetIO();
 
@@ -312,9 +311,8 @@ static void DrawVec4Control(const std::string& Label, Vector4& Values, float Res
 
 	}
 
-	<doxygen comment>
-NodeEditorWindow::NodeEditorWindow(const std::string& WindowName, ax::NodeEditor::EditorContext* Context, void* Target, bool LoadingExisting)
-		:m_Name(WindowName), m_Context(Context), m_bLoadingExisting(LoadingExisting)
+	NodeEditorWindow::NodeEditorWindow(const std::string& WindowName, ax::NodeEditor::EditorContext* Context, void* Target, bool LoadingExisting)
+		:m_Name(WindowName), m_bLoadingExisting(LoadingExisting), m_Context(Context)
 	{
 		AppConfig Config = App::Get().GetAppConfig();
 		ScriptableEntity* Entt = reinterpret_cast<ScriptableEntity*>(Target);
@@ -342,19 +340,11 @@ NodeEditorWindow::NodeEditorWindow(const std::string& WindowName, ax::NodeEditor
 			SyncLinks();
 		}
 	}
-	/**
- * @brief Destructor for the NodeEditorWindow class.
- * 
- * This destructor is responsible for cleaning up any resources that were allocated during the lifetime of this object, such as memory or file handles. It's important to ensure that all these resources are properly released when an instance of the NodeEditorWindow class is destroyed.
- * 
- * @return void
- */
-NodeEditorWindow::~NodeEditorWindow()
+	NodeEditorWindow::~NodeEditorWindow()
 	{
 
 	}
-	
-void NodeEditorWindow::OnAttach()
+	void NodeEditorWindow::OnAttach()
 	{
 		AppConfig Config = App::Get().GetAppConfig();
 		ax::NodeEditor::SetCurrentEditor(m_Context);
@@ -372,14 +362,7 @@ void NodeEditorWindow::OnAttach()
 		m_RestoreIcon = Texture2D::Create(Config.EditorAssetPath.string() + "/VisualScriptingTextures/RestoreIcon.png");
 		m_SaveIcon = Texture2D::Create(Config.EditorAssetPath.string() + "/VisualScriptingTextures/SaveIcon.png");
 	}
-	/**
- * @brief This function is responsible for rendering the ImGui interface in the NodeEditorWindow.
- * 
- * @param[in] DeltaTime The time step representing the elapsed time since the last frame.
- * 
- * @return void
- */
-void NodeEditorWindow::OnImGuiRender(TimeStep DeltaTime)
+	void NodeEditorWindow::OnImGuiRender(TimeStep DeltaTime)
 	{
 		if (m_IsOpen)
 		{
@@ -387,8 +370,7 @@ void NodeEditorWindow::OnImGuiRender(TimeStep DeltaTime)
 		}
 	}
 
-	
-void NodeEditorWindow::RenderWindow(bool* Opened, TimeStep DeltaTime)
+	void NodeEditorWindow::RenderWindow(bool* Opened, TimeStep DeltaTime)
 	{
 		if (ImGui::Begin(m_Name.c_str(), Opened))
 		{
@@ -640,29 +622,11 @@ void NodeEditorWindow::RenderWindow(bool* Opened, TimeStep DeltaTime)
 		}
 	}
 
-	/**
- * @brief Get the bounding rectangle of the last item processed by ImGui.
- * 
- * This function uses ImGui's built-in functions to get the minimum and maximum coordinates of the bounding box that encloses the last item processed by ImGui. It returns an `ImRect` object with these values.
- * 
- * @return An `ImRect` object representing the bounding rectangle of the last ImGui item.
- */
-ImRect NodeEditorWindow::ImGui_GetItemRect()
+	ImRect NodeEditorWindow::ImGui_GetItemRect()
 	{
 		return ImRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax());	
 	}
-	/**
- * @brief Expands an ImRect by a given amount in both dimensions.
- *
- * This function takes an existing ImRect and expands it by the specified amounts on each side, creating a new ImRect that is larger than the original one.
- *
- * @param Rect The initial ImRect to be expanded.
- * @param x The amount to expand in the horizontal direction (left and right).
- * @param y The amount to expand in the vertical direction (top and bottom).
- * 
- * @return An ImRect that is larger than the input by the specified amounts on each side.
- */
-ImRect NodeEditorWindow::ImRect_Expanded(const ImRect& Rect, float x, float y)
+	ImRect NodeEditorWindow::ImRect_Expanded(const ImRect& Rect, float x, float y)
 	{
 		auto Result = Rect;
 
@@ -673,48 +637,19 @@ ImRect NodeEditorWindow::ImRect_Expanded(const ImRect& Rect, float x, float y)
 
 		return Result;
 	}
-	/**
- * @brief Get the next unique ID for a node in the editor window.
- * 
- * This function returns the next unique ID by calling `NodeEditorManager::GetNewNodeID()`. It is used to ensure that each node has a unique identifier within the NodeEditorWindow.
- * 
- * @return uint32_t The next unique ID for a node in the editor window.
- */
-uint32_t NodeEditorWindow::GetNextID()
+	uint32_t NodeEditorWindow::GetNextID()
 	{
 		return NodeEditorManager::GetNewNodeID();
 	}
-	/**
- * @brief Generates the next unique Link ID.
- * 
- * This function generates a new unique link ID by calling GetNextID(). The generated ID is then wrapped in an ax::NodeEditor::LinkId object and returned.
- * 
- * @return ax::NodeEditor::LinkId - A unique Link ID.
- */
-ax::NodeEditor::LinkId NodeEditorWindow::GetNextLinkID()
+	ax::NodeEditor::LinkId NodeEditorWindow::GetNextLinkID()
 	{
 		return ax::NodeEditor::LinkId(GetNextID());
 	}
-	/**
- * @brief This function is used to update the touch time for a specific node.
- *
- * @param ID The unique identifier of the node whose touch time needs to be updated.
- * @return None
- */
-void NodeEditorWindow::TouchNode(ax::NodeEditor::NodeId ID)
+	void NodeEditorWindow::TouchNode(ax::NodeEditor::NodeId ID)
 	{
 		m_NodeTouchTime[ID] = m_TouchTime;
 	}
-	/**
- * @brief Get the touch progress of a node with given ID.
- *
- * This function calculates and returns the touch progress for a specific node identified by its ID. The touch progress is calculated as the time elapsed since the last touch divided by the total touch time. 
- * If no touch data exists or if the touch time is zero, it will return 0.0f.
- *
- * @param ID The unique identifier of the node for which to calculate the touch progress.
- * @return A float representing the touch progress in the range [0.0, 1.0]. Returns 0.0f if no touch data exists or if the touch time is zero.
- */
-float NodeEditorWindow::GetTouchProgress(ax::NodeEditor::NodeId ID)
+	float NodeEditorWindow::GetTouchProgress(ax::NodeEditor::NodeId ID)
 	{
 		auto it = m_NodeTouchTime.find(ID);
 		if (it != m_NodeTouchTime.end() && it->second > 0.f)
@@ -724,16 +659,7 @@ float NodeEditorWindow::GetTouchProgress(ax::NodeEditor::NodeId ID)
 
 		return 0.0f;
 	}
-	/**
- * @brief This function updates the touch time for each node in the NodeEditorWindow.
- *
- * The function iterates over all elements in m_NodeTouchTime, which is a map storing the touch time for each node. 
- * For each element, it subtracts the input parameter DeltaTime from the second value of the pair (E.second). 
- * This effectively reduces the remaining touch time by the specified amount over time.
- *
- * @param[in] DeltaTime The amount of time to reduce the touch time for each node by.
- */
-void NodeEditorWindow::UpdateTouch(float DeltaTime)
+	void NodeEditorWindow::UpdateTouch(float DeltaTime)
 	{
 		for (auto& E : m_NodeTouchTime)
 		{
@@ -743,16 +669,7 @@ void NodeEditorWindow::UpdateTouch(float DeltaTime)
 			}
 		}
 	}
-	/**
- * @brief Finds a node with the given ID in the NodeEditorWindow.
- *
- * This function iterates over all nodes in the m_Nodes vector and checks if their ID matches the provided one. If it finds a match, it returns that node as a Ref<AGENode> object. 
- * If no matching node is found, an empty Ref<AGENode> object is returned.
- *
- * @param ID The ID of the node to be searched for.
- * @return A Ref<AGENode> object representing the found node or an empty object if no match was found.
- */
-Ref<AGENode> NodeEditorWindow::FindNode(ax::NodeEditor::NodeId ID)
+	Ref<AGENode> NodeEditorWindow::FindNode(ax::NodeEditor::NodeId ID)
 	{
 		for (auto& N : m_Nodes)
 		{
@@ -763,15 +680,7 @@ Ref<AGENode> NodeEditorWindow::FindNode(ax::NodeEditor::NodeId ID)
 		}
 		return Ref<AGENode>();
 	}
-	/**
- * @brief Finds a link with the given ID in the node editor window.
- * 
- * This function iterates over all links in the m_Links vector and returns the first one that has an ID matching the input parameter 'ID'. If no such link is found, it returns an empty Ref object.
- * 
- * @param ID The unique identifier of the link to be found.
- * @return A reference to the found link or an empty reference if no link with the given ID exists.
- */
-Ref<AGENodeLink> NodeEditorWindow::FindLink(ax::NodeEditor::LinkId ID)
+	Ref<AGENodeLink> NodeEditorWindow::FindLink(ax::NodeEditor::LinkId ID)
 	{
 		for (auto& L : m_Links)
 		{
@@ -783,15 +692,7 @@ Ref<AGENodeLink> NodeEditorWindow::FindLink(ax::NodeEditor::LinkId ID)
 
 		return Ref<AGENodeLink>();
 	}
-	/**
- * @brief Finds a link with the given start pin id.
- *
- * This function iterates over all links in the editor and returns the first one that has the same start pin id as provided. If no such link is found, an empty reference to AGENodeLink is returned.
- *
- * @param ID The id of the start pin to search for.
- * @return A reference to the found link or an empty reference if no matching link was found.
- */
-Ref<AGENodeLink> NodeEditorWindow::FindLink(ax::NodeEditor::PinId ID)
+	Ref<AGENodeLink> NodeEditorWindow::FindLink(ax::NodeEditor::PinId ID)
 	{
 		for (auto& L : m_Links)
 		{
@@ -803,15 +704,7 @@ Ref<AGENodeLink> NodeEditorWindow::FindLink(ax::NodeEditor::PinId ID)
 
 		return Ref<AGENodeLink>();
 	}
-	/**
- * @brief Finds a pin with the given ID in the node editor.
- * 
- * This function iterates over all nodes and their inputs/outputs to find a pin with the specified ID. If no such pin is found, an empty reference to AGEPin is returned.
- * 
- * @param ID The ID of the pin to be found.
- * @return Ref<AGEPin> Reference to the found pin or an empty reference if not found.
- */
-Ref<AGEPin> NodeEditorWindow::FindPin(ax::NodeEditor::PinId ID)
+	Ref<AGEPin> NodeEditorWindow::FindPin(ax::NodeEditor::PinId ID)
 	{
 		if (!ID)
 		{
@@ -839,12 +732,7 @@ Ref<AGEPin> NodeEditorWindow::FindPin(ax::NodeEditor::PinId ID)
 
 		return Ref<AGEPin>();
 	}
-	/**
- * @brief Returns an ImColor based on the given pin type.
- * @param Type The type of pin (Flow, Boolean, Int, etc.).
- * @return An ImColor that corresponds to the provided pin type.
- */
-ImColor NodeEditorWindow::GetIconColor(AGEPinType Type)
+	ImColor NodeEditorWindow::GetIconColor(AGEPinType Type)
 	{
 		switch (Type)
 		{
@@ -868,8 +756,7 @@ ImColor NodeEditorWindow::GetIconColor(AGEPinType Type)
 		case AGEPinType::Any:	   return ImColor(C::Gray[0], C::Gray[1], C::Gray[2]);
 		}
 	}
-	
-void NodeEditorWindow::ShowStyleEditor(bool* Show)
+	void NodeEditorWindow::ShowStyleEditor(bool* Show)
 	{
 		if (!ImGui::Begin("Style", Show))
 		{
@@ -944,13 +831,7 @@ void NodeEditorWindow::ShowStyleEditor(bool* Show)
 
 		ImGui::End();
 	}
-	/**
- * @brief This function is used to display the detail panel for a given target. 
- * The detail panel contains information about the target entity such as its type and properties.
- * 
- * @param ShowPanel A boolean pointer that indicates whether the detail panel should be shown or not.
- */
-void NodeEditorWindow::ShowDetailPanel(bool* ShowPanel)
+	void NodeEditorWindow::ShowDetailPanel(bool* ShowPanel)
 	{
 		if (!ImGui::Begin("Details", ShowPanel))
 		{
@@ -969,8 +850,7 @@ void NodeEditorWindow::ShowDetailPanel(bool* ShowPanel)
 
 		ImGui::End();
 	}
-	
-void NodeEditorWindow::ShowLeftPane(float PaneWidth)
+	void NodeEditorWindow::ShowLeftPane(float PaneWidth)
 	{
 		auto& io = ImGui::GetIO();
 
@@ -1179,8 +1059,7 @@ void NodeEditorWindow::ShowLeftPane(float PaneWidth)
 
 		ImGui::EndChild();
 	}
-	
-void NodeEditorWindow::DrawPinIcon(const Ref<AGEPin>& Pin, bool Connected, int Alpha)
+	void NodeEditorWindow::DrawPinIcon(const Ref<AGEPin>& Pin, bool Connected, int Alpha)
 	{
 		ax::Widgets::IconType iconType;
 		ImColor Color = GetIconColor(Pin->Type);
@@ -1211,18 +1090,7 @@ void NodeEditorWindow::DrawPinIcon(const Ref<AGEPin>& Pin, bool Connected, int A
 		
 		ax::Widgets::Icon(ImVec2((float)m_PinIconSize, (float)m_PinIconSize), iconType, Connected, Color, ImColor(32, 32, 32, Alpha));
 	}
-	/**
- * @brief Checks if a pin is linked.
- *
- * This function checks whether the given PinId (ID) is linked to any other pins in the NodeEditorWindow. 
- * It does this by iterating over all links and checking if either the start or end pin id of each link matches the input ID.
- * If a match is found, it returns true indicating that the pin is linked. Otherwise, it returns false.
- *
- * @param ID The PinId to check for linking status.
- * 
- * @return True if the pin is linked, False otherwise.
- */
-bool NodeEditorWindow::IsPinLinked(ax::NodeEditor::PinId ID)
+	bool NodeEditorWindow::IsPinLinked(ax::NodeEditor::PinId ID)
 	{
 		if (!ID)
 		{
@@ -1240,17 +1108,7 @@ bool NodeEditorWindow::IsPinLinked(ax::NodeEditor::PinId ID)
 		return false;
 
 	}
-	/**
- * @brief Checks if a link can be created between two pins.
- * 
- * This function checks whether it is possible to create a link between two pins, A and B. It considers several factors such as the existence of the pins, their equality, the kind of each pin, and the type of each pin. Additionally, it also takes into account certain special cases where one pin's type can be any of a set of types (Flow or Callback).
- * 
- * @param A The first pin to consider for creating a link.
- * @param B The second pin to consider for creating a link.
- * 
- * @return Returns true if a link can be created between the two pins, false otherwise.
- */
-bool NodeEditorWindow::CanCreateLink(Ref<AGEPin> A, Ref<AGEPin> B)
+	bool NodeEditorWindow::CanCreateLink(Ref<AGEPin> A, Ref<AGEPin> B)
 	{
 		if (!A || !B || A == B || A->Kind == B->Kind || A->Type != B->Type || A->Node == B->Node || 
 			(B->Type == AGEPinType::Any && (A->Type != AGEPinType::Flow && A->Type != AGEPinType::Callback) ))
@@ -1259,15 +1117,7 @@ bool NodeEditorWindow::CanCreateLink(Ref<AGEPin> A, Ref<AGEPin> B)
 		}
 		return false;
 	}
-	/**
- * @brief Builds a node by setting its inputs and outputs.
- * 
- * This function sets the `Node` field of each input pin to the given node, assigning it as an input pin. Similarly, for each output pin, it sets the `Node` field to the given node, assigning it as an output pin.
- * 
- * @param Node The node whose inputs and outputs are being built.
- * @return void
- */
-void NodeEditorWindow::BuildNode(Ref<AGENode> Node)
+	void NodeEditorWindow::BuildNode(Ref<AGENode> Node)
 	{
 		for (auto& I : Node->Inputs)
 		{
@@ -1281,21 +1131,14 @@ void NodeEditorWindow::BuildNode(Ref<AGENode> Node)
 			O->Kind = ax::NodeEditor::PinKind::Output;
 		}
 	}
-	/**
- * @brief This function builds all the nodes in the NodeEditorWindow.
- * It iterates over each node (`m_Nodes`) and calls `BuildNode()` on it. 
- * The purpose of this function is to update or rebuild the visual representation of each node, based on its current state.
- * @return void
- */
-void NodeEditorWindow::BuildNodes()
+	void NodeEditorWindow::BuildNodes()
 	{
 		for (auto& N : m_Nodes)
 		{
 			BuildNode(N);
 		}
 	}
-	"DrawHeader function in NodeEditorWindow class responsible for drawing a node's header."
-void NodeEditorWindow::DrawHeader(INEUtils::BlueprintNodeBuilder& Builder, Ref<AGENode>& Node, Ref<AGEPin>& newLinkPin,bool IsSimple, bool HasOutputCallbacks)
+	void NodeEditorWindow::DrawHeader(INEUtils::BlueprintNodeBuilder& Builder, Ref<AGENode>& Node, Ref<AGEPin>& newLinkPin,bool IsSimple, bool HasOutputCallbacks)
 	{
 		if (!IsSimple)
 		{
@@ -1348,8 +1191,7 @@ void NodeEditorWindow::DrawHeader(INEUtils::BlueprintNodeBuilder& Builder, Ref<A
 			Builder.EndHeader();
 		}
 	}
-	
-void NodeEditorWindow::DrawInputPins(INEUtils::BlueprintNodeBuilder& Builder, Ref<AGENode>& Node, Ref<AGEPin>& newLinkPin)
+	void NodeEditorWindow::DrawInputPins(INEUtils::BlueprintNodeBuilder& Builder, Ref<AGENode>& Node, Ref<AGEPin>& newLinkPin)
 	{
 		for (auto& I : Node->Inputs)
 		{
@@ -1456,8 +1298,7 @@ void NodeEditorWindow::DrawInputPins(INEUtils::BlueprintNodeBuilder& Builder, Re
 
 		}
 	}
-	
-void NodeEditorWindow::DrawOutputPins(INEUtils::BlueprintNodeBuilder& Builder, Ref<AGENode>& Node, Ref<AGEPin>& newLinkPin, bool IsSimple)
+	void NodeEditorWindow::DrawOutputPins(INEUtils::BlueprintNodeBuilder& Builder, Ref<AGENode>& Node, Ref<AGEPin>& newLinkPin, bool IsSimple)
 	{
 		for (auto& O : Node->Outputs)
 		{
@@ -1486,8 +1327,7 @@ void NodeEditorWindow::DrawOutputPins(INEUtils::BlueprintNodeBuilder& Builder, R
 			Builder.EndOutput();
 		}
 	}
-	
-void NodeEditorWindow::DrawNodes(Ref<AGEPin>& newLinkPin)
+	void NodeEditorWindow::DrawNodes(Ref<AGEPin>& newLinkPin)
 	{
 		for (auto& N : m_Nodes)
 		{
@@ -1639,8 +1479,7 @@ void NodeEditorWindow::DrawNodes(Ref<AGEPin>& newLinkPin)
 			//ImGui::PopStyleVar();
 		}
 	}
-	
-void AGE::NodeEditorWindow::DrawAndCreateNewLink(Ref<AGEPin>& newLinkPin, std::function<void(const char*, ImColor)>ShowLabelFunction)
+	void AGE::NodeEditorWindow::DrawAndCreateNewLink(Ref<AGEPin>& newLinkPin, std::function<void(const char*, ImColor)>ShowLabelFunction)
 	{
 		if (ax::NodeEditor::BeginCreate(ImColor(255, 255, 255), 2.f))
 		{
@@ -1782,17 +1621,7 @@ void AGE::NodeEditorWindow::DrawAndCreateNewLink(Ref<AGEPin>& newLinkPin, std::f
 			}
 		}
 	}
-	/**
- * @brief Draws and creates a new node in the Node Editor Window.
- * 
- * This function is responsible for handling user interactions related to creating or drawing nodes within the NodeEditorWindow. It takes as parameters references to AGEPin objects, a boolean indicating whether a new node should be created, and a ShowLabelFunction that displays labels on the UI.
- * 
- * @param[out] newLinkPin Reference to an AGEPin object representing the newly linked pin.
- * @param[out] newNodeLinkPin Reference to an AGEPin object representing the newly created node link pin.
- * @param[in, out] createNewNode Boolean indicating whether a new node should be created or not.
- * @param ShowLabelFunction Function that displays labels on the UI with a given text and color.
- */
-void NodeEditorWindow::DrawAndCreateNewNode(Ref<AGEPin>& newLinkPin, Ref<AGEPin>& newNodeLinkPin, bool createNewNode, std::function<void(const char*, ImColor)> ShowLabelFunction)
+	void NodeEditorWindow::DrawAndCreateNewNode(Ref<AGEPin>& newLinkPin, Ref<AGEPin>& newNodeLinkPin, bool createNewNode, std::function<void(const char*, ImColor)> ShowLabelFunction)
 	{
 		ax::NodeEditor::PinId PinID = 0;
 
@@ -1821,8 +1650,7 @@ void NodeEditorWindow::DrawAndCreateNewNode(Ref<AGEPin>& newLinkPin, Ref<AGEPin>
 		}
 
 	}
-	
-void NodeEditorWindow::DeleteNode()
+	void NodeEditorWindow::DeleteNode()
 	{
 		if (ax::NodeEditor::BeginDelete())
 		{
@@ -1864,22 +1692,7 @@ void NodeEditorWindow::DeleteNode()
 		}
 	}
 	
-	/**
- * @brief This function is used to handle the splitter behavior in an ImGui context.
- *
- * The function takes several parameters including whether the split should be vertical or horizontal, the thickness of the splitter, and pointers to two float variables representing the sizes of the two sections. It also includes minimum sizes for both sections and a long axis size for the splitter. 
- *
- * @param SplitVertically A boolean indicating if the split is vertically (true) or horizontally (false).
- * @param Thickness The thickness of the splitter.
- * @param Size1 Pointer to float representing the first section's size.
- * @param Size2 Pointer to float representing the second section's size.
- * @param Min_Size1 Minimum allowed size for the first section.
- * @param Min_Size2 Minimum allowed size for the second section.
- * @param SplitterLongAxisSize The long axis size of the splitter.
- * 
- * @return Returns a boolean indicating if the split behavior was successful or not.
- */
-bool NodeEditorWindow::Splitter(bool SplitVertically, float Thickness, float* Size1, float* Size2, float Min_Size1, float Min_Size2, float SplitterLongAxisSize)
+	bool NodeEditorWindow::Splitter(bool SplitVertically, float Thickness, float* Size1, float* Size2, float Min_Size1, float Min_Size2, float SplitterLongAxisSize)
 	{
 		ImGuiContext& G = *GImGui;
 		ImGuiWindow* Window = G.CurrentWindow;
@@ -1890,14 +1703,7 @@ bool NodeEditorWindow::Splitter(bool SplitVertically, float Thickness, float* Si
 		
 		return ImGui::SplitterBehavior(BB, ID, SplitVertically ? ImGuiAxis_X : ImGuiAxis_Y, Size1, Size2, Min_Size1, Min_Size2, 0.f);
 	}
-	/**
- * @brief Spawns a new Begin Play node with the specified properties and adds it to the nodes list.
- * 
- * This function creates an instance of AGENode with specific attributes such as name, color, and pin type. It then adds this node to the m_Nodes vector. The created node is marked as "Begin Play" and has a single output flow pin.
- * 
- * @return Ref<AGENode> A reference to the newly spawned Begin Play node.
- */
-Ref<AGENode> NodeEditorWindow::SpawnBeginPlayNode() //Change to BeginPlay and Duplicate of OnUpdate
+	Ref<AGENode> NodeEditorWindow::SpawnBeginPlayNode() //Change to BeginPlay and Duplicate of OnUpdate
 	{
 		m_Nodes.emplace_back(CreateRef<AGENode>(GetNextID(), "Begin Play", ImColor(255,128,128)));
 		m_Nodes.back()->Outputs.emplace_back(CreateRef<AGEPin>(GetNextID(), "", AGEPinType::Flow));
@@ -1906,8 +1712,7 @@ Ref<AGENode> NodeEditorWindow::SpawnBeginPlayNode() //Change to BeginPlay and Du
 		BuildNode(m_Nodes.back());
 		return m_Nodes.back();
 	}
-	
-Ref<AGENode> NodeEditorWindow::SpawnOnUpdateNode()
+	Ref<AGENode> NodeEditorWindow::SpawnOnUpdateNode()
 	{
 		m_Nodes.emplace_back(CreateRef<AGENode>(GetNextID(), "On Update", ImColor(255, 128, 128)));
 		m_Nodes.back()->Outputs.emplace_back(CreateRef<AGEPin>(GetNextID(), "", AGEPinType::Flow));
@@ -1923,12 +1728,7 @@ Ref<AGENode> NodeEditorWindow::SpawnOnUpdateNode()
 		BuildNode(m_Nodes.back());
 		return m_Nodes.back();
 	}
-	/**
- * @brief Spawns an output action node with two outputs - "Condition" and "Event". 
- * The first output is of type Float, the second is of type Boolean.
- * @return A reference to the newly created AGENode object.
- */
-Ref<AGENode> NodeEditorWindow::SpawnOutputActionNode()
+	Ref<AGENode> NodeEditorWindow::SpawnOutputActionNode()
 	{
 		m_Nodes.emplace_back(CreateRef<AGENode>(GetNextID(), "Output Action"));
 		m_Nodes.back()->Inputs.emplace_back(CreateRef<AGEPin>(GetNextID(), "Sample", AGEPinType::Float));
@@ -1938,8 +1738,7 @@ Ref<AGENode> NodeEditorWindow::SpawnOutputActionNode()
 		BuildNode(m_Nodes.back());
 		return m_Nodes.back();
 	}
-	
-Ref<AGENode> NodeEditorWindow::SpawnPrintStringNode()
+	Ref<AGENode> NodeEditorWindow::SpawnPrintStringNode()
 	{
 		m_Nodes.emplace_back(CreateRef<AGENode>(GetNextID(), "Print String"));
 		m_Nodes.back()->Inputs.emplace_back(CreateRef<AGEPin>(GetNextID(), "", AGEPinType::Flow));
@@ -1964,8 +1763,7 @@ Ref<AGENode> NodeEditorWindow::SpawnPrintStringNode()
 		BuildNode(m_Nodes.back());
 		return m_Nodes.back();
 	}
-	
-Ref<AGENode> NodeEditorWindow::SpawnLessThanNode()
+	Ref<AGENode> NodeEditorWindow::SpawnLessThanNode()
 	{
 		m_Nodes.emplace_back(CreateRef<AGENode>(GetNextID(), "<", ImColor(128, 195, 248)));
 		m_Nodes.back()->Type = AGENodeType::Simple;
@@ -1983,8 +1781,7 @@ Ref<AGENode> NodeEditorWindow::SpawnLessThanNode()
 
 		return m_Nodes.back();
 	}
-	
-Ref<AGENode> NodeEditorWindow::SpawnGreaterThanNode()
+	Ref<AGENode> NodeEditorWindow::SpawnGreaterThanNode()
 	{
 		m_Nodes.emplace_back(CreateRef<AGENode>(GetNextID(), ">", ImColor(128, 195, 248)));
 		m_Nodes.back()->Type = AGENodeType::Simple;
@@ -2002,13 +1799,7 @@ Ref<AGENode> NodeEditorWindow::SpawnGreaterThanNode()
 
 		return m_Nodes.back();
 	}
-	/**
- * @brief Spawns an equal to node with two float inputs and one boolean output.
- * The function creates a new AGENode object, sets its properties, adds input pins of type Float, 
- * and outputs pin of type Boolean. It also sets the util function properties for this node.
- * @return A reference to the newly created AGENode object.
- */
-Ref<AGENode> NodeEditorWindow::SpawnEqualToNode()
+	Ref<AGENode> NodeEditorWindow::SpawnEqualToNode()
 	{
 		m_Nodes.emplace_back(CreateRef<AGENode>(GetNextID(), "=", ImColor(128, 195, 248)));
 		m_Nodes.back()->Type = AGENodeType::Simple;
@@ -2026,8 +1817,7 @@ Ref<AGENode> NodeEditorWindow::SpawnEqualToNode()
 
 		return m_Nodes.back();
 	}
-	
-Ref<AGENode> NodeEditorWindow::SpawnGTETNode()
+	Ref<AGENode> NodeEditorWindow::SpawnGTETNode()
 	{
 		m_Nodes.emplace_back(CreateRef<AGENode>(GetNextID(), ">=", ImColor(128, 195, 248)));
 		m_Nodes.back()->Type = AGENodeType::Simple;
@@ -2045,15 +1835,7 @@ Ref<AGENode> NodeEditorWindow::SpawnGTETNode()
 
 		return m_Nodes.back();
 	}
-	COMMENT:
-/**
- * @brief Spawns a Less Than or Equal To (<=) node with two input pins of type float and one output pin of type boolean. 
- * The function creates an instance of the AGENode class, sets its properties, adds inputs and outputs to it, and finally builds it.
- * @return A reference to the newly created AGENode object.
- */
-CONFIDENCE: 1.0;
-
-Ref<AGENode> NodeEditorWindow::SpawnLTETNode()
+	Ref<AGENode> NodeEditorWindow::SpawnLTETNode()
 	{
 		m_Nodes.emplace_back(CreateRef<AGENode>(GetNextID(), "<=", ImColor(128, 195, 248)));
 		m_Nodes.back()->Type = AGENodeType::Simple;
@@ -2070,8 +1852,7 @@ Ref<AGENode> NodeEditorWindow::SpawnLTETNode()
 
 		return m_Nodes.back();
 	}
-	
-Ref<AGENode> NodeEditorWindow::SpawnMakeLiteralString()
+	Ref<AGENode> NodeEditorWindow::SpawnMakeLiteralString()
 	{
 		m_Nodes.emplace_back(CreateRef<AGENode>(GetNextID(), "Make String", ImColor(124, 21, 153)));
 		m_Nodes.back()->Type = AGENodeType::Simple;
@@ -2085,8 +1866,7 @@ Ref<AGENode> NodeEditorWindow::SpawnMakeLiteralString()
 		BuildNode(m_Nodes.back());
 		return m_Nodes.back();
 	}
-	
-Ref<AGENode> NodeEditorWindow::SpawnAppendString()
+	Ref<AGENode> NodeEditorWindow::SpawnAppendString()
 	{
 		m_Nodes.emplace_back(CreateRef<AGENode>(GetNextID(), "Append String", ImColor(124, 21, 153)));
 		m_Nodes.back()->Type = AGENodeType::Simple;
@@ -2102,8 +1882,7 @@ Ref<AGENode> NodeEditorWindow::SpawnAppendString()
 		BuildNode(m_Nodes.back());
 		return m_Nodes.back();
 	}
-	
-Ref<AGENode> NodeEditorWindow::SpawnGetLocation2D()
+	Ref<AGENode> NodeEditorWindow::SpawnGetLocation2D()
 	{
 		m_Nodes.emplace_back(CreateRef<AGENode>(GetNextID(), "Get 2D Location", ImColor(C::Aquamarine[0], C::Aquamarine[1], C::Aquamarine[2])));
 		m_Nodes.back()->Type = AGENodeType::Simple;
@@ -2129,14 +1908,7 @@ Ref<AGENode> NodeEditorWindow::SpawnGetLocation2D()
 		return m_Nodes.back();
 	}
 
-	/**
- * @brief Spawns a new node with the "Set 2D Location" function and its corresponding inputs and outputs.
- * 
- * This function creates a new node in the NodeEditorWindow's list of nodes, specifically for setting the location of an object in two-dimensional space. The node has five pins: three input pins (a flow pin, an "Object" pin, and a Vector2D pin) and one output pin (also a flow pin).
- * 
- * @return A reference to the newly created node.
- */
-Ref<AGENode> NodeEditorWindow::SpawnSetLocation2D()
+	Ref<AGENode> NodeEditorWindow::SpawnSetLocation2D()
 	{
 		m_Nodes.emplace_back(CreateRef<AGENode>(GetNextID(), "Set 2D Location", ImColor(C::Aquamarine[0], C::Aquamarine[1], C::Aquamarine[2])));
 		m_Nodes.back()->Inputs.emplace_back(CreateRef<AGEPin>(GetNextID(), "", AGEPinType::Flow));
@@ -2162,14 +1934,7 @@ Ref<AGENode> NodeEditorWindow::SpawnSetLocation2D()
 		return m_Nodes.back();
 	}
 
-	/**
- * Creates a new Get Location 3D node in the Node Editor Window.
- * The function creates an AGENode with specific properties and configurations, including its type (Simple), inputs (Object), outputs (Vector3D), and function details (GetActorLocation).
- * If no object is provided for input, it defaults to using the target entity.
- * 
- * @return Ref<AGENode> A reference to the newly created node.
- */
-Ref<AGENode> NodeEditorWindow::SpawnGetLocation3D()
+	Ref<AGENode> NodeEditorWindow::SpawnGetLocation3D()
 	{
 		m_Nodes.emplace_back(CreateRef<AGENode>(GetNextID(), "Get 3D Location", ImColor(C::Aquamarine[0], C::Aquamarine[1], C::Aquamarine[2])));
 		m_Nodes.back()->Type = AGENodeType::Simple;
@@ -2196,8 +1961,7 @@ Ref<AGENode> NodeEditorWindow::SpawnGetLocation3D()
 		return m_Nodes.back();
 	}
 
-	
-Ref<AGENode> NodeEditorWindow::SpawnSetLocation3D()
+	Ref<AGENode> NodeEditorWindow::SpawnSetLocation3D()
 	{
 		m_Nodes.emplace_back(CreateRef<AGENode>(GetNextID(), "Set 3D Location", ImColor(C::Aquamarine[0], C::Aquamarine[1], C::Aquamarine[2])));
 		m_Nodes.back()->Inputs.emplace_back(CreateRef<AGEPin>(GetNextID(), "", AGEPinType::Flow));
@@ -2223,8 +1987,7 @@ Ref<AGENode> NodeEditorWindow::SpawnSetLocation3D()
 		return m_Nodes.back();
 	}
 
-	
-Ref<AGENode> NodeEditorWindow::SpawnToString()
+	Ref<AGENode> NodeEditorWindow::SpawnToString()
 	{
 		m_Nodes.emplace_back(CreateRef<AGENode>(GetNextID(), "To String", ImColor(C::Chocolate[0], C::Chocolate[1], C::Chocolate[2])));
 		m_Nodes.back()->Type = AGENodeType::Simple;
@@ -2242,14 +2005,7 @@ Ref<AGENode> NodeEditorWindow::SpawnToString()
 		return m_Nodes.back();
 	}
 
-	/**
- * @brief Spawns a new Get Actor node and adds it to the nodes list.
- * 
- * This function creates an instance of AGENode with specific properties, sets its type as Simple, and adds an object pin to its outputs. The object pin points to the target actor. It also initializes some fields in Func structure for this node.
- * 
- * @return Ref<AGENode> A reference to the newly created Get Actor node.
- */
-Ref<AGENode> NodeEditorWindow::SpawnGetActor()
+	Ref<AGENode> NodeEditorWindow::SpawnGetActor()
 	{
 		m_Nodes.emplace_back(CreateRef<AGENode>(GetNextID(), "Get Actor", ImColor(C::Cyan[0], C::Cyan[1], C::Cyan[2])));
 		m_Nodes.back()->Type = AGENodeType::Simple;
@@ -2266,8 +2022,7 @@ Ref<AGENode> NodeEditorWindow::SpawnGetActor()
 		return m_Nodes.back();
 	}
 
-	
-Ref<AGENode> NodeEditorWindow::SpawnSum()
+	Ref<AGENode> NodeEditorWindow::SpawnSum()
 	{
 		m_Nodes.emplace_back(CreateRef<AGENode>(GetNextID(), "Sum", ImColor(C::Orange[0], C::Orange[1], C::Orange[2])));
 		m_Nodes.back()->Type = AGENodeType::Simple;
@@ -2287,8 +2042,7 @@ Ref<AGENode> NodeEditorWindow::SpawnSum()
 		return m_Nodes.back();
 	}
 
-	
-Ref<AGENode> NodeEditorWindow::SpawnSubtract()
+	Ref<AGENode> NodeEditorWindow::SpawnSubtract()
 	{
 		m_Nodes.emplace_back(CreateRef<AGENode>(GetNextID(), "Subtract", ImColor(C::Orange[0], C::Orange[1], C::Orange[2])));
 		m_Nodes.back()->Type = AGENodeType::Simple;
@@ -2308,8 +2062,7 @@ Ref<AGENode> NodeEditorWindow::SpawnSubtract()
 		return m_Nodes.back();
 	}
 
-	
-Ref<AGENode> NodeEditorWindow::SpawnMultiply()
+	Ref<AGENode> NodeEditorWindow::SpawnMultiply()
 	{
 		m_Nodes.emplace_back(CreateRef<AGENode>(GetNextID(), "Multiply", ImColor(C::Orange[0], C::Orange[1], C::Orange[2])));
 		m_Nodes.back()->Type = AGENodeType::Simple;
@@ -2329,8 +2082,7 @@ Ref<AGENode> NodeEditorWindow::SpawnMultiply()
 		return m_Nodes.back();
 	}
 
-	
-Ref<AGENode> NodeEditorWindow::SpawnDivide()
+	Ref<AGENode> NodeEditorWindow::SpawnDivide()
 	{
 		m_Nodes.emplace_back(CreateRef<AGENode>(GetNextID(), "Divide", ImColor(C::Orange[0], C::Orange[1], C::Orange[2])));
 		m_Nodes.back()->Type = AGENodeType::Simple;
@@ -2350,8 +2102,7 @@ Ref<AGENode> NodeEditorWindow::SpawnDivide()
 		return m_Nodes.back();
 	}
 
-	
-Ref<AGENode> NodeEditorWindow::SpawnModulo()
+	Ref<AGENode> NodeEditorWindow::SpawnModulo()
 	{
 		m_Nodes.emplace_back(CreateRef<AGENode>(GetNextID(), "Modulo", ImColor(C::Orange[0], C::Orange[1], C::Orange[2])));
 		m_Nodes.back()->Type = AGENodeType::Simple;
@@ -2371,8 +2122,7 @@ Ref<AGENode> NodeEditorWindow::SpawnModulo()
 		return m_Nodes.back();
 	}
 
-	
-Ref<AGENode> NodeEditorWindow::SpawnPow()
+	Ref<AGENode> NodeEditorWindow::SpawnPow()
 	{
 		m_Nodes.emplace_back(CreateRef<AGENode>(GetNextID(), "Pow", ImColor(C::Orange[0], C::Orange[1], C::Orange[2])));
 		m_Nodes.back()->Type = AGENodeType::Simple;
@@ -2392,15 +2142,7 @@ Ref<AGENode> NodeEditorWindow::SpawnPow()
 		return m_Nodes.back();
 	}
 
-	/**
- * @brief SpawnSquareRoot creates a new node with a square root operation.
- * The function adds a new node to the m_Nodes vector, sets its type as Simple, 
- * and initializes input and output pins of the node. It also sets up the function 
- * details for this node which includes reference to the node itself, ID of the node, 
- * value "Square Root", and a boolean indicating that it is a utility function.
- * @return A Ref<AGENode> object representing the newly created square root node.
- */
-Ref<AGENode> NodeEditorWindow::SpawnSquareRoot()
+	Ref<AGENode> NodeEditorWindow::SpawnSquareRoot()
 	{
 		m_Nodes.emplace_back(CreateRef<AGENode>(GetNextID(), "Square Root", ImColor(C::Orange[0], C::Orange[1], C::Orange[2])));
 		m_Nodes.back()->Type = AGENodeType::Simple;
@@ -2417,8 +2159,7 @@ Ref<AGENode> NodeEditorWindow::SpawnSquareRoot()
 		return m_Nodes.back();
 	}
 
-	
-Ref<AGENode> NodeEditorWindow::SpawnCubeRoot()
+	Ref<AGENode> NodeEditorWindow::SpawnCubeRoot()
 	{
 		m_Nodes.emplace_back(CreateRef<AGENode>(GetNextID(), "Cube Root", ImColor(C::Orange[0], C::Orange[1], C::Orange[2])));
 		m_Nodes.back()->Type = AGENodeType::Simple;
@@ -2435,14 +2176,7 @@ Ref<AGENode> NodeEditorWindow::SpawnCubeRoot()
 		return m_Nodes.back();
 	}
 
-	/**
- * @brief Spawns a new node representing the dot product operation in the graph.
- * The function creates an AGENode with specific properties and adds it to the nodes list. 
- * It sets up inputs, outputs, and other attributes for the dot product calculation.
- *
- * @return A reference to the newly created AGENode object.
- */
-Ref<AGENode> NodeEditorWindow::SpawnDotProduct()
+	Ref<AGENode> NodeEditorWindow::SpawnDotProduct()
 	{
 		m_Nodes.emplace_back(CreateRef<AGENode>(GetNextID(), "Dot", ImColor(C::Orange[0], C::Orange[1], C::Orange[2])));
 		m_Nodes.back()->Type = AGENodeType::Simple;
@@ -2459,14 +2193,7 @@ Ref<AGENode> NodeEditorWindow::SpawnDotProduct()
 		return m_Nodes.back();
 	}
 
-	/**
- * @brief Spawns a cross product node with two input and one output pin of type Vector3D. The inputs are vectors, the output is their cross product.
- * 
- * @param None
- * 
- * @return Ref<AGENode> A reference to the newly created AGENode object representing the cross product operation.
- */
-Ref<AGENode> NodeEditorWindow::SpawnCrossProduct()
+	Ref<AGENode> NodeEditorWindow::SpawnCrossProduct()
 	{
 		m_Nodes.emplace_back(CreateRef<AGENode>(GetNextID(), "Cross", ImColor(C::Orange[0], C::Orange[1], C::Orange[2])));
 		m_Nodes.back()->Type = AGENodeType::Simple;
@@ -2483,8 +2210,7 @@ Ref<AGENode> NodeEditorWindow::SpawnCrossProduct()
 		return m_Nodes.back();
 	}
 
-	
-Ref<AGENode> NodeEditorWindow::SpawnCosine()
+	Ref<AGENode> NodeEditorWindow::SpawnCosine()
 	{
 		m_Nodes.emplace_back(CreateRef<AGENode>(GetNextID(), "Cosine", ImColor(C::Orange[0], C::Orange[1], C::Orange[2])));
 		m_Nodes.back()->Type = AGENodeType::Simple;
@@ -2500,8 +2226,7 @@ Ref<AGENode> NodeEditorWindow::SpawnCosine()
 		return m_Nodes.back();
 	}
 
-	
-Ref<AGENode> NodeEditorWindow::SpawnSine()
+	Ref<AGENode> NodeEditorWindow::SpawnSine()
 	{
 		m_Nodes.emplace_back(CreateRef<AGENode>(GetNextID(), "Sine", ImColor(C::Orange[0], C::Orange[1], C::Orange[2])));
 		m_Nodes.back()->Type = AGENodeType::Simple;
@@ -2517,8 +2242,7 @@ Ref<AGENode> NodeEditorWindow::SpawnSine()
 		return m_Nodes.back();
 	}
 
-	
-void NodeEditorWindow::RegisterFunctions()
+	void NodeEditorWindow::RegisterFunctions()
 	{
 		if (m_Target)
 		{
@@ -2561,27 +2285,12 @@ void NodeEditorWindow::RegisterFunctions()
 
 	}
 
-	/**
- * @brief Deregisters all functions from the target node.
- * 
- * This function is used to remove all registered functions from the target node. It does this by calling the ClearFunctions() method on the m_Target object, which presumably clears any previously registered functions.
- * 
- * @return void
- */
-void NodeEditorWindow::DeregisterFunctions()
+	void NodeEditorWindow::DeregisterFunctions()
 	{
 		m_Target->ClearFunctions();
 	}
 
-	/**
- * @brief Synchronizes the links between nodes.
- *
- * This function iterates over all the links in the NodeEditorWindow and updates the corresponding pins based on the type of pin. 
- * It handles different types of pins such as Boolean, Int, Int16, Int64, UInt16, UInt32, UInt64, Vector2D, Vector3D, Vector4D, Float, String and Object. 
- * For each link, it finds the start pin and end pin using their IDs. Then based on the type of the end pin, it updates its value to that of the start pin's value.
- * If the pin is not one of these types, it does nothing.
- */
-void NodeEditorWindow::SyncLinks()
+	void NodeEditorWindow::SyncLinks()
 	{
 		for (auto& L : m_Links)
 		{
@@ -2610,8 +2319,7 @@ void NodeEditorWindow::SyncLinks()
 			
 		}
 	}
-	
-void NodeEditorWindow::ShowNodeOptions(Ref<AGENode>& Node)
+	void NodeEditorWindow::ShowNodeOptions(Ref<AGENode>& Node)
 	{
 		if (ImGui::MenuItem("Begin Play"))
 		{
@@ -2755,24 +2463,12 @@ void NodeEditorWindow::ShowNodeOptions(Ref<AGENode>& Node)
 			ImGui::CloseCurrentPopup();
 		}
 	}
-	/**
- * @brief This function is used to rebuild the window. It sets the m_IsOpen variable to true, indicating that the window should be rebuilt.
- * 
- * @return void
- */
-void NodeEditorWindow::RebuildWindow()
+	void NodeEditorWindow::RebuildWindow()
 	{
 		m_IsOpen = true;
 	}
 
-	/**
- * @brief Saves the graph to a file in the game content directory.
- * 
- * This function writes the current state of the NodeEditorWindow object to a file located at the path defined by the GameContentPath from AppConfig, appended with "/VisualScripting/" and m_Name followed by ".AGEasset". The data is written using FileStreamWriter::WriteObject.
- * 
- * @return void
- */
-void NodeEditorWindow::SaveGraph()
+	void NodeEditorWindow::SaveGraph()
 	{
 		AppConfig Config = App::Get().GetAppConfig();
 		std::string Path = Config.GameContentPath.string() + "VisualScripting/" + m_Name + ".AGEasset";
@@ -2780,13 +2476,7 @@ void NodeEditorWindow::SaveGraph()
 		Stream.WriteObject<NodeEditorWindow>(*this);
 	}
 
-	/**
- * @brief Compiles the graph and saves it if successful.
- * 
- * This function compiles all nodes in the graph, sets their arguments, checks for any errors during compilation, syncs links, and finally saves the graph to a file if everything was compiled successfully.
- * It also logs an info message with the name of the saved graph and its path if successful or an error message if not.
- */
-void NodeEditorWindow::CompileGraph()
+	void NodeEditorWindow::CompileGraph()
 	{
 		AppConfig Config = App::Get().GetAppConfig();
 		bool bWasCompilationSuccessful = true;

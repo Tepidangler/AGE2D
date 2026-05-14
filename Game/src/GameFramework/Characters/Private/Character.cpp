@@ -19,6 +19,7 @@ RTTR_REGISTRATION{
 
 namespace GameFramework
 {
+#if 0
 	template<>
 	InputActionBinding& InputComponent::BindAction<Character>(const std::string& Action, KeyState State, Character* Instigator, InputActionBinding::ActionCallbackFn Func)
 	{
@@ -35,6 +36,7 @@ namespace GameFramework
 		m_AxisBindings.emplace_back(AGE::CreateRef<InputAxisBinding>(Binding));
 		return m_AxisBindings.back();
 	}
+#endif
 
 	void Character::OnCreate()
 	{
@@ -139,9 +141,9 @@ namespace GameFramework
 	void Character::SetupInput(AGE::Ref<InputComponent>& PlayerInputComponent)
 	{
 		AGE::GameLogger::Assert(!PlayerInputComponent, "Invalid Input Component");
-		PlayerInputComponent->BindAxis<Character>("MoveForward", this, BIND_AXIS_FN(Character::MoveForward));
-		PlayerInputComponent->BindAxis<Character>("MoveRight", this, BIND_AXIS_FN(Character::MoveRight));
-		PlayerInputComponent->BindAction<Character>("Cancel", KeyState::Pressed, this, BIND_ACTION_FN(Character::CancelAction));
+		PlayerInputComponent->BindAxis("MoveForward", 1,InputType::Gamepad, BIND_AXIS_FN(Character::MoveForward));
+		PlayerInputComponent->BindAxis("MoveRight", 1,InputType::Gamepad, BIND_AXIS_FN(Character::MoveRight));
+		PlayerInputComponent->BindAction("Cancel", AGE::KeyState::Pressed, 1,InputType::Gamepad, BIND_ACTION_FN(Character::CancelAction));
 	}
 	void Character::MoveForward(float AxisValue)
 	{
@@ -149,7 +151,7 @@ namespace GameFramework
 
 		float Speed = GetEntityHandle().GetComponent<AGE::MovementComponent>().Speed;
 
-		if (AGE::Input::IsJoyStickConnected(AGE::JoyStick::JoyStick1))
+		if (AGE::Input::IsJoyStickConnected(AGE::GamePad::JoyStick1))
 		{
 			Trans.y -= Speed * AxisValue; // This has to be -= because Up on the y axis is -1 and down is 1
 			return;
@@ -176,7 +178,7 @@ namespace GameFramework
 
 		float Speed = GetEntityHandle().GetComponent<AGE::MovementComponent>().Speed;
 
-		if (AGE::Input::IsJoyStickConnected(AGE::JoyStick::JoyStick1))
+		if (AGE::Input::IsJoyStickConnected(AGE::GamePad::JoyStick1))
 		{
 			Trans.x += Speed * AxisValue;
 			return;

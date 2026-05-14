@@ -1,3 +1,4 @@
+#if !AG_DIST
 #include <Core/Public/AGEpch.hpp>
 #include "Editor_ImGui/Public/Toolbar.h"
 #include "Editor_Core/Public/EditorLayer.h"
@@ -36,7 +37,7 @@ namespace AGE
 
 			case 1:
 			{
-				float Size = ImGui::GetWindowHeight() + 4.f;
+				[[maybe_unused]] float Size = ImGui::GetWindowHeight() + 4.f;
 				Ref<Texture2D> Icon = m_SceneState == SceneState::Edit ? m_PlayIcon : m_StopIcon;
 				//ImGui::SetCursorPosX((ImGui::GetWindowContentRegionMax().x * 5.f) - (Size * .5f));
 				if (ImGui::ImageButton((ImTextureID)(uintptr_t)Icon->GetTextureID(), { 100.f, 100.f }))
@@ -117,3 +118,5 @@ namespace AGE
 		return false;
 	}
 }
+
+#endif

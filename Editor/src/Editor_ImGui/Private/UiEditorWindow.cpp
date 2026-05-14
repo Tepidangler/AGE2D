@@ -85,7 +85,7 @@ namespace AGE
 		Reader.ReadRaw<size_t>(NumberOfComponents);
 		m_UIComponents.resize(NumberOfComponents);
 
-		for (int i  = 0; i < NumberOfComponents; ++i)
+		for (size_t i  = 0; i < NumberOfComponents; ++i)
 		{
 			UIComponentType Type{};
 			Reader.ReadObject<UIComponentType>(Type);

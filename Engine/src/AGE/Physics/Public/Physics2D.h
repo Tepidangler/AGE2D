@@ -22,22 +22,9 @@ namespace AGE
 	{
 	public:
 
-		Ph/**
- * @brief Default constructor for the ysics2D class.
- *
- * This function initializes a new instance of the ysics2D class with default values.
- * It does not take any parameters and returns an object of type ysics2D.
- * 
- * @return A new instance of the ysics2D class with default values.
- */
-ysics2D() = default;
+		Physics2D() = default;
 
-		vi/**
- * @brief Virtual destructor for the Physics2D class.
- *
- * This function is responsible for freeing any resources that were allocated by the object during its lifetime. It does not return anything and thus, it has a void return type.
- */
-rtual ~Physics2D() = default;
+		~Physics2D() = default;
 
 		bool CreateNewPhysicsWorld(Ref<Scene> scene);
 
@@ -47,16 +34,16 @@ rtual ~Physics2D() = default;
 
 		b2BodyId CreateBody(b2BodyDef& Def);
 
-		b2BodyDef MakeBodyDefinition(const BodyType& Type, const Vector3& Translation, const Vector3 Rotation, bool IsRotationFixed, void* UserData);
+		b2BodyDef MakeBodyDefinition(const BodyType& Type, const Vector3& Translation, const Vector3& Rotation, bool IsRotationFixed, void* UserData);
 
 		b2ShapeDef MakeShapeDefinition(float Density, float Friction, float Restitution, bool ShouldGenerateEvents, void* UserData);
 
 		b2Rot MakeRotation(float Z);
 
-		b2Polygon CreateBox(float HeightX, float HeightY, const Vector3 Scale);
+		b2Polygon CreateBox(float HeightX, float HeightY, const Vector3& Scale);
 		b2ShapeId CreatePolygonShape(const b2BodyId& ID, const b2ShapeDef& Fixture, const b2Polygon& Box);
 
-		b2Capsule CreateCapsule(const Vector2& Offset, const Vector3 Scale, const float Radius);
+		b2Capsule CreateCapsule(const Vector2& Offset, const Vector3& Scale, const float Radius);
 		b2ShapeId CreateCapsuleShape(const b2BodyId& ID, const b2ShapeDef& Fixture, const b2Capsule& Capsule);
 
 		b2Segment CreateSegment();
@@ -81,25 +68,10 @@ rtual ~Physics2D() = default;
 
 		bool QueryHit(const QueryParams& Params);
 
-		Re/**
- * @brief Returns a reference to the World object.
- *
- * This function returns a reference to the World object that is currently being used by the program. The returned object can be modified or accessed directly, allowing for changes to be made to the state of the world.
- * 
- * @return A reference to the current World object.
- */
-f<World>& GetWorld() { return m_World; }
+		Ref<World>& GetWorld() { return m_World; }
 
 		template<typename T>
-		st/**
- * @brief Retrieves a shape from its ID.
- * 
- * This function retrieves and returns the shape based on the provided ID. The type of shape returned depends on the value of the ID, which is determined by calling b2Shape_GetType().
- * 
- * @param[in] ID The unique identifier for a shape.
- * @return A shape object corresponding to the given ID. If no matching shape exists, it returns a default polygon shape.
- */
-atic T GetShapeFromID(b2ShapeId ID)
+		static T GetShapeFromID(b2ShapeId ID)
 		{
 			switch (b2Shape_GetType(ID))
 			{

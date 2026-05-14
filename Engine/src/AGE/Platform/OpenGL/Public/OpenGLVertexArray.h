@@ -32,9 +32,9 @@ const std::vector<Ref<VertexBuffer>>& GetVertexBuffers() const override { return
  */
 const Ref<IndexBuffer>& GetIndexBuffer() const override { return m_IndexBuffer; }
 		
-		void EnableVertexAttribArray(int ArrayID) const override;
+		void EnableVertexAttribArray(uint32_t ArrayID) const override;
 
-		void MakeVertexAttribPtr(GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const void* pointer) const override;
+		void MakeVertexAttribPtr(uint32_t index, int size, uint32_t type, uint8_t normalized, int stride, const void* pointer) const override;
 
 		/**
  * @brief Returns an iterator pointing to the beginning of the vertex buffer list.

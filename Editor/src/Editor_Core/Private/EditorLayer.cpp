@@ -76,7 +76,7 @@ namespace AGE
 
 	void EditorLayer::OnAttach() 
 	{
-#ifdef WIN32
+#ifdef AG_PLATFORM_WINDOWS
 		MONITORINFOEX MonInfo;
 		MonInfo.cbSize = sizeof(MonInfo);
 		GetMonitorInfo(MonitorFromWindow(App::Get().GetDeviceManager().GetWindow().GetPlatformWindow(), MONITOR_DEFAULTTONEAREST), (LPMONITORINFO) & MonInfo);
@@ -101,7 +101,7 @@ namespace AGE
 		m_EditorCamera = EditorCamera(30.f,1.778f,.1f,1000.f);
 		m_EditorCamera.SetProjectionType(ProjectionType::Perspective);
 		m_Viewport = CreateRef<Viewport>("Scene Viewport");
-		m_Panel = CreateRef<Panel>("Stats Panel");
+		m_Panel = CreateRef<Panel>();
 		m_SceneHierarchyPanel = CreateRef<SceneHierarchyPanel>(m_ActiveScene);
 		m_DatabaseWindow = CreateRef<DatabaseWindow>(m_Database.get());
 		m_ContentBrowserPanel = CreateRef<ContentBrowserPanel>();
@@ -120,7 +120,7 @@ namespace AGE
 
 		if (!m_bLoadedIni)
 		{
-			m_MainMenuBar->LoadProjectIniFile();
+			m_MainMenuBar->LoadInputIni();
 			m_bLoadedIni = true;
 		}
 		m_MainMenuBar->OnImGuiRender(DeltaTime);
@@ -154,9 +154,8 @@ namespace AGE
 
 	bool EditorLayer::OnRendererChanged(RendererChangeEvent& E)
 	{
-		GraphicsContext* Context = App::Get().GetDeviceManager().GetWindow().GetGraphicsContext();
 		m_FrameBuffer.reset();
-#ifdef WIN32
+#ifdef AG_PLATFORM_WINDOWS
 		MONITORINFOEX MonInfo{};
 		MonInfo.cbSize = sizeof(MonInfo);
 		GetMonitorInfo(MonitorFromWindow(App::Get().GetDeviceManager().GetWindow().GetPlatformWindow(), MONITOR_DEFAULTTONEAREST), &MonInfo);

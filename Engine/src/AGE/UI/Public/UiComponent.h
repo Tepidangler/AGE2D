@@ -13,7 +13,10 @@
 #ifdef __clang__
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wconversion"
+#ifdef AG_PLATFORM_LINUX
 #pragma clang diagnostic ignored "-Wnontrivial-memcall"
+#pragma clang diagnostic ignored "-Wunused-function"
+#endif
 #ifdef AG_PLATFORM_WINDOWS
 #pragma clang diagnostic ignored "-Wmicrosoft-unqualified-friend"
 #endif
@@ -115,7 +118,7 @@ virtual void DrawFontSelectionComboBox(){}
 UIComponent() = default;
 
 
-		friend class Widget;
+		friend struct Widget;
 		RTTR_REGISTRATION_FRIEND
 
 	};

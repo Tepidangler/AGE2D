@@ -5,6 +5,8 @@
 #pragma once
 #include <cmath>
 #include <glm/glm.hpp>
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/quaternion.hpp>
 #include <sstream>
 
 namespace AGE {
@@ -27,83 +29,35 @@ namespace AGE {
 		Vector3(glm::vec3 v);
 		Vector3(Vector4 v);
 
-		/**
- * @brief This function returns a reference to the element at index 'i' in an array of floats.
- * 
- * @param[in] i The index of the element to return.
- * @return A reference to the float at position 'i'.
- */
-float& operator [](int i)
+		float& operator [](int i)
 		{
 			return ((&x)[i]);
 		}
-		/**
- * @brief This function returns a reference to the element at index 'i' in an array.
- *
- * The function takes an integer as input and returns a constant float reference. It is used for accessing elements of an array-like object, such as an array or vector. 
- *
- * @param i An integer representing the index of the desired element in the array-like object.
- * @return A constant float reference to the element at index 'i' in the array-like object.
- */
-const float& operator [](int i) const
+		const float& operator [](int i) const
 		{
 			return ((&x)[i]);
 		}
-
-		/**
- * @brief This function adds two vectors together component-wise and returns the result as a new vector.
- * 
- * @param vec The Vector3 to add to this instance.
- * @return A new Vector3 that is the sum of this instance and the input Vector3.
- */
-Vector3 operator+(const Vector3& vec) const {
+		Vector3 operator+(const Vector3& vec) const {
 			return Vector3(x + vec.x, y + vec.y, z + vec.z);
 		}
 
-		/**
- * @brief This function adds the components of a Vector3 to this vector.
- * 
- * @param vec The Vector3 to add to this one.
- * 
- * @return void
- */
-void operator+=(const Vector3& vec) {
+		void operator+=(const Vector3& vec) {
 			x += vec.x;
 			y += vec.y;
 			z += vec.z;
 		}
 
-		/**
- * @brief Subtracts another vector from this one and returns the result.
- * @param vec The Vector3 to subtract from this one.
- * @return A new Vector3 that is the difference between this vector and the input vector.
- */
-Vector3 operator-(const Vector3& vec) const {
+		Vector3 operator-(const Vector3& vec) const {
 			return Vector3(x - vec.x, y - vec.y, z - vec.z);
 		}
 
-		/**
- * @brief Subtracts another Vector3 from this one.
- *
- * This function subtracts the x, y and z values of a given vector from those of this vector.
- * The result is stored in this vector.
- *
- * @param vec A reference to the Vector3 to be subtracted.
- * 
- * @return void
- */
-void operator-=(const Vector3& vec) {
+		void operator-=(const Vector3& vec) {
 			x -= vec.x;
 			y -= vec.y;
 			z -= vec.z;
 		}
 
-		/**
- * @brief This function returns a new vector that is the result of scaling this vector by a given scalar value.
- * @param scalar The float value to scale the vector by.
- * @return A new Vector3 object representing the scaled vector.
- */
-Vector3 operator*(float scalar) const {
+		Vector3 operator*(float scalar) const {
 			return Vector3(x * scalar, y * scalar, z * scalar);
 		}
 
@@ -111,41 +65,17 @@ Vector3 operator*(float scalar) const {
 		//{
 		//	return Vector3(x * s.x, y * s.y, z * s.z);
 		//}
-		/**
- * @brief Multiplies the coordinates of this vector by a scalar.
- * @param[in] scalar The value to multiply each coordinate by.
- * @return void
- */
-void operator*=(float scalar) {
+		void operator*=(float scalar) {
 			x *= scalar;
 			y *= scalar;
 			z *= scalar;
 		}
 
-		/**
- * @brief Divides the vector by a scalar value.
- *
- * This function divides each component of the vector (x, y, and z) by the given scalar value.
- * It returns a new Vector3 object with the resultant values.
- *
- * @param scalar The scalar value to divide the vector components by.
- * @return A new Vector3 object resulting from the division operation.
- */
-Vector3 operator/(float scalar) const {
+		Vector3 operator/(float scalar) const {
 			return Vector3(x / scalar, y / scalar, z / scalar);
 		}
 
-		/**
- * @brief Divides the vector's components by a given scalar.
- *
- * This function divides each of the vector's three components (x, y, z) by the provided scalar.
- * It modifies the vector in-place and returns it for convenience.
- *
- * @param scalar The value to divide the vector's components by. Must not be zero to avoid division by zero.
- * 
- * @return A reference to this Vector3 object, after the operation has been performed.
- */
-void operator/=(float scalar) {
+		void operator/=(float scalar) {
 			x /= scalar;
 			y /= scalar;
 			z /= scalar;
@@ -153,48 +83,16 @@ void operator/=(float scalar) {
 
 		Vector3 normalize() const;
 
-		/**
- * @brief Computes the dot product of this vector with another vector.
- *
- * The function takes a constant reference to another Vector3 object and calculates the dot product 
- * by multiplying the x, y, and z components of both vectors together and summing them up.
- *
- * @param vec A const reference to another Vector3 object.
- * @return float Returns the computed dot product as a floating point number.
- */
-float dot(const Vector3& vec) const {
+		float dot(const Vector3& vec) const {
 			float DotProduct = (x * vec.x) + (y * vec.y) + (z * vec.z);
 			return DotProduct;
 		}
 		
-		/**
- * @brief Computes the cross product of this vector with another one.
- * 
- * The function takes a constant reference to another Vector3 object and calculates the cross product of this vector and the input vector.
- * It returns a new Vector3 object representing the result of the cross product operation.
- * 
- * @param vec A const reference to the other Vector3 object for which the cross product is calculated.
- * @return A new Vector3 object that represents the cross product of this and the input vector.
- */
-Vector3 cross(const Vector3& vec) const {
-			struct Vector3 CrossProduct;
-			CrossProduct.x = (y * vec.z) - (z * vec.y);
-			CrossProduct.y = (z * vec.x) - (x * vec.z);
-			CrossProduct.z = (x * vec.y) - (y * vec.x);
-
-			return CrossProduct;
+		[[nodiscard]] Vector3 cross(const Vector3& vec) const {
+			return {(y * vec.z) - (z * vec.y), (z * vec.x) - (x * vec.z), (x * vec.y) - (y * vec.x)};
 		}
 
-		/**
- * @brief Calculates the magnitude of a three dimensional vector.
- *
- * This function takes a constant reference to a Vector3 object and calculates its magnitude by taking the square root 
- * of the sum of the squares of the differences between each component of the input vector and this instance's components.
- *
- * @param vec A const reference to a Vector3 object representing the other vector in the operation.
- * @return The float value representing the magnitude of the vector.
- */
-float norm(const Vector3& vec) const {
+		[[nodiscard]] float norm(const Vector3& vec) const {
 			float Magnitude = sqrtf(
 				powf((x - vec.x), 2.f) +
 				powf((y - vec.y), 2.f) +
@@ -204,59 +102,21 @@ float norm(const Vector3& vec) const {
 			return Magnitude;
 		}
 
-		/**
- * @brief Calculates the magnitude of a vector using Euclidean distance formula.
- * @param None
- * @return The magnitude (length) of the vector as a float value. If the vector is zero, it returns 0.0.
- */
-float magnitude() const {
+		[[nodiscard]] float magnitude() const {
 			return norm(Vector3());
 		}
-		/**
- * @brief Compares this Vector3 with another for equality.
- *
- * This function compares the x, y and z values of this Vector3 instance with those of the provided Vector3 instance. It returns true if all three are equal, false otherwise.
- *
- * @param vec The Vector3 to compare against.
- * @return True if the vectors are equal (i.e., their x, y, and z components are all identical), false otherwise.
- */
-bool operator==(Vector3 vec) const {
+		bool operator==(Vector3 vec) const {
 			return (x == vec.x && y == vec.y && z == vec.z);
 		}
-		/**
- * @brief Compares this vector with another for equality.
- *
- * The comparison is done component-wise, i.e., it checks if the x, y and z components of both vectors are equal.
- *
- * @param vec Another Vector3 to compare against.
- * 
- * @return True if all components of this vector match those of the other one, false otherwise.
- */
-bool operator==(const Vector3& vec) const {
+		bool operator==(const Vector3& vec) const {
 			return (x == vec.x && y == vec.y && z == vec.z);
 		}
 
-		/**
- * @brief Compares this vector with another for inequality.
- *
- * This function compares the x, y and z components of this vector with those of the provided vector. It returns true if any of these components are not equal, false otherwise.
- *
- * @param vec The Vector3 to compare against.
- * @return True if any component is different, false otherwise.
- */
-bool operator!=(const Vector3& vec) {
+		bool operator!=(const Vector3& vec) {
 			return (x != vec.x || y != vec.y || z != vec.z);
 		}
 
-		/**
- * @brief Converts the object into a string representation.
- *
- * This function converts the current object's x, y and z coordinates into a formatted string. 
- * The resulting string includes each coordinate prefixed with "X: ", "Y: ", and "Z: ".
- *
- * @return A std::string containing the formatted coordinates.
- */
-operator std::string()
+		operator std::string()
 		{
 			std::stringstream SS;
 
@@ -264,23 +124,22 @@ operator std::string()
 
 			return SS.str();
 		}
+
+		operator glm::vec3()
+		{
+			return {x, y,z};
+		}
+
+		operator glm::quat()
+		{
+			return {glm::vec3(x,y,z)};
+		}
+
 	};
 
-	COMMENT:
-/**
- * @brief This function performs component-wise multiplication of two vectors.
- * 
- * @param a The first vector for the operation.
- * @param b The second vector for the operation.
- * 
- * @return A new Vector3 object resulting from the multiplication of the components of the input vectors.
- */
-CONFIDENCE: 1.0;
-
-inline Vector3 operator*(const Vector3& a, const Vector3& b)
+	inline Vector3 operator*(const Vector3& a, const Vector3& b)
 	{
 		return Vector3(a.x * b.x, a.y * b.y, a.z * b.z);
 	}
-
 
 }

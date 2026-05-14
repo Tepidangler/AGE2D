@@ -1,7 +1,6 @@
 #pragma once
 
 #include <Core/Public/Layer.h>
-#include <imgui.h>
 
 typedef unsigned int ImGuiID;
 typedef int ImGuiDockNodeFlags;

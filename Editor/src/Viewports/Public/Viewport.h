@@ -7,7 +7,7 @@
 namespace AGE
 {
 
-	class Viewport : public Layer
+	class Viewport
 	{
 	public:
 
@@ -16,11 +16,11 @@ namespace AGE
 
 
 
-		virtual void OnUpdate(TimeStep DeltaTime) override;
-		virtual void OnImGuiRender(TimeStep DeltaTime, Ref<FrameBuffer> FrameBuffer, EditorCamera& Camera, int Index);
+		void OnUpdate(TimeStep DeltaTime);
+		void OnImGuiRender(TimeStep DeltaTime, Ref<FrameBuffer> FrameBuffer, EditorCamera& Camera, int Index);
 		void OnOverlayRender();
 
-		virtual void OnEvent(Event& E) override;
+		void OnEvent(Event& E);
 
 		bool OnKeyPressed(KeyPressedEvent& E);
 		bool OnMouseButtonPressed(MouseButtonPressedEvent& E);
@@ -30,7 +30,7 @@ namespace AGE
 		const char* m_Name;
 		int m_GizmoType = -1;
 		Vector2 m_ViewportBounds[2];
-		int m_SelectedTile = -1;
+		[[maybe_unused]] int m_SelectedTile = -1;
 
 		std::filesystem::path m_AssetPath;
 

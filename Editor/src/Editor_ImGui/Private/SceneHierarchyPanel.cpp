@@ -1,3 +1,4 @@
+#if !AG_DIST
 #include "Editor_Core/Public/EditorLayer.h"
 #include <Core/Public/AGEpch.hpp>
 #include <Scene/Public/Components.h>
@@ -6,8 +7,8 @@
 #include <imgui.h>
 #include <imgui_internal.h>
 #include <misc/cpp/imgui_stdlib.h>
-
 #include "Editor_ImGui/Public/SceneHierarchyPanel.h"
+#include <TileMap/Public/TileMapManager.h>
 
 #ifdef _MSVC_LANG
 #define _CRT_SECURE_NO_WARNINGS
@@ -63,7 +64,6 @@ namespace AGE
 	{
 		AppConfig Config = App::Get().GetAppConfig();
 		SetContext(Scene);
-		m_Importer = CreateRef<TileMapImporter>(Scene);
 		m_AsepriteManager = CreateRef<Aseprite>();
 		m_AssetPath = Config.GameContentPath;
 	}
@@ -123,16 +123,17 @@ namespace AGE
 	}
 
 
-	tmx_map* SceneHierarchyPanel::SelectTileMap()
+	void SceneHierarchyPanel::SelectTileMap()
 	{
 		std::string FilePath = FileDialogs::OpenFile("Load Tile Map", AssetManager::Get().GetGameContentPath(),
 			{"TMX (*.tmx)","*.tmx"});
 		if (!FilePath.empty())
 		{
-			return m_Importer->ImportMap(FilePath);
+			TileMapManager::Get().LoadTileMap(FilePath);
+			return;
 		}
 
-		return nullptr;
+		CoreLogger::Error("Can't find tilemap");
 	}
 
 	Ref<AudioSource> SceneHierarchyPanel::SelectSound()
@@ -311,32 +312,7 @@ namespace AGE
 
 		DrawComponent<TagComponent>("Tag", m_SelectionContext, [&](auto& Component)
 			{
-				char Buffer[256];
-				memset(Buffer, 0, 256);
-#ifdef AG_PLATFORM_WINDOWS
-			if ((strlen(Component.Tag.c_str()) * sizeof(char)) > 255)
-			{
-				CoreLogger::Assert(false, "Buffer Overflow Detected in Tag Component");
-			}
-			else
-			{
-				strcpy_s(Buffer, strlen(Buffer) * sizeof(char), Component.Tag.c_str());
-			}
-#else
-			if ((strlen(Component.Tag.c_str()) * sizeof(char)) > 255)
-			{
-				CoreLogger::Assert(false, "Buffer Overflow Detected in Tag Component");
-			}
-			else
-			{
-				strcpy(Buffer, Component.Tag.c_str());
-			}
-
-#endif
-				if (ImGui::InputText("##Tag", Buffer, sizeof(Buffer)))
-				{
-					Component.Tag = std::string(Buffer);
-				}
+				ImGui::InputText("##Tag", &Component.Tag);
 			});
 
 		ImGui::SameLine();
@@ -719,23 +695,22 @@ namespace AGE
 
 		DrawComponent<TileMapRendererComponent>("Tile Map", m_SelectionContext, [&](auto& Component)
 			{
-				auto& TileMap = Component.TileMap;
-				if (!Component.bLoaded)
-				{
-
-				}
+				//auto& TileMap = Component.TileMap;
 
 				if (ImGui::BeginMenu("Import Tilemap"))
 				{
 					if (ImGui::MenuItem("Add Tilemap"))
 					{
-						TileMap = SelectTileMap();
+						SelectTileMap();
+#if 0
+						TileMap =
 						if (TileMap)
 						{
 							Component.ActiveScene = m_Context;
 							Component.TileMapPath = m_Importer->GetTileSetPath();
 							Component.TileMapTexture = m_Importer->GetTexture();
 						}
+#endif
 					}
 					ImGui::EndMenu();
 				}
@@ -897,5 +872,6 @@ namespace AGE
 	}
 
 }
+#endif
 
 	

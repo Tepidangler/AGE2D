@@ -13,7 +13,7 @@ namespace AGE
 	{
 	public:
 		AGESound();
-
+		~AGESound() override = default;
 		virtual void Init() override;
 		virtual void Start() override;
 		virtual void Update() override;
@@ -70,9 +70,9 @@ std::vector<std::string> GetAvailableSoundDevices() { return m_AvailableSoundDev
 		bool FindAvailableDevices(std::vector<std::string>& DevicesArray, ALCdevice* Device);
 	private:
 
-		ALCdevice* m_Device;
+		[[maybe_unused]] ALCdevice* m_Device;
 
-		ALCcontext* m_Context;
+		[[maybe_unused]] ALCcontext* m_Context;
 
 		std::vector<std::string> m_AvailableSoundDevices;
 

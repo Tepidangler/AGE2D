@@ -85,5 +85,7 @@ inline void SafeRelease(T& ptr)
             ptr = nullptr;
         }
     }
+
+    //TODO: Implement Intruisive Ptr
 }
 #endif //AGE2D_POINTERS_H

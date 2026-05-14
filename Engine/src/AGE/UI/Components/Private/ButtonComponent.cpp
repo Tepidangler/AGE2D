@@ -2,10 +2,11 @@
 // Created by gdmgp on 2/1/2026.
 //
 
-#include "../Public/ButtonComponent.h"
+#include "UI/Components/Public/ButtonComponent.h"
 #include "Events/Public/KeyEvent.h"
 #include "Core/Public/App.h"
 #include "Render/Public/Renderer2D.h"
+#include "Core/Public/Keycodes.h"
 
 RTTR_REGISTRATION{
 	rttr::registration::class_<AGE::ButtonComponent>("ButtonComponent")

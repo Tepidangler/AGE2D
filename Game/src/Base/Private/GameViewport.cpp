@@ -5,7 +5,7 @@
 namespace Proj
 {
 	GameViewport::GameViewport(const char* Name)
-		:m_Name(Name), Layer(Name)
+		:Layer(Name), m_Name(Name)
 	{
 
 	}

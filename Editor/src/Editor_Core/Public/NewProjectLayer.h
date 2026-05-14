@@ -1,7 +1,7 @@
 //
 // Created by gdmgp on 12/6/2025.
 //
-
+#if! AG_DIST
 #ifndef AGE2D_NEWPROJECTLAYER_H
 #define AGE2D_NEWPROJECTLAYER_H
 #include <Age.h>
@@ -30,3 +30,4 @@ namespace AGE
 } // AGE
 
 #endif //AGE2D_NEWPROJECTLAYER_H
+#endif

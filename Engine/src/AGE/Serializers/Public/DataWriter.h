@@ -324,7 +324,7 @@ void SetStreamPosition(uint64_t Pos) final { m_Stream.seekp((long)Pos); }
 
 	private:
 
-		void* m_Addr;
+		[[maybe_unused]] void* m_Addr;
 		std::stringstream m_Stream;
 	};
 }

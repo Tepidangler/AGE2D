@@ -5,8 +5,6 @@ namespace Proj
 {
 	void Dockspace::OnImGuiRender(AGE::TimeStep DeltaTime)
 	{
-		AGE::App& App = AGE::App::Get();
-
 		static bool dockingEnabled = true;
 		if (dockingEnabled)
 		{

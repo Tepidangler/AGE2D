@@ -46,12 +46,9 @@ inline void BlockEvents(bool block) { m_BlockEvents = block; }
 		void SetDarkThemeColors();
 
 		bool OnWindowResized(WindowResizeEvent& E);
-	private:
-		float m_Time = 0.f;
 
 		bool m_BlockEvents = true;
 
-		bool m_RendererChanged = false;
 		LayerStack m_LayerStack;
 
 		GraphicsContext* m_Context;

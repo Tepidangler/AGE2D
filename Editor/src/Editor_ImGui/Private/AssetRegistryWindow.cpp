@@ -1,6 +1,32 @@
 #include "Editor_ImGui/Public/AssetRegistryWindow.h"
-#include <imgui.h>
 #include "Assets/Public/AssetManager.h"
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wconversion"
+#ifdef AG_PLATFORM_LINUX
+#pragma clang diagnostic ignored "-Wnontrivial-memcall"
+#endif
+#ifdef AG_PLATFORM_WINDOWS
+#pragma clang diagnostic ignored "-Wmicrosoft-unqualified-friend"
+#endif
+#include <imgui.h>
+#pragma clang diagnostic pop
+#elif defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wfloat-conversion"
+#ifdef AG_PLATFORM_WINDOWS
+#pragma GCC diagnostic ignored "-Wmicrosoft-unqualified-friend"
+#endif
+#include <imgui.h>
+#pragma GCC diagnostic pop
+#elif defined(_MSC_VER)
+#pragma warning(push, 0)
+#include <imgui.h>
+#pragma warning(pop)
+#else
+#error "Compiler is not supported with AGE yet"
+#endif
 
 namespace AGE
 {

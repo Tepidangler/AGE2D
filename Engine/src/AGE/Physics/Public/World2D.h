@@ -13,16 +13,16 @@ namespace AGE
 
         virtual ~World2D();
 
-        virtual void DestroyWorld() override;
+        void DestroyWorld() override;
 
-        virtual void Step(TimeStep DeltaTime) override;
+        void Step(TimeStep DeltaTime) override;
 
-        virtual void MakeDefaultQueryFilter() override;
+        void MakeDefaultQueryFilter() override;
 
-        virtual void QueryBoxOverlap(const QueryParams& Params) override;
-        virtual void QueryCapsuleOverlap(const QueryParams& Params) override;
-        virtual void QuerySegmentOverlap(const QueryParams& Params) override;
-        virtual void QueryHit(const QueryParams& Params) override;
+        void QueryBoxOverlap(const QueryParams& Params) override;
+        void QueryCapsuleOverlap(const QueryParams& Params) override;
+        void QuerySegmentOverlap(const QueryParams& Params) override;
+        void QueryHit(const QueryParams& Params) override;
 
         /**
  * @brief Returns a reference to the query filter object used by this class.
@@ -30,16 +30,16 @@ namespace AGE
  */
 b2QueryFilter& GetQueryFilter() { return m_QueryFilter; }
 
-        b2BodyDef MakeBodyDefinition(const BodyType& Type, const Vector3& Translation, const Vector3 Rotation, bool IsRotationFixed, void* UserData);
+        b2BodyDef MakeBodyDefinition(const BodyType& Type, const Vector3& Translation, const Vector3& Rotation, bool IsRotationFixed, void* UserData);
 
         b2ShapeDef MakeShapeDefinition(float Density, float Friction, float Restitution, bool ShouldGenerateEvents, void* UserData);
 
         b2Rot MakeRotation(float Z);
 
-        b2Polygon CreateBox(float HeightX, float HeightY, const Vector3 Scale);
+        b2Polygon CreateBox(float HeightX, float HeightY, const Vector3& Scale);
         b2ShapeId CreatePolygonShape(const b2BodyId& ID, const b2ShapeDef& Fixture, const b2Polygon& Box);
 
-        b2Capsule CreateCapsule(const Vector2& Offset, const Vector3 Scale, const float Radius);
+        b2Capsule CreateCapsule(const Vector2& Offset, const Vector3& Scale, const float Radius);
         b2ShapeId CreateCapsuleShape(const b2BodyId& ID, const b2ShapeDef& Fixture, const b2Capsule& Capsule);
 
         b2Segment CreateSegment();
